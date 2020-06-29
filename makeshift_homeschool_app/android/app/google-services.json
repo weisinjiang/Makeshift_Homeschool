@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "60367595636",
+    "firebase_url": "https://makeshift-homeschool-281816.firebaseio.com",
+    "project_id": "makeshift-homeschool-281816",
+    "storage_bucket": "makeshift-homeschool-281816.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60367595636:android:855d28dd97c8b76a920921",
+        "android_client_info": {
+          "package_name": "io.wequil.makeshifthomeschool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60367595636-3qu6npfbf4c3g17t7tar7u14rsqi4cji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-fAf4ACWUzKPmet4vpXpZHPpSgISi2DM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60367595636-3qu6npfbf4c3g17t7tar7u14rsqi4cji.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "60367595636-5pbjr72ieb87rc1l0m2bnrhevld3rh1l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.wequil.makeshifthomeschool"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
