@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-enum AuthMode {
-  Signup,
-  Login
-} //Page will change if user is logging in or signing up
+//Page will change if user is logging in or signing up
+enum AuthMode { Signup, Login }
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -11,6 +9,49 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  //Controllers that stores user input and validates passwords
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  final _passwordController = TextEditingController();
+  AuthMode _authMode = AuthMode.Signup;
+  String _email;
+  String _password;
+  var _isLoading = false; // If async data is not recieved, this is true
+
+  void _showErrorMessage(String message) {
+    showDialog(
+        context: context,
+        builder: (contx) => AlertDialog(
+              title: Center(child: Text("ERROR")),
+              content: Text(message),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(contx).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
+  // Method switchs between login and signup mode
+  void _switchAuthMode() {
+    _formKey.currentState.reset();
+    if (_authMode == AuthMode.Login) {
+      setState(() {
+        _authMode = AuthMode.Signup;
+      });
+    } else {
+      setState(() {
+        _authMode = AuthMode.Login;
+      });
+    }
+  }
+
+  /// ****************************************************************************
+  /// Password Validation                                                        *
+  ///*****************************************************************************
+
   /* 
     Regular Expression that makes sure the password is:
       1. Min 8 char
@@ -21,45 +62,47 @@ class _LoginScreenState extends State<LoginScreen> {
   final regExValidPassword = RegExp(
       r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
 
-  //Controllers that stores user input and validates passwords
-  final GlobalKey<FormState> _formKey = GlobalKey();
-  final _passwordController = TextEditingController();
-  AuthMode _authMode = AuthMode.Signup;
-  /*Controls the page contents depending on
-                                         if it is login or sign up */
-  String _email;
-  String _password;
-  var _isLoading = false; // If async data is not recieved, this is true
+  /* 
+    Validates the password the user enters
+    @param  : password the user inputs into the Form TextField
+    @return :  true or false
+  */
+  String validatePassword(String userInput) {
+    if (regExValidPassword.hasMatch(userInput)) {
+      return null;
+    } else if (userInput.length < 8) {
+      return "Password needs to be at least 8 characters long";
+    }
+    return "Password must have at least 1 number, special character, upper and lower case letter";
+  }
 
+  /// ****************************************************************************
+  /// Email Validation                                                           *
+  ///*****************************************************************************
+
+  /* 
+    Regular Expression that makes sure email is in the valid format
+  */
+  final regExValidEmail = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+  /* 
+    Validates the password the user enters
+    @param  : password the user inputs into the Form TextField
+    @return :  true or false
+  */
+  String validateEmail(String userInput) {
+    if (regExValidEmail.hasMatch(userInput)) {
+      return null;
+    }
+    return "Invalid Email";
+  }
+
+  /// ****************************************************************************
+  /// Build UI Method                                                            *
+  ///*****************************************************************************
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
-    // Method switchs between login and signup mode
-    void _switchAuthMode() {
-      _formKey.currentState.reset();
-      if (_authMode == AuthMode.Login) {
-        setState(() {
-          _authMode = AuthMode.Signup;
-        });
-      } else {
-        setState(() {
-          _authMode = AuthMode.Login;
-        });
-      }
-    }
-
-    /* 
-      Validates the password the user enters
-      @param  : password the user inputs into the Form TextField
-      @return :  true or false
-    */
-    bool validatePassword(String userInput) {
-      if (regExValidPassword.hasMatch(userInput)) {
-        return null;
-      }
-      return "Password needs to be at least "
-    }
 
     return Scaffold(
       //Initial container that fills the entire screen
@@ -92,18 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.vertical()),
                         ),
-                        validator: (userEmailInput) {
-                          //matched
-                          if (RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                              .hasMatch(userEmailInput)) {
-                            return null;
-                          }
-                          // Empty Field
-                          else if (userEmailInput.isEmpty) {
-                            return "Enter a email address";
-                          }
-                          return "Enter a valid email address";
-                        },
+                        validator: (userEmailInput) => validateEmail(userEmailInput),
                       ),
                     ),
 
@@ -116,14 +148,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.vertical()),
                         ),
-                        validator: (userPasswordInput) {
-                          if (userPasswordInput.isEmpty) {
-                            return "Enter a password";
-                          } else if (userPasswordInput.length < 8) {
-                            return "Enter a password that is at least 8 characters long";
-                          }
-                          return null;
-                        },
+                        validator: (userPasswordInput) =>
+                            validatePassword(userPasswordInput),
                       ),
                     ),
 
