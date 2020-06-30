@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/auth.dart';
 
 //Page will change if user is logging in or signing up
 enum AuthMode { Signup, Login }
@@ -48,6 +49,13 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> _submit() async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+  }
+
   /// ****************************************************************************
   /// Password Validation                                                        *
   ///*****************************************************************************
@@ -74,6 +82,13 @@ class _LoginScreenState extends State<LoginScreen> {
       return "Password needs to be at least 8 characters long";
     }
     return "Password must have at least 1 number, special character, upper and lower case letter";
+  }
+
+  String confirmPassword(String toConfirm) {
+    if (toConfirm != _passwordController.text) {
+      return "Passwords do not match";
+    }
+    return null;
   }
 
   /// ****************************************************************************
@@ -135,7 +150,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.vertical()),
                         ),
-                        validator: (userEmailInput) => validateEmail(userEmailInput),
+                        validator: (userEmailInput) =>
+                            validateEmail(userEmailInput),
+                        onSaved: (userEmailInput) => _email,
                       ),
                     ),
 
@@ -150,6 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (userPasswordInput) =>
                             validatePassword(userPasswordInput),
+                        onSaved: (userPasswordInput) => _password,
                       ),
                     ),
 
@@ -163,14 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.vertical()),
                           ),
-                          validator: (userPasswordInput) {
-                            if (userPasswordInput.isEmpty) {
-                              return "Enter a password";
-                            } else if (userPasswordInput.length < 8) {
-                              return "Enter a password that is at least 8 characters long";
-                            }
-                            return null;
-                          },
+                          validator: (userConfirmPasswordInput) =>
+                              confirmPassword(userConfirmPasswordInput),
                         ),
                       ),
 
