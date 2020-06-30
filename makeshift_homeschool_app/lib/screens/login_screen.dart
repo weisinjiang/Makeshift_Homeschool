@@ -11,6 +11,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  /* 
+    Regular Expression that makes sure the password is:
+      1. Min 8 char
+      2. At least 1 upper case char
+      3. At least 1 lower case char
+      4. At least 1 special char
+  */
+  final regExValidPassword = RegExp(
+      r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+
   //Controllers that stores user input and validates passwords
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _passwordController = TextEditingController();
@@ -37,6 +47,18 @@ class _LoginScreenState extends State<LoginScreen> {
           _authMode = AuthMode.Login;
         });
       }
+    }
+
+    /* 
+      Validates the password the user enters
+      @param  : password the user inputs into the Form TextField
+      @return :  true or false
+    */
+    bool validatePassword(String userInput) {
+      if (regExValidPassword.hasMatch(userInput)) {
+        return null;
+      }
+      return "Password needs to be at least "
     }
 
     return Scaffold(
