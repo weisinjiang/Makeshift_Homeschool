@@ -13,6 +13,16 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
   // Change the index when a new page is selected
   void switchPage(int index) {
+    switch (index) {
+      case 0: // Homepage, will always be on sceen, do nothing
+        break;
+      case 1: // Add new post
+        break;
+      case 2: //Notifications
+        break;
+      case 3: // Profile
+        break;
+    }
     setState(() {
       currentPageIndex = index;
     });
