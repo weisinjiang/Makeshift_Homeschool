@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../services/auth.dart';
 
@@ -10,7 +11,22 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  AuthProvider auth = AuthProvider();     //Functions for signIn, etc.
+  AuthProvider auth = AuthProvider(); //Functions for signIn, etc.
+
+  /// **************************************************************************
+  /// Initialize Page when loaded
+  ///   If the user isnt null when the page is loaded, then change the screen
+  ///   to the home page
+  ///***************************************************************************
+  @override
+  void initState() {
+    super.initState();
+    auth.getUser.then((userID) {
+      if (userID != null) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    });
+  }
 
   //Controllers that stores user input and validates passwords
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -52,26 +68,30 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   /// **************************************************************************
-  /// Login/Signup Button Pressed Logic                                        *
+  /// Login/Signup Button Pressed Logic
   ///***************************************************************************
 
   Future<void> _submit() async {
+    String result;
+
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
-    print(_email);
-    print(_password);
 
     if (_authMode == AuthMode.Login) {
-      await auth.signIn(_email, _password);
+      result = await auth.signIn(_email, _password);
     } else {
-      await auth.signUp(_email, _password);
+      result = await auth.signUp(_email, _password);
+    }
+    print(result);
+    if (result != null) {
+      Navigator.pushReplacementNamed(context, '/home');
     }
   }
 
   /// **************************************************************************
-  /// Password Validation                                                      *
+  /// Password Validation
   ///***************************************************************************
 
   /* 
@@ -174,6 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        obscureText: true,
                         controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: "Password",
@@ -182,7 +203,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (userPasswordInput) =>
                             validatePassword(userPasswordInput),
-                        onSaved: (userPasswordInput) => _password = userPasswordInput,
+                        onSaved: (userPasswordInput) =>
+                            _password = userPasswordInput,
                       ),
                     ),
 
@@ -191,6 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          obscureText: true,
                           decoration: InputDecoration(
                             labelText: "Confirm Password",
                             border: OutlineInputBorder(
