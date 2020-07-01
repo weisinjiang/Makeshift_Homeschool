@@ -13,7 +13,13 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         color: Colors.red,
-        child: Center(child: Text(user.email)),
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 100,),
+            Center(child: Text(user.displayName)),
+            RaisedButton(onPressed: () => auth.signOut())
+          ],
+        ),
       ),
     );
   }

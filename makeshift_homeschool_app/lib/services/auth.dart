@@ -22,10 +22,15 @@ class AuthProvider {
     return user.uid;
   }
 
-  Future<String> signUp(String email, String password) async {
+  Future<String> signUp(String email, String password, String userName) async {
+    // Sign the user up
     AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
-    FirebaseUser user = result.user;
+
+    FirebaseUser user = result.user; // variable containing user's info
+    UserUpdateInfo updateInfo = UserUpdateInfo(); // used to update user's info
+    updateInfo.displayName = userName; 
+    user.updateProfile(updateInfo);
     return user.uid;
   }
 

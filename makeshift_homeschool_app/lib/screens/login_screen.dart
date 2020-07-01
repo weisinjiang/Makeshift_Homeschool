@@ -18,15 +18,15 @@ class _LoginScreenState extends State<LoginScreen> {
   ///   If the user isnt null when the page is loaded, then change the screen
   ///   to the home page
   ///***************************************************************************
-  @override
-  void initState() {
-    super.initState();
-    auth.getUser.then((userID) {
-      if (userID != null) {
-        Navigator.pushReplacementNamed(context, '/home');
-      }
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   auth.getUser.then((userID) {
+  //     if (userID != null) {
+  //       Navigator.pushReplacementNamed(context, '/home');
+  //     }
+  //   });
+  // }
 
   //Controllers that stores user input and validates passwords
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -34,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   AuthMode _authMode = AuthMode.Login;
   String _email;
   String _password;
+  String _userName;
   var _isLoading = false; // If async data is not recieved, this is true
 
   void _showErrorMessage(String message) {
@@ -82,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_authMode == AuthMode.Login) {
       result = await auth.signIn(_email, _password);
     } else {
-      result = await auth.signUp(_email, _password);
+      result = await auth.signUp(_email, _password, _userName);
     }
     print(result);
     if (result != null) {
@@ -174,6 +175,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: _formKey, // key to track the forms input
                 child: Column(
                   children: <Widget>[
+
+                    if (_authMode == AuthMode.Signup)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            labelText: "Username",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.vertical()),
+                          ),
+                          onSaved: (userNameInput) => _userName = userNameInput,
+                        ),
+                      ),
+
+
                     // Email Field
                     Padding(
                       padding: const EdgeInsets.all(8.0),
