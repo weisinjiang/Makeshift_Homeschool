@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/models/http_exception.dart';
 import '../services/auth.dart';
 
 //Page will change if user is logging in or signing up
@@ -76,18 +77,33 @@ class _LoginScreenState extends State<LoginScreen> {
     String result;
 
     if (!_formKey.currentState.validate()) {
+      // Validation failed
       return;
     }
     _formKey.currentState.save();
 
-    if (_authMode == AuthMode.Login) {
-      result = await auth.signIn(_email, _password);
-    } else {
-      result = await auth.signUp(_email, _password, _userName);
-    }
-    print(result);
-    if (result != null) {
+    try {
+      // Attempt to log user in
+      if (_authMode == AuthMode.Login) {
+        await auth.signIn(_email, _password);
+      } else {
+        await auth.signUp(_email, _password, _userName);
+      }
       Navigator.pushReplacementNamed(context, '/home');
+    } catch (exception) {
+      // if errors occur during login
+      var messageForUser =
+          "Error occured, please try again"; // message to tell the user
+      String error = exception.toString();
+
+      // User does not exists in the database
+      if (error.contains("ERROR_USER_NOT_FOUND")) {
+        messageForUser = "Account does not exists";
+      } else if (error.contains("ERROR_EMAIL_ALREADY_IN_USE")) {
+        messageForUser = "Email already exist";
+      }
+
+      _showErrorMessage(exception.toString());
     }
   }
 
@@ -162,12 +178,24 @@ class _LoginScreenState extends State<LoginScreen> {
         height: deviceSize.height,
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              // About Button
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
+                  child: RaisedButton(
+                    onPressed: () {},
+                    child: Text("About"),
+                  ),
+                ),
+              ),
+
               //Logo
               Padding(
-                padding: const EdgeInsets.all(50.0),
+                padding: const EdgeInsets.all(40.0),
                 child: Image.asset('asset/images/logo.png'),
               ),
 
@@ -175,7 +203,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: _formKey, // key to track the forms input
                 child: Column(
                   children: <Widget>[
-
                     if (_authMode == AuthMode.Signup)
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -188,7 +215,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           onSaved: (userNameInput) => _userName = userNameInput,
                         ),
                       ),
-
 
                     // Email Field
                     Padding(
@@ -240,29 +266,70 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
 
-                    RaisedButton(
-                      child: Text(
-                          _authMode == AuthMode.Login ? "Login" : "Sign up"),
-                      color: Colors.green[300],
-                      onPressed: _submit,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
+                      child: ButtonTheme(
+                        minWidth: deviceSize.width * 0.90,
+                        height: deviceSize.height * 0.07,
+                        child: RaisedButton(
+                          child: Text(_authMode == AuthMode.Login
+                              ? "Login"
+                              : "Sign up"),
+                          color: Colors.green[300],
+                          onPressed: _submit,
+                        ),
+                      ),
                     ),
 
                     // Switch between Auth modes
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Text(_authMode == AuthMode.Login
-                            ? "Dont have an account?"
-                            : "Have an account?"),
+                        Text(
+                          _authMode == AuthMode.Login
+                              ? "Don't have an account?"
+                              : "Have an account?",
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
                         FlatButton(
-                          child: Text(_authMode == AuthMode.Login
-                              ? "Sign up"
-                              : "Login"),
+                          splashColor: Colors
+                              .transparent, // Prevents showing button highlight
+                          highlightColor: Colors.transparent,
+
+                          child: Text(
+                            _authMode == AuthMode.Login ? "Sign up" : "Login",
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff67cecb)),
+                          ),
                           onPressed: _switchAuthMode,
                         )
                       ],
-                    )
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Text(
+                          "Forgot your password?",
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        FlatButton(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onPressed: () {},
+                            child: Text(
+                              "Reset Password",
+                              style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff67cecb)),
+                            )),
+                      ],
+                    ),
                   ],
                 ),
               ),

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "60367595636-h21miuias8sclknbh521k1rgr00b8po5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.wequil.makeshifthomeschool",
+            "certificate_hash": "0e500412a535b76c7f5451eff3e7645d968712f1"
+          }
+        },
+        {
           "client_id": "60367595636-3qu6npfbf4c3g17t7tar7u14rsqi4cji.apps.googleusercontent.com",
           "client_type": 3
         }
