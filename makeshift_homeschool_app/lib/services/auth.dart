@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AuthProvider {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance; // Firebase Instance
   final Firestore _database = Firestore.instance; // Connect to Firestore
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   // Get current Firebase User
   Future<FirebaseUser> get getUser => _firebaseAuth.currentUser();
@@ -22,6 +24,14 @@ class AuthProvider {
     return user.uid;
   }
 
+  Future<dynamic> getImage(String photoURL) async {
+    return await _storage
+        .ref()
+        .child("profile")
+        .child("blankProfile.png")
+        .getDownloadURL();
+  }
+
   Future<String> signUp(String email, String password, String userName) async {
     // Sign the user up
     AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
@@ -30,6 +40,8 @@ class AuthProvider {
     FirebaseUser user = result.user; // variable containing user's info
     UserUpdateInfo updateInfo = UserUpdateInfo(); // used to update user's info
     updateInfo.displayName = userName;
+    updateInfo.photoUrl =
+        "gs://makeshift-homeschool-281816.appspot.com/profile/blankProfile.png";
     user.updateProfile(updateInfo);
     return user.uid;
   }
@@ -37,6 +49,11 @@ class AuthProvider {
   Future<FirebaseUser> getCurrentUser() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     return user;
+  }
+
+  Future<String> getCurrentUserName() async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    return user.displayName.toString();
   }
 
   Future<void> signOut() async {

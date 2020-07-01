@@ -21,6 +21,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       case 2: //Notifications
         break;
       case 3: // Profile
+        Navigator.pushNamed(context, '/profile');
         break;
     }
     setState(() {
@@ -37,8 +38,8 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       currentIndex: currentPageIndex,
       items: [
         BottomNavigationBarItem(
-            title: Text("Feed"),
-            icon: Icon(FontAwesomeIcons.home),
+            title: Text("Study"),
+            icon: Icon(FontAwesomeIcons.bookOpen),
             backgroundColor: Colors.black),
         BottomNavigationBarItem(
             title: Text("Post"), icon: Icon(FontAwesomeIcons.pencilAlt)),
