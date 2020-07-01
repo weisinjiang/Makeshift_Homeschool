@@ -1,22 +1,19 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-abstract class BaseAuth {
-  Future<String> signIn(String email, String password);
+class AuthProvider {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance; // Firebase Instance
+  final Firestore _database = Firestore.instance; // Connect to Firestore
 
-  Future<String> signUp(String email, String password);
+  // Get current Firebase User
+  Future<FirebaseUser> get getUser => _firebaseAuth.currentUser();
 
-  Future<FirebaseUser> getCurrentUser();
-
-  Future<void> sendEmailVerification();
-
-  Future<void> signOut();
-
-  Future<bool> isEmailVerified();
-}
-
-class Auth implements BaseAuth {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  /*
+    Method chnages the UI based on authentication state. 
+      User signs in, out and user change
+  */
+  Stream<FirebaseUser> get user => _firebaseAuth.onAuthStateChanged;
 
   Future<String> signIn(String email, String password) async {
     AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(

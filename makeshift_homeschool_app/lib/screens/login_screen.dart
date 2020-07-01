@@ -10,10 +10,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  AuthProvider auth = AuthProvider();     //Functions for signIn, etc.
+
   //Controllers that stores user input and validates passwords
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _passwordController = TextEditingController();
-  AuthMode _authMode = AuthMode.Signup;
+  AuthMode _authMode = AuthMode.Login;
   String _email;
   String _password;
   var _isLoading = false; // If async data is not recieved, this is true
@@ -49,16 +51,28 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  /// **************************************************************************
+  /// Login/Signup Button Pressed Logic                                        *
+  ///***************************************************************************
+
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
+    print(_email);
+    print(_password);
+
+    if (_authMode == AuthMode.Login) {
+      await auth.signIn(_email, _password);
+    } else {
+      await auth.signUp(_email, _password);
+    }
   }
 
-  /// ****************************************************************************
-  /// Password Validation                                                        *
-  ///*****************************************************************************
+  /// **************************************************************************
+  /// Password Validation                                                      *
+  ///***************************************************************************
 
   /* 
     Regular Expression that makes sure the password is:
@@ -91,9 +105,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
-  /// ****************************************************************************
-  /// Email Validation                                                           *
-  ///*****************************************************************************
+  /// **************************************************************************
+  /// Email Validation                                                         *
+  ///***************************************************************************
 
   /* 
     Regular Expression that makes sure email is in the valid format
@@ -112,9 +126,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return "Invalid Email";
   }
 
-  /// ****************************************************************************
-  /// Build UI Method                                                            *
-  ///*****************************************************************************
+  /// **************************************************************************
+  /// Build UI Method                                                          *
+  ///***************************************************************************
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -152,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (userEmailInput) =>
                             validateEmail(userEmailInput),
-                        onSaved: (userEmailInput) => _email,
+                        onSaved: (userEmailInput) => _email = userEmailInput,
                       ),
                     ),
 
@@ -160,6 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: "Password",
                           border: OutlineInputBorder(
@@ -167,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (userPasswordInput) =>
                             validatePassword(userPasswordInput),
-                        onSaved: (userPasswordInput) => _password,
+                        onSaved: (userPasswordInput) => _password = userPasswordInput,
                       ),
                     ),
 
@@ -190,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text(
                           _authMode == AuthMode.Login ? "Login" : "Sign up"),
                       color: Colors.green[300],
-                      onPressed: () {},
+                      onPressed: _submit,
                     ),
 
                     // Switch between Auth modes
