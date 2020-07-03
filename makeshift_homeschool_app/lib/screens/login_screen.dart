@@ -19,15 +19,19 @@ class _LoginScreenState extends State<LoginScreen> {
   ///   If the user isnt null when the page is loaded, then change the screen
   ///   to the home page
   ///***************************************************************************
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   auth.getUser.then((userID) {
-  //     if (userID != null) {
-  //       Navigator.pushReplacementNamed(context, '/home');
-  //     }
-  //   });
-  // }
+  
+  // Check if the user is still authenticated. if so, sign them in automatically
+   @override
+  void initState() {
+    super.initState();
+    auth.getUser.then(
+      (user) {
+        if (user != null) {
+          Navigator.pushReplacementNamed(context, '/root');
+        }
+      },
+    );
+  }
 
   //Controllers that stores user input and validates passwords
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -89,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         await auth.signUp(_email, _password, _userName);
       }
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/root');
     } catch (exception) {
       // if errors occur during login
       var messageForUser =

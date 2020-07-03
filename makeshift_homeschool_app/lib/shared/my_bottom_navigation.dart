@@ -13,6 +13,9 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
 
   // Change the index when a new page is selected
   void switchPage(int index) {
+    setState(() {
+      currentPageIndex = index;
+    });
     switch (index) {
       case 0: // Homepage, will always be on sceen, do nothing
         break;
@@ -24,9 +27,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
         Navigator.pushNamed(context, '/profile');
         break;
     }
-    setState(() {
-      currentPageIndex = index;
-    });
+   
   }
 
   @override

@@ -8,13 +8,11 @@ class AuthProvider {
   final Firestore _database = Firestore.instance; // Connect to Firestore
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  // Get current Firebase User
+  // Get current Firebase User. Used to see if user data is still valid
+  // Not async because it is used after user has logged in and exit the app
   Future<FirebaseUser> get getUser => _firebaseAuth.currentUser();
 
-  /*
-    Method chnages the UI based on authentication state. 
-      User signs in, out and user change
-  */
+  //Check if the user is still authenticated
   Stream<FirebaseUser> get user => _firebaseAuth.onAuthStateChanged;
 
   Future<String> signIn(String email, String password) async {
@@ -24,12 +22,9 @@ class AuthProvider {
     return user.uid;
   }
 
-  Future<dynamic> getImage(String photoURL) async {
-    return await _storage
-        .ref()
-        .child("profile")
-        .child("blankProfile.png")
-        .getDownloadURL();
+  // Get users image based on UID
+  Future<dynamic> getImage(String uid) async {
+    return await _storage.ref().child("profile").child(uid).getDownloadURL();
   }
 
   Future<String> signUp(String email, String password, String userName) async {
@@ -39,10 +34,18 @@ class AuthProvider {
 
     FirebaseUser user = result.user; // variable containing user's info
     UserUpdateInfo updateInfo = UserUpdateInfo(); // used to update user's info
-    updateInfo.displayName = userName;
+    updateInfo.displayName = userName; // update the username
     updateInfo.photoUrl =
-        "gs://makeshift-homeschool-281816.appspot.com/profile/blankProfile.png";
-    user.updateProfile(updateInfo);
+        await getImage("blankProfile.png"); // default profile pic
+    await user.updateProfile(updateInfo); // update the profile
+    _database.collection("users").document(user.uid).setData({
+      // add new database for the user
+      "level": "student",
+      "bio": "empty",
+      "lesson_created": 0,
+      "lesson_completed": 0
+    });
+
     return user.uid;
   }
 
@@ -51,7 +54,7 @@ class AuthProvider {
     return user;
   }
 
-  Future<String> getCurrentUserName() async {
+  Future<String> get getCurrentUserName async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     return user.displayName.toString();
   }
