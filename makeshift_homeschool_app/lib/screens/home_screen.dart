@@ -6,43 +6,63 @@ import 'package:makeshift_homeschool_app/shared/my_bottom_navigation.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  AuthProvider auth = AuthProvider();
-
   @override
   Widget build(BuildContext context) {
-    FirebaseUser user =  Provider.of<FirebaseUser>(context);
+    var auth = Provider.of<AuthProvider>(context); // auth provider
+    var user = auth.getUserData;
 
-    return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.lightGreen[300],
-      //   title: Text("Makeshift Homeschool"),
+    // FutureBuilder(
+    //   future: auth.getUserData,
+    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //     if (snapshot.hasData) {
+    //       var user = snapshot.data;
+    //       return Container(
+    //         color: Colors.red,
+    //         child: Column(
+    //           children: <Widget>[
+    //             SizedBox(
+    //               height: 100,
+    //             ),
+    //             Center(child: Text("${user.email}")),
+    //             RaisedButton(
+    //               onPressed: () async {
+    //                 await auth.signOut();
+    //                 Navigator.of(context)
+    //                     .pushNamedAndRemoveUntil('/', (route) => false);
+    //               },
+    //               child: Text("Signout"),
+    //             ),
+    //           ],
+    //         ),
+    //       );
+    //     } else {
+    //       return LoadingScreen();
+    //     }
+    //   },
+    // );
 
-      // ),
-      // bottomNavigationBar: MyBottomNavigationBar(),
-      body: Container(
+    if (user != null) {
+      return Container(
         color: Colors.red,
         child: Column(
           children: <Widget>[
             SizedBox(
               height: 100,
             ),
-            Center(child: Text(user.displayName)),
+            Center(child: Text("${user.email}")),
             RaisedButton(
               onPressed: () async {
-             
+                await auth.signOut();
                 Navigator.of(context)
                     .pushNamedAndRemoveUntil('/', (route) => false);
-                await auth.signOut();
               },
               child: Text("Signout"),
             ),
-            RaisedButton(
-              onPressed: () => Navigator.pushNamed(context, '/profile'),
-              child: Text("Profile"),
-            ),
           ],
         ),
-      ),
-    );
+      );
+    } else {
+      return LoadingScreen();
+    }
   }
 }

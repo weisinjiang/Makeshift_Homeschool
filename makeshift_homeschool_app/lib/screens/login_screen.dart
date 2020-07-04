@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/http_exception.dart';
+import 'package:provider/provider.dart';
 import '../services/auth.dart';
 
 //Page will change if user is logging in or signing up
@@ -12,27 +13,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  AuthProvider auth = AuthProvider(); //Functions for signIn, etc.
-
-  /// **************************************************************************
-  /// Initialize Page when loaded
-  ///   If the user isnt null when the page is loaded, then change the screen
-  ///   to the home page
-  ///***************************************************************************
-  
-  // Check if the user is still authenticated. if so, sign them in automatically
-   @override
-  void initState() {
-    super.initState();
-    auth.getUser.then(
-      (user) {
-        if (user != null) {
-          Navigator.pushReplacementNamed(context, '/root');
-        }
-      },
-    );
-  }
-
   //Controllers that stores user input and validates passwords
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _passwordController = TextEditingController();
@@ -77,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
   /// Login/Signup Button Pressed Logic
   ///***************************************************************************
 
-  Future<void> _submit() async {
+  Future<void> _submit(AuthProvider auth) async {
     String result;
 
     if (!_formKey.currentState.validate()) {
@@ -89,11 +69,17 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       // Attempt to log user in
       if (_authMode == AuthMode.Login) {
-        await auth.signIn(_email, _password);
+        var result = await auth.signIn(_email, _password);
+
+        if (result == true) {
+          Navigator.pushReplacementNamed(context, '/root');
+        }
       } else {
-        await auth.signUp(_email, _password, _userName);
+        var result = await auth.signUp(_email, _password, _userName);
+        if (result == true) {
+          Navigator.pushReplacementNamed(context, '/root');
+        }
       }
-      Navigator.pushReplacementNamed(context, '/root');
     } catch (exception) {
       // if errors occur during login
       var messageForUser =
@@ -173,6 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    var auth = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       //Initial container that fills the entire screen
@@ -280,7 +267,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ? "Login"
                               : "Sign up"),
                           color: Colors.green[300],
-                          onPressed: _submit,
+                          onPressed: () async {
+                            _submit(auth);
+                          },
                         ),
                       ),
                     ),

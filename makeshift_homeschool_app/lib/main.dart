@@ -16,18 +16,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<FirebaseUser>.value(
-            value: AuthProvider().user),
+        ChangeNotifierProvider.value(
+            value: AuthProvider(),
+        ),
       ],
-      child: MaterialApp(
-        
+      child: Consumer<AuthProvider>(
+        builder: (context, auth, _) =>
+        MaterialApp(
+          
+          home: auth.getAuthStatus == false ? LoginScreen() : RootScreen(),
         routes: {
-          '/': (context) => LoginScreen(), // Root Screen
+          '/login': (context) => LoginScreen(), // Root Screen
           '/root': (context) => RootScreen(),
           '/home': (context) => HomeScreen(),
           '/profile': (context) => ProfileScreen()
         },
       ),
+    )
     );
   }
 }
