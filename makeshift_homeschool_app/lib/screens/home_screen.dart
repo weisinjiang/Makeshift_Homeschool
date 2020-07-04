@@ -11,8 +11,8 @@ class HomeScreen extends StatelessWidget {
     var auth = Provider.of<AuthProvider>(context); // auth provider
     var user = auth.getUserData;
 
-    // FutureBuilder(
-    //   future: auth.getUserData,
+    // StreamBuilder(
+    //   stream: ,
     //   builder: (BuildContext context, AsyncSnapshot snapshot) {
     //     if (snapshot.hasData) {
     //       var user = snapshot.data;

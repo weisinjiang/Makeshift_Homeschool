@@ -49,7 +49,6 @@ class AuthProvider with ChangeNotifier {
         email: email, password: password);
     _user = result.user;
     authenticated = true;
-    
 
     _database.collection("users").document(result.user.uid).setData({
       // add new database for the user
@@ -94,4 +93,11 @@ class AuthProvider with ChangeNotifier {
   //   FirebaseUser user = await _firebaseAuth.currentUser();
   //   return user.isEmailVerified;
   // }
+
+// Connects to the users data document in Firebase. Updates if anything in it changes
+  Stream<DocumentSnapshot> userDataStream() {
+    if (_user != null) {
+      return _database.collection("users").document(_user.uid).snapshots();
+    }
+  }
 }
