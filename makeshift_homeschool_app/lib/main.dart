@@ -1,11 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/home_screen.dart';
 import 'package:makeshift_homeschool_app/screens/profile_screen.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
+import 'shared/constants.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -23,14 +27,18 @@ class MyApp extends StatelessWidget {
       child: Consumer<AuthProvider>(
         builder: (context, auth, _) =>
         MaterialApp(
-          
+          theme: ThemeData(  
+            primaryColor: kGreenPrimary,
+            textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme)
+          ),
           home: auth.getAuthStatus == false ? LoginScreen() : RootScreen(),
-        routes: {
-          '/login': (context) => LoginScreen(), // Root Screen
-          '/root': (context) => RootScreen(),
-          '/home': (context) => HomeScreen(),
-          '/profile': (context) => ProfileScreen()
-        },
+          routes: {
+            '/login': (context) => LoginScreen(), // Root Screen
+            '/root': (context) => RootScreen(),
+            '/about': (context) => AboutScreen(),
+            '/home': (context) => HomeScreen(),
+            '/profile': (context) => ProfileScreen()
+          },
       ),
     )
     );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/http_exception.dart';
 import 'package:provider/provider.dart';
 import '../services/auth.dart';
+import '../shared/constants.dart';
 
 //Page will change if user is logging in or signing up
 enum AuthMode { Signup, Login }
@@ -42,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // Method switchs between login and signup mode
   void _switchAuthMode() {
     _formKey.currentState.reset();
+    _passwordController.clear();
     if (_authMode == AuthMode.Login) {
       setState(() {
         _authMode = AuthMode.Signup;
@@ -80,6 +82,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushReplacementNamed(context, '/root');
         }
       }
+      _formKey.currentState.reset(); // Clear the form when logged in
+      _passwordController.clear();
     } catch (exception) {
       // if errors occur during login
       var messageForUser =
@@ -169,8 +173,6 @@ class _LoginScreenState extends State<LoginScreen> {
         height: deviceSize.height,
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               // About Button
               Align(
@@ -178,7 +180,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
                   child: RaisedButton(
-                    onPressed: () {},
+                    color: kGreenPrimary,
+                    onPressed: () => Navigator.of(context).pushNamed('/about'),
                     child: Text("About"),
                   ),
                 ),
@@ -225,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Password Field
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
                       child: TextFormField(
                         obscureText: true,
                         controller: _passwordController,
@@ -256,9 +259,24 @@ class _LoginScreenState extends State<LoginScreen> {
                               confirmPassword(userConfirmPasswordInput),
                         ),
                       ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FlatButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onPressed: () {}, //! To do
+                      child: const Text(
+                        "Reset Password",
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold,
+                            color: kGreenSecondary),
+                        )
+                      ),
+                    ),
 
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
+                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
                       child: ButtonTheme(
                         minWidth: deviceSize.width * 0.90,
                         height: deviceSize.height * 0.07,
@@ -266,9 +284,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text(_authMode == AuthMode.Login
                               ? "Login"
                               : "Sign up"),
-                          color: Colors.green[300],
+                          color: kGreenPrimary,
                           onPressed: () async {
-                            _submit(auth);
+                            _submit(auth); // pass auth object into the function for access
                           },
                         ),
                       ),
@@ -285,44 +303,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                         FlatButton(
-                          splashColor: Colors
-                              .transparent, // Prevents showing button highlight
+                          splashColor: Colors.transparent, // Prevents showing button highlight
                           highlightColor: Colors.transparent,
-
                           child: Text(
                             _authMode == AuthMode.Login ? "Sign up" : "Login",
                             style: TextStyle(
                                 fontStyle: FontStyle.italic,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xff67cecb)),
+                                color: kGreenSecondary
+                                ),
                           ),
                           onPressed: _switchAuthMode,
                         )
                       ],
                     ),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        const Text(
-                          "Forgot your password?",
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                        FlatButton(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onPressed: () {},
-                            child: Text(
-                              "Reset Password",
-                              style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff67cecb)),
-                            )),
-                      ],
-                    ),
                   ],
                 ),
               ),

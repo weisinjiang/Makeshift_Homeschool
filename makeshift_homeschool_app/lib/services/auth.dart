@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import '../models/User.dart';
 
 class AuthProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance; // Connect to Firestore
@@ -11,6 +14,7 @@ class AuthProvider with ChangeNotifier {
   //Firebase User Information
   FirebaseAuth _auth = FirebaseAuth.instance; //Status of the authentication
   FirebaseUser _user; // User information
+  User _userInfo;
   bool authenticated = false;
 
   bool get getAuthStatus => authenticated;
@@ -94,10 +98,44 @@ class AuthProvider with ChangeNotifier {
   //   return user.isEmailVerified;
   // }
 
-// Connects to the users data document in Firebase. Updates if anything in it changes
+  // Connects to the users data document in Firebase. Updates if anything in it changes
   Stream<DocumentSnapshot> userDataStream() {
     if (_user != null) {
       return _database.collection("users").document(_user.uid).snapshots();
+    }
+  }
+
+  Future uploadProfileImage(File image) async {
+    StorageReference storageRef =
+        _storage.ref().child("profile").child(_user.uid);
+    StorageUploadTask uploadTask = storageRef.putFile(image);
+    await uploadTask.onComplete;
+    //Upatde download URL
+    storageRef.getDownloadURL().then((newURL) {
+      _database.collection("users").document(_user.uid).setData(
+        {
+          "photoURL": newURL.toString()
+        }, merge: true // Update the photoURL field
+      );
+    });
+  }
+
+  Future<dynamic> userDataFuture() async {
+    if (_user != null) {
+      await _database
+          .collection("users")
+          .document(_user.uid)
+          .get()
+          .then((retrievedData) {
+        _userInfo = User(
+            email: retrievedData["email"],
+            lesson_completed: retrievedData["lesson_completed"],
+            lesson_created: retrievedData["lesson_created"],
+            level: retrievedData["level"],
+            photoURL: retrievedData["photoURL"],
+            uid: retrievedData["uid"],
+            username: retrievedData["lesson_completed"]);
+      });
     }
   }
 }
