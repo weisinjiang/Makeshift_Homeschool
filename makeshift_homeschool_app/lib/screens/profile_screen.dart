@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/screens/edit_profile_screen.dart';
 import '../shared/constants.dart';
 import '../shared/exportShared.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +34,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         _imageFile = File(pickedImage.path);
       });
-      auth.uploadProfileImage(_imageFile);
+      Future<String> newURL = auth.uploadProfileImage(_imageFile);
+      
     }
 
     //Remove Image
@@ -85,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               radius: 50,
                               backgroundImage:
                                   NetworkImage(userData["photoURL"]),
-                              backgroundColor: Colors.green,
+                              backgroundColor: Colors.transparent,
                             )),
                       ),
                       Flexible(
@@ -118,8 +119,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 RaisedButton(
-                  child: Text("Edit Profile Picture"),
-                  onPressed: () => _buildImagePickerPopUpMenu(context),
+                  child: Text("Edit Profile"),
+                  onPressed: () => 
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EditProfileScreen(currentData: userData,))
+                  ),
                 ),
                 Divider(
                   thickness: 3,

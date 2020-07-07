@@ -113,10 +113,9 @@ class AuthProvider with ChangeNotifier {
     //Upatde download URL
     storageRef.getDownloadURL().then((newURL) {
       _database.collection("users").document(_user.uid).setData(
-        {
-          "photoURL": newURL.toString()
-        }, merge: true // Update the photoURL field
-      );
+          {"photoURL": newURL.toString()},
+          merge: true // Update the photoURL field
+          );
     });
   }
 

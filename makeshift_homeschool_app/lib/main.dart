@@ -9,6 +9,7 @@ import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
 import 'shared/constants.dart';
+import 'screens/edit_profile_screen.dart';
 
 
 void main() {
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
             '/root': (context) => RootScreen(),
             '/about': (context) => AboutScreen(),
             '/home': (context) => HomeScreen(),
-            '/profile': (context) => ProfileScreen()
+            '/profile': (context) => ProfileScreen(),
           },
       ),
     )

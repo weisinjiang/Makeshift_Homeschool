@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:makeshift_homeschool_app/screens/edit_profile_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'export_screens.dart'; // Access to all the screens
@@ -74,7 +75,7 @@ class _RootScreenState extends State<RootScreen> {
           // list of all the screens
           HomeScreen(),
           PlaceHolder(Colors.red),
-          PlaceHolder(Colors.blue),
+          PlaceHolder(Colors.red),
           ProfileScreen()
         ],
       ),
