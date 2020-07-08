@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/edit_profile_screen.dart';
 import '../shared/constants.dart';
 import '../shared/exportShared.dart';
 import 'package:provider/provider.dart';
 import '../services/auth.dart';
-import 'package:image_picker/image_picker.dart'; // load images
+
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -20,65 +19,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     var auth = Provider.of<AuthProvider>(context);
-    var user = auth.getUserData;
 
-    //Uplaod Image Variables
-    File _imageFile;
-    String _imageURL;
-
-    // Pick an image by source: Gallery or Camera
-    Future<void> _chooseNewProfilePicture(ImageSource source) async {
-      ImagePicker imagePicker = ImagePicker();
-      final pickedImage = await imagePicker.getImage(
-          source: source, maxHeight: 180, maxWidth: 180);
-      setState(() {
-        _imageFile = File(pickedImage.path);
-      });
-      Future<String> newURL = auth.uploadProfileImage(_imageFile);
-      
-    }
-
-    //Remove Image
-    void _clearNewProfilePictureSelection() {
-      setState(() {
-        _imageFile = null;
-      });
-    }
-
-    void _buildImagePickerPopUpMenu(context) {
-      showModalBottomSheet(
-          context: context,
-          builder: (BuildContext contx) {
-            return Container(
-              child: Wrap(
-                children: <Widget>[
-                  ListTile(
-                    title: Text("Choose from Library"),
-                    onTap: () {
-                      _chooseNewProfilePicture(ImageSource.gallery);
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-            );
-          });
-    }
-
+    
     return StreamBuilder(
       stream: auth.userDataStream(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          DocumentSnapshot userData = snapshot.data;
+        if (snapshot.connectionState == ConnectionState.active) { // Connected
+          DocumentSnapshot userData = snapshot.data; // Get user data from stream
           return Scaffold(
-              body: Container(
+              body: Container( // Main box for the entire profile screen
             child: Column(
               children: <Widget>[
-                Container(
-                  height: screenHeight * 0.30,
+
+                // Contains: Avatar, Name, Level, Bio
+                Container( 
+                  height: screenHeight * 0.30, // top 30% of the screen
                   width: screenWidth,
                   child: Row(
                     children: <Widget>[
+                      
+                      // Avatar
                       Flexible(
                         child: Padding(
                             padding: const EdgeInsets.all(20.0),
@@ -89,6 +49,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               backgroundColor: Colors.transparent,
                             )),
                       ),
+
+                      // Username, Level and Bio
                       Flexible(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -108,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 textAlign: TextAlign.start,
                               ),
                               Text(
-                                "Bio",
+                                "${userData["bio"]}",
                                 textAlign: TextAlign.start,
                               ),
                             ],
@@ -118,6 +80,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
+
+                // Edit Profile Button
                 RaisedButton(
                   child: Text("Edit Profile"),
                   onPressed: () => 
@@ -126,6 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     MaterialPageRoute(builder: (context) => EditProfileScreen(currentData: userData,))
                   ),
                 ),
+
                 Divider(
                   thickness: 3,
                 ),

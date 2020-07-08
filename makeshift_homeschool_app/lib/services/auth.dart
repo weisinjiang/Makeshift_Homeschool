@@ -100,16 +100,17 @@ class AuthProvider with ChangeNotifier {
 
   // Connects to the users data document in Firebase. Updates if anything in it changes
   Stream<DocumentSnapshot> userDataStream() {
-    if (_user != null) {
       return _database.collection("users").document(_user.uid).snapshots();
-    }
+    
   }
 
-  Future uploadProfileImage(File image) async {
-    StorageReference storageRef =
+  // Updates users profile image and change photoURL link
+  Future<void> uploadProfileImage(File image) async {
+    StorageReference storageRef = // Reference to the target storage
         _storage.ref().child("profile").child(_user.uid);
-    StorageUploadTask uploadTask = storageRef.putFile(image);
-    await uploadTask.onComplete;
+    StorageUploadTask uploadTask = storageRef.putFile(image); // Load image
+    await uploadTask.onComplete; // Wait till complete
+
     //Upatde download URL
     storageRef.getDownloadURL().then((newURL) {
       _database.collection("users").document(_user.uid).setData(
@@ -119,22 +120,31 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  Future<dynamic> userDataFuture() async {
-    if (_user != null) {
-      await _database
-          .collection("users")
-          .document(_user.uid)
-          .get()
-          .then((retrievedData) {
-        _userInfo = User(
-            email: retrievedData["email"],
-            lesson_completed: retrievedData["lesson_completed"],
-            lesson_created: retrievedData["lesson_created"],
-            level: retrievedData["level"],
-            photoURL: retrievedData["photoURL"],
-            uid: retrievedData["uid"],
-            username: retrievedData["lesson_completed"]);
-      });
-    }
+  Future<void> updateProfileInformation(Map<String, String> newInformation) async {
+    await _database.collection("users").document(_user.uid).setData(
+      {
+        "username": newInformation["username"],
+        "bio": newInformation["bio"]
+      }, merge: true
+    );
   }
+
+  // Future<dynamic> userDataFuture() async {
+  //   if (_user != null) {
+  //     await _database
+  //         .collection("users")
+  //         .document(_user.uid)
+  //         .get()
+  //         .then((retrievedData) {
+  //       _userInfo = User(
+  //           email: retrievedData["email"],
+  //           lesson_completed: retrievedData["lesson_completed"],
+  //           lesson_created: retrievedData["lesson_created"],
+  //           level: retrievedData["level"],
+  //           photoURL: retrievedData["photoURL"],
+  //           uid: retrievedData["uid"],
+  //           username: retrievedData["lesson_completed"]);
+  //     });
+  //   }
+  // }
 }
