@@ -4,6 +4,7 @@ import 'package:makeshift_homeschool_app/models/http_exception.dart';
 import 'package:provider/provider.dart';
 import '../services/auth.dart';
 import '../shared/constants.dart';
+import '../models/user_auth_model.dart';
 
 //Page will change if user is logging in or signing up
 enum AuthMode { Signup, Login }
@@ -17,10 +18,24 @@ class _LoginScreenState extends State<LoginScreen> {
   //Controllers that stores user input and validates passwords
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _passwordController = TextEditingController();
-  AuthMode _authMode = AuthMode.Login;
-  String _email;
-  String _password;
-  String _userName;
+
+  AuthMode _authMode = AuthMode.Login; // Signup or login page
+
+  UserAuth _userInput =
+      UserAuth(); // Stores user info and validates it
+
+  // Dropdown list for referal section
+  Set<String> _referalList = {
+    "Facebook",
+    "Instagram",
+    "Twitter",
+    "Wequil Website",
+    "Seth Peleg",
+    "William Den Herder",
+    "Other"
+  };
+  String _referalSelected = "";
+
   var _isLoading = false; // If async data is not recieved, this is true
 
   void _showErrorMessage(String message) {
@@ -51,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       setState(() {
         _authMode = AuthMode.Login;
+        _referalSelected = "";
       });
     }
   }
@@ -71,15 +87,19 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       // Attempt to log user in
       if (_authMode == AuthMode.Login) {
-        var result = await auth.signIn(_email, _password);
+        var result =
+            await auth.signIn(_userInput.getEmail, _userInput.getPassword);
 
         if (result == true) {
-          Navigator.pushReplacementNamed(context, '/root');
+          Navigator.pushReplacementNamed(context, '/main');
         }
+
+      // User Sign up
       } else {
-        var result = await auth.signUp(_email, _password, _userName);
+        var result = await auth.signUp(_userInput.getEmail,
+            _userInput.getPassword, _userInput.getUsername, _userInput.getReferral);
         if (result == true) {
-          Navigator.pushReplacementNamed(context, '/root');
+          Navigator.pushReplacementNamed(context, '/main');
         }
       }
       _formKey.currentState.reset(); // Clear the form when logged in
@@ -102,32 +122,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   /// **************************************************************************
-  /// Password Validation
+  /// Password Confirmation
   ///***************************************************************************
-
-  /* 
-    Regular Expression that makes sure the password is:
-      1. Min 8 char
-      2. At least 1 upper case char
-      3. At least 1 lower case char
-      4. At least 1 special char
-  */
-  final regExValidPassword = RegExp(
-      r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
-
-  /* 
-    Validates the password the user enters
-    @param  : password the user inputs into the Form TextField
-    @return :  true or false
-  */
-  String validatePassword(String userInput) {
-    if (regExValidPassword.hasMatch(userInput)) {
-      return null;
-    } else if (userInput.length < 8) {
-      return "Password needs to be at least 8 characters long";
-    }
-    return "Password must have at least 1 number, special character, upper and lower case letter";
-  }
 
   String confirmPassword(String toConfirm) {
     if (toConfirm != _passwordController.text) {
@@ -136,26 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
-  /// **************************************************************************
-  /// Email Validation                                                         *
-  ///***************************************************************************
 
-  /* 
-    Regular Expression that makes sure email is in the valid format
-  */
-  final regExValidEmail = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-
-  /* 
-    Validates the password the user enters
-    @param  : password the user inputs into the Form TextField
-    @return :  true or false
-  */
-  String validateEmail(String userInput) {
-    if (regExValidEmail.hasMatch(userInput)) {
-      return null;
-    }
-    return "Invalid Email";
-  }
 
   /// **************************************************************************
   /// Build UI Method                                                          *
@@ -197,16 +174,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: _formKey, // key to track the forms input
                 child: Column(
                   children: <Widget>[
+                    // if signup, then have a username field
                     if (_authMode == AuthMode.Signup)
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           decoration: InputDecoration(
-                            labelText: "Username",
+                            labelText: "First Name",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.vertical()),
                           ),
-                          onSaved: (userNameInput) => _userName = userNameInput,
+                          onSaved: (userNameInput) =>
+                              _userInput.setUsername = userNameInput,
                         ),
                       ),
 
@@ -221,8 +200,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               borderRadius: BorderRadius.vertical()),
                         ),
                         validator: (userEmailInput) =>
-                            validateEmail(userEmailInput),
-                        onSaved: (userEmailInput) => _email = userEmailInput,
+                            _userInput.validateEmail(userEmailInput),
+                        onSaved: (userEmailInput) =>
+                            _userInput.setEmail = userEmailInput,
                       ),
                     ),
 
@@ -238,14 +218,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               borderRadius: BorderRadius.vertical()),
                         ),
                         validator: (userPasswordInput) =>
-                            validatePassword(userPasswordInput),
+                            _userInput.validatePassword(userPasswordInput),
                         onSaved: (userPasswordInput) =>
-                            _password = userPasswordInput,
+                            _userInput.setPassword = userPasswordInput,
                       ),
                     ),
 
-                    // Second password field to confirm if AuthMode == Signup
-                    if (_authMode == AuthMode.Signup)
+                    // if signing up, show confirm password and ref section
+                    if (_authMode == AuthMode.Signup) ...[
+                      // Confirm Password
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
@@ -259,20 +240,65 @@ class _LoginScreenState extends State<LoginScreen> {
                               confirmPassword(userConfirmPasswordInput),
                         ),
                       ),
+
+                      // Referral
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButtonFormField<String>(
+                            decoration: InputDecoration(
+                              hintText: "How did you find us?",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.vertical()),
+                            ),
+                            items: _referalList
+                                .map((listItem) => DropdownMenuItem<String>(
+                                      child: Text(listItem),
+                                      value: listItem,
+                                    ))
+                                .toList(),
+                            hint: Text(_referalSelected), // shows selected ref
+                            onChanged: (changedDropdownItem) {
+                              // ref changed, save the value
+                              setState(() {
+                                _referalSelected = changedDropdownItem;
+                                if (changedDropdownItem != "Other") { // Set the ref if it is not "Other"
+                                  _userInput.setReferal = changedDropdownItem;
+                                }
+                              });
+                            }),
+                      ),
+
+                      // If referral is Other, have the user give us where they found us and save it 
+                      if (_referalSelected == "Other")
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Please tell us where",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.vertical()),
+                            ),
+                            validator: (userRefInput) =>
+                                _userInput.validateReferral(userRefInput),
+                            onSaved: (userRefInput) =>
+                                _userInput.setReferal = userRefInput,
+                          ),
+                        ),
+                      
+                    ],
                     Align(
                       alignment: Alignment.centerRight,
                       child: FlatButton(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onPressed: () {}, //! To do
-                      child: const Text(
-                        "Reset Password",
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold,
-                            color: kGreenSecondary),
-                        )
-                      ),
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onPressed: () {}, //! To do
+                          child: const Text(
+                            "Reset Password",
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
+                                color: kGreenSecondary),
+                          )),
                     ),
 
                     Padding(
@@ -303,21 +329,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                         FlatButton(
-                          splashColor: Colors.transparent, // Prevents showing button highlight
+                          splashColor: Colors
+                              .transparent, // Prevents showing button highlight
                           highlightColor: Colors.transparent,
                           child: Text(
                             _authMode == AuthMode.Login ? "Sign up" : "Login",
                             style: TextStyle(
                                 fontStyle: FontStyle.italic,
                                 fontWeight: FontWeight.bold,
-                                color: kGreenSecondary
-                                ),
+                                color: kGreenSecondary),
                           ),
                           onPressed: _switchAuthMode,
                         )
                       ],
                     ),
-
                   ],
                 ),
               ),

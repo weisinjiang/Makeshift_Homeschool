@@ -44,9 +44,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             padding: const EdgeInsets.all(20.0),
                             child: CircleAvatar(
                               radius: 50,
-                              backgroundImage:
-                                  NetworkImage(userData["photoURL"]),
-                              backgroundColor: Colors.transparent,
+                              // backgroundImage:
+                              //     NetworkImage(userData["photoURL"]), add later
+                              backgroundColor: Colors.greenAccent,
+                              child: Text("${userData["username"][0]}"),
                             )),
                       ),
 
