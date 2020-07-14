@@ -7,7 +7,6 @@ import '../shared/exportShared.dart';
 import 'package:provider/provider.dart';
 import '../services/auth.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -20,84 +19,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var screenWidth = MediaQuery.of(context).size.width;
     var auth = Provider.of<AuthProvider>(context);
 
-    
     return StreamBuilder(
       stream: auth.userDataStream(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) { // Connected
-          DocumentSnapshot userData = snapshot.data; // Get user data from stream
+        if (snapshot.connectionState == ConnectionState.active) {
+          // Connected
+          DocumentSnapshot userData =
+              snapshot.data; // Get user data from stream
           return Scaffold(
-              body: Container( // Main box for the entire profile screen
-            child: Column(
-              children: <Widget>[
-
-                // Contains: Avatar, Name, Level, Bio
-                Container( 
-                  height: screenHeight * 0.30, // top 30% of the screen
-                  width: screenWidth,
-                  child: Row(
-                    children: <Widget>[
-                      
-                      // Avatar
-                      Flexible(
-                        child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: CircleAvatar(
-                              radius: 50,
-                              // backgroundImage:
-                              //     NetworkImage(userData["photoURL"]), add later
-                              backgroundColor: Colors.greenAccent,
-                              child: Text("${userData["username"][0]}"),
-                            )),
-                      ),
-
-                      // Username, Level and Bio
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 40.0, horizontal: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "${userData["username"]}",
-                                style: kTitleTextStyle,
-                                textAlign: TextAlign.start,
-                              ),
-                              Text(
-                                "${userData["level"]}",
-                                style: kTitleTextStyle,
-                                textAlign: TextAlign.start,
-                              ),
-                              Text(
-                                "${userData["bio"]}",
-                                textAlign: TextAlign.start,
-                              ),
-                            ],
+              appBar: AppBar(
+                elevation: 0,
+              ),
+              body: Container(
+                // Main box for the entire profile screen
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [kGreenSecondary, kGreenSecondary_shade1],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    // Contains: Avatar, Name, Level, Bio
+                    Container(
+                      height: screenHeight * 0.30, // top 30% of the screen
+                      width: screenWidth,
+                      child: Row(
+                        children: <Widget>[
+                          // Avatar
+                          Flexible(
+                            child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: CircleAvatar(
+                                  radius: 50,
+                                  // backgroundImage:
+                                  //     NetworkImage(userData["photoURL"]), add later
+                                  backgroundColor: Colors.greenAccent,
+                                  child: Text("${userData["username"][0]}"),
+                                )),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
 
-                // Edit Profile Button
-                RaisedButton(
-                  child: Text("Edit Profile"),
-                  onPressed: () => 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => EditProfileScreen(currentData: userData,))
-                  ),
-                ),
+                          // Username, Level and Bio
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 40.0, horizontal: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "${userData["username"]}",
+                                    style: kTitleTextStyle,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  Text(
+                                    "${userData["level"]}",
+                                    style: kTitleTextStyle,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  Text(
+                                    "${userData["bio"]}",
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
 
-                Divider(
-                  thickness: 3,
+                    // Edit Profile Button
+                    RaisedButton(
+                      child: Text("Edit Profile"),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditProfileScreen(
+                                    currentData: userData,
+                                  ))),
+                    ),
+
+                    Divider(
+                      thickness: 3,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ));
+              ));
         } else {
           return LoadingScreen();
         }

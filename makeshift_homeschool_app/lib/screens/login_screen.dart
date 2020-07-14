@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/http_exception.dart';
+import 'package:makeshift_homeschool_app/screens/main_screen.dart';
+import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
 import 'package:provider/provider.dart';
 import '../services/auth.dart';
 import '../shared/constants.dart';
@@ -91,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
             await auth.signIn(_userInput.getEmail, _userInput.getPassword);
 
         if (result == true) {
-          Navigator.pushReplacementNamed(context, '/main');
+          Navigator.pushReplacement(context, ScaleRoute(screen: MainScreen()));
         }
 
       // User Sign up
@@ -99,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
         var result = await auth.signUp(_userInput.getEmail,
             _userInput.getPassword, _userInput.getUsername, _userInput.getReferral);
         if (result == true) {
-          Navigator.pushReplacementNamed(context, '/main');
+          Navigator.pushReplacement(context, ScaleRoute(screen: MainScreen()));
         }
       }
       _formKey.currentState.reset(); // Clear the form when logged in
@@ -155,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 35, 20, 0),
                   child: RaisedButton(
                     color: kGreenPrimary,
                     onPressed: () => Navigator.of(context).pushNamed('/about'),
@@ -180,7 +182,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           decoration: InputDecoration(
-                            labelText: "First Name",
+                            prefixIcon: Icon(Icons.person),
+                            hintText: "First Name",
+                            //hintText: "First Name",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.vertical()),
                           ),
@@ -195,7 +199,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
-                          labelText: "Email",
+                          prefixIcon: Icon(Icons.email),
+                          hintText: "Email",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.vertical()),
                         ),
@@ -213,7 +218,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscureText: true,
                         controller: _passwordController,
                         decoration: InputDecoration(
-                          labelText: "Password",
+                          prefixIcon: Icon(Icons.lock),
+                          hintText: "Password",
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.vertical()),
                         ),
@@ -232,7 +238,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextFormField(
                           obscureText: true,
                           decoration: InputDecoration(
-                            labelText: "Confirm Password",
+                            prefixIcon: Icon(Icons.lock_outline),
+                            hintText: "Confirm Password",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.vertical()),
                           ),
@@ -246,6 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: DropdownButtonFormField<String>(
                             decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.search),
                               hintText: "How did you find us?",
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.vertical()),
@@ -274,7 +282,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             decoration: InputDecoration(
-                              labelText: "Please tell us where",
+                              hintText: "Please tell us where",
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.vertical()),
                             ),

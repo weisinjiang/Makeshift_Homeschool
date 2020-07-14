@@ -194,7 +194,8 @@ class AuthProvider with ChangeNotifier {
       userData["email"] = firestoreData["email"];
       userData["uid"] = firestoreData["uid"];
       userData["username"] = firestoreData["username"];
-      userData["lesson_completed"] = firestoreData["lesson_completed"].toString();
+      userData["lesson_completed"] =
+          firestoreData["lesson_completed"].toString();
       userData["lesson_created"] = firestoreData["lesson_created"].toString();
       userData["level"] = firestoreData["level"];
     });

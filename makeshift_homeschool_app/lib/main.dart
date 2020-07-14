@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
         builder: (context, auth, _) =>
         MaterialApp(
           theme: ThemeData(  
-            primaryColor: kGreenSecondary_analogous2,
-            textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme)
+            primaryColor: kGreenSecondary,
+            textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)
           ),
           home: auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
           routes: {
