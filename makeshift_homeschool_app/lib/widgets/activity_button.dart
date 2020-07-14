@@ -9,7 +9,8 @@ class ActivityButton extends StatelessWidget {
   final double width;
   final Function function;
   final String imageLocation;
-  final bool canUseButton; // if user is not a certain level, they cant use the button
+  final bool
+      canUseButton; // if user is not a certain level, they cant use the button
 
   const ActivityButton(
       {Key key,
@@ -18,7 +19,8 @@ class ActivityButton extends StatelessWidget {
       this.function,
       this.height,
       this.width,
-      this.imageLocation, this.canUseButton})
+      this.imageLocation,
+      this.canUseButton})
       : super(key: key);
 
   @override
@@ -31,7 +33,14 @@ class ActivityButton extends StatelessWidget {
         // For adding a black border
         decoration: BoxDecoration(border: Border.all(color: Colors.black)),
         child: InkWell(
-          onTap: canUseButton ? function : null, // Function this button will perform
+          onTap: canUseButton
+              ? function
+              : () { // show a snack bar if user has no permission
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("You cannot use this, yet"),
+                    duration: Duration(seconds: 2),
+                  ));
+                }, // Function this button will perform
           child: Container(
             color: Colors.transparent,
             height: height,

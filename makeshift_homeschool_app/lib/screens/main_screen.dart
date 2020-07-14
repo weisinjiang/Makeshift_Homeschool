@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
+import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
@@ -40,7 +41,7 @@ class MainScreen extends StatelessWidget {
             body: Container(
             decoration: BoxDecoration(  
               gradient: LinearGradient(
-                colors: [kGreenSecondary,kGreenSecondary_shade1],
+                colors: [kGreenSecondary,kGreenSecondary_analogous1],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter
               ),
@@ -70,7 +71,7 @@ class MainScreen extends StatelessWidget {
                       color: kGreenSecondary_analogous2,
                       height: screenHeight * 0.20,
                       width: screenWidth,
-                      function: () {},
+                      function: () => Navigator.of(context),
                       canUseButton: true,
                       name: "Boot Camp",
                       imageLocation: "asset/images/campFire.png",
@@ -107,7 +108,7 @@ class MainScreen extends StatelessWidget {
                           height: screenHeight * 0.10,
                           width: screenWidth/2,
                           canUseButton: (userData["level"] == "Tutor" || userData["level"] == "Professor") ? true : false,
-                          function: () {},
+                          function: () => Navigator.push(context, SlideLeftRoute(screen: NewPostScreen())),
                           name: "Teach",
                           imageLocation: "asset/images/teach.png",
                         ),
