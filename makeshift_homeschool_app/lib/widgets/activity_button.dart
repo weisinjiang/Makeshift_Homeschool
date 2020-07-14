@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 
 class ActivityButton extends StatelessWidget {
@@ -17,38 +18,46 @@ class ActivityButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       borderRadius: BorderRadius.circular(10.0),
-     
-      color: color,
-      child: InkWell(
-        onTap: function,
+      elevation: 5.0,
+      color: kGreenSecondary_analogous2,
+
+      child: Ink(
+        // decoration: BoxDecoration(  
+        //           gradient: LinearGradient(
+        //             colors: [kGreenSecondary_analogous2, kGreenSecondary],
+        //             begin: Alignment.topLeft,
+        //             end: Alignment.topRight
+        //           ),
+        //         ),
+        child: InkWell(
+        onTap: function, // Function this button will perform
         child: Container(
           height: height,
           width: width,
           child: FittedBox(
             fit: BoxFit.contain,
-                      child: Row(
+              child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(13.0),
                   child: Text(
                     name,
-                    style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.allertaStencil(fontSize: 50, fontWeight: FontWeight.bold)
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(13.0),
-                  child: Image.asset(imageLocation),
+                  child: Image.asset(imageLocation, alignment: Alignment.center,),
                 )
               ],
             ),
           ),
         ),
       ),
+    ),
     );
   }
 }

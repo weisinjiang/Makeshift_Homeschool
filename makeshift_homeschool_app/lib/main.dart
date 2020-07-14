@@ -5,7 +5,6 @@ import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/home_screen.dart';
 import 'package:makeshift_homeschool_app/screens/main_screen.dart';
 import 'package:makeshift_homeschool_app/screens/profile_screen.dart';
-import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
@@ -30,13 +29,13 @@ class MyApp extends StatelessWidget {
         builder: (context, auth, _) =>
         MaterialApp(
           theme: ThemeData(  
-            primaryColor: Color(0xff89D6B9),
+            primaryColor: kGreenSecondary_analogous2,
             textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme)
           ),
-          home: auth.getAuthStatus == false ? LoginScreen() : RootScreen(),
+          home: auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
           routes: {
             '/login': (context) => LoginScreen(), // Root Screen
-            '/root': (context) => RootScreen(),
+            //'/root': (context) => RootScreen(),
             '/main': (context) => MainScreen(),
             '/about': (context) => AboutScreen(),
             '/home': (context) => HomeScreen(),

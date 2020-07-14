@@ -17,23 +17,24 @@ class MainScreen extends StatelessWidget {
     return FutureBuilder(
       future: auth.getUserInformation(),
       builder: (context, snapshot) {
-          if (snapshot.hasError || snapshot.hasData) {
-          //var userData = snapshot.data;
+          if (snapshot.hasData) {
+          var userData = snapshot.data;
           return Scaffold(
             appBar: AppBar(
-              title: Text("Hi, Testing!"),
-              //title: Text("Hi, ${userData["username"]}!"),
+              // title: Text("Hi, Testing!"),
+              title: Text("Hi, ${userData["username"]}!"),
             ),
 
             body: SafeArea( // Safe Area to prevent widgets
               child: Container(
-                decoration: BoxDecoration(  
-                  gradient: LinearGradient(
-                    colors: [kGreenSecondary, Colors.white],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight
-                  ),
-                ),
+                // decoration: BoxDecoration(  
+                //   gradient: LinearGradient(
+                //     colors: [kGreenPrimary_light1,kGreenPrimary],
+                //     begin: Alignment.topLeft,
+                //     end: Alignment.bottomRight
+                //   ),
+                // ),
+                color: kGreenSecondary,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -50,12 +51,12 @@ class MainScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ActivityButton(
-                        color: Color(0xffE96166),
+                        color: kGreenSecondary_analogous2,
                         height: screenHeight * 0.20,
                         width: screenWidth,
                         function: () {},
                         name: "Boot Camp",
-                        imageLocation: "asset/images/camp.png",
+                        imageLocation: "asset/images/campFire.png",
                       ),
                     ),
 
@@ -69,12 +70,12 @@ class MainScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ActivityButton(
-                            color: Color(0xffE96166),
+                            color: kGreenPrimary,
                             height: screenHeight * 0.20,
                             width: screenWidth/2,
                             function: () {},
                             name: "Study",
-                            imageLocation: "asset/images/camp.png",
+                            imageLocation: "asset/images/books.png",
                         ),
                           ),
 
@@ -83,12 +84,12 @@ class MainScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ActivityButton(
-                            color: Color(0xffE96166),
+                            color: kGreenPrimary,
                             height: screenHeight * 0.20,
                             width: screenWidth/2,
                             function: () {},
                             name: "Teach",
-                            imageLocation: "asset/images/camp.png",
+                            imageLocation: "asset/images/teach.png",
                           ),
                         ),
                         ],
