@@ -8,8 +8,7 @@ const kGreenPrimary_shade2 = Color(0xff67B05C);
 const kGreenPrimary_tint1 = Color(0xff8DE081);
 const kGreenPrimary_tint2 = Color(0xff9AE38F);
 
-const kGreenSecondary =
-    Color(0xff48cec8); // color of Makeshift Homeschool title
+const kGreenSecondary =Color(0xff48cec8); // color of Makeshift Homeschool title
 const kGreenSecondary_analogous1 = Color(0xff4891CE);
 const kGreenSecondary_analogous2 = Color(0xff48CE85);
 const kGreenSecondary_analogous2_shade = Color(0xff40B977);
