@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/home_screen.dart';
 import 'package:makeshift_homeschool_app/screens/main_screen.dart';
+import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/profile_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
             primaryColor: kGreenSecondary,
             textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)
           ),
-          home: auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
+          home: NewPostScreen(),//auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
           routes: {
             '/login': (context) => LoginScreen(), // Root Screen
             //'/root': (context) => RootScreen(),

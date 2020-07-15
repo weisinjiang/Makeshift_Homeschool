@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
+import 'package:makeshift_homeschool_app/widgets/new_post_floating_action_button.dart';
+import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
 
 class NewPostScreen extends StatefulWidget {
   @override
@@ -7,36 +9,22 @@ class NewPostScreen extends StatefulWidget {
 }
 
 class _NewPostScreenState extends State<NewPostScreen> {
-  Map<String, Widget> userPostManager = {
-    "Title1": Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        decoration: const InputDecoration(
-          prefixIcon: Icon(Icons.title),
-          hintText: "Title",
-          border: OutlineInputBorder(borderRadius: BorderRadius.vertical()),
-        ),
-        validator: null,
-        onSaved: null,
-      ),
-    ),
-    "Paragraph1": Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: const InputDecoration(
-          prefixIcon: Icon(Icons.email),
-          hintText: "Email",
-          border: OutlineInputBorder(borderRadius: BorderRadius.vertical()),
-        ),
-        validator: null,
-        onSaved: null,
-      ),
-    ),
-  }; // Tracks titles and paragraphs
+  final GlobalKey<FormState> _newPostFormKey = GlobalKey();
+  // Map<String, Widget> userPostManager = {
+  //   "title": lessonTitle(null, null),
+
+  //   "subTitle0": addSubTitle(null, null),
+  //   "paragraph0": addParagraph(null, null)
+  // }; // Tracks titles and paragraphs
   // Users can add titles and paragraphs to their post, this manages and tracks which is which
 
-  int titleCount = 1; // Posts will always have at least 1 item already
+  List<Widget> newPostWidgetList = [
+    lessonTitle(null, null),
+    addSubTitle(null, null),
+    addParagraph(null, null)
+  ];
+
+  int subTitleCount = 1; // Posts will always have at least 1 item already
   int paragraphCount = 1;
 
   @override
@@ -49,6 +37,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
         elevation: 0.0,
         backgroundColor: kGreenSecondary_analogous2,
       ),
+      // used to add paragraphs, images and titles
+
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -61,13 +51,31 @@ class _NewPostScreenState extends State<NewPostScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Form(  
-
+              Form(
+                key: _newPostFormKey,
                 child: Column(
-                  children: userPostManager.values.toList(),
+                  children: newPostWidgetList,
                 ),
               ),
+              // Add Paragraph
+              FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      newPostWidgetList.add(addParagraph(null, null));
+                     
+                    });
+                  },
+                  child: Text("Add another paragraph")),
 
+              // Add Paragraph
+              FlatButton(
+                  onPressed: () {
+                    setState(() {
+                      newPostWidgetList.add(addSubTitle(null, null));
+                      newPostWidgetList.add(addParagraph(null, null));
+                    });
+                  },
+                  child: Text("Add Subtitle")),
             ],
           ),
         ),
