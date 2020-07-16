@@ -42,7 +42,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: false, // Scaffold resizes when an image is added. Clicking on
+                                        //Subtile showed a white snackbar at the bottom bc of resize this prevents it
       appBar: AppBar(
         title: Text("New Lesson"),
         elevation: 1.0,
