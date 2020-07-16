@@ -30,11 +30,13 @@ class _NewPostScreenState extends State<NewPostScreen> {
   /// Tracks user data so that if the build method is redrawn, input is saved
   final GlobalKey<FormState> _newPostFormKey = GlobalKey();
 
+  
+
   /// Added widgets are in-order and will be placed into Firestore the same way
   /// Widget index should be the same as the order in which it appears on the
   /// app from top to bottom: index 0 = first item on the screen
   List<Widget> newPostWidgetList = [
-    lessonTitle(null, null),
+    lessonTitle(null, ),
     ImageField(imageHeight: 0.30, imageWidth: 0.80),
     addSubTitle(null, null),
     addParagraph(null, null)

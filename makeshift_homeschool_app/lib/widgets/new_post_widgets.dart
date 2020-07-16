@@ -52,7 +52,7 @@ Widget addParagraph(Function validator, Function saveFunction) {
     padding: const EdgeInsets.fromLTRB(25, 5, 20, 20),
     child: TextFormField(
       style: kParagraphTextStyle,
-      keyboardType: TextInputType.text,
+      keyboardType: TextInputType.multiline,
       maxLines: null,
       decoration: const InputDecoration(
         hintText: "Add a Paragraph",

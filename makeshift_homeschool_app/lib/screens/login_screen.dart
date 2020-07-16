@@ -11,7 +11,7 @@ import '../models/user_auth_model.dart';
 //Page will change if user is logging in or signing up
 enum AuthMode { Signup, Login }
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget{
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
