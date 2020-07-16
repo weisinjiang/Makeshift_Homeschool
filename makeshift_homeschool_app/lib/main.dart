@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
                 primaryColor: kGreenSecondary,
                 textTheme:
                     GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
-            home: auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
+             home: NewPostScreen(), //auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
             routes: {
               '/login': (context) => LoginScreen(), // Root Screen
               //'/root': (context) => RootScreen(),

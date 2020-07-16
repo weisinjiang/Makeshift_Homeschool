@@ -42,6 +42,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false, // Scaffold resizes when an image is added. Clicking on
                                         //Subtile showed a white snackbar at the bottom bc of resize this prevents it
       appBar: AppBar(
@@ -85,71 +86,70 @@ class _NewPostScreenState extends State<NewPostScreen> {
 
           /// Users can add infinite amount of subtiles and paragraphs, so when
           /// it goes out of screen, it should be scrollable
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Column(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: screenHeight * 0.70,
+                width: screenWidth,
+                child: Form(
+                  key: _newPostFormKey, // Key to preserve input if rebuild
+                  child: Scrollbar(
+                                      child: SingleChildScrollView(
+                      reverse: true,
+                      child: Column(
+                        children: newPostWidgetList,
+                      )
+                           // global list of paragraphs, etc
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Form(
-                      key: _newPostFormKey, // Key to preserve input if rebuild
-                      child: Column(
-                        children:
-                            newPostWidgetList, // global list of paragraphs, etc
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 30.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          FlatButton(
-                              onPressed: () {
-                                setState(() {
-                                  newPostWidgetList
-                                      .add(addParagraph(null, null));
-                                });
-                              },
-                              child: Text("+ Paragraph")),
+                    FlatButton(
+                        onPressed: () {
+                          setState(() {
+                            newPostWidgetList
+                                .add(addParagraph(null, null));
+                          });
+                        },
+                        child: Text("+ Paragraph")),
 
-                          // Add Paragraph
-                          FlatButton(
-                              onPressed: () {
-                                setState(() {
-                                  newPostWidgetList
-                                      .add(addSubTitle(null, null));
-                                });
-                              },
-                              child: Text("+ Subtitle")),
+                    // Add Paragraph
+                    FlatButton(
+                        onPressed: () {
+                          setState(() {
+                            newPostWidgetList
+                                .add(addSubTitle(null, null));
+                          });
+                        },
+                        child: Text("+ Subtitle")),
 
-                          // Remove last widget
-                          FlatButton(
-                              onPressed: () {
-                                /// By default, the new post should have a title, sub and paragraph.
-                                /// Only remove the most recent text field IF there is more than 3 widgets
-                                if (newPostWidgetList.length > 4) {
-                                  setState(() {
-                                    newPostWidgetList.removeLast();
-                                  });
-                                } else if (newPostWidgetList.length == 4) {
-                                  /// If the textfield is 3, then they cant remove more
-                                  Scaffold.of(context).showSnackBar(
-                                      snackBarMessage(
-                                          "You can't remove more fields"));
-                                }
-                              },
-                              child: Text("Delete")),
-                        ],
-                      ),
-                    ),
-                    /// Sizedbox at the bottom to allow the app to scroll earlier
-                    /// SingleChildScroll wont scroll until overflow. Without this, the buttons
-                    /// to add paragraphs, etc. may be at the very edge of the bottom
-                    SizedBox(height: 30,)
+                    // Remove last widget
+                    FlatButton(
+                        onPressed: () {
+                          /// By default, the new post should have a title, sub and paragraph.
+                          /// Only remove the most recent text field IF there is more than 3 widgets
+                          if (newPostWidgetList.length > 4) {
+                            setState(() {
+                              newPostWidgetList.removeLast();
+                            });
+                          } else if (newPostWidgetList.length == 4) {
+                            /// If the textfield is 3, then they cant remove more
+                            Scaffold.of(context).showSnackBar(
+                                snackBarMessage(
+                                    "You can't remove more fields"));
+                          }
+                        },
+                        child: Text("Delete")),
                   ],
                 ),
-              ],
-            ),
+              ),
+           
+            ],
           ),
         ),
       ),
