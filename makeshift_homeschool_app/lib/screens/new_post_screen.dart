@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
+import 'package:makeshift_homeschool_app/widgets/image_field.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_floating_action_button.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
 
@@ -31,6 +32,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
   /// app from top to bottom: index 0 = first item on the screen
   List<Widget> newPostWidgetList = [
     lessonTitle(null, null),
+    ImageField(imageHeight: 0.30, imageWidth: 0.80),
     addSubTitle(null, null),
     addParagraph(null, null)
   ];
@@ -93,45 +95,54 @@ class _NewPostScreenState extends State<NewPostScreen> {
                             newPostWidgetList, // global list of paragraphs, etc
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        FlatButton(
-                            onPressed: () {
-                              setState(() {
-                                newPostWidgetList.add(addParagraph(null, null));
-                              });
-                            },
-                            child: Text("+ Paragraph")),
-
-                        // Add Paragraph
-                        FlatButton(
-                            onPressed: () {
-                              setState(() {
-                                newPostWidgetList.add(addSubTitle(null, null));
-                              });
-                            },
-                            child: Text("+ Subtitle")),
-
-                        // Remove last widget
-                        FlatButton(
-                            onPressed: () {
-                              /// By default, the new post should have a title, sub and paragraph.
-                              /// Only remove the most recent text field IF there is more than 3 widgets
-                              if (newPostWidgetList.length > 3) {
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 30.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          FlatButton(
+                              onPressed: () {
                                 setState(() {
-                                  newPostWidgetList.removeLast();
+                                  newPostWidgetList
+                                      .add(addParagraph(null, null));
                                 });
-                              } else if (newPostWidgetList.length == 3) {
-                                /// If the textfield is 3, then they cant remove more
-                                Scaffold.of(context).showSnackBar(
-                                    snackBarMessage(
-                                        "You can't remove more fields"));
-                              }
-                            },
-                            child: Text("Delete")),
-                      ],
+                              },
+                              child: Text("+ Paragraph")),
+
+                          // Add Paragraph
+                          FlatButton(
+                              onPressed: () {
+                                setState(() {
+                                  newPostWidgetList
+                                      .add(addSubTitle(null, null));
+                                });
+                              },
+                              child: Text("+ Subtitle")),
+
+                          // Remove last widget
+                          FlatButton(
+                              onPressed: () {
+                                /// By default, the new post should have a title, sub and paragraph.
+                                /// Only remove the most recent text field IF there is more than 3 widgets
+                                if (newPostWidgetList.length > 4) {
+                                  setState(() {
+                                    newPostWidgetList.removeLast();
+                                  });
+                                } else if (newPostWidgetList.length == 4) {
+                                  /// If the textfield is 3, then they cant remove more
+                                  Scaffold.of(context).showSnackBar(
+                                      snackBarMessage(
+                                          "You can't remove more fields"));
+                                }
+                              },
+                              child: Text("Delete")),
+                        ],
+                      ),
                     ),
+                    /// Sizedbox at the bottom to allow the app to scroll earlier
+                    /// SingleChildScroll wont scroll until overflow. Without this, the buttons
+                    /// to add paragraphs, etc. may be at the very edge of the bottom
+                    SizedBox(height: 30,)
                   ],
                 ),
               ],
