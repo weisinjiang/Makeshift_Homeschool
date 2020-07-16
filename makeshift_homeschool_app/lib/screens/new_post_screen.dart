@@ -17,6 +17,9 @@ import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
 ///
 ///   A form key is provided to keep track of the contents in the forms when
 ///   a new paragraph or subtitle is added
+///
+///
+/// !!! TO FIX: FOCUS NODE ANIMATION FOR NEW POST BECAUSE THE KEYBOARD COVERS THE SCREEN
 
 class NewPostScreen extends StatefulWidget {
   @override
@@ -41,10 +44,12 @@ class _NewPostScreenState extends State<NewPostScreen> {
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      resizeToAvoidBottomPadding: false, // Scaffold resizes when an image is added. Clicking on
-                                        //Subtile showed a white snackbar at the bottom bc of resize this prevents it
+      resizeToAvoidBottomPadding:
+          false, // Scaffold resizes when an image is added. Clicking on
+      //Subtile showed a white snackbar at the bottom bc of resize this prevents it
       appBar: AppBar(
         title: Text("New Lesson"),
         elevation: 1.0,
@@ -72,7 +77,6 @@ class _NewPostScreenState extends State<NewPostScreen> {
       /// Using a builder because a scaffold is shown in one of the child widgets below
       /// Scaffold of above is not reachable without the Builder widget.
       body: Builder(
-    
         builder: (context) => Container(
           /// Color of the entire background of this page
           decoration: BoxDecoration(
@@ -90,17 +94,18 @@ class _NewPostScreenState extends State<NewPostScreen> {
             children: <Widget>[
               Container(
                 height: screenHeight * 0.70,
-                width: screenWidth,
+                width: screenWidth * 0.96,
+                decoration:
+                    BoxDecoration(border: Border.all(color: Colors.black)),
                 child: Form(
                   key: _newPostFormKey, // Key to preserve input if rebuild
                   child: Scrollbar(
-                                      child: SingleChildScrollView(
-                      reverse: true,
-                      child: Column(
-                        children: newPostWidgetList,
-                      )
-                           // global list of paragraphs, etc
-                    ),
+                    child: SingleChildScrollView(
+                        child: Column(
+                      children: newPostWidgetList,
+                    )
+                        // global list of paragraphs, etc
+                        ),
                   ),
                 ),
               ),
@@ -112,8 +117,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     FlatButton(
                         onPressed: () {
                           setState(() {
-                            newPostWidgetList
-                                .add(addParagraph(null, null));
+                            newPostWidgetList.add(addParagraph(null, null));
                           });
                         },
                         child: Text("+ Paragraph")),
@@ -122,8 +126,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     FlatButton(
                         onPressed: () {
                           setState(() {
-                            newPostWidgetList
-                                .add(addSubTitle(null, null));
+                            newPostWidgetList.add(addSubTitle(null, null));
                           });
                         },
                         child: Text("+ Subtitle")),
@@ -139,16 +142,14 @@ class _NewPostScreenState extends State<NewPostScreen> {
                             });
                           } else if (newPostWidgetList.length == 4) {
                             /// If the textfield is 3, then they cant remove more
-                            Scaffold.of(context).showSnackBar(
-                                snackBarMessage(
-                                    "You can't remove more fields"));
+                            Scaffold.of(context).showSnackBar(snackBarMessage(
+                                "You can't remove more fields"));
                           }
                         },
                         child: Text("Delete")),
                   ],
                 ),
               ),
-           
             ],
           ),
         ),
