@@ -42,6 +42,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text("New Lesson"),
         elevation: 1.0,
@@ -69,6 +70,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
       /// Using a builder because a scaffold is shown in one of the child widgets below
       /// Scaffold of above is not reachable without the Builder widget.
       body: Builder(
+    
         builder: (context) => Container(
           /// Color of the entire background of this page
           decoration: BoxDecoration(
