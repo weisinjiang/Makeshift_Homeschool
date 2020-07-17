@@ -14,18 +14,20 @@ class NewPostProvider with ChangeNotifier {
   int currentListSize; // used to add and delete textforms
 
   /// Initialize it
-  void initialize() {
-    this._newPostForms = [
-      lessonTitle(_newPostFormControllers[0]),
-      subTitle(_newPostFormControllers[1]),
-      paragraph(_newPostFormControllers[2])
-    ];
+  NewPostProvider() {
 
     this._newPostFormControllers = [
       TextEditingController(),
       TextEditingController(),
       TextEditingController(),
     ];
+
+    this._newPostForms = [
+      lessonTitle(_newPostFormControllers[0]),
+      subTitle(_newPostFormControllers[1]),
+      paragraph(_newPostFormControllers[2])
+    ];
+    
     this.currentListSize = 3;
   }
 

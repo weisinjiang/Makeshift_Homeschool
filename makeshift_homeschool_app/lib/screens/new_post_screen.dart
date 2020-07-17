@@ -35,117 +35,118 @@ class _NewPostScreenState extends State<NewPostScreen> {
   /// Added widgets are in-order and will be placed into Firestore the same way
   /// Widget index should be the same as the order in which it appears on the
   /// app from top to bottom: index 0 = first item on the screen
-
+  NewPostProvider newPost = NewPostProvider();
 
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("New Lesson"),
-        elevation: 1.0,
-        backgroundColor: kGreenSecondary_analogous2,
+    return ChangeNotifierProvider<NewPostProvider>(
+      create: (context) => NewPostProvider(),
+          child: Consumer<NewPostProvider>(
+            builder: (context, newPostProvider, _) =>
+                      Scaffold(
+        appBar: AppBar(
+            title: Text("New Lesson"),
+            elevation: 1.0,
+            backgroundColor: kGreenSecondary_analogous2,
 
-        /// Add to the database
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () {},
-            child: Text(
-              "Post",
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            highlightColor: Colors.transparent,
-            color: Colors.transparent,
-            splashColor: Colors.transparent,
-          )
-        ],
-      ),
-      // used to add paragraphs, images and titles
-
-      /// Using a builder because a scaffold is shown in one of the child widgets below
-      /// Scaffold of above is not reachable without the Builder widget.
-      body: Container(
-        /// Color of the entire background of this page
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [kGreenSecondary_analogous2, kGreenSecondary_analogous1],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter),
-        ),
-        height: screenHeight,
-        width: screenWidth,
-
-        /// Users can add infinite amount of subtiles and paragraphs, so when
-        /// it goes out of screen, it should be scrollable
-        child: Builder(
-          builder: (context) => ListView(
-            children: <Widget>[
-              Container(
-                height: screenHeight * 0.70,
-                width: screenWidth * 0.96,
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.black)),
-                child: Scrollbar(
-                  child: Consumer<NewPostProvider>(
-                    builder: (context, newPostProvider, child) {
-                      
-                      return Column(
-                        children: newPostProvider.getNewPostWidgetList,
-                      );
-                    }
-                  ),
+            /// Add to the database
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {},
+                child: Text(
+                  "Post",
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
                 ),
-              ),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(vertical: 10.0),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: <Widget>[
-              //       FlatButton(
-              //           onPressed: () {
-              //             setState(() {
-              //               newPostWidgetList.add(addParagraph(null, null));
-              //             });
-              //           },
-              //           child: Text("+ Paragraph")),
-
-              //       // Add Paragraph
-              //       FlatButton(
-              //           onPressed: () {
-              //             setState(() {
-              //               newPostWidgetList.add(addSubTitle(null, null));
-              //             });
-              //           },
-              //           child: Text("+ Subtitle")),
-
-              //       // Remove last widget
-              //       FlatButton(
-              //           onPressed: () {
-              //             /// By default, the new post should have a title, sub and paragraph.
-              //             /// Only remove the most recent text field IF there is more than 3 widgets
-              //             if (newPostWidgetList.length > 4) {
-              //               setState(() {
-              //                 newPostWidgetList.removeLast();
-              //               });
-              //             } else if (newPostWidgetList.length == 4) {
-              //               /// If the textfield is 3, then they cant remove more
-              //               Scaffold.of(context).showSnackBar(snackBarMessage(
-              //                   "You can't remove more fields"));
-              //             }
-              //           },
-              //           child: Text("Delete")),
-              //     ],
-              //   ),
-              // ),
+                highlightColor: Colors.transparent,
+                color: Colors.transparent,
+                splashColor: Colors.transparent,
+              )
             ],
-          ),
+        ),
+        // used to add paragraphs, images and titles
+
+        /// Using a builder because a scaffold is shown in one of the child widgets below
+        /// Scaffold of above is not reachable without the Builder widget.
+        body: Container(
+            /// Color of the entire background of this page
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [kGreenSecondary_analogous2, kGreenSecondary_analogous1],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter),
+            ),
+            height: screenHeight,
+            width: screenWidth,
+
+            /// Users can add infinite amount of subtiles and paragraphs, so when
+            /// it goes out of screen, it should be scrollable
+            child: Builder(
+              builder: (context) => ListView(
+                children: <Widget>[
+                  Container(
+                    height: screenHeight * 0.70,
+                    width: screenWidth * 0.96,
+                    decoration:
+                        BoxDecoration(border: Border.all(color: Colors.black)),
+                    child: Scrollbar(
+                      child: Column(
+                        children: newPostProvider.getNewPostWidgetList,
+                      ),
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: <Widget>[
+                  //       FlatButton(
+                  //           onPressed: () {
+                  //             setState(() {
+                  //               newPostWidgetList.add(addParagraph(null, null));
+                  //             });
+                  //           },
+                  //           child: Text("+ Paragraph")),
+
+                  //       // Add Paragraph
+                  //       FlatButton(
+                  //           onPressed: () {
+                  //             setState(() {
+                  //               newPostWidgetList.add(addSubTitle(null, null));
+                  //             });
+                  //           },
+                  //           child: Text("+ Subtitle")),
+
+                  //       // Remove last widget
+                  //       FlatButton(
+                  //           onPressed: () {
+                  //             /// By default, the new post should have a title, sub and paragraph.
+                  //             /// Only remove the most recent text field IF there is more than 3 widgets
+                  //             if (newPostWidgetList.length > 4) {
+                  //               setState(() {
+                  //                 newPostWidgetList.removeLast();
+                  //               });
+                  //             } else if (newPostWidgetList.length == 4) {
+                  //               /// If the textfield is 3, then they cant remove more
+                  //               Scaffold.of(context).showSnackBar(snackBarMessage(
+                  //                   "You can't remove more fields"));
+                  //             }
+                  //           },
+                  //           child: Text("Delete")),
+                  //     ],
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
         ),
       ),
+          ),
     );
   }
 }

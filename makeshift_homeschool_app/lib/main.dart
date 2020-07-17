@@ -25,9 +25,6 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value( //!!!!!!!
             value: AuthProvider(),
           ),
-          ChangeNotifierProvider<NewPostProvider>(
-            create: (context) => NewPostProvider(),
-          ),
         ],
         child: Consumer<AuthProvider>(
           builder: (context, auth, _) => MaterialApp(
