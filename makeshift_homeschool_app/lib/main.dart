@@ -7,6 +7,7 @@ import 'package:makeshift_homeschool_app/screens/main_screen.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/profile_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
+import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
 import 'shared/constants.dart';
@@ -21,8 +22,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider.value(
+          ChangeNotifierProvider.value( //!!!!!!!
             value: AuthProvider(),
+          ),
+          ChangeNotifierProvider<NewPostProvider>(
+            create: (context) => NewPostProvider(),
           ),
         ],
         child: Consumer<AuthProvider>(
@@ -31,7 +35,8 @@ class MyApp extends StatelessWidget {
                 primaryColor: kGreenSecondary,
                 textTheme:
                     GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
-             home: NewPostScreen(), //auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
+            home:
+                NewPostScreen(), //auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
             routes: {
               '/login': (context) => LoginScreen(), // Root Screen
               //'/root': (context) => RootScreen(),

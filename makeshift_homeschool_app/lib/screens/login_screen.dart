@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/models/http_exception.dart';
 import 'package:makeshift_homeschool_app/screens/main_screen.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
 import 'package:provider/provider.dart';

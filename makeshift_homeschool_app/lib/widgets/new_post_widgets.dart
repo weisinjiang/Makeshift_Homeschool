@@ -3,10 +3,11 @@ import 'package:flutter/widgets.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 
 // At the top of the new post form. Title of the lesson
-Widget lessonTitle(Function validate, Function saveFunction) {
+Widget lessonTitle(TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.all(30.0),
     child: TextFormField(
+      controller: controller,
       style: kHeadingTextStyle,
       keyboardType: TextInputType.text,
       textAlign: TextAlign.center,
@@ -26,10 +27,11 @@ Widget lessonTitle(Function validate, Function saveFunction) {
 }
 
 // At the top of the new post form. Title of the lesson
-Widget addSubTitle(Function validate, Function saveFunction) {
+Widget subTitle(TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
     child: TextFormField(
+      controller: controller,
       style: kTitleTextStyle,
       keyboardType: TextInputType.text,
       maxLines: null,
@@ -47,10 +49,11 @@ Widget addSubTitle(Function validate, Function saveFunction) {
   );
 }
 
-Widget addParagraph(Function validator, Function saveFunction) {
+Widget paragraph(TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(25, 5, 20, 20),
     child: TextFormField(
+      controller: controller,
       style: kParagraphTextStyle,
       keyboardType: TextInputType.multiline,
       maxLines: null,
