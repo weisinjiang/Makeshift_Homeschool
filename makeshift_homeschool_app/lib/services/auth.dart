@@ -16,11 +16,12 @@ class AuthProvider with ChangeNotifier {
   FirebaseUser _user; // User information
 
   bool authenticated = false;
+  Future<Map<String, String>> userInformation;
   String _userProfileImageURL;
 
   bool get getAuthStatus => authenticated;
   FirebaseUser get getUserData => _user;
-  String get getUserUid => _user.uid;
+  String get getUserID => _user.uid;
 
   // Get current Firebase User. Used to see if user data is still valid
   // Not async because it is used after user has logged in and exit the app
@@ -32,6 +33,7 @@ class AuthProvider with ChangeNotifier {
           email: email, password: password);
       _user = result.user;
       authenticated = true;
+      userInformation = getUserInformation();
       notifyListeners();
       return true;
     } catch (error) {

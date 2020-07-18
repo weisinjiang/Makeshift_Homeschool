@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider.value( //!!!!!!!
-            value: AuthProvider(),
+          ChangeNotifierProvider<AuthProvider>(
+            create: (context) => AuthProvider(),
           ),
           ChangeNotifierProvider<NewPostProvider>(
             create: (context) => NewPostProvider(),
@@ -36,7 +36,8 @@ class MyApp extends StatelessWidget {
                 textTheme:
                     GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
             home:
-                NewPostScreen(), //auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
+                //NewPostScreen(), 
+                auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
             routes: {
               '/login': (context) => LoginScreen(), // Root Screen
               //'/root': (context) => RootScreen(),

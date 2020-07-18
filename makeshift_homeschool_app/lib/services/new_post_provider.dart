@@ -110,8 +110,19 @@ class NewPostProvider with ChangeNotifier {
     return formData;
   }
 
-  // Future<void> post(String uid) async {
-  //   var formData = convertToMap(getFormControllers);
-  //   _database.collection("lesson").add(data)
-  // }
+  Future<void> post(String uid, String name, int lessonCreated) async {
+    var formData = convertToMap(getFormControllers);
+    lessonCreated++;
+
+    /// Add owners id, name and the time the post was created
+    formData["ownerUid"] = uid;
+    formData["owner"] = name;
+    formData["createdOn"] = DateTime.now().toString();
+    await _database.collection("lessons").add(formData);
+    await _database
+        .collection("users")
+        .document(uid)
+        .setData({"lesson_created": lessonCreated}, merge: true);
+    print("All Done");
+  }
 }

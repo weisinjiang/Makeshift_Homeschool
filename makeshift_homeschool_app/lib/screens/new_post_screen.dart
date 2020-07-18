@@ -57,7 +57,14 @@ class _NewPostScreenState extends State<NewPostScreen> {
           /// Add to the database
           actions: <Widget>[
             FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                authProvider.getUserInformation().then((userInfo) async{
+                  int lessonCreated = int.parse(userInfo["lesson_created"]);
+                  await newPostProvider.post(
+                      userInfo["uid"], userInfo["username"], lessonCreated);
+                });
+                Navigator.of(context).pop();
+              },
               child: Text(
                 "Post",
                 style: TextStyle(

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -109,9 +110,9 @@ class _ImageFieldState extends State<ImageField> {
             children: <Widget>[
               RaisedButton(
                   child: Text("Save Image"),
-                  onPressed: () {
+                  onPressed: () { // Save image into newpostprovider
                     newPostProvider.setNewPostImageFile = _userSelectedImage;
-                    newPostProvider.debugPrint();
+                    
                   }),
               RaisedButton(
                   child: Text("Clear Image"),
