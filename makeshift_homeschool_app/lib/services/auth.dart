@@ -20,6 +20,7 @@ class AuthProvider with ChangeNotifier {
 
   bool get getAuthStatus => authenticated;
   FirebaseUser get getUserData => _user;
+  String get getUserUid => _user.uid;
 
   // Get current Firebase User. Used to see if user data is still valid
   // Not async because it is used after user has logged in and exit the app

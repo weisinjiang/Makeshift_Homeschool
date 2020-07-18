@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
@@ -21,7 +22,6 @@ import 'package:provider/provider.dart';
 ///   a new paragraph or subtitle is added
 ///
 ///
-/// !!! TO FIX: FOCUS NODE ANIMATION FOR NEW POST BECAUSE THE KEYBOARD COVERS THE SCREEN
 
 class NewPostScreen extends StatefulWidget {
   @override
@@ -41,112 +41,105 @@ class _NewPostScreenState extends State<NewPostScreen> {
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
+    var authProvider = Provider.of<AuthProvider>(context);
 
-    return ChangeNotifierProvider<NewPostProvider>(
-      create: (context) => NewPostProvider(),
-          child: Consumer<NewPostProvider>(
-            builder: (context, newPostProvider, _) =>
-                      Scaffold(
+    /// New post uses this provider as a global variable so users can
+    /// add as many paragraphs, subtitles as they want.
+    return Consumer<NewPostProvider>(
+      //Consumes the provider in main.dart
+      /// Consumer that uses NewPostProvider
+      builder: (context, newPostProvider, _) => Scaffold(
         appBar: AppBar(
-            title: Text("New Lesson"),
-            elevation: 1.0,
-            backgroundColor: kGreenSecondary_analogous2,
+          title: Text("New Lesson"),
+          elevation: 1.0,
+          backgroundColor: kGreenSecondary_analogous2,
 
-            /// Add to the database
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {},
-                child: Text(
-                  "Post",
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-                highlightColor: Colors.transparent,
-                color: Colors.transparent,
-                splashColor: Colors.transparent,
-              )
-            ],
+          /// Add to the database
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {},
+              child: Text(
+                "Post",
+                style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+              highlightColor: Colors.transparent,
+              color: Colors.transparent,
+              splashColor: Colors.transparent,
+            )
+          ],
         ),
         // used to add paragraphs, images and titles
 
         /// Using a builder because a scaffold is shown in one of the child widgets below
         /// Scaffold of above is not reachable without the Builder widget.
         body: Container(
-            /// Color of the entire background of this page
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [kGreenSecondary_analogous2, kGreenSecondary_analogous1],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter),
-            ),
-            height: screenHeight,
-            width: screenWidth,
+          /// Color of the entire background of this page
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              kGreenSecondary_analogous2,
+              kGreenSecondary_analogous1
+            ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+          ),
+          height: screenHeight,
+          width: screenWidth,
 
-            /// Users can add infinite amount of subtiles and paragraphs, so when
-            /// it goes out of screen, it should be scrollable
-            child: Builder(
-              builder: (context) => ListView(
-                children: <Widget>[
-                  Container(
-                    height: screenHeight * 0.70,
-                    width: screenWidth * 0.96,
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.black)),
-                    child: Scrollbar(
+          /// Users can add infinite amount of subtiles and paragraphs, so when
+          /// it goes out of screen, it should be scrollable
+          child: Builder(
+            builder: (context) => ListView(
+              children: <Widget>[
+                /// Middle screen where users input paragraphs and subtiles
+                Container(
+                  height: screenHeight * 0.70,
+                  width: screenWidth * 0.96,
+                  // decoration:
+                  //     BoxDecoration(border: Border.all(color: Colors.black)),
+                  child: Scrollbar(
+                    child: SingleChildScrollView(
                       child: Column(
                         children: newPostProvider.getNewPostWidgetList,
                       ),
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: <Widget>[
-                  //       FlatButton(
-                  //           onPressed: () {
-                  //             setState(() {
-                  //               newPostWidgetList.add(addParagraph(null, null));
-                  //             });
-                  //           },
-                  //           child: Text("+ Paragraph")),
+                ),
 
-                  //       // Add Paragraph
-                  //       FlatButton(
-                  //           onPressed: () {
-                  //             setState(() {
-                  //               newPostWidgetList.add(addSubTitle(null, null));
-                  //             });
-                  //           },
-                  //           child: Text("+ Subtitle")),
+                /// Bottom Buttons to add/remove paragraphs and subtitles
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FlatButton(
+                          onPressed: () => newPostProvider.addParagraph(),
+                          child: Text("+ Paragraph")),
 
-                  //       // Remove last widget
-                  //       FlatButton(
-                  //           onPressed: () {
-                  //             /// By default, the new post should have a title, sub and paragraph.
-                  //             /// Only remove the most recent text field IF there is more than 3 widgets
-                  //             if (newPostWidgetList.length > 4) {
-                  //               setState(() {
-                  //                 newPostWidgetList.removeLast();
-                  //               });
-                  //             } else if (newPostWidgetList.length == 4) {
-                  //               /// If the textfield is 3, then they cant remove more
-                  //               Scaffold.of(context).showSnackBar(snackBarMessage(
-                  //                   "You can't remove more fields"));
-                  //             }
-                  //           },
-                  //           child: Text("Delete")),
-                  //     ],
-                  //   ),
-                  // ),
-                ],
-              ),
+                      // AddSubtile
+                      FlatButton(
+                          onPressed: () => newPostProvider.addSubtitle(),
+                          child: Text("+ Subtitle")),
+
+                      //Remove last widget
+                      FlatButton(
+                          onPressed: () {
+                            var isAbleToRemove =
+                                newPostProvider.removeLastTextForm();
+                            if (!isAbleToRemove) {
+                              Scaffold.of(context).showSnackBar(snackBarMessage(
+                                  "You can't remove more fields"));
+                            }
+                          },
+                          child: Text("Delete")),
+                    ],
+                  ),
+                ),
+              ],
             ),
+          ),
         ),
       ),
-          ),
     );
   }
 }

@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
+import 'package:provider/provider.dart';
 
 /// First provides an empty image and on tap, let's the user pick an image
 
@@ -12,7 +14,8 @@ class ImageField extends StatefulWidget {
   final imageHeight;
   final imageWidth;
 
-  const ImageField({Key key, this.imageHeight, this.imageWidth}) : super(key: key);
+  const ImageField({Key key, this.imageHeight, this.imageWidth})
+      : super(key: key);
   @override
   _ImageFieldState createState() => _ImageFieldState();
 }
@@ -33,13 +36,24 @@ class _ImageFieldState extends State<ImageField> {
         context: context, // context of the widget this prompt is showing on
         builder: (BuildContext contx) {
           return Container(
+            height: height * 0.20,
             child: Wrap(
+              spacing: 5.0,
               children: <Widget>[
+                /// Choose from Camera Roll
                 ListTile(
                   title: Text("Choose from Library"),
                   onTap: () {
-                    _chooseNewProfileImageFromSource(
-                        ImageSource.gallery, height, width);
+                    _chooseImageFromSource(ImageSource.gallery, height, width);
+                    Navigator.of(context).pop();
+                  },
+                ),
+
+                /// Take a picture
+                ListTile(
+                  title: Text("Take a Photo"),
+                  onTap: () {
+                    _chooseImageFromSource(ImageSource.camera, height, width);
                     Navigator.of(context).pop();
                   },
                 ),
@@ -55,7 +69,7 @@ class _ImageFieldState extends State<ImageField> {
   ///   @param - source is where the user wants to pick their profile image
   ///*************************************************************************
 
-  Future<void> _chooseNewProfileImageFromSource(
+  Future<File> _chooseImageFromSource(
       ImageSource source, double height, double width) async {
     ImagePicker imagePicker = ImagePicker();
     final pickedImage = await imagePicker.getImage(
@@ -66,12 +80,14 @@ class _ImageFieldState extends State<ImageField> {
     setState(() {
       _userSelectedImage = File(pickedImage.path); // set the image path
     });
+    return File(pickedImage.path);
     //await auth.uploadProfileImage(_imageFile); // upload to Firestore
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    var newPostProvider = Provider.of<NewPostProvider>(context);
 
     return GestureDetector(
       // Tap the container with the image, bring up an option to get an image from gallery
@@ -79,11 +95,36 @@ class _ImageFieldState extends State<ImageField> {
         _buildImagePickerPopUpMenu(
             context, screenSize.height, screenSize.width);
       },
-      child: Container(
-          decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-          child: _userSelectedImage == null
-              ? _onScreenImage
-              : Image.file(_userSelectedImage)),
+      child: Column(
+        children: <Widget>[
+          Container(
+              decoration:
+                  BoxDecoration(border: Border.all(color: Colors.black)),
+              child: _userSelectedImage == null
+                  ? _onScreenImage
+                  : Image.file(_userSelectedImage)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              RaisedButton(
+                  child: Text("Save Image"),
+                  onPressed: () {
+                    newPostProvider.setNewPostImageFile = _userSelectedImage;
+                    newPostProvider.debugPrint();
+                  }),
+              RaisedButton(
+                  child: Text("Clear Image"),
+                  onPressed: () {
+                    newPostProvider.setNewPostImageFile = null;
+                    setState(() {
+                      _userSelectedImage = null;
+                    });
+                  })
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
