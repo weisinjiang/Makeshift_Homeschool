@@ -55,8 +55,9 @@ class NewPostProvider with ChangeNotifier {
   void incrementcurrentWidgetListSize() => this.currentWidgetListSize++;
   void decrementcurrentWidgetListSize() => this.currentWidgetListSize--;
 
-  ///Setter code for image
+  ///Setter and getter code for image
   set setNewPostImageFile(File imageFile) => this._newPostImagePath = imageFile;
+  File get getNewPostImageFile => this._newPostImagePath;
 
 //!!!!!!!!!
   void debugPrint() {
@@ -110,15 +111,47 @@ class NewPostProvider with ChangeNotifier {
     return formData;
   }
 
+  /// Upload the image for the lesson using the lessons uid as its name and return
+  /// the download url
+  Future<dynamic> uploadImageAndGetDownloadUrl(
+      File image, String lessonID) async {
+    var storageRef = _storage
+        .ref()
+        .child("lessons")
+        .child(lessonID); // storage to put the file
+    await storageRef
+        .putFile(image)
+        .onComplete; // wait for it to finish uploading the file
+    return storageRef.getDownloadURL();
+
+    /// Return the download url
+  }
+
+  /// Takes in the users uid, name and the number of lessons created
+  /// Uploads the new post into Firestore using the names
   Future<void> post(String uid, String name, int lessonCreated) async {
-    var formData = convertToMap(getFormControllers);
-    lessonCreated++;
+    lessonCreated++; // increment # of lessons user created
+    var formData = convertToMap(getFormControllers); // Get text data
+
+    /// Reference the document where the data will be placed
+    /// Leaving document empty generates a random id
+    var databaseRef = _database.collection("lessons").document();
+
+    /// Upload the image and set the returned download url to the formData field
+    await uploadImageAndGetDownloadUrl(
+            getNewPostImageFile, databaseRef.documentID)
+        .then((returnedUrl) {
+      formData["imageUrl"] = returnedUrl.toString();
+    });
 
     /// Add owners id, name and the time the post was created
     formData["ownerUid"] = uid;
     formData["owner"] = name;
     formData["createdOn"] = DateTime.now().toString();
-    await _database.collection("lessons").add(formData);
+
+    /// Add the data into the refernece document made earlier
+    await databaseRef.setData(formData);
+
     await _database
         .collection("users")
         .document(uid)

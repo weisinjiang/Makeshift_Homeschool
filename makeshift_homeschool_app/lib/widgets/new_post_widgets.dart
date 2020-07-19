@@ -29,7 +29,7 @@ Widget lessonTitle(TextEditingController controller) {
 // At the top of the new post form. Title of the lesson
 Widget subTitle(TextEditingController controller) {
   return Padding(
-    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+    padding: const EdgeInsets.all(20),
     child: TextFormField(
       controller: controller,
       style: kTitleTextStyle,
