@@ -8,6 +8,7 @@ import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/profile_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
+import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
 import 'shared/constants.dart';
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider<NewPostProvider>(
             create: (context) => NewPostProvider(),
+          ),
+          ChangeNotifierProvider<PostFeedProvider>(
+            create: (context) => PostFeedProvider(),
           ),
         ],
         child: Consumer<AuthProvider>(

@@ -111,6 +111,19 @@ class NewPostProvider with ChangeNotifier {
     return formData;
   }
 
+  /// Go though the TextEditingController and get the text data on it
+  List<String> getControllerTextDataAsList(
+      List<TextEditingController> textControllersList) {
+    List<String> controllerTextData = []; // text data to return
+
+    textControllersList.forEach((controller) {
+      // go through each
+      controllerTextData.add(controller.text);
+    });
+    
+    return controllerTextData;
+  }
+
   /// Upload the image for the lesson using the lessons uid as its name and return
   /// the download url
   Future<dynamic> uploadImageAndGetDownloadUrl(
@@ -130,32 +143,32 @@ class NewPostProvider with ChangeNotifier {
   /// Takes in the users uid, name and the number of lessons created
   /// Uploads the new post into Firestore using the names
   Future<void> post(String uid, String name, int lessonCreated) async {
-    lessonCreated++; // increment # of lessons user created
-    var formData = convertToMap(getFormControllers); // Get text data
+    lessonCreated++; // increment # of lessons user created, cant do it when adding to database
 
     /// Reference the document where the data will be placed
     /// Leaving document empty generates a random id
     var databaseRef = _database.collection("lessons").document();
+    var postContentsArray = getControllerTextDataAsList(getFormControllers);
+    var imageUrl = await uploadImageAndGetDownloadUrl(
+        getNewPostImageFile, databaseRef.documentID);
 
-    /// Upload the image and set the returned download url to the formData field
-    await uploadImageAndGetDownloadUrl(
-            getNewPostImageFile, databaseRef.documentID)
-        .then((returnedUrl) {
-      formData["imageUrl"] = returnedUrl.toString();
-    });
+    var newLesson = {
+      "ownerUid": uid,
+      "ownerName": name,
+      "createdOn": DateTime.now().toString(),
+      "likes": 0,
+      "imageUrl": imageUrl,
+      "postContents": postContentsArray
+    };
 
-    /// Add owners id, name and the time the post was created
-    formData["ownerUid"] = uid;
-    formData["owner"] = name;
-    formData["createdOn"] = DateTime.now().toString();
 
     /// Add the data into the refernece document made earlier
-    await databaseRef.setData(formData);
+    await databaseRef.setData(newLesson);
 
     await _database
         .collection("users")
         .document(uid)
-        .setData({"lesson_created": lessonCreated}, merge: true);
+        .setData({"lesson_created": lessonCreated++}, merge: true);
     print("All Done");
   }
 }
