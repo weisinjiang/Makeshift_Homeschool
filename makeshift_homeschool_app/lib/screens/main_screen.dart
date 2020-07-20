@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
+import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
@@ -94,7 +95,7 @@ class MainScreen extends StatelessWidget {
                           height: screenHeight * 0.10,
                           width: screenWidth/2,
                           canUseButton: true,
-                          function: () {},
+                          function: () => Navigator.push(context, SlideLeftRoute(screen: StudyPage())),
                           name: "Study",
                           imageLocation: "asset/images/books.png",
                       ),

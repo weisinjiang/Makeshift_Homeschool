@@ -9,6 +9,7 @@ import 'package:makeshift_homeschool_app/screens/profile_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
 import 'shared/constants.dart';
@@ -23,13 +24,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<AuthProvider>(
+          ChangeNotifierProvider<AuthProvider>(   // auth service
             create: (context) => AuthProvider(),
           ),
-          ChangeNotifierProvider<NewPostProvider>(
+          ChangeNotifierProvider<NewPostProvider>( // Tracks user paragraphs and subtitles
             create: (context) => NewPostProvider(),
           ),
-          ChangeNotifierProvider<PostFeedProvider>(
+          ChangeNotifierProvider<PostFeedProvider>( // reteieves user posts in Study
             create: (context) => PostFeedProvider(),
           ),
         ],
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
                 textTheme:
                     GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
             home:
-                //NewPostScreen(), 
+                //PostThumbnail(), 
                 auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
             routes: {
               '/login': (context) => LoginScreen(), // Root Screen
