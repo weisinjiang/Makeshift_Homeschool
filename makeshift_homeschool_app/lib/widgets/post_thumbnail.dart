@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 
+
+/// Clickable thumbnail before going into the actual post
 class PostThumbnail extends StatelessWidget {
   final String imageUrl;
   final String title;

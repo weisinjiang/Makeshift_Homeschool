@@ -22,10 +22,10 @@ class PostFeedProvider with ChangeNotifier {
       post.setPostContents = doc["postContents"];
 
       this._posts.add(post);
-      print(post.toString());
+    
     });
     notifyListeners();
     return this._posts;
-    print(_posts.toString()); //!!!!!!
+ 
   }
 }

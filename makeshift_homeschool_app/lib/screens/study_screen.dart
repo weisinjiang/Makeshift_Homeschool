@@ -22,7 +22,6 @@ class StudyPage extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final posts = snapshot.data;
-            print(posts[0].toString()); //!!!!!
             return Container(
               child: GridView.builder(
                 
