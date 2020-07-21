@@ -37,7 +37,7 @@ class NewPostProvider with ChangeNotifier {
       lessonTitle(_newPostFormControllers[0]),
       ImageField(
         imageHeight: 0.50,
-        imageWidth: 0.90,
+        imageWidth: 0.60,
       ),
       subTitle(_newPostFormControllers[1]),
       paragraph(_newPostFormControllers[2])

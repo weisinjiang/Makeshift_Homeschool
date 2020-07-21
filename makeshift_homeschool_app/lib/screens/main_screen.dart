@@ -21,7 +21,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   Stream<DocumentSnapshot> userDataStream;
-  Stream<QuerySnapshot> collectionStream;
+   Stream<QuerySnapshot> collectionStream;
   var _isInThisWidget = true;
   var _isLoadingPostThumbnails = false;
 
@@ -36,6 +36,10 @@ class _MainScreenState extends State<MainScreen> {
   void didChangeDependencies() {
     print("Inside didCHANGE");
     if (_isInThisWidget) {
+      setState(() {
+        print("Setting loading t true");
+        _isLoadingPostThumbnails = true;
+      });
       print("Getting user data stream");
       userDataStream = Provider.of<AuthProvider>(context).userDataStream();
       print("Getting collection stream");
@@ -72,8 +76,7 @@ class _MainScreenState extends State<MainScreen> {
 
                 title: Text("Hi, ${userData["username"]}!"),
               ),
-              body: !_isLoadingPostThumbnails
-                  ? Container(
+              body: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                             colors: [
@@ -162,7 +165,7 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                       ),
                     )
-                  : LoadingScreen());
+                  );
         } else {
           return LoadingScreen();
         }

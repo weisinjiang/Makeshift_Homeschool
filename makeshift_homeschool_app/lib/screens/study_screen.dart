@@ -22,7 +22,7 @@ class StudyPage extends StatelessWidget {
       body: StreamBuilder(
           stream: collectionStream,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasData) {
               var documentData = snapshot
                   .data.documents; // All documents in Lessons collection
 
@@ -39,14 +39,20 @@ class StudyPage extends StatelessWidget {
               }).toList();
 
               /// Show it
-              return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: screenSize.height * 0.05
-                      ),
-                  itemCount: postList.length,
-                  itemBuilder: (_, index) =>
-                      PostThumbnail(postData: postList[index]));
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 3 / 2,
+                        mainAxisSpacing: screenSize.height * 0.05,
+                        crossAxisSpacing: screenSize.width * 0.05),
+                    itemCount: postList.length,
+                    itemBuilder: (_, index) =>
+                        PostThumbnail(postData: postList[index])),
+              );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return LoadingScreen();
             }
             return LoadingScreen();
           }),
