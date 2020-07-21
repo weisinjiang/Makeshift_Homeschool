@@ -19,7 +19,7 @@ class AuthProvider with ChangeNotifier {
   Future<Map<String, String>> userInformation;
   String _userProfileImageURL;
 
-  bool get getAuthStatus => authenticated;
+  bool get isAuthenticated => authenticated;
   FirebaseUser get getUserData => _user;
   String get getUserID => _user.uid;
 

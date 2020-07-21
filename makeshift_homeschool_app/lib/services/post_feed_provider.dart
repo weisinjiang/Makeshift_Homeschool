@@ -6,12 +6,20 @@ class PostFeedProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance; // connect to firestore
   List<Post> _posts = []; //post list to be shown on the feed
 
+  PostFeedProvider(this._posts);
+
   // Get the posts, not a ref to _post but a deep copy of it
   ///[...] does this
-  List<Post> get getPosts => [...this._posts];
+  List<Post> get getPosts => [..._posts];
+
+  Stream<QuerySnapshot> lessonsCollectionStream() {
+    print("STREAM CALLED");
+    return _database.collection("lessons").snapshots();
+  }
 
   Future<void> getPostsFromDatabase() async {
     QuerySnapshot result = await _database.collection("lessons").getDocuments();
+    List<Post> data = [];
     List<DocumentSnapshot> allDocuments = result.documents;
     allDocuments.forEach((doc) async {
       Post post = Post();
@@ -22,10 +30,10 @@ class PostFeedProvider with ChangeNotifier {
       post.setOwnerUid = doc["ownerUid"];
       post.setPostContents = doc["postContents"];
 
-      this._posts.add(post);
-      print("POST EXECUTED"); //!!!!!!!! 
+      data.add(post);
+      print("POST EXECUTED"); //!!!!!!!!
     });
+    _posts = data;
     notifyListeners();
-    return this._posts;
   }
 }

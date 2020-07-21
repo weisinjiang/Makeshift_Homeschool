@@ -4,48 +4,76 @@ import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 /// Clickable thumbnail before going into the actual post
+
 class PostThumbnail extends StatelessWidget {
+  final Post postData;
+
+  const PostThumbnail({Key key, this.postData}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final postData = Provider.of<Post>(context); // Data provided by Provider in post_thumbnail_grid.dart
 
-    return Center(
-      child: Container(
-        width: screenSize.width / 3,
-        height: screenSize.height / 5,
-        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-        child: Stack(children: <Widget>[
-          Opacity(opacity: 0.50, child: Image.network(postData.getImageUrl)),
-          Center(
-            child: Text(
-              postData.getTitle,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: kGreenPrimary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    Shadow(
-                        // bottomLeft
-                        offset: Offset(-1.5, -1.5),
-                        color: Colors.black),
-                    Shadow(
-                        // bottomRight
-                        offset: Offset(1.5, -1.5),
-                        color: Colors.black),
-                    Shadow(
-                        // topRight
-                        offset: Offset(1.5, 1.5),
-                        color: Colors.black),
-                    Shadow(
-                        // topLeft
-                        offset: Offset(-1.5, 1.5),
-                        color: Colors.black),
-                  ]),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      /// Images and then the title text stacked on top
+      child: Stack(
+        children: [
+
+          /// Container to contain the image and takes up the entire container
+          /// using a FittedBox. Also used Opacity to lower the image so words
+          /// can be seen
+          
+          Container(
+            width: screenSize.width * 0.45,
+            height: screenSize.height * 0.40,
+            decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+            child: FittedBox(
+                fit: BoxFit.fill,
+                child: Opacity(
+                    opacity: 0.50, child: Image.network(postData.getImageUrl))),
+          ),
+
+          /// Same container size as above, but this had a column with text
+          /// The column helps the text be flexiable and take up the entie
+          /// container if the title gets too long
+          /// Shadow helps with a black background
+          Container(
+            width: screenSize.width * 0.45,
+            height: screenSize.height * 0.40,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                  child: Text(
+                    postData.getTitle,
+                    style: TextStyle(
+                        color: kGreenPrimary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(
+                              // bottomLeft
+                              offset: Offset(-1.5, -1.5),
+                              color: Colors.black),
+                          Shadow(
+                              // bottomRight
+                              offset: Offset(1.5, -1.5),
+                              color: Colors.black),
+                          Shadow(
+                              // topRight
+                              offset: Offset(1.5, 1.5),
+                              color: Colors.black),
+                          Shadow(
+                              // topLeft
+                              offset: Offset(-1.5, 1.5),
+                              color: Colors.black),
+                        ]),
+                  ),
+                ),
+              ],
             ),
           ),
-        ]),
+        ],
       ),
     );
   }

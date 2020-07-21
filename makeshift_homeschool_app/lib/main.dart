@@ -22,16 +22,20 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("Build of main.dart");
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<AuthProvider>(   // auth service
+          ChangeNotifierProvider<AuthProvider>(
+            // auth service
             create: (context) => AuthProvider(),
           ),
-          ChangeNotifierProvider<NewPostProvider>( // Tracks user paragraphs and subtitles
+          ChangeNotifierProvider<NewPostProvider>(
+            // Tracks user paragraphs and subtitles
             create: (context) => NewPostProvider(),
           ),
-          ChangeNotifierProvider<PostFeedProvider>( // reteieves user posts in Study
-            create: (context) => PostFeedProvider(),
+          ChangeNotifierProvider<PostFeedProvider>(
+            // reteieves user posts in Study
+            create: (context) => PostFeedProvider([]),
           ),
         ],
         child: Consumer<AuthProvider>(
@@ -41,16 +45,16 @@ class MyApp extends StatelessWidget {
                 textTheme:
                     GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
             home:
-                //PostThumbnail(), 
-                auth.getAuthStatus == false ? LoginScreen() : MainScreen(),
-            routes: {
-              '/login': (context) => LoginScreen(), // Root Screen
-              //'/root': (context) => RootScreen(),
-              '/main': (context) => MainScreen(),
-              '/about': (context) => AboutScreen(),
-              '/home': (context) => HomeScreen(),
-              //'/profile': (context) => ProfileScreen(),
-            },
+                //PostThumbnail(),
+                auth.isAuthenticated ? MainScreen() : LoginScreen(),
+            // routes: {
+            //   '/login': (context) => LoginScreen(), // Root Screen
+            //   //'/root': (context) => RootScreen(),
+            //   '/main': (context) => MainScreen(),
+            //   '/about': (context) => AboutScreen(),
+            //   '/home': (context) => HomeScreen(),
+            //   //'/profile': (context) => ProfileScreen(),
+            // },
           ),
         ));
   }
