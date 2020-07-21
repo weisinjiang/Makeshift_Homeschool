@@ -43,8 +43,9 @@ class StudyPage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      
                         crossAxisCount: 2,
-                        childAspectRatio: 3 / 2,
+                        childAspectRatio: 3/2,
                         mainAxisSpacing: screenSize.height * 0.05,
                         crossAxisSpacing: screenSize.width * 0.05),
                     itemCount: postList.length,

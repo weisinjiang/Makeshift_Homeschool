@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
+import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
+import 'package:makeshift_homeschool_app/widgets/post_expanded.dart';
 import 'package:provider/provider.dart';
 
 /// Clickable thumbnail before going into the actual post
@@ -14,7 +16,7 @@ class PostThumbnail extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return InkWell(
-      onTap: () {},
+      onTap: () => Navigator.push(context,SlideLeftRoute(screen: PostExpanded(postData: postData,))),
       child: Container(
         width: screenSize.width * 0.50,
         height: screenSize.height * 0.30,
@@ -32,7 +34,7 @@ class PostThumbnail extends StatelessWidget {
                   opacity: 0.85,
                   child: Image.network(
                     postData.getImageUrl,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   )),
 
             /// Same container size as above, but this had a column with text
