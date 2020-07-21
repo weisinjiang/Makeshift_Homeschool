@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Post {
   int likes; // Database stored as a string, needs to convert
   String _imageUrl;
@@ -18,6 +20,7 @@ class Post {
 
   //Getters
   int get getLikes => this.likes;
+  String get getTitle => this._postContents[0]; // First in array is title
   String get getImageUrl => this._imageUrl;
   String get getCreatedOn => this._createdOn;
   String get getOwnerName => this._ownerName;

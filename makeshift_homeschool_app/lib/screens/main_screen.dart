@@ -21,6 +21,7 @@ class MainScreen extends StatelessWidget {
 
 
     return StreamBuilder(
+      
       stream: auth.userDataStream(),
       builder: (context, snapshot) {
           if (snapshot.hasData || snapshot.hasError) {
@@ -72,7 +73,7 @@ class MainScreen extends StatelessWidget {
                       color: kGreenSecondary_analogous2,
                       height: screenHeight * 0.20,
                       width: screenWidth,
-                      function: () => Navigator.of(context),
+                      function: () {},
                       canUseButton: true,
                       name: "Boot Camp",
                       imageLocation: "asset/images/campFire.png",

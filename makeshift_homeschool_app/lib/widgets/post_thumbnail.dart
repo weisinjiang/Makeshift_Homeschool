@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
-
+import 'package:provider/provider.dart';
 
 /// Clickable thumbnail before going into the actual post
 class PostThumbnail extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-
-  const PostThumbnail({Key key, this.imageUrl, this.title}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final postData = Provider.of<Post>(context); // Data provided by Provider in post_thumbnail_grid.dart
 
     return Center(
       child: Container(
-        width: screenSize.width/3,
-        height: screenSize.height/5,
+        width: screenSize.width / 3,
+        height: screenSize.height / 5,
         decoration: BoxDecoration(border: Border.all(color: Colors.black)),
         child: Stack(children: <Widget>[
-          Opacity(opacity: 0.50, child: Image.network(imageUrl)),
+          Opacity(opacity: 0.50, child: Image.network(postData.getImageUrl)),
           Center(
             child: Text(
-              title,
+              postData.getTitle,
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: kGreenPrimary,

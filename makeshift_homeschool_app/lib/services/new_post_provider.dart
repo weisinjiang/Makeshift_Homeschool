@@ -120,7 +120,7 @@ class NewPostProvider with ChangeNotifier {
       // go through each
       controllerTextData.add(controller.text);
     });
-    
+
     return controllerTextData;
   }
 
@@ -161,7 +161,6 @@ class NewPostProvider with ChangeNotifier {
       "postContents": postContentsArray
     };
 
-
     /// Add the data into the refernece document made earlier
     await databaseRef.setData(newLesson);
 
@@ -169,6 +168,32 @@ class NewPostProvider with ChangeNotifier {
         .collection("users")
         .document(uid)
         .setData({"lesson_created": lessonCreated++}, merge: true);
-    print("All Done");
+    resetFields(); //!
+    print("All Done"); //!
+  }
+
+  void resetFields() {
+    this._newPostFormControllers.forEach((controller) {
+      controller.dispose();
+    });
+
+
+    this._newPostFormControllers = [
+      TextEditingController(),
+      TextEditingController(),
+      TextEditingController(),
+    ];
+
+    this._newPostForms = [
+      lessonTitle(_newPostFormControllers[0]),
+      ImageField(
+        imageHeight: 0.50,
+        imageWidth: 0.90,
+      ),
+      subTitle(_newPostFormControllers[1]),
+      paragraph(_newPostFormControllers[2])
+    ];
+
+    this.currentWidgetListSize = _newPostForms.length;
   }
 }
