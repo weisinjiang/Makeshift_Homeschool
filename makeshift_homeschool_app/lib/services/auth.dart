@@ -140,10 +140,7 @@ class AuthProvider with ChangeNotifier {
   // }
 
   Future<void> signOut() async {
-    await _auth.signOut();
     authenticated = false;
-    _userInformation =
-    _user = null;
     notifyListeners();
     // return Future.delayed(Duration.zero);
   }
