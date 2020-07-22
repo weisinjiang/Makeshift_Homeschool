@@ -3,7 +3,6 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/widgets/post_expanded.dart';
-import 'package:provider/provider.dart';
 
 /// Clickable thumbnail before going into the actual post
 

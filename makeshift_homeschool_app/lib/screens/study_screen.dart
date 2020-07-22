@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
-import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
-import 'package:provider/provider.dart';
+
 
 /// Study screen where lessons are retrieved from the database and posted
 /// The collection "lessons" from Firestore will be passed onto this widget

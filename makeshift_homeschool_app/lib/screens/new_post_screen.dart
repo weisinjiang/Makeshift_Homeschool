@@ -3,9 +3,6 @@ import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
-import 'package:makeshift_homeschool_app/widgets/image_field.dart';
-import 'package:makeshift_homeschool_app/widgets/new_post_floating_action_button.dart';
-import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
 import 'package:provider/provider.dart';
 
 ///  Pops up a form for users to create a lesson

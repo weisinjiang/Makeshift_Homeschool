@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class Post {
   int likes; // Database stored as a string, needs to convert

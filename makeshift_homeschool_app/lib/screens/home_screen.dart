@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
-import 'package:makeshift_homeschool_app/shared/my_bottom_navigation.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {

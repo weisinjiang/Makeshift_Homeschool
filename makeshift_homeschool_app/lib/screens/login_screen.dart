@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/main_screen.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
@@ -37,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   };
   String _referalSelected = "";
 
-  var _isLoading = false; // If async data is not recieved, this is true
+
 
   void _showErrorMessage(String message) {
     showDialog(
@@ -77,7 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
   ///***************************************************************************
 
   Future<void> _submit(AuthProvider auth) async {
-    String result;
 
     if (!_formKey.currentState.validate()) {
       // Validation failed

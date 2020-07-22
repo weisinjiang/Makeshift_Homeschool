@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
@@ -24,7 +23,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  File _imageFile = null; // When users select an image file
+  File _imageFile; // When users select an image file
   bool updateProfileInfo = false; // Check if name/bio is changed
 
   /// **************************************************************************

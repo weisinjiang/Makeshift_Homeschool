@@ -1,19 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
-import 'package:makeshift_homeschool_app/screens/home_screen.dart';
 import 'package:makeshift_homeschool_app/screens/main_screen.dart';
-import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
-import 'package:makeshift_homeschool_app/screens/profile_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
-import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
 import 'shared/constants.dart';
-import 'screens/edit_profile_screen.dart';
 
 void main() {
   runApp(MyApp());

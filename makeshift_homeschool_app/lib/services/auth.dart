@@ -4,8 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import '../models/user_auth_model.dart';
+
 
 class AuthProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance; // Connect to Firestore
@@ -17,7 +16,6 @@ class AuthProvider with ChangeNotifier {
 
   bool authenticated = false;
   Future<Map<String, String>> userInformation;
-  String _userProfileImageURL;
 
   bool get isAuthenticated => authenticated;
   FirebaseUser get getUserData => _user;

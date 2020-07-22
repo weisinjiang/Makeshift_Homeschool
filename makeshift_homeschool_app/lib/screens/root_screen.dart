@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:makeshift_homeschool_app/screens/edit_profile_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'export_screens.dart'; // Access to all the screens
-import '../shared/exportShared.dart';
+
 
 /// Root Screen has access to every screen that is in the bottom navigation
 /// Controls which page shows by using an IndexedStack and the pages index num

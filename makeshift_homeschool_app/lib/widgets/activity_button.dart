@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:makeshift_homeschool_app/shared/constants.dart';
 
 class ActivityButton extends StatelessWidget {
   final Color color;
