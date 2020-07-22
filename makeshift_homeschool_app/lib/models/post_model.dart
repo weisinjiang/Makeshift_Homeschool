@@ -34,4 +34,6 @@ class Post {
   set setOwnerName(String name) => this._ownerName = name;
   set setOwnerUid(String uid) => this._ownerUid = uid;
   set setPostContents(List<dynamic> contents) => this._postContents = contents;
+
+  
 }

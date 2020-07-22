@@ -17,6 +17,8 @@ class PostFeedProvider with ChangeNotifier {
     return _database.collection("lessons").snapshots();
   }
 
+  
+
   Future<void> getPostsFromDatabase() async {
     QuerySnapshot result = await _database.collection("lessons").getDocuments();
     List<Post> data = [];

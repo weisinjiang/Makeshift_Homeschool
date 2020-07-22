@@ -22,6 +22,8 @@ class NewPostProvider with ChangeNotifier {
   /// Did not use map because a text controller needs to be passed into the key
   List<Widget> _newPostForms;
   List<TextEditingController> _newPostFormControllers;
+  List<String>
+      _newPostFormControllerType; // parallel to _newPostFormController, indicating what info it is
   int currentWidgetListSize; // used to add and delete textforms
   File _newPostImagePath;
 
@@ -32,6 +34,12 @@ class NewPostProvider with ChangeNotifier {
       TextEditingController(),
       TextEditingController(),
     ];
+
+    // parallel to the above so when adding the post to db, it will be easy to
+    // determine if the text was for a subtile, etc
+    // O(n) time because when looping through controllers, this can be access by
+    // calling the index
+    this._newPostFormControllerType = ["title", "subtitle", "paragraph"];
 
     this._newPostForms = [
       lessonTitle(_newPostFormControllers[0]),
@@ -49,8 +57,10 @@ class NewPostProvider with ChangeNotifier {
   /// Getters for the variables
   int get getcurrentWidgetListSize => this.currentWidgetListSize;
   List<Widget> get getNewPostWidgetList => this._newPostForms;
-  List<TextEditingController> get getFormControllers =>
+  List<TextEditingController> get getNewPostFormControllers =>
       this._newPostFormControllers;
+  List<String> get getNewPostFormControllerType =>
+      this._newPostFormControllerType;
 
   void incrementcurrentWidgetListSize() => this.currentWidgetListSize++;
   void decrementcurrentWidgetListSize() => this.currentWidgetListSize--;
@@ -69,8 +79,10 @@ class NewPostProvider with ChangeNotifier {
   void addParagraph() {
     int controllerIndex = getcurrentWidgetListSize - 1; // Index counts from 0
     this._newPostFormControllers.add(TextEditingController());
+    this._newPostFormControllerType.add("paragraph");
     this._newPostForms.add(paragraph(_newPostFormControllers[controllerIndex]));
     incrementcurrentWidgetListSize(); // increase size
+
     notifyListeners();
   }
 
@@ -79,6 +91,7 @@ class NewPostProvider with ChangeNotifier {
   void addSubtitle() {
     int controllerIndex = getcurrentWidgetListSize - 1; // Index counts from 0
     this._newPostFormControllers.add(TextEditingController());
+    this._newPostFormControllerType.add("subtitle");
     this._newPostForms.add(subTitle(_newPostFormControllers[controllerIndex]));
     incrementcurrentWidgetListSize(); // increase size
     notifyListeners();
@@ -93,6 +106,7 @@ class NewPostProvider with ChangeNotifier {
     if (getcurrentWidgetListSize > 4) {
       this._newPostForms.removeLast();
       this._newPostFormControllers.removeLast();
+      this._newPostFormControllerType.removeLast();
       decrementcurrentWidgetListSize();
       notifyListeners();
       return true;
@@ -100,16 +114,16 @@ class NewPostProvider with ChangeNotifier {
     return false;
   }
 
-  /// Convert the list items into a map
-  Map<String, String> convertToMap(
-      List<TextEditingController> textControllersList) {
-    Map<String, String> formData = {};
+  // /// Convert the list items into a map
+  // Map<String, String> convertToMap(
+  //     List<TextEditingController> textControllersList) {
+  //   Map<String, String> formData = {};
 
-    for (var i = 0; i < textControllersList.length; i++) {
-      formData[i.toString()] = textControllersList[i].text;
-    }
-    return formData;
-  }
+  //   for (var i = 0; i < textControllersList.length; i++) {
+  //     formData[i.toString()] = textControllersList[i].text;
+  //   }
+  //   return formData;
+  // }
 
   /// Go though the TextEditingController and get the text data on it
   List<String> getControllerTextDataAsList(
@@ -122,6 +136,53 @@ class NewPostProvider with ChangeNotifier {
     });
 
     return controllerTextData;
+  }
+
+  ///
+  /// It will take the parallel text controller list and the string list that
+  /// describes what the controller contains ["title", "subtitle", paragraph]
+  ///
+  /// Loop through the controllers list using indexes and also use the same index
+  /// for the type list to get the type [title, subtitle, paragraph] of the controller
+  ///
+  /// If the type is a title, map {"title" : text}
+  /// If the type is a subtitle, increase the body count because 1 subtitle is
+  /// 1 body that contains the subtitle and many paragraphs, mapped as:
+  ///         {"body1" : {"subtitle": text} }
+  /// If the next text type is a paragraph and not a subtitle, then the map inside
+  /// of the body gets an paragraph1 field, where the number after paragraoph is
+  /// the paragraph count of that subtitle:
+  ///         {"body1" : {"subtitle": text, paragraph1: text} }
+  Map<String, dynamic> mapControllerTypeWithText() {
+    var controllerText = getNewPostFormControllers;
+    var controllerTextType = getNewPostFormControllerType;
+    int bodyCount = 0;
+    int paragraphCount = 0;
+    Map<String, dynamic> typeTextPairMap = {};
+
+    for (var i = 0; i < controllerText.length; i++) {
+      var text = controllerText[i].text;
+      var type = controllerTextType[i];
+
+      if (type == "title") {
+        typeTextPairMap[type] = text;
+      } else if (type == "subtitle") {
+        ///create a inner map
+        ///Every subtitle is another body
+        bodyCount++;
+        paragraphCount = 0; // start of a paragraph
+        typeTextPairMap["body" + bodyCount.toString()] = {"subtitle": text};
+      }
+
+      /// body
+      else {
+        paragraphCount++;
+        typeTextPairMap["body" + bodyCount.toString()]
+            ["paragraph" + paragraphCount.toString()] = text;
+      }
+    }
+    print(typeTextPairMap);
+    return typeTextPairMap;
   }
 
   /// Upload the image for the lesson using the lessons uid as its name and return
@@ -140,15 +201,51 @@ class NewPostProvider with ChangeNotifier {
     /// Return the download url
   }
 
-  /// Takes in the users uid, name and the number of lessons created
-  /// Uploads the new post into Firestore using the names
+  // /// Takes in the users uid, name and the number of lessons created
+  // /// Uploads the new post into Firestore using the names
+  // Future<void> post(String uid, String name, int lessonCreated) async {
+  //   lessonCreated++; // increment # of lessons user created, cant do it when adding to database
+
+  //   /// Reference the document where the data will be placed
+  //   /// Leaving document empty generates a random id
+  //   var databaseRef = _database.collection("lessons").document();
+  //   var postContentsMap =
+  //       getControllerTextDataAsList(getNewPostFormControllers);
+  //   var imageUrl = await uploadImageAndGetDownloadUrl(
+  //       getNewPostImageFile, databaseRef.documentID);
+
+  //   var newLesson = {
+  //     "ownerUid": uid,
+  //     "ownerName": name,
+  //     "createdOn": DateTime.now().toString(),
+  //     "likes": 0,
+  //     "imageUrl": imageUrl,
+  //     "postContents": postContentsMap
+  //   };
+
+  //   /// Add the data into the refernece document made earlier
+  //   await databaseRef.setData(newLesson);
+
+  //   await _database
+  //       .collection("users")
+  //       .document(uid)
+  //       .setData({"lesson_created": lessonCreated}, merge: true);
+
+  //   resetFields(); //!
+  //   print("All Done"); //!
+  // }
+
+  // Version 2, adding as a map instead of an array
+
   Future<void> post(String uid, String name, int lessonCreated) async {
     lessonCreated++; // increment # of lessons user created, cant do it when adding to database
 
     /// Reference the document where the data will be placed
     /// Leaving document empty generates a random id
-    var databaseRef = _database.collection("lessons").document();
-    var postContentsArray = getControllerTextDataAsList(getFormControllers);
+    var databaseRef = _database.collection("testing").document();
+    var postContentsMap = mapControllerTypeWithText();
+    var newPostTitle = postContentsMap["title"];
+    postContentsMap.remove("title"); // remove the title, no var because it returns the value
     var imageUrl = await uploadImageAndGetDownloadUrl(
         getNewPostImageFile, databaseRef.documentID);
 
@@ -158,7 +255,8 @@ class NewPostProvider with ChangeNotifier {
       "createdOn": DateTime.now().toString(),
       "likes": 0,
       "imageUrl": imageUrl,
-      "postContents": postContentsArray
+      "title": newPostTitle,
+      "postContents": postContentsMap
     };
 
     /// Add the data into the refernece document made earlier
@@ -167,7 +265,8 @@ class NewPostProvider with ChangeNotifier {
     await _database
         .collection("users")
         .document(uid)
-        .setData({"lesson_created": lessonCreated++}, merge: true);
+        .setData({"lesson_created": lessonCreated}, merge: true);
+
     resetFields(); //!
     print("All Done"); //!
   }
@@ -176,7 +275,6 @@ class NewPostProvider with ChangeNotifier {
     this._newPostFormControllers.forEach((controller) {
       controller.dispose();
     });
-
 
     this._newPostFormControllers = [
       TextEditingController(),
