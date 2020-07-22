@@ -17,9 +17,9 @@ class PostExpanded extends StatelessWidget {
         height: screenSize.height,
         child: SingleChildScrollView(
           child: Column(
-            children: postData.getPostContents.map((data) {
-              return Text(data);
-            }).toList(),
+            children: <Widget> [
+              Text("Nothing yet")
+            ]
           ),
         ),
       ),

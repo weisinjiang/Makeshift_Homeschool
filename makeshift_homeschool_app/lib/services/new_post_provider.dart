@@ -242,7 +242,7 @@ class NewPostProvider with ChangeNotifier {
 
     /// Reference the document where the data will be placed
     /// Leaving document empty generates a random id
-    var databaseRef = _database.collection("testing").document();
+    var databaseRef = _database.collection("lessons").document();
     var postContentsMap = mapControllerTypeWithText();
     var newPostTitle = postContentsMap["title"];
     postContentsMap.remove("title"); // remove the title, no var because it returns the value

@@ -7,7 +7,9 @@ import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
 import 'package:provider/provider.dart';
 
 /// Study screen where lessons are retrieved from the database and posted
-///
+/// The collection "lessons" from Firestore will be passed onto this widget
+/// from a Provider outside of the class to prevent the stream from being called
+/// multiple times
 
 class StudyPage extends StatelessWidget {
   final Stream<QuerySnapshot> collectionStream;
@@ -23,10 +25,11 @@ class StudyPage extends StatelessWidget {
           stream: collectionStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              var documentData = snapshot
-                  .data.documents; // All documents in Lessons collection
+              // contains every document in Lessons
+              var documentData = snapshot.data.documents;
 
-              // For each, convert them into a Post in a list
+              /// Convert the query snapshot from the database into a list of
+              /// posts by assigning values into a Post object
               var postList = documentData.map<Post>((doc) {
                 var post = Post();
                 post.setCreatedOn = doc["createdOn"];
@@ -34,18 +37,20 @@ class StudyPage extends StatelessWidget {
                 post.setLikes = doc["likes"];
                 post.setOwnerName = doc["ownerName"];
                 post.setOwnerUid = doc["ownerUid"];
+                post.setTitle = doc["title"];
                 post.setPostContents = doc["postContents"];
                 return post;
               }).toList();
+              print("POST LIST");
+              print(postList[0].getTitle);
 
               /// Show it
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      
                         crossAxisCount: 2,
-                        childAspectRatio: 3/2,
+                        childAspectRatio: 3 / 2,
                         mainAxisSpacing: screenSize.height * 0.05,
                         crossAxisSpacing: screenSize.width * 0.05),
                     itemCount: postList.length,
