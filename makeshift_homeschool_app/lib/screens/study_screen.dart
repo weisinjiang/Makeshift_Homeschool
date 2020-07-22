@@ -47,12 +47,9 @@ class StudyPage extends StatelessWidget {
               /// Show it
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 3 / 2,
-                        mainAxisSpacing: screenSize.height * 0.05,
-                        crossAxisSpacing: screenSize.width * 0.05),
+                child: ListView.separated(
+                  padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
+                    separatorBuilder: (context, int index) => const Divider(),
                     itemCount: postList.length,
                     itemBuilder: (_, index) =>
                         PostThumbnail(postData: postList[index])),

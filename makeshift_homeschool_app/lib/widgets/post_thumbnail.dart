@@ -15,68 +15,23 @@ class PostThumbnail extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return InkWell(
+      /// On tap, the screen moves to an expanded post screen
       onTap: () => Navigator.push(context,SlideLeftRoute(screen: PostExpanded(postData: postData,))),
       child: Container(
-        width: screenSize.width * 0.50,
+        width: screenSize.width * 0.40,
         height: screenSize.height * 0.30,
+        /// Box decoration for the shape of the container and the image that
+        /// goes inside of it
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black)
+          borderRadius: BorderRadius.circular(30.0),
+          border: Border.all(color: Colors.black, width: 3),
+          image: DecorationImage(image: NetworkImage(postData.getImageUrl), fit: BoxFit.cover)
         ),
-        child: Stack(
-          children: [
-            /// Container to contain the image and takes up the entire container
-            /// using a FittedBox. Also used Opacity to lower the image so words
-            /// can be seen
-
-        
-            Opacity(
-                  opacity: 0.85,
-                  child: Image.network(
-                    postData.getImageUrl,
-                    fit: BoxFit.cover,
-                  )),
-
-            /// Same container size as above, but this had a column with text
-            /// The column helps the text be flexiable and take up the entie
-            /// container if the title gets too long
-            /// Shadow helps with a black background
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Flexible(
-                  child: Center(
-                    child: Text(
-                      postData.getTitle,
-                      style: TextStyle(
-                          color: kGreenPrimary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          shadows: [
-                            Shadow(
-                                // bottomLeft
-                                offset: Offset(-1.5, -1.5),
-                                color: Colors.black),
-                            Shadow(
-                                // bottomRight
-                                offset: Offset(1.5, -1.5),
-                                color: Colors.black),
-                            Shadow(
-                                // topRight
-                                offset: Offset(1.5, 1.5),
-                                color: Colors.black),
-                            Shadow(
-                                // topLeft
-                                offset: Offset(-1.5, 1.5),
-                                color: Colors.black),
-                          ]),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+        /// Title of the post
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: FittedBox(child: strokeText(postData.getTitle)),
+        )
       ),
     );
   }

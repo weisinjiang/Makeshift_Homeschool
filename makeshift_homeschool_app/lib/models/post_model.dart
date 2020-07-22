@@ -1,4 +1,3 @@
-
 class Post {
   int likes; // Database stored as a string, needs to convert
   String _imageUrl;
@@ -28,6 +27,8 @@ class Post {
   String get getOwnerUid => this._ownerUid;
   Map<String, dynamic> get getPostContents => this._postContents;
 
+
+
   //Setters
   set setLikes(int likes) => this.likes = likes;
   set setTitle(String title) => this._title = title;
@@ -37,5 +38,5 @@ class Post {
   set setOwnerUid(String uid) => this._ownerUid = uid;
   set setPostContents(Map<String, dynamic> contents) =>
       this._postContents = contents;
- 
+
 }
