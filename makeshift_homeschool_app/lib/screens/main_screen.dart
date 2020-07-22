@@ -20,7 +20,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   Stream<DocumentSnapshot> userDataStream;
-   Stream<QuerySnapshot> collectionStream;
+  Stream<QuerySnapshot> collectionStream;
   var _isInThisWidget = true;
   var _isLoadingPostThumbnails = false;
 
@@ -31,6 +31,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
   }
 
+  ///!
   @override
   void didChangeDependencies() {
     print("Inside didCHANGE");
@@ -55,120 +56,107 @@ class _MainScreenState extends State<MainScreen> {
     print("BUILDING");
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
+    var userData = Provider.of<AuthProvider>(context).getUser;
 
-    return StreamBuilder(
-      stream: userDataStream,
-      builder: (context, snapshot) {
-        if (snapshot.hasData || snapshot.hasError) {
-          var userData = snapshot.data;
-          return Scaffold(
-              appBar: AppBar(
-                //title: Text("Hi, Testing!"),
-                elevation: 0.0,
-                actions: <Widget>[
-                  IconButton(
-                      // User profile
-                      icon: Icon(Icons.person_outline),
-                      onPressed: () => Navigator.push(
-                          context, SlideLeftRoute(screen: ProfileScreen())))
-                ],
+    return Scaffold(
+        appBar: AppBar(
+          //title: Text("Hi, Testing!"),
+          elevation: 0.0,
+          actions: <Widget>[
+            IconButton(
+                // User profile
+                icon: Icon(Icons.person_outline),
+                onPressed: () => Navigator.push(
+                    context, SlideLeftRoute(screen: ProfileScreen())))
+          ],
 
-                title: Text("Hi, ${userData["username"]}!"),
-              ),
-              body: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [
-                              kGreenSecondary,
-                              kGreenSecondary_analogous1
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter),
-                      ),
-                      height: screenHeight,
-                      width: screenWidth,
-                      //color: kGreenSecondary,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            /// What do you want to do today? Greet image
-                            Container(
-                              height: screenHeight * 0.25,
-                              width: screenWidth,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Image.asset('asset/images/greet.png'),
-                              ),
-                            ),
+          title: Text("Hi, ${userData["username"]}!"),
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [kGreenSecondary, kGreenSecondary_analogous1],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter),
+          ),
+          height: screenHeight,
+          width: screenWidth,
+          //color: kGreenSecondary,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                /// What do you want to do today? Greet image
+                Container(
+                  height: screenHeight * 0.25,
+                  width: screenWidth,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image.asset('asset/images/greet.png'),
+                  ),
+                ),
 
-                            // Boot camp
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: ActivityButton(
-                                color: kGreenSecondary_analogous2,
-                                height: screenHeight * 0.20,
-                                width: screenWidth,
-                                function: () {},
-                                canUseButton: true,
-                                name: "Boot Camp",
-                                imageLocation: "asset/images/campFire.png",
-                              ),
-                            ),
+                // Boot camp
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ActivityButton(
+                    color: kGreenSecondary_analogous2,
+                    height: screenHeight * 0.20,
+                    width: screenWidth,
+                    function: () {},
+                    canUseButton: true,
+                    name: "Boot Camp",
+                    imageLocation: "asset/images/campFire.png",
+                  ),
+                ),
 
-                            FittedBox(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  // Study
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ActivityButton(
-                                      color: kGreenSecondary_analogous2_shade,
-                                      height: screenHeight * 0.10,
-                                      width: screenWidth / 2,
-                                      canUseButton: true,
-                                      function: () => Navigator.push(context,
-                                          SlideLeftRoute(screen: StudyPage(collectionStream: collectionStream,))),
-                                      name: "Study",
-                                      imageLocation: "asset/images/books.png",
-                                    ),
-                                  ),
-
-                                  // Teach
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ActivityButton(
-                                      color: kGreenSecondary_analogous2_shade,
-                                      height: screenHeight * 0.10,
-                                      width: screenWidth / 2,
-                                      canUseButton: (userData["level"] ==
-                                                  "Tutor" ||
-                                              userData["level"] == "Professor")
-                                          ? true
-                                          : false,
-                                      function: () => Navigator.push(
-                                          context,
-                                          SlideLeftRoute(
-                                              screen: NewPostScreen())),
-                                      name: "Teach",
-                                      imageLocation: "asset/images/teach.png",
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                FittedBox(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      // Study
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ActivityButton(
+                          color: kGreenSecondary_analogous2_shade,
+                          height: screenHeight * 0.10,
+                          width: screenWidth / 2,
+                          canUseButton: true,
+                          function: () => Navigator.push(
+                              context,
+                              SlideLeftRoute(
+                                  screen: StudyPage(
+                                collectionStream: collectionStream,
+                              ))),
+                          name: "Study",
+                          imageLocation: "asset/images/books.png",
                         ),
                       ),
-                    )
-                  );
-        } else {
-          return LoadingScreen();
-        }
-      },
-    );
+
+                      // Teach
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ActivityButton(
+                          color: kGreenSecondary_analogous2_shade,
+                          height: screenHeight * 0.10,
+                          width: screenWidth / 2,
+                          canUseButton: (userData["level"] == "Tutor" ||
+                                  userData["level"] == "Professor")
+                              ? true
+                              : false,
+                          function: () => Navigator.push(
+                              context, SlideLeftRoute(screen: NewPostScreen())),
+                          name: "Teach",
+                          imageLocation: "asset/images/teach.png",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }

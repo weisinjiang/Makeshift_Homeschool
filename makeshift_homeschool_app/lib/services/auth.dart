@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-
 class AuthProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance; // Connect to Firestore
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -15,11 +14,12 @@ class AuthProvider with ChangeNotifier {
   FirebaseUser _user; // User information
 
   bool authenticated = false;
-  Future<Map<String, String>> userInformation;
+  Map<String, String> _userInformation;
 
   bool get isAuthenticated => authenticated;
   FirebaseUser get getUserData => _user;
   String get getUserID => _user.uid;
+  Map<String, String> get getUser => _userInformation;
 
   // Get current Firebase User. Used to see if user data is still valid
   // Not async because it is used after user has logged in and exit the app
@@ -31,7 +31,7 @@ class AuthProvider with ChangeNotifier {
           email: email, password: password);
       _user = result.user;
       authenticated = true;
-      userInformation = getUserInformation();
+      await getUserInformation().then((value) => _userInformation = value);
       notifyListeners();
       return true;
     } catch (error) {
@@ -140,8 +140,9 @@ class AuthProvider with ChangeNotifier {
   // }
 
   Future<void> signOut() async {
-    _auth.signOut();
+    await _auth.signOut();
     authenticated = false;
+    _userInformation =
     _user = null;
     notifyListeners();
     // return Future.delayed(Duration.zero);

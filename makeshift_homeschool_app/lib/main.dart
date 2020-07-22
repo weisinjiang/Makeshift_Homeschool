@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/main_screen.dart';
+import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
@@ -38,17 +39,16 @@ class MyApp extends StatelessWidget {
                 primaryColor: kGreenSecondary,
                 textTheme:
                     GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
-            home:
-                //PostThumbnail(),
-                auth.isAuthenticated ? MainScreen() : LoginScreen(),
-            // routes: {
-            //   '/login': (context) => LoginScreen(), // Root Screen
-            //   //'/root': (context) => RootScreen(),
-            //   '/main': (context) => MainScreen(),
-            //   '/about': (context) => AboutScreen(),
-            //   '/home': (context) => HomeScreen(),
-            //   //'/profile': (context) => ProfileScreen(),
-            // },
+            home: auth.isAuthenticated ? MainScreen() : LoginScreen(),
+            routes: {
+              '/login': (context) => LoginScreen(), // Root Screen
+              //'/root': (context) => RootScreen(),
+              '/main': (context) => MainScreen(),
+              '/about': (context) => AboutScreen(),
+              '/study': (context) => StudyPage(),
+              '/mainScreen': (context) => MainScreen(),
+              '/profile': (context) => ProfileScreen(),
+            },
           ),
         ));
   }

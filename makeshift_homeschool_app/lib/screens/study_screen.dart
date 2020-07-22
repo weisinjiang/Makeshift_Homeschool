@@ -41,8 +41,6 @@ class StudyPage extends StatelessWidget {
                 post.setPostContents = doc["postContents"];
                 return post;
               }).toList();
-              print("POST LIST");
-              print(postList[0].getTitle);
 
               /// Show it
               return Padding(
