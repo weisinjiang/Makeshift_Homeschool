@@ -1,97 +1,162 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:makeshift_homeschool_app/screens/export_screens.dart';
+import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
+import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
+import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/shared/constants.dart';
+import 'package:makeshift_homeschool_app/shared/exportShared.dart';
+import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
+import 'package:makeshift_homeschool_app/widgets/activity_button.dart';
+import 'package:makeshift_homeschool_app/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
-import 'export_screens.dart'; // Access to all the screens
 
-
-/// Root Screen has access to every screen that is in the bottom navigation
-/// Controls which page shows by using an IndexedStack and the pages index num
-
+/// Builds the main screen where the user can pick what activities they want to
+/// do: Study, Teach
 class RootScreen extends StatefulWidget {
   @override
   _RootScreenState createState() => _RootScreenState();
 }
 
 class _RootScreenState extends State<RootScreen> {
-  int _currentPageIndex = 0; //Home will be the first page
-  static const Map<int, String> _pageNames = {
-    0: "Makeshift Homeschool",
-    1: "New Post",
-    2: "Notifications",
-    3: "Profile"
-  };
+  Stream<QuerySnapshot> collectionStream;
+  Map<String, String> userData;
+  var _isInThisWidget = true; // makes sure getting the providers only execute once
+  var _isLoadingPostThumbnails = false; // loading the lessons 
 
-  // Change the index when a new page is selected
-  void switchPage(int index) {
-    setState(() {
-      _currentPageIndex = index;
-    });
+  @override
+  void initState() {
+    //userDataStream = Provider.of<AuthProvider>(context).userDataStream();
+    //print("UserDataStreamCalled");
+    super.initState();
+  }
+
+  ///!
+  @override
+  void didChangeDependencies() {
+    print("Inside didCHANGE");
+    if (_isInThisWidget) {
+      setState(() {
+        print("Setting loading t true");
+        _isLoadingPostThumbnails = true;
+      });
+      print("Getting collection stream");
+      collectionStream =
+          Provider.of<PostFeedProvider>(context).lessonsCollectionStream();
+      print("Getting user data");
+      userData = Provider.of<AuthProvider>(context).getUser;
+      print("Setting isin to false");
+      _isInThisWidget = false;
+    }
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    var auth = Provider.of<AuthProvider>(context);
-    var user = auth.getUserData;
-    return Scaffold(
-      appBar: AppBar(
-        // display name based on the index paired to a name in the map
-        title: Text("${_pageNames[_currentPageIndex]}"),
-        backgroundColor: Colors.green[300],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
-        backgroundColor: Colors.black,
-        iconSize: 15,
-        selectedItemColor: Colors.greenAccent,
-        currentIndex: _currentPageIndex,
-        items: [
-          // Bottom nav screen options. Matches with the IndexedStack
-          BottomNavigationBarItem(
-              title: Text("Study"),
-              icon: Icon(FontAwesomeIcons.bookOpen),
-              backgroundColor: Colors.black),
-          BottomNavigationBarItem(
-              title: Text("Post"),
-              icon: Icon(FontAwesomeIcons.pencilAlt),
-              backgroundColor: Colors.black),
-          BottomNavigationBarItem(
-              title: Text("Notifications"),
-              icon: Icon(FontAwesomeIcons.bell),
-              backgroundColor: Colors.black),
-          BottomNavigationBarItem(
-              title: Text("Profile"),
-              icon: Icon(FontAwesomeIcons.user),
-              backgroundColor: Colors.black),
-        ].toList(),
-        onTap: switchPage,
-      ),
-      body: IndexedStack(
-        // Only 1 page of the list will show based on index
-        index: _currentPageIndex, // current page displaying on screen
-        children: <Widget>[
-          // list of all the screens
-          HomeScreen(),
-          PlaceHolder(Colors.red),
-          PlaceHolder(Colors.red),
-          ProfileScreen()
-        ],
-      ),
-    );
-  }
-}
+    print("BUILDING");
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenWidth = MediaQuery.of(context).size.width;
 
-// Delete after all pages are done
-class PlaceHolder extends StatelessWidget {
-  final Color color;
+    /// upon signout, userData will be set to null. This conditional is so
+    /// that when users signout, an error wont be thrown
+    if (userData != null) {
+      return Scaffold(
+          appBar: AppBar(
+            elevation: 0.0,
+            title: Text("Hi, ${userData["username"]}!"),
+          ),
+          endDrawer: AppDrawer(
+            userData: userData,
+          ),
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [kGreenSecondary, kGreenSecondary_analogous1],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter),
+            ),
+            height: screenHeight,
+            width: screenWidth,
+            //color: kGreenSecondary,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  /// What do you want to do today? Greet image
+                  Container(
+                    height: screenHeight * 0.25,
+                    width: screenWidth,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Image.asset('asset/images/greet.png'),
+                    ),
+                  ),
 
-  PlaceHolder(this.color);
+                  // Boot camp
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ActivityButton(
+                      color: kGreenSecondary_analogous2,
+                      height: screenHeight * 0.20,
+                      width: screenWidth,
+                      function: () {},
+                      canUseButton: true,
+                      name: "Boot Camp",
+                      imageLocation: "asset/images/campFire.png",
+                    ),
+                  ),
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: color,
-    );
+                  FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        // Study
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ActivityButton(
+                            color: kGreenSecondary_analogous2_shade,
+                            height: screenHeight * 0.10,
+                            width: screenWidth / 2,
+                            canUseButton: true,
+                            function: () => Navigator.push(
+                                context,
+                                SlideLeftRoute(
+                                    screen: StudyScreen(
+                                  collectionStream: collectionStream,
+                                ))),
+                            name: "Study",
+                            imageLocation: "asset/images/books.png",
+                          ),
+                        ),
+
+                        // Teach
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ActivityButton(
+                            color: kGreenSecondary_analogous2_shade,
+                            height: screenHeight * 0.10,
+                            width: screenWidth / 2,
+                            canUseButton: (userData["level"] == "Tutor" ||
+                                    userData["level"] == "Professor")
+                                ? true
+                                : false,
+                            function: () => Navigator.push(context,
+                                SlideLeftRoute(screen: NewPostScreen())),
+                            name: "Teach",
+                            imageLocation: "asset/images/teach.png",
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ));
+    } else {
+      return LoadingScreen();
+    }
   }
 }

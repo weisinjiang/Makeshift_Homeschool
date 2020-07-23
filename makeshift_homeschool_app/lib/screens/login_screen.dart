@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/screens/main_screen.dart';
+import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
 import 'package:provider/provider.dart';
 import '../services/auth.dart';
@@ -9,7 +9,7 @@ import '../models/user_auth_model.dart';
 //Page will change if user is logging in or signing up
 enum AuthMode { Signup, Login }
 
-class LoginScreen extends StatefulWidget{
+class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -21,8 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   AuthMode _authMode = AuthMode.Login; // Signup or login page
 
-  UserAuth _userInput =
-      UserAuth(); // Stores user info and validates it
+  UserAuth _userInput = UserAuth(); // Stores user info and validates it
 
   // Dropdown list for referal section
   Set<String> _referalList = {
@@ -35,8 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
     "Other"
   };
   String _referalSelected = "";
-
-
 
   void _showErrorMessage(String message) {
     showDialog(
@@ -76,7 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
   ///***************************************************************************
 
   Future<void> _submit(AuthProvider auth) async {
-
     if (!_formKey.currentState.validate()) {
       // Validation failed
       return;
@@ -90,15 +86,18 @@ class _LoginScreenState extends State<LoginScreen> {
             await auth.signIn(_userInput.getEmail, _userInput.getPassword);
 
         if (result == true) {
-          Navigator.pushReplacement(context, ScaleRoute(screen: MainScreen()));
+          Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
         }
 
-      // User Sign up
+        // User Sign up
       } else {
-        var result = await auth.signUp(_userInput.getEmail,
-            _userInput.getPassword, _userInput.getUsername, _userInput.getReferral);
+        var result = await auth.signUp(
+            _userInput.getEmail,
+            _userInput.getPassword,
+            _userInput.getUsername,
+            _userInput.getReferral);
         if (result == true) {
-          Navigator.pushReplacement(context, ScaleRoute(screen: MainScreen()));
+          Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
         }
       }
       _formKey.currentState.reset(); // Clear the form when logged in
@@ -130,8 +129,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     return null;
   }
-
-
 
   /// **************************************************************************
   /// Build UI Method                                                          *
@@ -220,8 +217,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.vertical()),
                         ),
-                        validator: (userPasswordInput) =>
-                            _userInput.validatePassword(userPasswordInput),
+                        validator: (userPasswordInput) {
+                          if (_authMode == AuthMode.Signup) {
+                            return _userInput.validatePassword(userPasswordInput);
+                          }
+                          return null;
+                        },
                         onSaved: (userPasswordInput) =>
                             _userInput.setPassword = userPasswordInput,
                       ),
@@ -266,14 +267,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               // ref changed, save the value
                               setState(() {
                                 _referalSelected = changedDropdownItem;
-                                if (changedDropdownItem != "Other") { // Set the ref if it is not "Other"
+                                if (changedDropdownItem != "Other") {
+                                  // Set the ref if it is not "Other"
                                   _userInput.setReferal = changedDropdownItem;
                                 }
                               });
                             }),
                       ),
 
-                      // If referral is Other, have the user give us where they found us and save it 
+                      // If referral is Other, have the user give us where they found us and save it
                       if (_referalSelected == "Other")
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -289,7 +291,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 _userInput.setReferal = userRefInput,
                           ),
                         ),
-                      
                     ],
                     Align(
                       alignment: Alignment.centerRight,
@@ -317,7 +318,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               : "Sign up"),
                           color: kGreenPrimary,
                           onPressed: () async {
-                            _submit(auth); // pass auth object into the function for access
+                            _submit(
+                                auth); // pass auth object into the function for access
                           },
                         ),
                       ),

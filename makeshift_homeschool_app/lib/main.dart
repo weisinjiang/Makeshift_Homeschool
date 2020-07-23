@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
-import 'package:makeshift_homeschool_app/screens/main_screen.dart';
+import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
@@ -39,14 +39,12 @@ class MyApp extends StatelessWidget {
                 primaryColor: kGreenSecondary,
                 textTheme:
                     GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
-            home: auth.isAuthenticated ? MainScreen() : LoginScreen(),
+            home: auth.isAuthenticated ? RootScreen() : LoginScreen(),
             routes: {
-              '/login': (context) => LoginScreen(), // Root Screen
-              //'/root': (context) => RootScreen(),
-              '/main': (context) => MainScreen(),
+              '/login': (context) => LoginScreen(), 
+              '/root': (context) => RootScreen(),
               '/about': (context) => AboutScreen(),
-              '/study': (context) => StudyPage(),
-              '/mainScreen': (context) => MainScreen(),
+              '/study': (context) => StudyScreen(),
               '/profile': (context) => ProfileScreen(),
             },
           ),

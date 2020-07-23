@@ -11,10 +11,10 @@ import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
 /// from a Provider outside of the class to prevent the stream from being called
 /// multiple times
 
-class StudyPage extends StatelessWidget {
+class StudyScreen extends StatelessWidget {
   final Stream<QuerySnapshot> collectionStream;
 
-  const StudyPage({Key key, this.collectionStream}) : super(key: key);
+  const StudyScreen({Key key, this.collectionStream}) : super(key: key);
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
