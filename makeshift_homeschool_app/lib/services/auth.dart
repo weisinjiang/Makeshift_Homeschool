@@ -11,7 +11,7 @@ class AuthProvider with ChangeNotifier {
 
   //Firebase User Information
   FirebaseAuth _auth = FirebaseAuth.instance; //Status of the authentication
-  FirebaseUser _user; // User information
+  FirebaseUser _user; // User's uid;
 
   bool authenticated = false;
   Map<String, String> _userInformation;
@@ -128,19 +128,11 @@ class AuthProvider with ChangeNotifier {
     return true;
   }
 
-  // Future<FirebaseUser> getCurrentUser() async {
-  //   FirebaseUser user = await _firebaseAuth.currentUser();
-  //   await user.reload();
-  //   return user;
-  // }
-
-  // Future<String> get getCurrentUserName async {
-  //   FirebaseUser user = await _firebaseAuth.currentUser();
-  //   return user.displayName.toString();
-  // }
-
   Future<void> signOut() async {
     authenticated = false;
+    _auth.signOut();
+    _user = null;
+    _userInformation = null;
     notifyListeners();
     // return Future.delayed(Duration.zero);
   }

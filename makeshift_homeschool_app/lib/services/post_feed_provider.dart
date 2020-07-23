@@ -31,9 +31,8 @@ class PostFeedProvider with ChangeNotifier {
       post.setOwnerName = doc["ownerName"];
       post.setOwnerUid = doc["ownerUid"];
       post.setPostContents = doc["postContents"];
-
       data.add(post);
-      print("POST EXECUTED"); //!!!!!!!!
+  
     });
     _posts = data;
     notifyListeners();

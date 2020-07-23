@@ -90,10 +90,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               RaisedButton(
                 color: Colors.redAccent,
                 child: Text("Sign out"),
-                onPressed: () async {
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/login', (route) => false);
-                  await Provider.of<AuthProvider>(context, listen: false).signOut();
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacementNamed("/login");
+                  Provider.of<AuthProvider>(context, listen: false).signOut();
                 },
               ),
 
