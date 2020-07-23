@@ -88,6 +88,9 @@ class _LoginScreenState extends State<LoginScreen> {
         if (result == true) {
           Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
         }
+        else {
+          _showErrorMessage("Email or Password is incorrect or does not exist");
+        }
 
         // User Sign up
       } else {
@@ -112,7 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
       if (error.contains("ERROR_USER_NOT_FOUND")) {
         messageForUser = "Account does not exists";
       } else if (error.contains("ERROR_EMAIL_ALREADY_IN_USE")) {
-        messageForUser = "Email already exist";
+        messageForUser = "Email already exist, please use a different email";
+      } else if (error.contains("ERROR_INVALID_EMAIL") || error.contains("ERROR_WRONG_PASSWORD")) {
+        messageForUser = "Email or Password is incorrect";
       }
 
       _showErrorMessage(exception.toString());
@@ -219,7 +224,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (userPasswordInput) {
                           if (_authMode == AuthMode.Signup) {
-                            return _userInput.validatePassword(userPasswordInput);
+                            return _userInput
+                                .validatePassword(userPasswordInput);
                           }
                           return null;
                         },
