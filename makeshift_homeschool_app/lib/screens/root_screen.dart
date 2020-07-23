@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/screens/bootcamp_screen.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
@@ -100,7 +101,8 @@ class _RootScreenState extends State<RootScreen> {
                       color: kGreenSecondary_analogous2,
                       height: screenHeight * 0.20,
                       width: screenWidth,
-                      function: () {},
+                      function: () => Navigator.push(context,
+                                SlideLeftRoute(screen: BootCampScreen())),
                       canUseButton: true,
                       name: "Boot Camp",
                       imageLocation: "asset/images/campFire.png",

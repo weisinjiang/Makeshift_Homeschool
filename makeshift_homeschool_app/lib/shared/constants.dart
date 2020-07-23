@@ -34,28 +34,4 @@ const kGridOverViewTextStyle = TextStyle(
   color: kGreenPrimary,
 );
 
-Widget strokeText(String text) {
-  return Stack(
-    children: <Widget>[
-      // Stroked text as border.
-      Text(
-        text,
-        style: TextStyle(
-          fontSize: 20,
-          foreground: Paint()
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 4
-            ..color = Colors.black,
-        ),
-      ),
-      // Solid text as fill.
-      Text(
-        text,
-        style: TextStyle(
-          fontSize: 20,
-          color: kGreenPrimary,
-        ),
-      ),
-    ],
-  );
-}
+
