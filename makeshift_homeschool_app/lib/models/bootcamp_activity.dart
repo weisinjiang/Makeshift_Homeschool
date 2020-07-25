@@ -136,8 +136,6 @@ class BootCampActivity {
       }
     }
 
-    print(widgetList.toString());
-
     return Container(
       width: screenSize.width,
       child: Wrap(
