@@ -94,8 +94,10 @@ class _BootCampScreenState extends State<BootCampScreen> {
                     Container(
                       height: screenHeight * 0.60,
                       width: screenWidth,
-                      child: ListView(
-                        children: activitiesList,
+                      child: ListView.builder(  
+                        padding: const EdgeInsets.all(10.0),
+                        itemCount: activities.length,
+                        itemBuilder: (context, index) => BootCampListTile(activity: activities[index],),
                       ),
                     ),
                   ],
