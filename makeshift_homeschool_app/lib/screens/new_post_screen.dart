@@ -114,19 +114,20 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      FlatButton(
+                      RaisedButton(
                           onPressed: () => newPostProvider.addParagraph(),
                           child: Text("+ Paragraph")),
 
                       // AddSubtile
-                      FlatButton(
+                      RaisedButton(
                           onPressed: () => newPostProvider.addSubtitle(),
                           child: Text("+ Subtitle")),
 
                       //Remove last widget
-                      FlatButton(
+                      RaisedButton(
                           onPressed: () {
                             var isAbleToRemove =
                                 newPostProvider.removeLastTextForm();

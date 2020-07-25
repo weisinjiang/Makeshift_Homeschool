@@ -55,7 +55,7 @@ Widget paragraph(TextEditingController controller) {
     child: TextFormField(
       controller: controller,
       style: kParagraphTextStyle,
-      keyboardType: TextInputType.multiline,
+      keyboardType: TextInputType.text,
       maxLines: null,
       decoration: const InputDecoration(
         hintText: "Add a Paragraph",
