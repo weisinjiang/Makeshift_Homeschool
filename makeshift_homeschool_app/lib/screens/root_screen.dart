@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/bootcamp_screen.dart';
+import 'package:makeshift_homeschool_app/screens/completed_letters.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
@@ -153,7 +154,25 @@ class _RootScreenState extends State<RootScreen> {
                       ],
                     ),
                   ),
+
+                  const SizedBox(height: 40,),
+
+                  // Saved letters
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: ActivityButton(
+                      color: kGreenSecondary,
+                      height: screenHeight * 0.10,
+                      width: screenWidth,
+                      function: () => Navigator.push(context,
+                                SlideLeftRoute(screen: CompletedLetters())),
+                      canUseButton: true,
+                      name: "Saved Letters",
+                      imageLocation: "asset/images/letter.png",
+                    ),
+                  ),
                 ],
+                
               ),
             ),
           ));
