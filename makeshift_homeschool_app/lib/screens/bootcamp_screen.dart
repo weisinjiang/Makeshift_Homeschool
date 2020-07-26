@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/bootcamp_activity.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
+import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/loadingScreen.dart';
@@ -36,7 +37,7 @@ class _BootCampScreenState extends State<BootCampScreen> {
       });
       print("BOOTCAMP: Getting Future List");
       bootCampActivities =
-          Provider.of<BootCampProvider>(context).getBootCampActivities();
+          Provider.of<BootCampData>(context).getBootCampActivities();
       print("BOOTCAMP: Setting isin to false");
       userData = Provider.of<AuthProvider>(context).getUser;
       _isInThisWidget = false;
@@ -61,13 +62,7 @@ class _BootCampScreenState extends State<BootCampScreen> {
           future: bootCampActivities,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              var activities = snapshot.data;
-              List<Widget> activitiesList = [];
-              activities.forEach((activity) {
-                activitiesList.add(
-                  BootCampListTile(activity: activity,)
-                );
-              });
+              List<BootCampActivity> activities = snapshot.data;
               return Container(
                 height: screenHeight,
                 width: screenWidth,

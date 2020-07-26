@@ -74,6 +74,19 @@ class BootCampActivity {
     return onlyText;
   }
 
+  /// Returns the content of field with user input replaced as <>
+  String getContentAsStringWithBrackets(String field) {
+    var text = this.template[field];
+    var matchedCases = getUserinputMatches(text);
+
+    /// For each match, replace it in the original text with <>
+    matchedCases.forEach((matchString) {
+      text = text.replaceAll(matchString, "<>");
+    });
+
+    return text;
+  }
+
   List<String> getUserinputMatches(String str) {
     /// Matches userinput format in Firestore: <questions?>
     var matchUserinputFormatting = RegExp(r"(<[\w+ ]*.?>)");

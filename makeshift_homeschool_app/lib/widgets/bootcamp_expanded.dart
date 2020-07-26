@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/bootcamp_activity.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
+import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
+import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -13,11 +15,8 @@ class BootCampExpanded extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     var userData = Provider.of<AuthProvider>(context).getUser;
-    Map<String, String> fiveResponse = {};
-
-    /// Controlls the text input for the 5 responses
-    List<TextEditingController> fiveResponseController = List(5);
-    fiveResponseController.fillRange(0, 5, TextEditingController());
+    BootCampProvider activityWidget = BootCampProvider(activity: activity);
+    activityWidget.constructAllFields(screenSize); // construct the widget list
 
     return Scaffold(
       appBar: AppBar(
@@ -44,51 +43,27 @@ class BootCampExpanded extends StatelessWidget {
                         image: AssetImage("asset/gif/${activity.id}.gif"),
                         fit: BoxFit.fill)),
               ),
-              SizedBox(
+              const SizedBox(
+                height: 30,
+              ),
+              activityWidget.buildWidget("intro", screenSize),
+              const SizedBox(
                 height: 10,
               ),
-              activity.buildWidget("intro", screenSize),
-              SizedBox(
-                height: 20,
+              activityWidget.buildWidget("body", screenSize),
+              const SizedBox(
+                height: 30,
               ),
-              activity.buildWidget("body", screenSize),
-              SizedBox(
-                height: 20,
+              activityWidget.build5Reasons(screenSize),
+              const SizedBox(
+                height: 50,
               ),
-              TextField(
-                controller: fiveResponseController[0],
-                decoration: InputDecoration(
-                    icon: Icon(Icons.arrow_right), prefixText: "Reason 1: "),
-              ),
-              TextField(
-                controller: fiveResponseController[1],
-                decoration: InputDecoration(
-                    icon: Icon(Icons.arrow_right), prefixText: "Reason 2: "),
-              ),
-              TextField(
-                controller: fiveResponseController[2],
-                decoration: InputDecoration(
-                    icon: Icon(Icons.arrow_right), prefixText: "Reason 3: "),
-              ),
-              TextField(
-                controller: fiveResponseController[3],
-                decoration: InputDecoration(
-                    icon: Icon(Icons.arrow_right), prefixText: "Reason 4: "),
-              ),
-              TextField(
-                controller: fiveResponseController[4],
-                decoration: InputDecoration(
-                    icon: Icon(Icons.arrow_right), prefixText: "Reason 5: "),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              activity.buildWidget("conclusion", screenSize),
+              activityWidget.buildWidget("conclusion", screenSize),
               SizedBox(
                 height: 30,
               ),
               Text(
-                "Thank you, \n${userData["username"]}",
+                "Sincerely, \n${userData["username"]}",
                 style: TextStyle(fontSize: 20),
               ),
               SizedBox(
@@ -97,12 +72,15 @@ class BootCampExpanded extends StatelessWidget {
               RaisedButton(
                 child: Text("Save"),
                 onPressed: () async {
-                  for (var i = 0; i < 5; i++) {
-                    fiveResponse["Response " + i.toString()] =
-                        fiveResponseController[i].text;
-                    fiveResponseController.clear();
+                  /// fields are not empty
+                  if (!activityWidget.areFieldsEmtpy()) {
+                    Map<String, String> completeLetter =
+                        activityWidget.saveLetter();
+                    await Provider.of<BootCampData>(context, listen: false)
+                        .saveToUserProfile(
+                            userData["uid"], activity.id, completeLetter);
+                    Navigator.of(context).pop();
                   }
-                  
                 },
                 color: kGreenSecondary,
               ),

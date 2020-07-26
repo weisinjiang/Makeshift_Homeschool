@@ -22,13 +22,13 @@ class BootCampListTile extends StatelessWidget {
               border: Border.all(color: Colors.black, width: 2.0)),
           child: InkWell(
             splashColor: Colors.grey,
-            // onTap: () => Navigator.push(
-            //     context,
-            //     ScaleRoute(
-            //         screen: BootCampExpanded(
-            //       activity: activity,
-            //     ))),
-            onTap: () {},
+            onTap: () => Navigator.push(
+                context,
+                ScaleRoute(
+                    screen: BootCampExpanded(
+                  activity: activity,
+                ))),
+            // onTap: () {},
             child: ListTile(
               leading: CircleAvatar(
                   backgroundColor: kGreenSecondary_analogous1,
@@ -41,7 +41,7 @@ class BootCampListTile extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: kTitleTextStyle,
               ),
-              trailing: Icon(Icons.check_box_outline_blank),
+              trailing: Icon(Icons.arrow_forward_ios),
             ),
           ),
         ),

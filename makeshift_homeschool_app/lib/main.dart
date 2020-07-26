@@ -5,6 +5,7 @@ import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
+import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
@@ -34,8 +35,8 @@ class MyApp extends StatelessWidget {
             // reteieves user posts in Study
             create: (context) => PostFeedProvider([]),
           ),
-          Provider<BootCampProvider>(
-            create: (context) => BootCampProvider(),
+          Provider<BootCampData>(
+            create: (context) => BootCampData(),
           )
         ],
         child: Consumer<AuthProvider>(
