@@ -37,7 +37,7 @@ class _BootCampScreenState extends State<BootCampScreen> {
       });
       print("BOOTCAMP: Getting Future List");
       bootCampActivities =
-          Provider.of<BootCampData>(context).getBootCampActivities();
+          Provider.of<BootCampDatabase>(context).getBootCampActivities();
       print("BOOTCAMP: Setting isin to false");
       userData = Provider.of<AuthProvider>(context).getUser;
       _isInThisWidget = false;

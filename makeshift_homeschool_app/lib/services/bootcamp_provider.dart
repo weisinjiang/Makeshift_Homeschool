@@ -162,7 +162,7 @@ class BootCampProvider {
     });
 
     for (var i = 0; i < 5; i++) {
-      completedLetter["Reason" + i.toString()] =
+      completedLetter["reason" + i.toString()] =
           fiveResponsesController[i].text;
           
     }

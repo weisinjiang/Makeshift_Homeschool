@@ -76,7 +76,7 @@ class BootCampExpanded extends StatelessWidget {
                   if (!activityWidget.areFieldsEmtpy()) {
                     Map<String, String> completeLetter =
                         activityWidget.saveLetter();
-                    await Provider.of<BootCampData>(context, listen: false)
+                    await Provider.of<BootCampDatabase>(context, listen: false)
                         .saveToUserProfile(
                             userData["uid"], activity.id, completeLetter);
                     Navigator.of(context).pop();

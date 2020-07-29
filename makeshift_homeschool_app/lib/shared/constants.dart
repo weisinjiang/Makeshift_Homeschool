@@ -26,6 +26,8 @@ const kTitleTextStyle =
 const kBoldTextStyle = TextStyle(fontWeight: FontWeight.bold);
 const kParagraphTextStyle =
     TextStyle(fontSize: 16, fontWeight: FontWeight.normal);
+const kBoldParagraphTextStyle =
+    TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
 
 const kGridOverViewTextStyle = TextStyle(
   fontSize: 16,

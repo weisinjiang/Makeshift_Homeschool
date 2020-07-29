@@ -35,8 +35,8 @@ class MyApp extends StatelessWidget {
             // reteieves user posts in Study
             create: (context) => PostFeedProvider([]),
           ),
-          Provider<BootCampData>(
-            create: (context) => BootCampData(),
+          Provider<BootCampDatabase>(
+            create: (context) => BootCampDatabase(),
           )
         ],
         child: Consumer<AuthProvider>(
