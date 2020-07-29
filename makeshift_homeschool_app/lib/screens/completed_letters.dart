@@ -49,30 +49,38 @@ class _CompletedLettersState extends State<CompletedLetters> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size; // screen
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Your Letters"),
-      ),
-      body: FutureBuilder(
-          future: userLetters,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<Letter> lettersList = snapshot.data;
-              print("Letter List Length: " + lettersList.length.toString());
-              return Container(
-                height: screenSize.height,
-                width: screenSize.width,
-                child: ListView.builder(
-                    padding: const EdgeInsets.all(10.0),
-                    itemCount: lettersList.length,
-                    itemBuilder: (context, index) => LettersListTile(
-                          letter: lettersList[index],
-                        )),
-              );
-            } else {
-              return LoadingScreen();
-            }
-          }),
-    );
+    if (userData != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Your Letters"),
+        ),
+        body: FutureBuilder(
+            future: userLetters,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Letter> lettersList = snapshot.data;
+                return lettersList.length > 0
+                    ? Container(
+                        height: screenSize.height,
+                        width: screenSize.width,
+                        child: ListView.builder(
+                            padding: const EdgeInsets.all(10.0),
+                            itemCount: lettersList.length,
+                            itemBuilder: (context, index) => LettersListTile(
+                                  letter: lettersList[index],
+                                )),
+                      )
+                    : Center(
+                        child: Container(
+                        child: Text("No letters, yet"),
+                      ));
+              } else {
+                return LoadingScreen();
+              }
+            }),
+      );
+    } else {
+      return LoadingScreen();
+    }
   }
 }

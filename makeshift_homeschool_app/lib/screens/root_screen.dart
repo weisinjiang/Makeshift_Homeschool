@@ -163,7 +163,7 @@ class _RootScreenState extends State<RootScreen> {
                     child: ActivityButton(
                       color: kGreenSecondary,
                       height: screenHeight * 0.10,
-                      width: screenWidth,
+                      width: screenWidth/2,
                       function: () => Navigator.push(context,
                                 SlideLeftRoute(screen: CompletedLetters())),
                       canUseButton: true,

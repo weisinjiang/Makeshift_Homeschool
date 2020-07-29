@@ -13,6 +13,7 @@ class LetterExpanded extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(letter.getId),
+        
       ),
       body: Container(
         width: screenSize.width,
