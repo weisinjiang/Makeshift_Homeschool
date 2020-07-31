@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/shared/color_const.dart';
+import 'package:makeshift_homeschool_app/shared/constants.dart';
 
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
@@ -19,7 +21,9 @@ class StudyScreen extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Study"),
+        title: Text("Let's Read! 📖"),
+        backgroundColor: colorPaleGreen,
+        elevation: 0.0,
       ),
       body: StreamBuilder(
           stream: collectionStream,
@@ -43,14 +47,22 @@ class StudyScreen extends StatelessWidget {
               }).toList();
 
               /// Show it
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView.separated(
-                  padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
-                    separatorBuilder: (context, int index) => const Divider(),
-                    itemCount: postList.length,
-                    itemBuilder: (_, index) =>
-                        PostThumbnail(postData: postList[index])),
+              return Container(
+                decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [colorPaleGreen, Colors.white],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter),
+            ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.separated(
+                    padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
+                      separatorBuilder: (context, int index) => const Divider(),
+                      itemCount: postList.length,
+                      itemBuilder: (_, index) =>
+                          PostThumbnail(postData: postList[index])),
+                ),
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
               return LoadingScreen();
