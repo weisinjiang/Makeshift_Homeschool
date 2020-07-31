@@ -124,6 +124,8 @@ class AuthProvider with ChangeNotifier {
         "day": todaysDate.day
       }
     }, merge: true);
+    await getUserInformation().then((value) => _userInformation = value);
+    _user.sendEmailVerification();
     notifyListeners();
     return true;
   }
@@ -137,15 +139,19 @@ class AuthProvider with ChangeNotifier {
     // return Future.delayed(Duration.zero);
   }
 
-  // Future<void> sendEmailVerification() async {
-  //   FirebaseUser user = await _firebaseAuth.currentUser();
-  //   user.sendEmailVerification();
-  // }
+  Future<void> sendEmailVerification() async {
+    FirebaseUser user = await _auth.currentUser();
+    user.sendEmailVerification();
+  }
 
-  // Future<bool> isEmailVerified() async {
-  //   FirebaseUser user = await _firebaseAuth.currentUser();
-  //   return user.isEmailVerified;
-  // }
+  Future<bool> isEmailVerified() async {
+    FirebaseUser user = await _auth.currentUser();
+    return user.isEmailVerified;
+  }
+
+  Future<void> resetPassword(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
 
   // Connects to the users data document in Firebase. Updates if anything in it changes
   Stream<DocumentSnapshot> userDataStream() {

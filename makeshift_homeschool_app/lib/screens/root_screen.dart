@@ -83,11 +83,12 @@ class _RootScreenState extends State<RootScreen> {
             //color: kGreenSecondary,
             child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   /// What do you want to do today? Greet image
                   Container(
-                    height: screenHeight * 0.25,
+                    height: screenHeight * 0.20,
                     width: screenWidth,
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -99,7 +100,7 @@ class _RootScreenState extends State<RootScreen> {
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: ActivityButton(
-                      color: kGreenSecondary_analogous2,
+                      color: kGreenPrimary,
                       height: screenHeight * 0.20,
                       width: screenWidth,
                       function: () => Navigator.push(context,
@@ -119,7 +120,7 @@ class _RootScreenState extends State<RootScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ActivityButton(
-                            color: kGreenSecondary_analogous2_shade,
+                            color: kGreenPrimary,
                             height: screenHeight * 0.10,
                             width: screenWidth / 2,
                             canUseButton: true,
@@ -138,7 +139,7 @@ class _RootScreenState extends State<RootScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ActivityButton(
-                            color: kGreenSecondary_analogous2_shade,
+                            color: kGreenPrimary,
                             height: screenHeight * 0.10,
                             width: screenWidth / 2,
                             canUseButton: (userData["level"] == "Tutor" ||
@@ -155,7 +156,7 @@ class _RootScreenState extends State<RootScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 40,),
+                  //const SizedBox(height: 40,),
 
                   // Saved letters
                   Padding(
@@ -163,11 +164,11 @@ class _RootScreenState extends State<RootScreen> {
                     child: ActivityButton(
                       color: kGreenSecondary,
                       height: screenHeight * 0.10,
-                      width: screenWidth/2,
+                      width: screenWidth,
                       function: () => Navigator.push(context,
                                 SlideLeftRoute(screen: CompletedLetters())),
                       canUseButton: true,
-                      name: "Saved Letters",
+                      name: "My Letters",
                       imageLocation: "asset/images/letter.png",
                     ),
                   ),

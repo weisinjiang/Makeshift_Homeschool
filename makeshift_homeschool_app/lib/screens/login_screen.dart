@@ -183,7 +183,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.person),
                             hintText: "First Name",
-                            //hintText: "First Name",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.vertical()),
                           ),
