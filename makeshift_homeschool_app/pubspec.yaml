@@ -15,6 +15,8 @@ dependencies:
   flutter:
     sdk: flutter
   
+  flutter_launcher_icons: ^0.7.5
+  
   # Firebase Dependencies
   firebase_core: ^0.4.5
   firebase_analytics: ^1.0.4
@@ -40,6 +42,7 @@ dependencies:
 
 
 
+
   
 
 
@@ -50,6 +53,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "asset/icons/appIcon.png"
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -64,6 +73,7 @@ flutter:
     - asset/profile_images/
     - asset/gif/
     - asset/bootcamp/
+    - asset/icons/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
