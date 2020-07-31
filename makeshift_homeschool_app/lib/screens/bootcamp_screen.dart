@@ -4,6 +4,7 @@ import 'package:makeshift_homeschool_app/models/bootcamp_activity.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
+import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/loadingScreen.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
@@ -49,6 +50,7 @@ class _BootCampScreenState extends State<BootCampScreen> {
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
       title: Text("BootCamp"),
+      backgroundColor: colorPaleSpring,
     );
     final screenHeight =
         (MediaQuery.of(context).size.height) - appBar.preferredSize.height;

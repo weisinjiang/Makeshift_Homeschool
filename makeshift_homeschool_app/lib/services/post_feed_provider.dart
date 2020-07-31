@@ -4,6 +4,7 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 
 class PostFeedProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance; // connect to firestore
+  
   List<Post> _posts = []; //post list to be shown on the feed
 
   PostFeedProvider(this._posts);

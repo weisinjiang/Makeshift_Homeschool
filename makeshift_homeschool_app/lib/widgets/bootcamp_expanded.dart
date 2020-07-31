@@ -3,6 +3,7 @@ import 'package:makeshift_homeschool_app/models/bootcamp_activity.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
+import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,7 @@ class BootCampExpanded extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: colorPaleSpring,
         title: Text(activity.id),
       ),
       body: Container(
@@ -82,7 +84,7 @@ class BootCampExpanded extends StatelessWidget {
                     Navigator.of(context).pop();
                   }
                 },
-                color: kGreenSecondary,
+                color: colorPaleSpring,
               ),
             ],
           ),

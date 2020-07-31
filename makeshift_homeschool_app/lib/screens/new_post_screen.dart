@@ -99,11 +99,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 Container(
                   height: screenHeight * 0.70,
                   width: screenWidth * 0.96,
-                  // decoration:
-                  //     BoxDecoration(border: Border.all(color: Colors.black)),
+                
                   child: Scrollbar(
                     child: SingleChildScrollView(
                       child: Column(
+                        /// Get the initial widgetlist
                         children: newPostProvider.getNewPostWidgetList,
                       ),
                     ),

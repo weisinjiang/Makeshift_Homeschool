@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/bootcamp_activity.dart';
+import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
 import 'package:makeshift_homeschool_app/widgets/bootcamp_expanded.dart';
@@ -18,7 +19,8 @@ class BootCampListTile extends StatelessWidget {
       child: Material(
         child: Ink(
           decoration: BoxDecoration(
-              color: kGreenSecondary,
+              color: colorPaleSpring,
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.black, width: 2.0)),
           child: InkWell(
             splashColor: Colors.grey,
@@ -30,8 +32,10 @@ class BootCampListTile extends StatelessWidget {
                 ))),
             // onTap: () {},
             child: ListTile(
+
               leading: CircleAvatar(
-                  backgroundColor: kGreenSecondary_analogous1,
+                radius: 25,
+                  backgroundColor: Colors.transparent,
                   child: Image.asset(
                     'asset/bootcamp/${activity.image}',
                     fit: BoxFit.contain,
@@ -39,7 +43,7 @@ class BootCampListTile extends StatelessWidget {
               title: Text(
                 activity.id,
                 textAlign: TextAlign.center,
-                style: kTitleTextStyle,
+                style: kParagraphTextStyle,
               ),
               trailing: Icon(Icons.arrow_forward_ios),
             ),

@@ -4,13 +4,13 @@ import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 
 class ActivityButton extends StatelessWidget {
   final Color color;
+  final Color borderColor;
   final String name;
   final double height;
   final double width;
   final Function function;
   final String imageLocation;
-  final bool
-      canUseButton; // if user is not a certain level, they cant use the button
+  final bool canUseButton; // students cant use teach button
 
   const ActivityButton(
       {Key key,
@@ -20,19 +20,29 @@ class ActivityButton extends StatelessWidget {
       this.height,
       this.width,
       this.imageLocation,
-      this.canUseButton})
+      this.canUseButton,
+      this.borderColor})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(30.0),
       elevation: 5.0,
-      color: Colors.transparent,
+      color: Colors.grey,
       child: Ink(
         // For adding a black border
-        decoration:
-            BoxDecoration(border: Border.all(color: Colors.white, width: 6)),
+        decoration: BoxDecoration(
+            border: Border.all(color: borderColor, width: 6),
+            borderRadius: BorderRadius.circular(30),
+            image: DecorationImage(
+                    image: AssetImage(
+                      imageLocation,
+                    ),
+                    colorFilter: ColorFilter.mode(
+                        Colors.grey.withOpacity(0.8), BlendMode.dstATop),
+                    fit: BoxFit.fill)
+            ),
         child: InkWell(
           onTap: canUseButton
               ? function
@@ -44,15 +54,6 @@ class ActivityButton extends StatelessWidget {
                   ));
                 }, // Function this button will perform
           child: Container(
-            //color: Colors.transparent,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(
-                      imageLocation,
-                    ),
-                    colorFilter: ColorFilter.mode(
-                        Colors.grey.withOpacity(0.7), BlendMode.dstATop),
-                    fit: BoxFit.fill)),
             height: height,
             width: width,
             child: Row(

@@ -10,3 +10,20 @@ SnackBar snackBarMessage(String message) {
     duration: Duration(seconds: 2),
   );
 }
+
+void _showErrorMessage(String message, BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (contx) => AlertDialog(
+              title: Center(child: Text("ERROR")),
+              content: Text(message),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(contx).pop();
+                  },
+                )
+              ],
+            ));
+  }

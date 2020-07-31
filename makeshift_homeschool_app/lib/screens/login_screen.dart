@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/screens/reset_password.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
 import 'package:provider/provider.dart';
@@ -87,8 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (result == true) {
           Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
-        }
-        else {
+        } else {
           _showErrorMessage("Email or Password is incorrect or does not exist");
         }
 
@@ -116,11 +116,13 @@ class _LoginScreenState extends State<LoginScreen> {
         messageForUser = "Account does not exists";
       } else if (error.contains("ERROR_EMAIL_ALREADY_IN_USE")) {
         messageForUser = "Email already exist, please use a different email";
-      } else if (error.contains("ERROR_INVALID_EMAIL") || error.contains("ERROR_WRONG_PASSWORD")) {
+      } else if (error.contains("ERROR_INVALID_EMAIL") ||
+          error.contains("ERROR_WRONG_PASSWORD")) {
         messageForUser = "Email or Password is incorrect";
       }
-
-      _showErrorMessage(exception.toString());
+      _formKey.currentState.reset();
+      _passwordController.clear();
+      _showErrorMessage(messageForUser.toString());
     }
   }
 
@@ -302,7 +304,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: FlatButton(
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
-                          onPressed: () {}, //! To do
+                          onPressed: () {
+                            Navigator.of(context).push(
+                                ScaleRoute(screen: ResetPasswordScreen()));
+                          }, //! To do
                           child: const Text(
                             "Reset Password",
                             style: TextStyle(

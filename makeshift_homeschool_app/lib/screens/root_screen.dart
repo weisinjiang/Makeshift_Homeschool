@@ -7,6 +7,7 @@ import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
@@ -101,6 +102,7 @@ class _RootScreenState extends State<RootScreen> {
                     padding: const EdgeInsets.all(10.0),
                     child: ActivityButton(
                       color: kGreenPrimary,
+                      borderColor: colorPaleSpring,
                       height: screenHeight * 0.20,
                       width: screenWidth,
                       function: () => Navigator.push(context,
@@ -111,6 +113,7 @@ class _RootScreenState extends State<RootScreen> {
                     ),
                   ),
 
+                /// Study and Teach Button
                   FittedBox(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -121,6 +124,7 @@ class _RootScreenState extends State<RootScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: ActivityButton(
                             color: kGreenPrimary,
+                            borderColor: colorPaleGreen,
                             height: screenHeight * 0.10,
                             width: screenWidth / 2,
                             canUseButton: true,
@@ -140,6 +144,7 @@ class _RootScreenState extends State<RootScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: ActivityButton(
                             color: kGreenPrimary,
+                            borderColor: colorPalePink,
                             height: screenHeight * 0.10,
                             width: screenWidth / 2,
                             canUseButton: (userData["level"] == "Tutor" ||
@@ -163,6 +168,7 @@ class _RootScreenState extends State<RootScreen> {
                     padding: const EdgeInsets.all(10.0),
                     child: ActivityButton(
                       color: kGreenSecondary,
+                      borderColor: Colors.white,
                       height: screenHeight * 0.10,
                       width: screenWidth,
                       function: () => Navigator.push(context,

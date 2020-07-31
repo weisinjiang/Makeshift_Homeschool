@@ -114,17 +114,6 @@ class NewPostProvider with ChangeNotifier {
     return false;
   }
 
-  // /// Convert the list items into a map
-  // Map<String, String> convertToMap(
-  //     List<TextEditingController> textControllersList) {
-  //   Map<String, String> formData = {};
-
-  //   for (var i = 0; i < textControllersList.length; i++) {
-  //     formData[i.toString()] = textControllersList[i].text;
-  //   }
-  //   return formData;
-  // }
-
   /// Go though the TextEditingController and get the text data on it
   List<String> getControllerTextDataAsList(
       List<TextEditingController> textControllersList) {
@@ -201,40 +190,6 @@ class NewPostProvider with ChangeNotifier {
     /// Return the download url
   }
 
-  // /// Takes in the users uid, name and the number of lessons created
-  // /// Uploads the new post into Firestore using the names
-  // Future<void> post(String uid, String name, int lessonCreated) async {
-  //   lessonCreated++; // increment # of lessons user created, cant do it when adding to database
-
-  //   /// Reference the document where the data will be placed
-  //   /// Leaving document empty generates a random id
-  //   var databaseRef = _database.collection("lessons").document();
-  //   var postContentsMap =
-  //       getControllerTextDataAsList(getNewPostFormControllers);
-  //   var imageUrl = await uploadImageAndGetDownloadUrl(
-  //       getNewPostImageFile, databaseRef.documentID);
-
-  //   var newLesson = {
-  //     "ownerUid": uid,
-  //     "ownerName": name,
-  //     "createdOn": DateTime.now().toString(),
-  //     "likes": 0,
-  //     "imageUrl": imageUrl,
-  //     "postContents": postContentsMap
-  //   };
-
-  //   /// Add the data into the refernece document made earlier
-  //   await databaseRef.setData(newLesson);
-
-  //   await _database
-  //       .collection("users")
-  //       .document(uid)
-  //       .setData({"lesson_created": lessonCreated}, merge: true);
-
-  //   resetFields(); //!
-  //   print("All Done"); //!
-  // }
-
   // Version 2, adding as a map instead of an array
 
   Future<void> post(String uid, String name, int lessonCreated) async {
@@ -245,7 +200,8 @@ class NewPostProvider with ChangeNotifier {
     var databaseRef = _database.collection("lessons").document();
     var postContentsMap = mapControllerTypeWithText();
     var newPostTitle = postContentsMap["title"];
-    postContentsMap.remove("title"); // remove the title, no var because it returns the value
+    postContentsMap.remove(
+        "title"); // remove the title, no var because it returns the value
     var imageUrl = await uploadImageAndGetDownloadUrl(
         getNewPostImageFile, databaseRef.documentID);
 
@@ -267,8 +223,7 @@ class NewPostProvider with ChangeNotifier {
         .document(uid)
         .setData({"lesson_created": lessonCreated}, merge: true);
 
-    resetFields(); //!
-    print("All Done"); //!
+    resetFields(); 
   }
 
   void resetFields() {
