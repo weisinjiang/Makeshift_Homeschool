@@ -15,7 +15,6 @@ dependencies:
   flutter:
     sdk: flutter
   
-  flutter_launcher_icons: ^0.7.5
   
   # Firebase Dependencies
   firebase_core: ^0.4.5
@@ -53,6 +52,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: ^0.7.5
 
 flutter_icons:
   android: true
