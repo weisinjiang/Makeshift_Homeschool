@@ -174,7 +174,7 @@ class _RootScreenState extends State<RootScreen> {
                       function: () => Navigator.push(context,
                                 SlideLeftRoute(screen: CompletedLetters())),
                       canUseButton: true,
-                      name: "My Letters",
+                      name: "My Lessons",
                       imageLocation: "asset/images/letter.png",
                     ),
                   ),

@@ -8,14 +8,15 @@ Widget buildSubTitle(String text, double width, double height) {
   return Padding(
     padding: const EdgeInsets.all(20),
     child: Container(
-      height: height * 0.05,
+      //height: height * 0.05,
       width: width * 0.90,
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: Text(
-          text,
-          style: kTitleTextStyle,
-        ),
+      child: Column(
+        children: <Widget>[
+          Text(
+            text,
+            style: kHeadingTextStyle,
+          ),
+        ],
       ),
     ),
   );
@@ -27,6 +28,7 @@ Widget buildParagraph(String text, double width) {
     child: Container(
       width: width * 0.90,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
             text,

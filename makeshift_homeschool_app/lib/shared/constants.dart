@@ -20,12 +20,17 @@ const kGreenSecondary_tint2 = Color(0xff6CD7D3);
 
 const kHeadingTextStyle = TextStyle(
     fontSize: 25, fontWeight: FontWeight.w600, fontStyle: FontStyle.italic);
+
+    
 const kTitleTextStyle =
     TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold);
 
 const kBoldTextStyle = TextStyle(fontWeight: FontWeight.bold);
+
+
 const kParagraphTextStyle =
     TextStyle(fontSize: 16, fontWeight: FontWeight.normal);
+
 const kBoldParagraphTextStyle =
     TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
 
