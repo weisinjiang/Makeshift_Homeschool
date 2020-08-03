@@ -5,6 +5,7 @@ import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
+import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
 
 /// After clicking on the ListTitle for bootcamp, the actual lesson will enlarge
@@ -75,13 +76,16 @@ class BootCampExpanded extends StatelessWidget {
                 child: Text("Save"),
                 onPressed: () async {
                   /// fields are not empty
-                  if (!activityWidget.areFieldsEmtpy()) {
+                  if (!activityWidget.fieldIsEmtpy()) {
+                    // if field is not empty
                     Map<String, String> completeLetter =
                         activityWidget.saveLetter();
                     await Provider.of<BootCampDatabase>(context, listen: false)
                         .saveToUserProfile(
                             userData["uid"], activity.id, completeLetter);
                     Navigator.of(context).pop();
+                  } else {
+                    showErrorMessage("Some fields are empty", context);
                   }
                 },
                 color: colorPaleSpring,

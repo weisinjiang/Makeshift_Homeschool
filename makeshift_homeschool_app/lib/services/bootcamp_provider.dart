@@ -122,25 +122,36 @@ class BootCampProvider {
   }
 
   /// Checks if any fields is left empty
-  bool areFieldsEmtpy() {
-    /// Check the 5 responses controllers
-    this.fiveResponsesController.forEach((controller) {
-      if (controller.text.isNotEmpty) {
-        return true;
+  bool fieldIsEmtpy() {
+    bool isEmpty = false;
+
+    // /// Check the 5 responses controllers to see if they are empty
+    // this.fiveResponsesController.forEach((controller) {
+    //   if (controller.text.isEmpty) {
+    //     isEmpty = true;
+    //   }
+    // });
+
+    /// Check the 5 responses list and check if it is empty. If it is, isEmpty
+    /// is set to true
+    for (var i = 0; i < 5; i++) {
+      if (this.fiveResponsesController[i].text.isEmpty) {
+        isEmpty = true;
+        break;
       }
-    });
+    }
 
     /// For each field's controller, check if it's empty
     this.fillInBoxesController.forEach((_, list) {
       list.forEach((controller) {
         if (controller.text.isEmpty) {
-          return true;
+          isEmpty = true;
         }
       });
     });
 
     /// if not all empty, false
-    return false;
+    return isEmpty;
   }
 
   /// Save the letter into a string by first getting the content as a string
@@ -164,7 +175,6 @@ class BootCampProvider {
     for (var i = 0; i < 5; i++) {
       completedLetter["reason" + i.toString()] =
           fiveResponsesController[i].text;
-          
     }
     return completedLetter;
   }

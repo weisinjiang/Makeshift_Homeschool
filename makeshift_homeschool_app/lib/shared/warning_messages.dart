@@ -11,7 +11,7 @@ SnackBar snackBarMessage(String message) {
   );
 }
 
-void _showErrorMessage(String message, BuildContext context) {
+void showErrorMessage(String message, BuildContext context) {
     showDialog(
         context: context,
         builder: (contx) => AlertDialog(
