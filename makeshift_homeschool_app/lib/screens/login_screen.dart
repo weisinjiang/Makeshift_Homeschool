@@ -151,219 +151,229 @@ class _LoginScreenState extends State<LoginScreen> {
         color: Colors.white,
         width: deviceSize.width,
         height: deviceSize.height,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              // About Button
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 35, 20, 0),
-                  child: RaisedButton(
-                    color: kGreenPrimary,
-                    onPressed: () => Navigator.of(context).pushNamed('/about'),
-                    child: Text("About"),
+        alignment: Alignment.center, // center
+        child: Container( // goes insude if the outter container for safe area
+          color: Colors.white,
+          height: deviceSize.height * 0.95,
+          width: deviceSize.width,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: <Widget>[
+                  // About Button
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 35, 20, 0),
+                      child: RaisedButton(
+                        color: kGreenPrimary,
+                        onPressed: () => Navigator.of(context).pushNamed('/about'),
+                        child: Text("About"),
+                      ),
+                    ),
                   ),
-                ),
-              ),
 
-              //Logo
-              Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: Image.asset('asset/images/logo.png'),
-              ),
+                  //Logo
+                  Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Image.asset('asset/images/logo.png'),
+                  ),
 
-              Form(
-                key: _formKey, // key to track the forms input
-                child: Column(
-                  children: <Widget>[
-                    // if signup, then have a username field
-                    if (_authMode == AuthMode.Signup)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.person),
-                            hintText: "First Name",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.vertical()),
-                          ),
-                          onSaved: (userNameInput) =>
-                              _userInput.setUsername = userNameInput,
-                        ),
-                      ),
-
-                    // Email Field
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.email),
-                          hintText: "Email",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.vertical()),
-                        ),
-                        validator: (userEmailInput) =>
-                            _userInput.validateEmail(userEmailInput),
-                        onSaved: (userEmailInput) =>
-                            _userInput.setEmail = userEmailInput,
-                      ),
-                    ),
-
-                    // Password Field
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
-                      child: TextFormField(
-                        obscureText: true,
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.lock),
-                          hintText: "Password",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.vertical()),
-                        ),
-                        validator: (userPasswordInput) {
-                          if (_authMode == AuthMode.Signup) {
-                            return _userInput
-                                .validatePassword(userPasswordInput);
-                          }
-                          return null;
-                        },
-                        onSaved: (userPasswordInput) =>
-                            _userInput.setPassword = userPasswordInput,
-                      ),
-                    ),
-
-                    // if signing up, show confirm password and ref section
-                    if (_authMode == AuthMode.Signup) ...[
-                      // Confirm Password
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.lock_outline),
-                            hintText: "Confirm Password",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.vertical()),
-                          ),
-                          validator: (userConfirmPasswordInput) =>
-                              confirmPassword(userConfirmPasswordInput),
-                        ),
-                      ),
-
-                      // Referral
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DropdownButtonFormField<String>(
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.search),
-                              hintText: "How did you find us?",
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.vertical()),
+                  Form(
+                    key: _formKey, // key to track the forms input
+                    child: Column(
+                      children: <Widget>[
+                        // if signup, then have a username field
+                        if (_authMode == AuthMode.Signup)
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.person),
+                                hintText: "First Name",
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.vertical()),
+                              ),
+                              onSaved: (userNameInput) =>
+                                  _userInput.setUsername = userNameInput,
                             ),
-                            items: _referalList
-                                .map((listItem) => DropdownMenuItem<String>(
-                                      child: Text(listItem),
-                                      value: listItem,
-                                    ))
-                                .toList(),
-                            hint: Text(_referalSelected), // shows selected ref
-                            onChanged: (changedDropdownItem) {
-                              // ref changed, save the value
-                              setState(() {
-                                _referalSelected = changedDropdownItem;
-                                if (changedDropdownItem != "Other") {
-                                  // Set the ref if it is not "Other"
-                                  _userInput.setReferal = changedDropdownItem;
-                                }
-                              });
-                            }),
-                      ),
+                          ),
 
-                      // If referral is Other, have the user give us where they found us and save it
-                      if (_referalSelected == "Other")
+                        // Email Field
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            decoration: InputDecoration(
-                              hintText: "Please tell us where",
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(Icons.email),
+                              hintText: "Email",
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.vertical()),
                             ),
-                            validator: (userRefInput) =>
-                                _userInput.validateReferral(userRefInput),
-                            onSaved: (userRefInput) =>
-                                _userInput.setReferal = userRefInput,
+                            validator: (userEmailInput) =>
+                                _userInput.validateEmail(userEmailInput),
+                            onSaved: (userEmailInput) =>
+                                _userInput.setEmail = userEmailInput,
                           ),
                         ),
-                    ],
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: FlatButton(
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onPressed: () {
-                            Navigator.of(context).push(
-                                ScaleRoute(screen: ResetPasswordScreen()));
-                          }, //! To do
-                          child: const Text(
-                            "Reset Password",
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.bold,
-                                color: kGreenSecondary),
-                          )),
-                    ),
 
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                      child: ButtonTheme(
-                        minWidth: deviceSize.width * 0.90,
-                        height: deviceSize.height * 0.07,
-                        child: RaisedButton(
-                          child: Text(_authMode == AuthMode.Login
-                              ? "Login"
-                              : "Sign up"),
-                          color: kGreenPrimary,
-                          onPressed: () async {
-                            _submit(
-                                auth); // pass auth object into the function for access
-                          },
-                        ),
-                      ),
-                    ),
-
-                    // Switch between Auth modes
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          _authMode == AuthMode.Login
-                              ? "Don't have an account?"
-                              : "Have an account?",
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                        FlatButton(
-                          splashColor: Colors
-                              .transparent, // Prevents showing button highlight
-                          highlightColor: Colors.transparent,
-                          child: Text(
-                            _authMode == AuthMode.Login ? "Sign up" : "Login",
-                            style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.bold,
-                                color: kGreenSecondary),
+                        // Password Field
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
+                          child: TextFormField(
+                            obscureText: true,
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.lock),
+                              hintText: "Password",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.vertical()),
+                            ),
+                            validator: (userPasswordInput) {
+                              if (_authMode == AuthMode.Signup) {
+                                return _userInput
+                                    .validatePassword(userPasswordInput);
+                              }
+                              return null;
+                            },
+                            onSaved: (userPasswordInput) =>
+                                _userInput.setPassword = userPasswordInput,
                           ),
-                          onPressed: _switchAuthMode,
-                        )
+                        ),
+
+                        // if signing up, show confirm password and ref section
+                        if (_authMode == AuthMode.Signup) ...[
+                          // Confirm Password
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(Icons.lock_outline),
+                                hintText: "Confirm Password",
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.vertical()),
+                              ),
+                              validator: (userConfirmPasswordInput) =>
+                                  confirmPassword(userConfirmPasswordInput),
+                            ),
+                          ),
+
+                          // Referral
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: DropdownButtonFormField<String>(
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.search),
+                                  hintText: "How did you find us?",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.vertical()),
+                                ),
+                                items: _referalList
+                                    .map((listItem) => DropdownMenuItem<String>(
+                                          child: Text(listItem),
+                                          value: listItem,
+                                        ))
+                                    .toList(),
+                                hint: Text(_referalSelected), // shows selected ref
+                                onChanged: (changedDropdownItem) {
+                                  // ref changed, save the value
+                                  setState(() {
+                                    _referalSelected = changedDropdownItem;
+                                    if (changedDropdownItem != "Other") {
+                                      // Set the ref if it is not "Other"
+                                      _userInput.setReferal = changedDropdownItem;
+                                    }
+                                  });
+                                }),
+                          ),
+
+                          // If referral is Other, have the user give us where they found us and save it
+                          if (_referalSelected == "Other")
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  hintText: "Please tell us where",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.vertical()),
+                                ),
+                                validator: (userRefInput) =>
+                                    _userInput.validateReferral(userRefInput),
+                                onSaved: (userRefInput) =>
+                                    _userInput.setReferal = userRefInput,
+                              ),
+                            ),
+                        ],
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: FlatButton(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                    ScaleRoute(screen: ResetPasswordScreen()));
+                              }, //! To do
+                              child: const Text(
+                                "Reset Password",
+                                style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold,
+                                    color: kGreenSecondary),
+                              )),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: ButtonTheme(
+                            minWidth: deviceSize.width * 0.90,
+                            height: deviceSize.height * 0.07,
+                            child: RaisedButton(
+                              child: Text(_authMode == AuthMode.Login
+                                  ? "Login"
+                                  : "Sign up"),
+                              color: kGreenPrimary,
+                              onPressed: () async {
+                                _submit(
+                                    auth); // pass auth object into the function for access
+                              },
+                            ),
+                          ),
+                        ),
+
+                        // Switch between Auth modes
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              _authMode == AuthMode.Login
+                                  ? "Don't have an account?"
+                                  : "Have an account?",
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                            FlatButton(
+                              splashColor: Colors
+                                  .transparent, // Prevents showing button highlight
+                              highlightColor: Colors.transparent,
+                              child: Text(
+                                _authMode == AuthMode.Login ? "Sign up" : "Login",
+                                style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold,
+                                    color: kGreenSecondary),
+                              ),
+                              onPressed: _switchAuthMode,
+                            )
+                          ],
+                        ),
+                       
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
