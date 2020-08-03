@@ -49,19 +49,19 @@ class BootCampExpanded extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              activityWidget.buildWidget("intro", screenSize),
+              activityWidget.buildWidget("intro", screenSize), // build intro
               const SizedBox(
                 height: 10,
               ),
-              activityWidget.buildWidget("body", screenSize),
+              activityWidget.buildWidget("body", screenSize), /// build body
               const SizedBox(
                 height: 30,
               ),
-              activityWidget.build5Reasons(screenSize),
+              activityWidget.build5Reasons(screenSize),  /// build 5 suggestions
               const SizedBox(
                 height: 50,
               ),
-              activityWidget.buildWidget("conclusion", screenSize),
+              activityWidget.buildWidget("conclusion", screenSize), // conclusion
               SizedBox(
                 height: 30,
               ),
@@ -72,19 +72,18 @@ class BootCampExpanded extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              RaisedButton(
-                child: Text("Save"),
+              RaisedButton( 
+                child: Text("Save"), 
                 onPressed: () async {
                   /// fields are not empty
                   if (!activityWidget.fieldIsEmtpy()) {
-                    // if field is not empty
                     Map<String, String> completeLetter =
                         activityWidget.saveLetter();
                     await Provider.of<BootCampDatabase>(context, listen: false)
                         .saveToUserProfile(
                             userData["uid"], activity.id, completeLetter);
                     Navigator.of(context).pop();
-                  } else {
+                  } else { /// fields are emtpy, show an error message
                     showErrorMessage("Some fields are empty", context);
                   }
                 },
