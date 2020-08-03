@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _authMode = AuthMode.Signup;
       });
-      showConfirmIsParentDialog(context);
+      showAlertDialog("By clicking continue you are confirming that you are a parent signing up your child for Makeshift Homeschool and you will not use your child's real name during sign up", "LEGAL",context);
     } else {
       setState(() {
         _authMode = AuthMode.Login;
@@ -206,13 +206,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: TextFormField(
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
-                                hintText: "First Name",
+                                hintText: "Username",
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.vertical()),
                               ),
                               onSaved: (userNameInput) =>
                                   _userInput.setUsername = userNameInput,
                             ),
+                            
                           ),
 
                         // Email Field

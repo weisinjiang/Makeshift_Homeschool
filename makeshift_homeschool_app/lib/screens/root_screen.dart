@@ -68,10 +68,15 @@ class _RootScreenState extends State<RootScreen> {
           appBar: AppBar(
             elevation: 0.0,
             title: Text("Hi, ${userData["username"]}!"),
+            actions: <Widget>[
+              IconButton(icon: Icon(Icons.person), onPressed: () => Navigator.push(context,
+                                SlideLeftRoute(screen: ProfileScreen())),)
+            ],
           ),
-          endDrawer: AppDrawer(
-            userData: userData,
-          ),
+          
+          // endDrawer: AppDrawer(
+          //   userData: userData,
+          // ),
           body: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(

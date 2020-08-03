@@ -29,13 +29,13 @@ void showErrorMessage(String message, BuildContext context) {
   }
 
 
-void showConfirmIsParentDialog(BuildContext context) {
+void showAlertDialog(String message, String title, BuildContext context) {
     showDialog(
       barrierDismissible: false,
         context: context,
         builder: (contx) => AlertDialog(
-              title: Center(child: Text("LEGAL")),
-              content: Text("By clicking continue you are confirming that you are a parent signing up your child for Makeshift Homeschool"),
+              title: Center(child: Text(title)),
+              content: Text(message),
               actions: <Widget>[
                 FlatButton(
                   child: Text("Continue"),
