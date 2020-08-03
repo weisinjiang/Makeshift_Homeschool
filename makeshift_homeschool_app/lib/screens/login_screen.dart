@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/reset_password.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
+import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../services/auth.dart';
 import '../shared/constants.dart';
 import '../models/user_auth_model.dart';
@@ -61,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _authMode = AuthMode.Signup;
       });
+      showConfirmIsParentDialog(context);
     } else {
       setState(() {
         _authMode = AuthMode.Login;
@@ -126,6 +129,16 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  _launchURL(context) async {
+    const privacyUrl =
+        "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/PRIVACY%20NOTICE.pdf?alt=media&token=d605ef83-2bdd-4891-b38f-87f69a9bb384";
+    if (await canLaunch(privacyUrl)) {
+      await launch(privacyUrl);
+    } else {
+      showErrorMessage("Unable to make the connection to host", context);
+    }
+  }
+
   /// **************************************************************************
   /// Password Confirmation
   ///***************************************************************************
@@ -152,7 +165,8 @@ class _LoginScreenState extends State<LoginScreen> {
         width: deviceSize.width,
         height: deviceSize.height,
         alignment: Alignment.center, // center
-        child: Container( // goes insude if the outter container for safe area
+        child: Container(
+          // goes insude if the outter container for safe area
           color: Colors.white,
           height: deviceSize.height * 0.95,
           width: deviceSize.width,
@@ -168,7 +182,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.fromLTRB(0, 35, 20, 0),
                       child: RaisedButton(
                         color: kGreenPrimary,
-                        onPressed: () => Navigator.of(context).pushNamed('/about'),
+                        onPressed: () =>
+                            Navigator.of(context).pushNamed('/about'),
                         child: Text("About"),
                       ),
                     ),
@@ -276,14 +291,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                           value: listItem,
                                         ))
                                     .toList(),
-                                hint: Text(_referalSelected), // shows selected ref
+                                hint: Text(
+                                    _referalSelected), // shows selected ref
                                 onChanged: (changedDropdownItem) {
                                   // ref changed, save the value
                                   setState(() {
                                     _referalSelected = changedDropdownItem;
                                     if (changedDropdownItem != "Other") {
                                       // Set the ref if it is not "Other"
-                                      _userInput.setReferal = changedDropdownItem;
+                                      _userInput.setReferal =
+                                          changedDropdownItem;
                                     }
                                   });
                                 }),
@@ -357,7 +374,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   .transparent, // Prevents showing button highlight
                               highlightColor: Colors.transparent,
                               child: Text(
-                                _authMode == AuthMode.Login ? "Sign up" : "Login",
+                                _authMode == AuthMode.Login
+                                    ? "Sign up"
+                                    : "Login",
                                 style: TextStyle(
                                     fontStyle: FontStyle.italic,
                                     fontWeight: FontWeight.bold,
@@ -367,7 +386,31 @@ class _LoginScreenState extends State<LoginScreen> {
                             )
                           ],
                         ),
-                       
+                        SizedBox(
+                          height: 30,
+                        ),
+
+                        /// Term & Conditions, Privacy Policy
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "By signing up or logging in, you agree to our ",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            InkWell(
+                              child: Text(
+                                "Privacy Policy",
+                                style: TextStyle(
+                                    color: kGreenSecondary,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onTap: () {
+                                _launchURL(context);
+                              },
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ),
