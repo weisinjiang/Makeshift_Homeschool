@@ -41,7 +41,7 @@ class Post {
       this._postContents = contents;
 
   /// Convert the contents into a Widget List that can be displayed on the screen
-  List<Widget> getPostWidgetList(Size screenSize) {
+  List<Widget> constructPostWidgetList(Size screenSize) {
     List<Widget> contentToShowOnScreen = [];
 
     /// Map<String, Map<String, String>> from database
