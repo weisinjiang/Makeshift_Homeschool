@@ -55,7 +55,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
           actions: <Widget>[
             FlatButton(
               onPressed: () {
-                authProvider.getUserInformation().then((userInfo) async{
+                authProvider.getUserInformation().then((userInfo) async {
                   int lessonCreated = int.parse(userInfo["lesson_created"]);
                   await newPostProvider.post(
                       userInfo["uid"], userInfo["username"], lessonCreated);
@@ -93,54 +93,59 @@ class _NewPostScreenState extends State<NewPostScreen> {
           /// Users can add infinite amount of subtiles and paragraphs, so when
           /// it goes out of screen, it should be scrollable
           child: Builder(
-            builder: (context) => ListView(
-              children: <Widget>[
-                /// Middle screen where users input paragraphs and subtiles
-                Container(
-                  height: screenHeight * 0.70,
-                  width: screenWidth * 0.96,
-                
-                  child: Scrollbar(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        /// Get the initial widgetlist
-                        children: newPostProvider.getNewPostWidgetList,
+            builder: (context) => GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: ListView(
+                children: <Widget>[
+                  /// Middle screen where users input paragraphs and subtiles
+                  Container(
+                    height: screenHeight * 0.70,
+                    width: screenWidth * 0.96,
+                    child: Scrollbar(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          /// Get the initial widgetlist
+                          children: newPostProvider.getNewPostWidgetList,
+                        ),
                       ),
                     ),
                   ),
-                ),
 
-                /// Bottom Buttons to add/remove paragraphs and subtitles
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      RaisedButton(
-                          onPressed: () => newPostProvider.addParagraph(),
-                          child: Text("+ Paragraph")),
+                  /// Bottom Buttons to add/remove paragraphs and subtitles
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        RaisedButton(
+                            onPressed: () => newPostProvider.addParagraph(),
+                            child: Text("+ Paragraph")),
 
-                      // AddSubtile
-                      RaisedButton(
-                          onPressed: () => newPostProvider.addSubtitle(),
-                          child: Text("+ Subtitle")),
+                        // AddSubtile
+                        RaisedButton(
+                            onPressed: () => newPostProvider.addSubtitle(),
+                            child: Text("+ Subtitle")),
 
-                      //Remove last widget
-                      RaisedButton(
-                          onPressed: () {
-                            var isAbleToRemove =
-                                newPostProvider.removeLastTextForm();
-                            if (!isAbleToRemove) {
-                              Scaffold.of(context).showSnackBar(snackBarMessage(
-                                  "You can't remove more fields"));
-                            }
-                          },
-                          child: Text("Delete")),
-                    ],
+                        //Remove last widget
+                        RaisedButton(
+                            onPressed: () {
+                              var isAbleToRemove =
+                                  newPostProvider.removeLastTextForm();
+                              if (!isAbleToRemove) {
+                                Scaffold.of(context).showSnackBar(
+                                    snackBarMessage(
+                                        "You can't remove more fields"));
+                              }
+                            },
+                            child: Text("Delete")),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
