@@ -32,7 +32,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
   /// Added widgets are in-order and will be placed into Firestore the same way
   /// Widget index should be the same as the order in which it appears on the
   /// app from top to bottom: index 0 = first item on the screen
-  NewPostProvider newPost = NewPostProvider();
+  //NewPostProvider newPost = NewPostProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +55,19 @@ class _NewPostScreenState extends State<NewPostScreen> {
           actions: <Widget>[
             FlatButton(
               onPressed: () {
-                authProvider.getUserInformation().then((userInfo) async {
-                  int lessonCreated = int.parse(userInfo["lesson_created"]);
-                  await newPostProvider.post(
-                      userInfo["uid"], userInfo["username"], lessonCreated);
-                });
-                Navigator.of(context).pop();
+                if (newPostProvider.canPost()) {
+                  authProvider.getUserInformation().then((userInfo) async {
+                    int lessonCreated = int.parse(userInfo["lesson_created"]);
+                    await newPostProvider.post(
+                        userInfo["uid"], userInfo["username"], lessonCreated);
+                  });
+                  Navigator.of(context).pop();
+                } else {
+                  showAlertDialog(
+                      "One or more of your fields are empty. Please fill them in, or remove paragraphs/subtitles that you are not using.",
+                      "ERROR",
+                      context);
+                }
               },
               child: Text(
                 "Post",

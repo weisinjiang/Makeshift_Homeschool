@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: kGreenPrimary,
                         onPressed: () =>
                             Navigator.of(context).pushNamed('/about'),
-                        child: Text("About"),
+                        child: const Text("About"),
                       ),
                     ),
                   ),

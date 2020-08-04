@@ -190,7 +190,22 @@ class NewPostProvider with ChangeNotifier {
     /// Return the download url
   }
 
-  // Version 2, adding as a map instead of an array
+  /// Method checks that each field is filled in
+  bool canPost() {
+    var canPost = true;
+    if (this._newPostImagePath == null) {
+      canPost = false;
+    }
+    this._newPostFormControllers.forEach((controller) {
+      if (controller.text.isEmpty) {
+        /// if controller is empty, cant post
+        canPost = false;
+      }
+    });
+    return canPost; // if no controller is empty, can post
+  }
+
+  // Post Method to be added into the database
 
   Future<void> post(String uid, String name, int lessonCreated) async {
     lessonCreated++; // increment # of lessons user created, cant do it when adding to database
@@ -223,14 +238,17 @@ class NewPostProvider with ChangeNotifier {
         .document(uid)
         .setData({"lesson_created": lessonCreated}, merge: true);
 
-    resetFields(); 
+    resetFields();
   }
 
   void resetFields() {
+    /// Dispose the old widget
     this._newPostFormControllers.forEach((controller) {
       controller.dispose();
     });
+    this._newPostImagePath = null;
 
+    ///Set up new ones
     this._newPostFormControllers = [
       TextEditingController(),
       TextEditingController(),

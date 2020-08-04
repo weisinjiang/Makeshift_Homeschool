@@ -78,7 +78,7 @@ class _RootScreenState extends State<RootScreen> {
           //   userData: userData,
           // ),
           body: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                   colors: [kGreenSecondary, kGreenSecondary_analogous1],
                   begin: Alignment.topCenter,
