@@ -189,6 +189,7 @@ class AuthProvider with ChangeNotifier {
         .get()
         .then((firestoreData) {
       userData["email"] = firestoreData["email"];
+      userData["photoURL"] = firestoreData["photoURL"];
       userData["uid"] = firestoreData["uid"];
       userData["username"] = firestoreData["username"];
       userData["lesson_completed"] =

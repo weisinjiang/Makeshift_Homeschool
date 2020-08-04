@@ -29,6 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     var userData = Provider.of<AuthProvider>(context).getUser;
+    print(userData["photoURL"]);
 
     if (userData != null) {
       // Get user data from stream
@@ -64,10 +65,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               padding: const EdgeInsets.all(20.0),
                               child: CircleAvatar(
                                 radius: 50,
-                                // backgroundImage:
-                                //     NetworkImage(userData["photoURL"]), add later
+                                backgroundImage:
+                                    NetworkImage(userData["photoURL"]), 
                                 backgroundColor: Colors.greenAccent,
-                                child: Text("${userData["username"][0]}"),
+                                // child: Text("${userData["username"][0]}"),
                               )),
                         ),
 
@@ -144,16 +145,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                   ),
 
-                  // Edit Profile Button
-                  // RaisedButton(
-                  //   child: Text("Edit Profile"),
-                  //   onPressed: () => Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //           builder: (context) => EditProfileScreen(
-                  //                 currentData: userData,
-                  //               ))),
-                  // ),
+                  ///Edit Profile Button
+                  RaisedButton(
+                    child: Text("Edit Profile"),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditProfileScreen(
+                                  currentData: userData,
+                                ))),
+                  ),
 
                   Divider(
                     thickness: 3,
