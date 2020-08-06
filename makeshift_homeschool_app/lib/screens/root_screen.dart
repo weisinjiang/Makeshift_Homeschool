@@ -30,30 +30,31 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   void initState() {
-    //userDataStream = Provider.of<AuthProvider>(context).userDataStream();
-    //print("UserDataStreamCalled");
+    collectionStream =
+          Provider.of<PostFeedProvider>(context, listen: false).lessonsCollectionStream();
+    userData = Provider.of<AuthProvider>(context, listen: false).getUser;
     super.initState();
   }
 
-  ///!
-  @override
-  void didChangeDependencies() {
-    print("Inside didCHANGE");
-    if (_isInThisWidget) {
-      setState(() {
-        print("Setting loading t true");
-        _isLoadingPostThumbnails = true;
-      });
-      print("Getting collection stream");
-      collectionStream =
-          Provider.of<PostFeedProvider>(context).lessonsCollectionStream();
-      print("Getting user data");
-      userData = Provider.of<AuthProvider>(context).getUser;
-      print("Setting isin to false");
-      _isInThisWidget = false;
-    }
-    super.didChangeDependencies();
-  }
+  // ///!
+  // @override
+  // void didChangeDependencies() {
+  //   print("Inside didCHANGE");
+  //   if (_isInThisWidget) {
+  //     setState(() {
+  //       print("Setting loading t true");
+  //       _isLoadingPostThumbnails = true;
+  //     });
+  //     print("Getting collection stream");
+  //     collectionStream =
+  //         Provider.of<PostFeedProvider>(context).lessonsCollectionStream();
+  //     print("Getting user data");
+  //     userData = Provider.of<AuthProvider>(context).getUser;
+  //     print("Setting isin to false");
+  //     _isInThisWidget = false;
+  //   }
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +111,11 @@ class _RootScreenState extends State<RootScreen> {
                       borderColor: colorPaleSpring,
                       height: screenHeight * 0.20,
                       width: screenWidth,
-                      function: () => Navigator.push(context,
+                        function: () => Navigator.push(context,
                                 SlideLeftRoute(screen: BootCampScreen())),
+                      
+                      // function: () => Navigator.push(context,
+                      //           SlideLeftRoute(screen: BootCampScreen())),
                       canUseButton: true,
                       name: "Boot Camp",
                       imageLocation: "asset/images/campFire.png",

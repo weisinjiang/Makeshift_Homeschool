@@ -15,6 +15,7 @@ class BootCampExpanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     final screenSize = MediaQuery.of(context).size;
     var userData = Provider.of<AuthProvider>(context).getUser;
     BootCampProvider activityWidget = BootCampProvider(activity: activity);
@@ -53,15 +54,20 @@ class BootCampExpanded extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              activityWidget.buildWidget("body", screenSize), /// build body
+              activityWidget.buildWidget("body", screenSize),
+
+              /// build body
               const SizedBox(
                 height: 30,
               ),
-              activityWidget.build5Reasons(screenSize),  /// build 5 suggestions
+              activityWidget.build5Reasons(screenSize),
+
+              /// build 5 suggestions
               const SizedBox(
                 height: 50,
               ),
-              activityWidget.buildWidget("conclusion", screenSize), // conclusion
+              activityWidget.buildWidget(
+                  "conclusion", screenSize), // conclusion
               SizedBox(
                 height: 30,
               ),
@@ -72,8 +78,8 @@ class BootCampExpanded extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              RaisedButton( 
-                child: Text("Save"), 
+              RaisedButton(
+                child: Text("Save"),
                 onPressed: () async {
                   /// fields are not empty
                   if (!activityWidget.fieldIsEmtpy()) {
@@ -83,7 +89,8 @@ class BootCampExpanded extends StatelessWidget {
                         .saveToUserProfile(
                             userData["uid"], activity.id, completeLetter);
                     Navigator.of(context).pop();
-                  } else { /// fields are emtpy, show an error message
+                  } else {
+                    /// fields are emtpy, show an error message
                     showErrorMessage("Some fields are empty", context);
                   }
                 },
