@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 
 
 
-class Differentwaystomove extends StatefulWidget {
+class DifferentWaysToMove extends StatefulWidget {
   @override
-  _DifferentwaystomoveState createState() => _DifferentwaystomoveState();
+  _DifferentWaysToMoveState createState() => _DifferentWaysToMoveState();
 }
 
-class _DifferentwaystomoveState extends State<Differentwaystomove> {
+class _DifferentWaysToMoveState extends State<DifferentWaysToMove> {
   List<TextEditingController> textController = [
     TextEditingController(), /// controller for "Name" index0
     TextEditingController(), /// controller for "Explain how to do your new way of walking" index1

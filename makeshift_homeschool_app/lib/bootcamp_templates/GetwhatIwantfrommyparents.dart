@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 
 
 
-class MakeYourFavoriteGameEvenBetter extends StatefulWidget {
+class GetWhatIWantFromMyParents extends StatefulWidget {
   @override
-  _MakeYourFavoriteGameEvenBetterState createState() => _MakeYourFavoriteGameEvenBetterState();
+  _GetWhatIWantFromMyParentsState createState() => _GetWhatIWantFromMyParentsState();
 }
 
-class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEvenBetter> {
+class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
   List<TextEditingController> textController = [
     TextEditingController(), /// controller for "What happened?" index0
     TextEditingController(), /// controller for "What happened?" index0
@@ -21,7 +21,8 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
     TextEditingController(), /// controller for "What happened next?" index2
     TextEditingController(), /// controller for "How did it end?" index3
     TextEditingController(), /// controller for "Why?" index4
-    TextEditingController(), /// controller for "Why?" index4
+    TextEditingController(), /// controller for "Why?" index5
+    TextEditingController(), /// controller for "Why?" index6
   ];
 
   Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
@@ -51,7 +52,7 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
   
       return Scaffold(
         appBar: AppBar(
-          title: Text("Make you favorite game even better"),
+          title: Text("Get What I Want From My Parents"),
         ),
         body: Container(
           color: Colors.white,
@@ -72,18 +73,18 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
                   
                   
                   Image.asset(
-                    "asset/bootcamp/videogame.gif", 
+                    "asset/bootcamp/please.gif", 
                     height: screenSize.height*0.3,
                     width: screenSize.width,
                     ),
                   
-                  Text("Dear creator of "),
+                  Text("Dear "),
   
   
                   Row(
                     children: [
                       SizedBox(
-                        width: 120,
+                        width: screenSize.width*0.9,
                         child: TextFormField(
                           
                 /// add a controller and attach it to this field
@@ -91,7 +92,7 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
                 //     maxLines: null,
                 controller: textController[0],
                 decoration: InputDecoration(
-                      hintText: "video game"
+                      hintText: "parent or gaurdian"
               ),
               ),
                         
@@ -108,10 +109,14 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
 
                   SizedBox(height: screenSize.height*0.03,),
 
+                  Text("First, I wanna say, you're great parents."),
+
+                  SizedBox(height: screenSize.height*0.03,),
+
                   Row(
                     children: [
 
-                      Text("I really enjoy playing  "),
+                      Text("But, I've been wanting  "),
                       SizedBox(
                         width: 120,
                         child: TextFormField(
@@ -121,13 +126,13 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
                 //     maxLines: null,
                 controller: textController[1],
                 decoration: InputDecoration(
-                      hintText: "video game"
+                      hintText: "what you want"
               ),
               ),
                         
                       ),
 
-                      Text("."),
+                      
 
                       
 
@@ -136,9 +141,11 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
                     ],
                   ),
 
+                  Text("for a pretty long time."),
+
                   SizedBox(height: screenSize.height*0.03,),
 
-                  Text("And I have some ideas on how to make it even better!"),
+                  Text("Here are some things I've done that you might not have noticed:"),
   
                   SizedBox(height: screenSize.height*0.03,),
                   
@@ -155,7 +162,7 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
                     maxLines: null,
                 controller: textController[2],
                 decoration: InputDecoration(
-                  hintText: "Suggestion One"
+                  hintText: "Something You've Done, One"
               ),
               ),
                     width: screenSize.width,
@@ -175,7 +182,7 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
                     maxLines: null,
                 controller: textController[3],
                 decoration: InputDecoration(
-                  hintText: "Suggestion Two"
+                  hintText: "Something You've Done, Two"
               ),
               ),
                     width: screenSize.width,
@@ -192,7 +199,7 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
                     maxLines: null,
                 controller: textController[4],
                 decoration: InputDecoration(
-                  hintText: "Suggestion Three"
+                  hintText: "Something You've Done, Three"
               ),
               ),
                     width: screenSize.width,
@@ -212,7 +219,7 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
                     maxLines: null,
                 controller: textController[5],
                 decoration: InputDecoration(
-                  hintText: "Suggestion Four"
+                  hintText: "Something You've Done, Four"
               ),
               ),
                     width: screenSize.width,
@@ -231,7 +238,7 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
                     maxLines: null,
                 controller: textController[6],
                 decoration: InputDecoration(
-                  hintText: "Suggestion Five"
+                  hintText: "Something You've Done, Five"
               ),
               ),
                     width: screenSize.width,
@@ -240,16 +247,35 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
 
                   SizedBox(height: screenSize.height*0.03,),
 
+                  Text("I believe this is proof that I should get"),
+
+                  SizedBox(
+                        width: 120,
+                        child: TextFormField(
+                          
+                /// add a controller and attach it to this field
+                // keyboardType: TextInputType.multiline,
+                //     maxLines: null,
+                controller: textController[7],
+                decoration: InputDecoration(
+                      hintText: "what you want"
+              ),
+              ),
+                        
+                      ),
+
+                      SizedBox(height: screenSize.height*0.03,),
+
   
   
-                  Text("Thank you for considering my ideas!"),
+                  Text("Thank you for considering my wants!"),
 
                   SizedBox(height: screenSize.height*0.03,),
 
                   RaisedButton(
                     child: Text("Save"),
                     onPressed: () async {
-                      await save(database, user["uid"],"Make your favorite game even better", context);
+                      await save(database, user["uid"],"Get what I want from my parents", context);
                     }
                   )
   
