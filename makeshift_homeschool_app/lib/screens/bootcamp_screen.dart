@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Differentwaystomove.dart';
+import 'package:makeshift_homeschool_app/bootcamp_templates/Makeyourfavoritegameevenbetter.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Yourfavoritefictionalcharacter.dart';
 import '../bootcamp_templates/WriteAboutYourFavoriteMemory.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
@@ -31,7 +32,7 @@ class BootCampScreen extends StatelessWidget {
 
     ///
     final List<Function> bootcampNav = [
-      () {},
+      () => Navigator.push(context,SlideLeftRoute(screen: Makeyourfavoritegameevenbetter())),
       () => Navigator.push(context,SlideLeftRoute(screen: WriteAboutYourFavoriteMemory())),
       () {},
       () => Navigator.push(context,SlideLeftRoute(screen: Yourfavoritefictionalcharacter())),
