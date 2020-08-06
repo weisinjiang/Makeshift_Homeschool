@@ -15,9 +15,9 @@ class Differentwaystomove extends StatefulWidget {
 
 class _DifferentwaystomoveState extends State<Differentwaystomove> {
   List<TextEditingController> textController = [
-    TextEditingController(), /// controller for "What happened?" index0
-    TextEditingController(), /// controller for "How did it start out?" index1
-    TextEditingController(), /// controller for "What happened next?" index2
+    TextEditingController(), /// controller for "Name" index0
+    TextEditingController(), /// controller for "Explain how to do your new way of walking" index1
+    TextEditingController(), /// controller for "Explain why..." index2
   ];
 
   Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
