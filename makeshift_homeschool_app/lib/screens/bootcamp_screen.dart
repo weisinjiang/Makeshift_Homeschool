@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import '../bootcamp_templates/WriteAboutYourFavoriteMemory.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/bootcamp_listTile.dart';
+
+import '../shared/slide_transition.dart';
 
 /// Only have 10 bootcamps, so the 10 lessons will be hard coded
 
@@ -13,7 +16,7 @@ class BootCampScreen extends StatelessWidget {
     /// 10 Boot camp activity names. Final bc it is never changing
     final List<String> bootCampActivityNames = [
       "Make your favorite game even better",
-      "Share your favorite memory",
+      "Write About Your Favorite Memory",
       "Get to know a neighbor",
       "Your favorite fictional character",
       "Discover your families love languages",
@@ -23,6 +26,22 @@ class BootCampScreen extends StatelessWidget {
       "Write about family vacation",
       "Different ways to move"
     ];
+
+    ///
+    final List<Function> bootcampNav = [
+      () {},
+      () => Navigator.push(context,SlideLeftRoute(screen: WriteAboutYourFavoriteMemory())),
+      () {},
+      () {},
+      () {},
+      () {},
+      () {},
+      () {},
+      () {},
+      () {},
+    ];
+    
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Boot Camp"),
@@ -59,7 +78,7 @@ class BootCampScreen extends StatelessWidget {
                   itemCount: 10,
                   itemBuilder: (context, index) => BootCampListTile(
                     title: bootCampActivityNames[index],
-                    navigationFunction: () {}, /// Make list of nagivation function that matches activity list
+                    navigationFunction: bootcampNav[index], /// Make list of nagivation function that matches activity list
                   ),
                 ),
               ),
