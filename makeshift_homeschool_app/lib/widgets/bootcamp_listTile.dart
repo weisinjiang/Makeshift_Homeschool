@@ -31,7 +31,7 @@ class BootCampListTile extends StatelessWidget {
             //         screen: BootCampExpanded(
             //       activity: activity,
             //     ))),
-            onTap: navigationFunction,
+            onTap: navigationFunction, // fire the nav function passed from Bootcamp Screen
             child: ListTile(
               leading: CircleAvatar(
                   radius: 25,

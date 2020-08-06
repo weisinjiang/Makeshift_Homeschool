@@ -392,8 +392,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
 
                         /// Term & Conditions, Privacy Policy
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Wrap(
+                          direction: Axis.horizontal,
                           children: <Widget>[
                             Text(
                               "By signing up or logging in, you agree to our ",

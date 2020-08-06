@@ -45,17 +45,27 @@ class BootCampDatabase {
     return names;
   }
 
-  /// When users are finished with typing their answers to the bootcamp lessons
-  /// Access the "bootcamp" collections in the users collection and set the data
-  Future<void> saveToUserProfile(
-      String uid, String activityID, Map<String, String> letter) async {
+   Future<void> saveToUserProfile(
+      String uid, String activityID,List<String> userResponse) async {
     await _database
         .collection("users")
         .document(uid)
         .collection("Bootcamp")
         .document(activityID)
-        .setData(letter);
+        .setData({"userResponse": userResponse});
   }
+
+  /// When users are finished with typing their answers to the bootcamp lessons
+  /// Access the "bootcamp" collections in the users collection and set the data
+  // Future<void> saveToUserProfile(
+  //     String uid, String activityID, Map<String, String> letter) async {
+  //   await _database
+  //       .collection("users")
+  //       .document(uid)
+  //       .collection("Bootcamp")
+  //       .document(activityID)
+  //       .setData(letter);
+  // }
 
   Future<List<Letter>> getSavedLetters(String uid) async {
     List<Letter> letterList = [];
