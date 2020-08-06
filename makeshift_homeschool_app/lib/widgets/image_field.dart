@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:provider/provider.dart';
@@ -76,12 +77,22 @@ class _ImageFieldState extends State<ImageField> {
     ImagePicker imagePicker = ImagePicker();
     final pickedImage = await imagePicker.getImage(
         // ask for permission
-        source: source,
-        maxHeight: height * widget.imageHeight,
-        maxWidth: width * widget.imageWidth);
-    setState(() {
-      _userSelectedImage = File(pickedImage.path); // set the image path
+        source: source);
+
+    /// Crop the image
+    if (pickedImage != null) {
+      File croppedImage = await ImageCropper.cropImage(
+            sourcePath: pickedImage.path,
+            maxWidth: 300,
+            maxHeight: 150,
+            aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0)
+      );
+      setState(() {
+      _userSelectedImage = File(croppedImage.path); // set the image path
     });
+ 
+    }
+    
     newPostProvider.setNewPostImageFile = _userSelectedImage;
     //return File(pickedImage.path);
     //await auth.uploadProfileImage(_imageFile); // upload to Firestore
@@ -107,7 +118,9 @@ class _ImageFieldState extends State<ImageField> {
               child: _userSelectedImage == null
                   ? _onScreenImage
                   : Image.file(_userSelectedImage)),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           RaisedButton(
               child: Text("Clear Image"),
               onPressed: () {
