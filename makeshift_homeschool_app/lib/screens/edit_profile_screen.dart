@@ -144,6 +144,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           initialValue: currentUserData["username"],
+                          maxLength: 300,
                           decoration: InputDecoration(
                             labelText: "Username",
                             border: OutlineInputBorder(
@@ -160,18 +161,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           initialValue: currentUserData["bio"],
+                          maxLength: 250,
                           decoration: InputDecoration(
                             labelText: "Bio",
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.vertical()),
                           ),
                           onChanged: (_) => updateProfileInfo = true,
-                          validator: (newBio) {
-                            if (newBio.length > 150) {
-                              return "Character limit is 150. Current: ${newBio.length}";
-                            }
-                            return null;
-                          },
                           onSaved: (newBio) => toUpdateData["bio"] = newBio,
                         ),
                       ),

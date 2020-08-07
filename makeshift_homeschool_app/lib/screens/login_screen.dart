@@ -204,6 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
+                              maxLength: 300,
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person),
                                 hintText: "Username",
@@ -332,7 +333,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 Navigator.of(context).push(
                                     ScaleRoute(screen: ResetPasswordScreen()));
-                              }, //! To do
+                              }, 
                               child: const Text(
                                 "Reset Password",
                                 style: TextStyle(
