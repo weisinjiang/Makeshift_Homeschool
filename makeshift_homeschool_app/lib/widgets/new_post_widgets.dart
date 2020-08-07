@@ -12,6 +12,7 @@ Widget lessonTitle(TextEditingController controller) {
       keyboardType: TextInputType.text,
       textAlign: TextAlign.center,
       maxLines: null,
+      maxLength: 18,
       decoration: InputDecoration(
         hintText: "What is your lesson's name?",
         //normal black underline and then when pressed, turns red

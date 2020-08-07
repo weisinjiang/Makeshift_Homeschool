@@ -44,51 +44,39 @@ class PostThumbnail extends StatelessWidget {
           /// Title of the post
           child: Padding(
             padding: const EdgeInsets.all(5.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ListTile(
-                  leading: Consumer<Post>(
-                    builder: (context, post, _) => IconButton(
-                      icon: postData.isLiked
-                          ? Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                              size: screenSize.height * 0.05,
-                            )
-                          : Icon(Icons.favorite_border, color: Colors.red, size:screenSize.height * 0.05,),
-                      onPressed: () async {
-                        await post.toggleLikeButton(
-                            user["uid"], postData.getPostId);
-                      },
-                    ),
+            child: Center(
+              child: ListTile(
+                leading: Consumer<Post>(
+                  builder: (context, post, _) => IconButton(
+                    icon: postData.isLiked
+                        ? Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                            size: screenSize.height * 0.05,
+                          )
+                        : Icon(Icons.favorite_border, color: Colors.red, size:screenSize.height * 0.05,),
+                    onPressed: () async {
+                      await post.toggleLikeButton(
+                          user["uid"], postData.getPostId);
+                    },
                   ),
-                  title: FittedBox(
-                                      child: StrokeText(
-                        fontSize: 30,
+                ),
+                title: FittedBox(
+                                  child: StrokeText(
+                        fontSize: 20,
                         strokeColor: Colors.black,
                         strokeWidth: 4.0,
                         text: postData.getTitle,
                         textColor: Colors.white),
-                  ),
-                  subtitle: StrokeText(
-                    fontSize: 20,
-                    strokeColor: Colors.black,
-                    strokeWidth: 4.0,
-                    text: "By: ${postData.getOwnerName}",
-                    textColor: Colors.white,
-                  ),
                 ),
-                // FittedBox(
-                //     fit: BoxFit.contain,
-                //     child: StrokeText(
-                //       fontSize: 20,
-                //       strokeColor: Colors.black,
-                //       strokeWidth: 4.0,
-                //       text: postData.getTitle,
-                //       textColor: kGreenPrimary,
-                //     )),
-              ],
+                subtitle: StrokeText(
+                  fontSize: 16,
+                  strokeColor: Colors.black,
+                  strokeWidth: 4.0,
+                  text: "By: ${postData.getOwnerName}",
+                  textColor: Colors.white,
+                ),
+              ),
             ),
           )),
     );
