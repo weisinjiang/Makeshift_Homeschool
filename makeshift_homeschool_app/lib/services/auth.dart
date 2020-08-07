@@ -104,7 +104,7 @@ class AuthProvider with ChangeNotifier {
       "uid": _userId,
       "email": result.user.email,
       "level": "Student",
-      "bio": " ",
+      "bio": "Add a bio",
       "lesson_created": 0,
       "lesson_completed": 0
     });

@@ -126,17 +126,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
+                    Divider(),
                     Container(
                       height: screenHeight * 0.10,
-                      width: screenWidth * 0.90,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black38)),
+                      width: screenWidth * 0.95,
+
                       child: Text(
                         "${auth.getUser["bio"]}",
                         textAlign: TextAlign.center,
                         style: kParagraphTextStyle,
                       ),
                     ),
+                    Divider(),
 
                     RaisedButton(
                       color: Colors.red[200],
@@ -159,7 +160,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
 
                     Divider(
-                      thickness: 3,
+                    
                     ),
                   ],
                 ),
