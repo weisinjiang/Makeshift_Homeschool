@@ -29,11 +29,34 @@ class _GetToKnowANeighborState extends State<GetToKnowANeighbor> {
   ];
 
   Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
-    List<String> userReponse = [];
+    String userReponse = 
+    """
+    Who are you interviewing? ${textController[0].text}\n
+    1. What's something you wish you did?\n
+    ${textController[1].text}\n
+    2. What's your favorite relaxing activity?\n
+    ${textController[2].text}\n
+    3. What would be your ideal vacation?\n
+    ${textController[3].text}\n
+    4. If you could go back in time and tell your younger self something, what would you tell them?\n
+    ${textController[4].text}\n
+    5. What's something about yourself you especially enjoy?\n
+    ${textController[5].text}\n
+    6. How has your childhood shaped you and your personality?\n
+    ${textController[6].text}\n
+    7. What do your friends and family like best about you?\n
+    ${textController[7].text}\n
+    8. What's something you regret, or a lesson learned?\n
+    ${textController[8].text}\n
+    9. What is a belief or point of view that you hold that is not shared by most people?\n
+    ${textController[9].text}\n
+    10. What is something you do to relax or recharge after a long day?\n
+    ${textController[10].text}\n
+    """;
     textController.forEach((controller) { 
-      userReponse.add(controller.text);
+      //userReponse.add(controller.text);
     });
-    //await database.saveToUserProfile(uid, activityID, userReponse);
+    await database.saveToUserProfile(uid, activityID, userReponse);
 
     
     Navigator.of(context).pop();
