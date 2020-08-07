@@ -26,11 +26,24 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
   ];
 
   Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
-    List<String> userReponse = [];
+    String userReponse = 
+    """
+    Dear ${textController[0].text},\n
+    First, I wanna say, you're great parents.
+    But, I've been wanting ${textController[1].text} for a pretty long time.\n
+    Here's are some things that I've done that you might not of noticed.\n
+    1. ${textController[2].text}\n
+    2. ${textController[3].text}\n
+    3. ${textController[4].text}\n
+    4. ${textController[5].text}\n
+    5. ${textController[6].text}\n
+    I believe this is proof that I should get ${textController[7].text}.\n
+    Thank you for considering my wants!
+    """;
     textController.forEach((controller) { 
-      userReponse.add(controller.text);
+      //userReponse.add(controller.text);
     });
-    //await database.saveToUserProfile(uid, activityID, userReponse);
+    await database.saveToUserProfile(uid, activityID, userReponse);
 
     
     Navigator.of(context).pop();
