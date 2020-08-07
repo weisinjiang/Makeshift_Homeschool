@@ -1,6 +1,8 @@
 // keyboardType: TextInputType.multiline,
 //   maxLines: null,
 
+// DONE!
+
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
@@ -20,11 +22,14 @@ class _DiscoverYourFamiliesLoveLanguagesState extends State<DiscoverYourFamilies
   ];
 
   Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
-    List<String> userReponse = [];
+    String userResponse = 
+      """What is one of your family members love languages?\n
+      "${textController[0].text}"\n
+    """;
     textController.forEach((controller) { 
-      userReponse.add(controller.text);
+      // userReponse.add(controller.text);
     });
-    //await database.saveToUserProfile(uid, activityID, userReponse);
+    await database.saveToUserProfile(uid, activityID, userResponse);
 
     
     Navigator.of(context).pop();
