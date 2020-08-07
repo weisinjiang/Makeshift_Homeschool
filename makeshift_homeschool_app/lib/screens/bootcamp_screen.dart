@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Differentwaystomove.dart';
+import 'package:makeshift_homeschool_app/bootcamp_templates/Discoveryourfamilieslovelanguages.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Gettoknowaneighbor.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/GetwhatIwantfrommyparents.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Makeyourfavoritegameevenbetter.dart';
@@ -38,7 +39,7 @@ class BootCampScreen extends StatelessWidget {
       () => Navigator.push(context,SlideLeftRoute(screen: WriteAboutYourFavoriteMemory())),
       () => Navigator.push(context,SlideLeftRoute(screen: GetToKnowANeighbor())),
       () => Navigator.push(context,SlideLeftRoute(screen: Yourfavoritefictionalcharacter())),
-      () {},
+      () => Navigator.push(context,SlideLeftRoute(screen: DiscoverYourFamiliesLoveLanguages())),
       () {},
       () => Navigator.push(context,SlideLeftRoute(screen: GetWhatIWantFromMyParents())),
       () {},
