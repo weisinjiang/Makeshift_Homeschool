@@ -29,7 +29,7 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
     textController.forEach((controller) { 
       userReponse.add(controller.text);
     });
-    await database.saveToUserProfile(uid, activityID, userReponse);
+    //await database.saveToUserProfile(uid, activityID, userReponse);
 
     
     Navigator.of(context).pop();

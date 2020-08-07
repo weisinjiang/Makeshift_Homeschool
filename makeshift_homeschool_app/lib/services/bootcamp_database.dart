@@ -46,7 +46,7 @@ class BootCampDatabase {
   }
 
    Future<void> saveToUserProfile(
-      String uid, String activityID,List<String> userResponse) async {
+      String uid, String activityID, String userResponse) async {
     await _database
         .collection("users")
         .document(uid)
