@@ -1,6 +1,5 @@
 // keyboardType: TextInputType.multiline,
 //   maxLines: null,
-//DONE
 
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
@@ -9,29 +8,34 @@ import 'package:provider/provider.dart';
 
 
 
-class WriteAboutYourFavoriteMemory extends StatefulWidget {
+class MakeYourFavoriteGameEvenBetter extends StatefulWidget {
   @override
-  _WriteAboutYourFavoriteMemoryState createState() => _WriteAboutYourFavoriteMemoryState();
+  _MakeYourFavoriteGameEvenBetterState createState() => _MakeYourFavoriteGameEvenBetterState();
 }
 
-class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMemory> {
+class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEvenBetter> {
   List<TextEditingController> textController = [
+    TextEditingController(), /// controller for "What happened?" index0
     TextEditingController(), /// controller for "What happened?" index0
     TextEditingController(), /// controller for "How did it start out?" index1
     TextEditingController(), /// controller for "What happened next?" index2
     TextEditingController(), /// controller for "How did it end?" index3
+    TextEditingController(), /// controller for "Why?" index4
     TextEditingController(), /// controller for "Why?" index4
   ];
 
   Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
     String userReponse = 
     """
-    I remember this time when ${textController[0].text}!\n
-    First, ${textController[1].text}.\n
-    Next, ${textController[2].text}.\n
-    Last, ${textController[3].text}.\n
-    This is my favorite memory because ${textController[4].text}.\n
-    Thank you for reading about my favorite memory!\n
+    Dear creator of ${textController[0].text},\n
+    I really enjoy playing ${textController[1].text}.\n
+    And I have some ideas on how to make it even better!\n
+    1. ${textController[2].text}
+    2. ${textController[3].text}
+    3. ${textController[4].text}
+    4. ${textController[5].text}
+    5. ${textController[6].text}
+    Thank you for considering my ideas!
     """;
     textController.forEach((controller) { 
       //userReponse.add(controller.text);
@@ -58,13 +62,15 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
   
       return Scaffold(
         appBar: AppBar(
-          title: Text("Write About Your Favorite Memory"),
+          title: Text("Make you favorite game even better"),
         ),
         body: Container(
+          color: Colors.white,
           padding: EdgeInsets.all(15),
           height: screenSize.height,
           width: screenSize.width,
           child: Container(
+            color: Colors.white,
             height: screenSize.height * 0.95,
           
             child: ListView(
@@ -76,30 +82,80 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
                   /// Image on top
                   
                   
-                  Image.asset("asset/bootcamp/beach.gif"),
-  
-                  SizedBox(height: screenSize.height*0.03,),
+                  Image.asset(
+                    "asset/bootcamp/videogame.gif", 
+                    height: screenSize.height*0.3,
+                    width: screenSize.width,
+                    ),
                   
-                  Text("I remember this time when "),
+                  Text("Dear creator of "),
   
   
-                  SizedBox(
-                    child: TextFormField(
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 120,
+                        child: TextFormField(
+                          
                 /// add a controller and attach it to this field
                 // keyboardType: TextInputType.multiline,
                 //     maxLines: null,
                 controller: textController[0],
                 decoration: InputDecoration(
-                  hintText: "What happened?"
+                      hintText: "video game"
               ),
               ),
-                    width: 130,
+                        
+                      ),
+
+                      Text(","),
+
+                      
+
+
+
+                    ],
                   ),
+
+                  SizedBox(height: screenSize.height*0.03,),
+
+                  Row(
+                    children: [
+
+                      Text("I really enjoy playing  "),
+                      SizedBox(
+                        width: 120,
+                        child: TextFormField(
+                          
+                /// add a controller and attach it to this field
+                // keyboardType: TextInputType.multiline,
+                //     maxLines: null,
+                controller: textController[1],
+                decoration: InputDecoration(
+                      hintText: "video game"
+              ),
+              ),
+                        
+                      ),
+
+                      Text("."),
+
+                      
+
+
+
+                    ],
+                  ),
+
+                  SizedBox(height: screenSize.height*0.03,),
+
+                  Text("And I have some ideas on how to make it even better!"),
   
                   SizedBox(height: screenSize.height*0.03,),
                   
-  
-                  Text("First,"),
+
+
+                  Text("1."),
   
                
   
@@ -108,9 +164,9 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
                 /// add a controller and attach it to this field
                 keyboardType: TextInputType.multiline,
                     maxLines: null,
-                controller: textController[1],
+                controller: textController[2],
                 decoration: InputDecoration(
-                  hintText: "How did it start out?"
+                  hintText: "Suggestion One"
               ),
               ),
                     width: screenSize.width,
@@ -120,25 +176,8 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
                   SizedBox(height: screenSize.height*0.03,),
   
                   
-                  Text("Next,"),
+                  Text("2."),
   
-  
-                  SizedBox(
-                    child: TextFormField(
-                /// add a controller and attach it to this field
-                keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                controller: textController[2],
-                decoration: InputDecoration(
-                  hintText: "What happened next?"
-              ),
-              ),
-                    width: screenSize.width,
-                  ),
-
-                  SizedBox(height: screenSize.height*0.03,),
-  
-                  Text("Last,"),
   
                   SizedBox(
                     child: TextFormField(
@@ -147,18 +186,15 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
                     maxLines: null,
                 controller: textController[3],
                 decoration: InputDecoration(
-                  hintText: "How did it end?"
+                  hintText: "Suggestion Two"
               ),
               ),
                     width: screenSize.width,
                   ),
 
                   SizedBox(height: screenSize.height*0.03,),
-
   
-                  Text("This is my favorite memory because..."),
-  
-                  SizedBox(width: 300,),
+                  Text("3."),
   
                   SizedBox(
                     child: TextFormField(
@@ -167,7 +203,46 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
                     maxLines: null,
                 controller: textController[4],
                 decoration: InputDecoration(
-                  hintText: "Why?"
+                  hintText: "Suggestion Three"
+              ),
+              ),
+                    width: screenSize.width,
+                  ),
+
+                  SizedBox(height: screenSize.height*0.03,),
+
+  
+                  Text("4. "),
+  
+                  SizedBox(width: 300,),
+  
+                  SizedBox(
+                    child: TextFormField(
+                /// add a controller and attach it to this field
+                keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                controller: textController[5],
+                decoration: InputDecoration(
+                  hintText: "Suggestion Four"
+              ),
+              ),
+                    width: screenSize.width,
+                  ),
+
+                  SizedBox(height: screenSize.height*0.03,),
+
+                  Text("5. "),
+  
+                  SizedBox(width: 300,),
+  
+                  SizedBox(
+                    child: TextFormField(
+                /// add a controller and attach it to this field
+                keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                controller: textController[6],
+                decoration: InputDecoration(
+                  hintText: "Suggestion Five"
               ),
               ),
                     width: screenSize.width,
@@ -178,12 +253,14 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
 
   
   
-                  Text("Thank you for reading about my favorite memory!"),
+                  Text("Thank you for considering my ideas!"),
+
+                  SizedBox(height: screenSize.height*0.03,),
 
                   RaisedButton(
                     child: Text("Save"),
                     onPressed: () async {
-                      await save(database, user["uid"],"Write About Your Favorite Memory", context);
+                      await save(database, user["uid"],"Make your favorite game even better", context);
                     }
                   )
   
