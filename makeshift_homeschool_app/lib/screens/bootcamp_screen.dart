@@ -5,6 +5,7 @@ import 'package:makeshift_homeschool_app/bootcamp_templates/Discoveryourfamilies
 import 'package:makeshift_homeschool_app/bootcamp_templates/Gettoknowaneighbor.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/GetwhatIwantfrommyparents.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Makeyourfavoritegameevenbetter.dart';
+import 'package:makeshift_homeschool_app/bootcamp_templates/Practicewinningfriends.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Writeaboutafamilyvacation.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Yourfavoritefictionalcharacter.dart';
 import '../bootcamp_templates/WriteAboutYourFavoriteMemory.dart';
@@ -44,7 +45,7 @@ class BootCampScreen extends StatelessWidget {
       () => Navigator.push(context,SlideLeftRoute(screen: DiscoverYourFamiliesLoveLanguages())),
       () => Navigator.push(context,SlideLeftRoute(screen: AlternativeMovieEndings())),
       () => Navigator.push(context,SlideLeftRoute(screen: GetWhatIWantFromMyParents())),
-      () {},
+      () => Navigator.push(context,SlideLeftRoute(screen: PracticeWinningFriends())),
       () => Navigator.push(context,SlideLeftRoute(screen: WriteAboutAFamilyVacation())),
       () => Navigator.push(context,SlideLeftRoute(screen: DifferentWaysToMove())),
     ];
