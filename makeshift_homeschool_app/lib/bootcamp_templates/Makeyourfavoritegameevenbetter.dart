@@ -25,11 +25,22 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
   ];
 
   Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
-    List<String> userReponse = [];
+    String userReponse = 
+    """
+    Dear creator of ${textController[0].text},\n
+    I really enjoy playing ${textController[1].text}.\n
+    And I have some ideas on how to make it even better!\n
+    1. ${textController[2].text}
+    2. ${textController[3].text}
+    3. ${textController[4].text}
+    4. ${textController[5].text}
+    5. ${textController[6].text}
+    Thank you for considering my ideas!
+    """;
     textController.forEach((controller) { 
-      userReponse.add(controller.text);
+      //userReponse.add(controller.text);
     });
-    //await database.saveToUserProfile(uid, activityID, userReponse);
+    await database.saveToUserProfile(uid, activityID, userReponse);
 
     
     Navigator.of(context).pop();
