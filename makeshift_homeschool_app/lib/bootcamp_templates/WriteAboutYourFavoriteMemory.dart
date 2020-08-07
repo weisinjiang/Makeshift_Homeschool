@@ -23,11 +23,19 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
   ];
 
   Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
-    List<String> userReponse = [];
+    String userReponse = 
+    """
+    I remember this time when ${textController[0].text}!\n
+    First, ${textController[1].text}.\n
+    Next, ${textController[2].text}.\n
+    Last, ${textController[3].text}.\n
+    This is my favorite memory because ${textController[4].text}.\n
+    Thank you for reading about my favorite memory!\n
+    """;
     textController.forEach((controller) { 
-      userReponse.add(controller.text);
+      //userReponse.add(controller.text);
     });
-    //await database.saveToUserProfile(uid, activityID, userReponse);
+    await database.saveToUserProfile(uid, activityID, userReponse);
 
     
     Navigator.of(context).pop();
