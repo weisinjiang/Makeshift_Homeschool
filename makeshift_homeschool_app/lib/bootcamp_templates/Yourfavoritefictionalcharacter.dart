@@ -25,11 +25,21 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
   ];
 
   Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
-    List<String> userReponse = [];
+    String userReponse = 
+    """
+    My favorite fictional charecter is ${textController[0].text} from ${textController[1].text}.\n
+    Here are some reasons why I like this character:\n
+    1. ${textController[2].text}\n
+    2. ${textController[3].text}\n
+    3. ${textController[4].text}\n
+    4. ${textController[5].text}\n
+    5. ${textController[6].text}\n
+    Thank you for reading about my favorite fictional charecter! I hope you enjoyed!\n
+    """;
     textController.forEach((controller) { 
-      userReponse.add(controller.text);
+      //userReponse.add(controller.text);
     });
-    //await database.saveToUserProfile(uid, activityID, userReponse);
+    await database.saveToUserProfile(uid, activityID, userReponse);
 
     
     Navigator.of(context).pop();
