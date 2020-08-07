@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 
 
 
-class GetWhatIWantFromMyParents extends StatefulWidget {
+class GetToKnowANeighbor extends StatefulWidget {
   @override
-  _GetWhatIWantFromMyParentsState createState() => _GetWhatIWantFromMyParentsState();
+  _GetToKnowANeighborState createState() => _GetToKnowANeighborState();
 }
 
-class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
+class _GetToKnowANeighborState extends State<GetToKnowANeighbor> {
   List<TextEditingController> textController = [
     TextEditingController(), /// controller for "What happened?" index0
     TextEditingController(), /// controller for "What happened?" index1
@@ -22,7 +22,10 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
     TextEditingController(), /// controller for "How did it end?" index4
     TextEditingController(), /// controller for "Why?" index5
     TextEditingController(), /// controller for "Why?" index6
-    TextEditingController(), /// controller for "Why?" index7
+    TextEditingController(), /// controller for "What happened next?" index7
+    TextEditingController(), /// controller for "How did it end?" index8
+    TextEditingController(), /// controller for "Why?" index9
+    TextEditingController(), /// controller for "Why?" index10
   ];
 
   Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
@@ -52,7 +55,7 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
   
       return Scaffold(
         appBar: AppBar(
-          title: Text("Get What I Want From My Parents"),
+          title: Text("Get to know your neighbor"),
         ),
         body: Container(
           color: Colors.white,
@@ -73,50 +76,21 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
                   
                   
                   Image.asset(
-                    "asset/bootcamp/please.gif", 
+                    "asset/bootcamp/interview.gif", 
                     height: screenSize.height*0.3,
                     width: screenSize.width,
                     ),
+
+                    SizedBox(height: screenSize.height*0.03,),
                   
-                  Text("Dear "),
+                 
   
   
                   Row(
                     children: [
-                      SizedBox(
-                        width: screenSize.width*0.9,
-                        child: TextFormField(
-                          
-                /// add a controller and attach it to this field
-                // keyboardType: TextInputType.multiline,
-                //     maxLines: null,
-                controller: textController[0],
-                decoration: InputDecoration(
-                      hintText: "parent or gaurdian"
-              ),
-              ),
-                        
-                      ),
 
-                      Text(","),
+                      Text("Who are you interviewing?  "),
 
-                      
-
-
-
-                    ],
-                  ),
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-                  Text("First, I wanna say, you're great parents."),
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-                  Row(
-                    children: [
-
-                      Text("But, I've been wanting  "),
                       SizedBox(
                         width: 120,
                         child: TextFormField(
@@ -124,15 +98,15 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
                 /// add a controller and attach it to this field
                 // keyboardType: TextInputType.multiline,
                 //     maxLines: null,
-                controller: textController[1],
+                controller: textController[0],
                 decoration: InputDecoration(
-                      hintText: "what you want"
+                      hintText: "Name"
               ),
               ),
                         
                       ),
 
-                      
+                    
 
                       
 
@@ -141,17 +115,31 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
                     ],
                   ),
 
-                  Text("for a pretty long time."),
-
                   SizedBox(height: screenSize.height*0.03,),
 
-                  Text("Here are some things I've done that you might not have noticed:"),
+                  Text("1. What's something you wish you did?"),
+                  SizedBox(
+                    width: 120,
+                    child: TextFormField(
+                      
+                /// add a controller and attach it to this field
+                // keyboardType: TextInputType.multiline,
+                //     maxLines: null,
+                controller: textController[1],
+                decoration: InputDecoration(
+                  hintText: "Answer One"
+              ),
+              ),
+                    
+                  ),
+
+                  SizedBox(height: screenSize.height*0.03,),
   
                   SizedBox(height: screenSize.height*0.03,),
                   
 
 
-                  Text("1."),
+                  Text("2. What's your favorite relaxing activity?"),
   
                
   
@@ -162,7 +150,7 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
                     maxLines: null,
                 controller: textController[2],
                 decoration: InputDecoration(
-                  hintText: "Something You've Done, One"
+                  hintText: "Answer Two"
               ),
               ),
                     width: screenSize.width,
@@ -172,7 +160,7 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
                   SizedBox(height: screenSize.height*0.03,),
   
                   
-                  Text("2."),
+                  Text("3. What would be your ideal vacation?"),
   
   
                   SizedBox(
@@ -182,7 +170,7 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
                     maxLines: null,
                 controller: textController[3],
                 decoration: InputDecoration(
-                  hintText: "Something You've Done, Two"
+                  hintText: "Answer Three"
               ),
               ),
                     width: screenSize.width,
@@ -190,7 +178,7 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
 
                   SizedBox(height: screenSize.height*0.03,),
   
-                  Text("3."),
+                  Text("4. If you could go back and tell your younger self something, what would you tell them?"),
   
                   SizedBox(
                     child: TextFormField(
@@ -199,7 +187,7 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
                     maxLines: null,
                 controller: textController[4],
                 decoration: InputDecoration(
-                  hintText: "Something You've Done, Three"
+                  hintText: "Answer Four"
               ),
               ),
                     width: screenSize.width,
@@ -208,7 +196,7 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
                   SizedBox(height: screenSize.height*0.03,),
 
   
-                  Text("4. "),
+                  Text("5. What's something about yourself you especially like?"),
   
                   SizedBox(width: 300,),
   
@@ -219,7 +207,7 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
                     maxLines: null,
                 controller: textController[5],
                 decoration: InputDecoration(
-                  hintText: "Something You've Done, Four"
+                  hintText: "Answer Five"
               ),
               ),
                     width: screenSize.width,
@@ -227,7 +215,7 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
 
                   SizedBox(height: screenSize.height*0.03,),
 
-                  Text("5. "),
+                  Text("6. How has your childhood shaped you, and you personality?"),
   
                   SizedBox(width: 300,),
   
@@ -238,7 +226,7 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
                     maxLines: null,
                 controller: textController[6],
                 decoration: InputDecoration(
-                  hintText: "Something You've Done, Five"
+                  hintText: "Answer Six"
               ),
               ),
                     width: screenSize.width,
@@ -247,35 +235,94 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
 
                   SizedBox(height: screenSize.height*0.03,),
 
-                  Text("I believe this is proof that I should get"),
-
+                  Text("7. What do your friends and family like best about you?"),
+  
+                  SizedBox(width: 300,),
+  
                   SizedBox(
-                        width: 120,
-                        child: TextFormField(
-                          
+                    child: TextFormField(
                 /// add a controller and attach it to this field
-                // keyboardType: TextInputType.multiline,
-                //     maxLines: null,
+                keyboardType: TextInputType.multiline,
+                    maxLines: null,
                 controller: textController[7],
                 decoration: InputDecoration(
-                      hintText: "what you want"
+                  hintText: "Answer Seven"
               ),
               ),
-                        
-                      ),
+                    width: screenSize.width,
+                  ),
 
-                      SizedBox(height: screenSize.height*0.03,),
-
-  
-  
-                  Text("Thank you for considering my wants!"),
 
                   SizedBox(height: screenSize.height*0.03,),
+
+                  Text("8. What's something you regret or a lesson learned?"),
+  
+                  SizedBox(width: 300,),
+  
+                  SizedBox(
+                    child: TextFormField(
+                /// add a controller and attach it to this field
+                keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                controller: textController[8],
+                decoration: InputDecoration(
+                  hintText: "Answer Eight"
+              ),
+              ),
+                    width: screenSize.width,
+                  ),
+
+
+                  SizedBox(height: screenSize.height*0.03,),
+
+
+                  Text("9. What is a belief or a point of view that you hold that is not shared by most people?"),
+  
+                  SizedBox(width: 300,),
+  
+                  SizedBox(
+                    child: TextFormField(
+                /// add a controller and attach it to this field
+                keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                controller: textController[9],
+                decoration: InputDecoration(
+                  hintText: "Answer Nine"
+              ),
+              ),
+                    width: screenSize.width,
+                  ),
+
+
+                  SizedBox(height: screenSize.height*0.03,),
+
+
+                  Text("10. What is something you do to relax and recharge after a long day?"),
+  
+                  SizedBox(width: 300,),
+  
+                  SizedBox(
+                    child: TextFormField(
+                /// add a controller and attach it to this field
+                keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                controller: textController[10],
+                decoration: InputDecoration(
+                  hintText: "Answer Ten"
+              ),
+              ),
+                    width: screenSize.width,
+                  ),
+
+
+                  SizedBox(height: screenSize.height*0.03,),
+
+
 
                   RaisedButton(
                     child: Text("Save"),
                     onPressed: () async {
-                      await save(database, user["uid"],"Get what I want from my parents", context);
+                      await save(database, user["uid"],"Get to know a neighbor", context);
                     }
                   )
   
