@@ -1,74 +1,83 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
-
+import 'package:provider/provider.dart';
 
 /// Study screen where lessons are retrieved from the database and posted
 /// The collection "lessons" from Firestore will be passed onto this widget
 /// from a Provider outside of the class to prevent the stream from being called
 /// multiple times
 
-class StudyScreen extends StatelessWidget {
+class StudyScreen extends StatefulWidget {
   final Stream<QuerySnapshot> collectionStream;
 
   const StudyScreen({Key key, this.collectionStream}) : super(key: key);
+
+  @override
+  _StudyScreenState createState() => _StudyScreenState();
+}
+
+class _StudyScreenState extends State<StudyScreen> {
+  var _showOnlyFavorites = false;
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<PostFeedProvider>(context).fetchPostsFromDatabase().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final postList = Provider.of<PostFeedProvider>(context).getPosts;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Let's Read! 📖"),
-        backgroundColor: colorPaleGreen,
-        elevation: 0.0,
-      ),
-      body: StreamBuilder(
-          stream: collectionStream,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              // contains every document in Lessons
-              var documentData = snapshot.data.documents;
-
-              /// Convert the query snapshot from the database into a list of
-              /// posts by assigning values into a Post object
-              var postList = documentData.map<Post>((doc) {
-                var post = Post();
-                post.setCreatedOn = doc["createdOn"];
-                post.setImageUrl = doc["imageUrl"];
-                post.setLikes = doc["likes"];
-                post.setOwnerName = doc["ownerName"];
-                post.setOwnerUid = doc["ownerUid"];
-                post.setTitle = doc["title"];
-                post.setPostContents = doc["postContents"];
-                return post;
-              }).toList();
-
-              /// Show it
-              return Container(
+        appBar: AppBar(
+          title: Text("Let's Read! 📖"),
+          backgroundColor: colorPaleGreen,
+          elevation: 0.0,
+        ),
+        body: _isLoading
+            ? LoadingScreen()
+            : Container(
                 decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [colorPaleGreen, Colors.white],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter),
-            ),
+                  gradient: LinearGradient(
+                      colors: [colorPaleGreen, Colors.white],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListView.separated(
-                    padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
+                      padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
                       separatorBuilder: (context, int index) => const Divider(),
                       itemCount: postList.length,
-                      itemBuilder: (_, index) =>
-                          PostThumbnail(postData: postList[index])),
-                ),
-              );
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return LoadingScreen();
-            }
-            return LoadingScreen();
-          }),
-    );
+                      itemBuilder: (_, index) => ChangeNotifierProvider.value(
+                            value: postList[index],
+                            child: PostThumbnail(),
+                          )),
+                )));
   }
 }

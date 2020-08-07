@@ -1,13 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
 
-class Post {
+class Post with ChangeNotifier {
   int likes; // Database stored as a string, needs to convert
   String _imageUrl;
   String _createdOn;
   String _ownerName;
   String _ownerUid;
   String _title;
+  String _postId;
+  bool isLiked;
   // Subtitles and paragraphs in order from Firestore
   Map<String, dynamic> _postContents;
 
@@ -19,6 +22,10 @@ class Post {
     this._ownerName = null;
     this._ownerUid = null;
     this._postContents = null;
+    this._postId = null;
+    this.isLiked = false;
+
+    /// post is not liked initially
   }
 
   //Getters
@@ -28,6 +35,7 @@ class Post {
   String get getCreatedOn => this._createdOn;
   String get getOwnerName => this._ownerName;
   String get getOwnerUid => this._ownerUid;
+  String get getPostId => this._postId;
   Map<String, dynamic> get getPostContents => this._postContents;
 
   //Setters
@@ -37,8 +45,48 @@ class Post {
   set setCreatedOn(String time) => this._createdOn = time;
   set setOwnerName(String name) => this._ownerName = name;
   set setOwnerUid(String uid) => this._ownerUid = uid;
+  set setPostId(String id) => this._postId = id;
+  set setIsLiked(bool value) => this.isLiked = value;
   set setPostContents(Map<String, dynamic> contents) =>
       this._postContents = contents;
+
+  /// Toggle the like button, marking it a favorite
+  Future<void> toggleLikeButton(String uid, String postID) async {
+    print("POST ID " + postID);
+    final oldValue = this.isLiked;
+    this.isLiked = !this.isLiked;
+    print("TOGGLE");
+
+    /// Convert the old value into its opposite
+    notifyListeners();
+
+    /// tell the consumer to change colors
+
+    /// Add or remove the post from the user's favorites database
+    try {
+      if (this.isLiked) {
+        /// if liked, then add the post id into users favorites
+        await Firestore.instance
+            .collection("users")
+            .document(uid)
+            .collection("favorites")
+            .document(postID)
+            .setData({});
+      } else {
+        /// if unlike, remove the post from user favorites
+        await Firestore.instance
+            .collection("users")
+            .document(uid)
+            .collection("favorites")
+            .document(postID)
+            .delete();
+      }
+    } catch (error) {
+      /// if there was an error, change the value back
+      this.isLiked = oldValue;
+      notifyListeners();
+    }
+  }
 
   /// Convert the contents into a Widget List that can be displayed on the screen
   List<Widget> constructPostWidgetList(Size screenSize) {

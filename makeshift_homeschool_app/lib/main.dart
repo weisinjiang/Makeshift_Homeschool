@@ -29,9 +29,12 @@ class MyApp extends StatelessWidget {
             // Tracks user paragraphs and subtitles
             create: (context) => NewPostProvider(),
           ),
-          ChangeNotifierProvider<PostFeedProvider>(
+          ChangeNotifierProxyProvider<AuthProvider, PostFeedProvider>(
             // reteieves user posts in Study
-            create: (context) => PostFeedProvider([]),
+            update: (context, auth, previousPosts) => PostFeedProvider(
+              auth.getUserID,
+              previousPosts == null ? [] : previousPosts.getPosts
+            ),
           ),
           Provider<BootCampDatabase>(
             create: (context) => BootCampDatabase(),
