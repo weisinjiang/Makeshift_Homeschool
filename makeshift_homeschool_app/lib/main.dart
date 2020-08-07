@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
             update: (context, auth, previousPosts) => PostFeedProvider(
               auth.getUserID,
               previousPosts == null ? [] : previousPosts.getPosts
-            ),
+            ), create: (_) => PostFeedProvider(null, []),
           ),
           Provider<BootCampDatabase>(
             create: (context) => BootCampDatabase(),

@@ -63,12 +63,14 @@ class PostThumbnail extends StatelessWidget {
                       },
                     ),
                   ),
-                  title: StrokeText(
-                      fontSize: 30,
-                      strokeColor: Colors.black,
-                      strokeWidth: 4.0,
-                      text: postData.getTitle,
-                      textColor: Colors.white),
+                  title: FittedBox(
+                                      child: StrokeText(
+                        fontSize: 30,
+                        strokeColor: Colors.black,
+                        strokeWidth: 4.0,
+                        text: postData.getTitle,
+                        textColor: Colors.white),
+                  ),
                   subtitle: StrokeText(
                     fontSize: 20,
                     strokeColor: Colors.black,

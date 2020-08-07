@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
@@ -52,32 +53,37 @@ class _StudyScreenState extends State<StudyScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final postList = Provider.of<PostFeedProvider>(context).getPosts;
-
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Let's Read! 📖"),
-          backgroundColor: colorPaleGreen,
-          elevation: 0.0,
-        ),
-        body: _isLoading
-            ? LoadingScreen()
-            : Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [colorPaleGreen, Colors.white],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListView.separated(
-                      padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
-                      separatorBuilder: (context, int index) => const Divider(),
-                      itemCount: postList.length,
-                      itemBuilder: (_, index) => ChangeNotifierProvider.value(
-                            value: postList[index],
-                            child: PostThumbnail(),
-                          )),
-                )));
+    final user = Provider.of<AuthProvider>(context).getUser;
+    if (user != null) {
+      return Scaffold(
+          appBar: AppBar(
+            title: Text("Let's Read! 📖"),
+            backgroundColor: colorPaleGreen,
+            elevation: 0.0,
+          ),
+          body: _isLoading
+              ? LoadingScreen()
+              : Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [colorPaleGreen, Colors.white],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.separated(
+                        padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
+                        separatorBuilder: (context, int index) =>
+                            const Divider(),
+                        itemCount: postList.length,
+                        itemBuilder: (_, index) => ChangeNotifierProvider.value(
+                              value: postList[index],
+                              child: PostThumbnail(),
+                            )),
+                  )));
+    } else {
+      LoadingScreen();
+    }
   }
 }

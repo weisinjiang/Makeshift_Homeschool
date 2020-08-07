@@ -11,14 +11,12 @@ class AuthProvider with ChangeNotifier {
 
   //Firebase User Information
   FirebaseAuth _auth = FirebaseAuth.instance; //Status of the authentication
-  FirebaseUser _user; // User's uid;
-
+  String _userId;
   bool authenticated = false;
   Map<String, String> _userInformation;
 
   bool get isAuthenticated => authenticated;
-  FirebaseUser get getUserData => _user;
-  String get getUserID => _user.uid;
+  String get getUserID => _userId;
   Map<String, String> get getUser => _userInformation;
 
   // Get current Firebase User. Used to see if user data is still valid
@@ -29,9 +27,10 @@ class AuthProvider with ChangeNotifier {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      _user = result.user;
+      _userId = result.user.uid;
       authenticated = true;
-      await getUserInformation().then((value) => _userInformation = value);
+      await fetchUserInfoFromDatabase()
+          .then((value) => _userInformation = value);
       notifyListeners();
       return true;
     } catch (error) {
@@ -94,15 +93,16 @@ class AuthProvider with ChangeNotifier {
         "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/profile%2FblankProfile.png?alt=media&token=a547754d-551e-4e18-a5ce-680d41bd1226";
     AuthResult result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
-    _user = result.user;
+    _userId = result.user.uid;
     authenticated = true;
+    notifyListeners();
 
     _database.collection("users").document(result.user.uid).setData({
       // add new database for the user
       "username": userName,
       "photoURL": blankPhotoURL,
-      "uid": _user.uid,
-      "email": _user.email,
+      "uid": _userId,
+      "email": result.user.email,
       "level": "Student",
       "bio": " ",
       "lesson_created": 0,
@@ -118,22 +118,21 @@ class AuthProvider with ChangeNotifier {
         .collection("referral") // referral database
         .document(monthYear) // Today's month + year collection
         .setData({
-      _user.uid: {
+      _userId: {
         "first name": userName,
         "referral": referral,
         "day": todaysDate.day
       }
     }, merge: true);
-    await getUserInformation().then((value) => _userInformation = value);
-    _user.sendEmailVerification();
+    await fetchUserInfoFromDatabase().then((value) => _userInformation = value);
+    result.user.sendEmailVerification();
     notifyListeners();
     return true;
   }
 
   Future<void> signOut() async {
     authenticated = false;
-    _auth.signOut();
-    _user = null;
+    _userId = null;
     _userInformation = null;
     notifyListeners();
     // return Future.delayed(Duration.zero);
@@ -155,40 +154,50 @@ class AuthProvider with ChangeNotifier {
 
   // Connects to the users data document in Firebase. Updates if anything in it changes
   Stream<DocumentSnapshot> userDataStream() {
-    return _database.collection("users").document(_user.uid).snapshots();
+    return _database.collection("users").document(_userId).snapshots();
   }
 
   // Updates users profile image and change photoURL link
   Future<void> uploadProfileImage(File image) async {
     StorageReference storageRef = // Reference to the target storage
-        _storage.ref().child("profile").child(_user.uid);
+        _storage.ref().child("profile").child(_userId);
     StorageUploadTask uploadTask = storageRef.putFile(image); // Load image
     await uploadTask.onComplete; // Wait till complete
 
     //Upatde download URL
-    storageRef.getDownloadURL().then((newURL) {
-      _database.collection("users").document(_user.uid).setData(
+    await storageRef.getDownloadURL().then((newURL) {
+      this._userInformation["photoURL"] = newURL;
+
+      /// update url in session
+      _database.collection("users").document(_userId).setData(
           {"photoURL": newURL.toString()},
           merge: true // Update the photoURL field
           );
     });
+    
+    notifyListeners();
   }
 
+  /// Called from Edit Profile Screen
   Future<void> updateProfileInformation(
       Map<String, String> newInformation) async {
-    await _database.collection("users").document(_user.uid).setData(
+    this._userInformation["username"] = newInformation["username"];
+    this._userInformation["bio"] = newInformation["bio"];
+    await _database.collection("users").document(_userId).setData(
         {"username": newInformation["username"], "bio": newInformation["bio"]},
         merge: true);
+    notifyListeners();
   }
 
-  Future<Map<String, String>> getUserInformation() async {
+  Future<Map<String, String>> fetchUserInfoFromDatabase() async {
     Map<String, String> userData = {};
     await _database
         .collection("users")
-        .document(_user.uid)
+        .document(_userId)
         .get()
         .then((firestoreData) {
       userData["email"] = firestoreData["email"];
+      userData["bio"] = firestoreData["bio"];
       userData["photoURL"] = firestoreData["photoURL"];
       userData["uid"] = firestoreData["uid"];
       userData["username"] = firestoreData["username"];

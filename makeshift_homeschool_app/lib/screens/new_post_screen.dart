@@ -56,7 +56,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
             FlatButton(
               onPressed: () {
                 if (newPostProvider.canPost()) {
-                  authProvider.getUserInformation().then((userInfo) async {
+                  authProvider.fetchUserInfoFromDatabase().then((userInfo) async {
                     int lessonCreated = int.parse(userInfo["lesson_created"]);
                     await newPostProvider.post(
                         userInfo["uid"], userInfo["username"], lessonCreated);
