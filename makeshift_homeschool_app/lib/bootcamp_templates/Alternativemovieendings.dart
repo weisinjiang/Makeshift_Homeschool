@@ -10,14 +10,13 @@ import 'package:provider/provider.dart';
 
 
 
-class Yourfavoritefictionalcharacter extends StatefulWidget {
+class AlternativeMovieEndings extends StatefulWidget {
   @override
-  _YourfavoritefictionalcharacterState createState() => _YourfavoritefictionalcharacterState();
+  _AlternativeMovieEndingsState createState() => _AlternativeMovieEndingsState();
 }
 
-class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalcharacter> {
+class _AlternativeMovieEndingsState extends State<AlternativeMovieEndings> {
   List<TextEditingController> textController = [
-    TextEditingController(), /// controller for "What happened?" index0
     TextEditingController(), /// controller for "What happened?" index0
     TextEditingController(), /// controller for "How did it start out?" index1
     TextEditingController(), /// controller for "What happened next?" index2
@@ -29,14 +28,16 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
   Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
     String userReponse = 
     """
-    My favorite fictional charecter is ${textController[0].text} from ${textController[1].text}.\n
-    Here are some reasons why I like this character:\n
-    1. ${textController[2].text}\n
-    2. ${textController[3].text}\n
-    3. ${textController[4].text}\n
-    4. ${textController[5].text}\n
-    5. ${textController[6].text}\n
-    Thank you for reading about my favorite fictional charecter! I hope you enjoyed!\n
+    Today I'm questioning ${textController[0].text} plot.\n
+    For those of you who don't know ${textController[1].text} is a movie.\n
+    The actual plot goes like this:\n
+    ${textController[2].text}\n
+    This is how I think things should've gone:\n
+    ${textController[3].text}\n
+    The reason why I think my plot is better is because...\n
+    ${textController[4].text}.\n
+    I hope you reconsider the plot of ${textController[5].text}!\n
+    Thank you for reading!\n
     """;
     textController.forEach((controller) { 
       //userReponse.add(controller.text);
@@ -63,15 +64,13 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
   
       return Scaffold(
         appBar: AppBar(
-          title: Text("Your favorite character"),
+          title: Text("Alternative Movie Endings"),
         ),
         body: Container(
-          color: Colors.white,
           padding: EdgeInsets.all(15),
           height: screenSize.height,
           width: screenSize.width,
           child: Container(
-            color: Colors.white,
             height: screenSize.height * 0.95,
           
             child: ListView(
@@ -83,59 +82,62 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
                   /// Image on top
                   
                   
-                  Image.asset("asset/bootcamp/reading.gif"),
+                  Image.asset("asset/bootcamp/movie.gif"),
+
                   
-                  Text("My favorite fictional character is "),
-  
-  
                   Row(
                     children: [
-                      SizedBox(
-                        width: 120,
-                        child: TextFormField(
-                          
+                      Text("Today I am questioning   "),
+  
+  
+                  SizedBox(
+                    child: TextFormField(
                 /// add a controller and attach it to this field
                 // keyboardType: TextInputType.multiline,
                 //     maxLines: null,
                 controller: textController[0],
                 decoration: InputDecoration(
-                      hintText: "Name"
+                  hintText: "Movie"
               ),
               ),
-                        
-                      ),
+                    width: 80,
+                  ),
 
-                      Text("  from     "),
+                  Text("  plot."),
+                    ],
+                  ),
 
-                      SizedBox(
-                        width: 140,
-                        child: TextFormField(
-                          
+                  SizedBox(height: screenSize.height*0.03,),
+
+                  Row(
+                    children: [
+                      Text("For those of you who don't know,   "),
+  
+  
+                  SizedBox(
+                    child: TextFormField(
                 /// add a controller and attach it to this field
                 // keyboardType: TextInputType.multiline,
                 //     maxLines: null,
                 controller: textController[1],
                 decoration: InputDecoration(
-                      hintText: "fictional story"
+                  hintText: "Movie"
               ),
               ),
-                        
-                      ),
+                    width: 80,
+                  ),
 
-
-
+                  
                     ],
                   ),
+
+                  Text("is a movie."),
+
   
                   SizedBox(height: screenSize.height*0.03,),
                   
   
-                  Text("Here are some reasons why I like this character:"),
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-
-                  Text("1."),
+                  Text("The actual plot goes like this:"),
   
                
   
@@ -146,7 +148,7 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
                     maxLines: null,
                 controller: textController[2],
                 decoration: InputDecoration(
-                  hintText: "Reason One"
+                  hintText: "Summarize the plot"
               ),
               ),
                     width: screenSize.width,
@@ -156,7 +158,7 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
                   SizedBox(height: screenSize.height*0.03,),
   
                   
-                  Text("2."),
+                  Text("This is how I think things should've gone:"),
   
   
                   SizedBox(
@@ -166,7 +168,7 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
                     maxLines: null,
                 controller: textController[3],
                 decoration: InputDecoration(
-                  hintText: "Reason Two"
+                  hintText: "Write your alternative plot"
               ),
               ),
                     width: screenSize.width,
@@ -174,7 +176,7 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
 
                   SizedBox(height: screenSize.height*0.03,),
   
-                  Text("3."),
+                  Text("The reason why I think my plot is better is because..."),
   
                   SizedBox(
                     child: TextFormField(
@@ -183,7 +185,7 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
                     maxLines: null,
                 controller: textController[4],
                 decoration: InputDecoration(
-                  hintText: "Reason Three"
+                  hintText: "Why is your plot better than the previous?"
               ),
               ),
                     width: screenSize.width,
@@ -192,9 +194,13 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
                   SizedBox(height: screenSize.height*0.03,),
 
   
-                  Text("4. "),
+                  Row(
+                    children: [
+                      Text("I hope you reconsider the plot of   "),
+                    ],
+                  ),
   
-                  SizedBox(width: 300,),
+                  
   
                   SizedBox(
                     child: TextFormField(
@@ -203,29 +209,10 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
                     maxLines: null,
                 controller: textController[5],
                 decoration: InputDecoration(
-                  hintText: "Reason Four"
+                  hintText: "Movie"
               ),
               ),
-                    width: screenSize.width,
-                  ),
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-                  Text("5. "),
-  
-                  SizedBox(width: 300,),
-  
-                  SizedBox(
-                    child: TextFormField(
-                /// add a controller and attach it to this field
-                keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                controller: textController[6],
-                decoration: InputDecoration(
-                  hintText: "Reason Five"
-              ),
-              ),
-                    width: screenSize.width,
+                    width: 80,
                   ),
 
 
@@ -233,14 +220,12 @@ class _YourfavoritefictionalcharacterState extends State<Yourfavoritefictionalch
 
   
   
-                  Text("Thank you for reading about my favorite fictional character! I hope you enjoyed!"),
-
-                  SizedBox(height: screenSize.height*0.03,),
+                  Text("Thank you for reading!"),
 
                   RaisedButton(
                     child: Text("Save"),
                     onPressed: () async {
-                      await save(database, user["uid"],"Your favorite character", context);
+                      await save(database, user["uid"],"Alternative Movie Endings", context);
                     }
                   )
   
