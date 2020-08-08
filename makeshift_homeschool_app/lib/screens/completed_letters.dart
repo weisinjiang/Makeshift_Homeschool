@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:makeshift_homeschool_app/models/bootcamp_activity.dart';
 import 'package:makeshift_homeschool_app/models/letter.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
-import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
+import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/widgets/letters_listtile.dart';
@@ -37,7 +37,7 @@ class _CompletedLettersState extends State<CompletedLetters> {
       });
       print("SAVED LETTERS: Getting Future List");
       userData = Provider.of<AuthProvider>(context).getUser;
-      userLetters = Provider.of<BootCampDatabase>(context)
+      userLetters = Provider.of<BootCampProvider>(context)
           .getSavedLetters(userData["uid"]);
       print("SAVED LETTERS: Setting isin to false");
       _isInThisWidget = false;

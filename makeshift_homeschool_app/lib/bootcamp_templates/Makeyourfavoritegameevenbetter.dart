@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
-import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
+import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:provider/provider.dart';
 
 
@@ -24,7 +24,7 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
     TextEditingController(), /// controller for "Why?" index4
   ];
 
-  Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
+  Future<void> save(BootCampProvider database, String uid, String activityID, BuildContext context) async {
     String userReponse = 
     """
     Dear creator of ${textController[0].text},\n
@@ -56,7 +56,7 @@ class _MakeYourFavoriteGameEvenBetterState extends State<MakeYourFavoriteGameEve
     Widget build(BuildContext context) {
      
 
-      var database = Provider.of<BootCampDatabase>(context);
+      var database = Provider.of<BootCampProvider>(context);
       var user = Provider.of<AuthProvider>(context).getUser;
       final screenSize = MediaQuery.of(context).size; // size of the screen
   

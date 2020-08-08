@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
-import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
+import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:provider/provider.dart';
 
 
@@ -22,7 +22,7 @@ class _WriteAboutAFamilyVacationState extends State<WriteAboutAFamilyVacation> {
     TextEditingController(), /// controller for "How did it end?" index3
   ];
 
-  Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
+  Future<void> save(BootCampProvider database, String uid, String activityID, BuildContext context) async {
     String userReponse = 
     """
     The family vacation I'm going to write about is ${textController[0].text}.\n
@@ -50,7 +50,7 @@ class _WriteAboutAFamilyVacationState extends State<WriteAboutAFamilyVacation> {
     Widget build(BuildContext context) {
      
 
-      var database = Provider.of<BootCampDatabase>(context);
+      var database = Provider.of<BootCampProvider>(context);
       var user = Provider.of<AuthProvider>(context).getUser;
       final screenSize = MediaQuery.of(context).size; // size of the screen
   

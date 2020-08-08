@@ -5,7 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
-import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
+import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:provider/provider.dart';
 
 
@@ -21,7 +21,7 @@ class _DiscoverYourFamiliesLoveLanguagesState extends State<DiscoverYourFamilies
     
   ];
 
-  Future<void> save(BootCampDatabase database, String uid, String activityID, BuildContext context) async {
+  Future<void> save(BootCampProvider database, String uid, String activityID, BuildContext context) async {
     String userResponse = 
       """What is one of your family members love languages?\n
       "${textController[0].text}"\n
@@ -45,7 +45,7 @@ class _DiscoverYourFamiliesLoveLanguagesState extends State<DiscoverYourFamilies
     Widget build(BuildContext context) {
      
 
-      var database = Provider.of<BootCampDatabase>(context);
+      var database = Provider.of<BootCampProvider>(context);
       var user = Provider.of<AuthProvider>(context).getUser;
       final screenSize = MediaQuery.of(context).size; // size of the screen
   
