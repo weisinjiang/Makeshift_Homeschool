@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/models/bootcamp_lesson.dart';
 import 'package:makeshift_homeschool_app/models/letter.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
 import 'package:makeshift_homeschool_app/widgets/letters_expanded.dart';
+import 'package:provider/provider.dart';
 
 class LettersListTile extends StatelessWidget {
-  final Letter letter;
-
-  const LettersListTile({Key key, this.letter}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    /// Single BootCampLesson from Completed Letters screen
+    final lesson = Provider.of<BootCampLesson>(context, listen: false);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
@@ -23,12 +25,12 @@ class LettersListTile extends StatelessWidget {
                 context,
                 ScaleRoute(
                     screen: LetterExpanded(
-                  letter: letter,
+                  lesson: lesson,
                 ))),
             //  onTap: () {},
             child: ListTile(
               title: Text(
-                letter.id,
+                lesson.getId,
                 textAlign: TextAlign.center,
                 style: kTitleTextStyle,
               ),

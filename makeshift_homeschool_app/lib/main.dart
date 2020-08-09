@@ -4,7 +4,7 @@ import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
-import 'package:makeshift_homeschool_app/services/bootcamp_database.dart';
+import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:provider/provider.dart';
@@ -36,8 +36,13 @@ class MyApp extends StatelessWidget {
               previousPosts == null ? [] : previousPosts.getPosts
             ), create: (_) => PostFeedProvider(null, []),
           ),
-          Provider<BootCampDatabase>(
-            create: (context) => BootCampDatabase(),
+          ChangeNotifierProxyProvider<AuthProvider,BootCampProvider>(
+            create: (_) => BootCampProvider(null, []),
+            update: (context, auth, previousLessons) => BootCampProvider(
+              auth.getUserID,
+              previousLessons == null ? [] : previousLessons.getUserLessons
+
+            )
           )
         ],
         child: Consumer<AuthProvider>(

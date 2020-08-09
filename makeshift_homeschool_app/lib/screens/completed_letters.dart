@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:makeshift_homeschool_app/models/bootcamp_activity.dart';
+import 'package:makeshift_homeschool_app/models/bootcamp_lesson.dart';
 import 'package:makeshift_homeschool_app/models/letter.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
@@ -15,12 +15,8 @@ class CompletedLetters extends StatefulWidget {
 }
 
 class _CompletedLettersState extends State<CompletedLetters> {
-  Future<List<Letter>> userLetters;
-  Map<String, String> userData;
-
-  var _isInThisWidget =
-      true; // makes sure getting the providers only execute once
-  var _isLoadingActivities = false;
+  var _isInit = true;
+  var _isLoading = false;
 
   @override
   void initState() {
@@ -29,56 +25,56 @@ class _CompletedLettersState extends State<CompletedLetters> {
 
   @override
   void didChangeDependencies() {
-    print("SAVED LETTERS: didChange");
-    if (_isInThisWidget) {
+    if (_isInit) {
       setState(() {
-        print("SAVED LETTERS: Setting loading to true");
-        _isLoadingActivities = true;
+        _isLoading = true;
       });
-      print("SAVED LETTERS: Getting Future List");
-      userData = Provider.of<AuthProvider>(context).getUser;
-      userLetters = Provider.of<BootCampProvider>(context)
-          .getSavedLetters(userData["uid"]);
-      print("SAVED LETTERS: Setting isin to false");
-      _isInThisWidget = false;
+
+      /// Before this page is build, fetch the user's bootcamp lessons
+      Provider.of<BootCampProvider>(context)
+          .fetchUserBootCampLessons()
+          .then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
     }
+    _isInit = false;
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size; // screen
+    final userData = Provider.of<AuthProvider>(context).getUser;
+    List<BootCampLesson> userCompletedLessons =
+        Provider.of<BootCampProvider>(context).getUserLessons;
 
     if (userData != null) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text("Your Letters"),
-        ),
-        body: FutureBuilder(
-            future: userLetters,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<Letter> lettersList = snapshot.data;
-                return lettersList.length > 0
-                    ? Container(
-                        height: screenSize.height,
-                        width: screenSize.width,
-                        child: ListView.builder(
-                            padding: const EdgeInsets.all(10.0),
-                            itemCount: lettersList.length,
-                            itemBuilder: (context, index) => LettersListTile(
-                                  letter: lettersList[index],
-                                )),
-                      )
-                    : Center(
-                        child: Container(
-                        child: Text("No letters, yet"),
-                      ));
-              } else {
-                return LoadingScreen();
-              }
-            }),
-      );
+          appBar: AppBar(
+            title: Text("Your Letters"),
+          ),
+          body: _isLoading ? LoadingScreen() :Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [kGreenSecondary, kGreenSecondary_analogous1],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter),
+            ),
+            height: screenSize.height,
+            width: screenSize.width,
+            child: ListView.separated(
+              separatorBuilder: (context, int index) => const Divider(),
+              itemCount: userCompletedLessons.length,
+
+              /// Not a change notifier because no value can be changed in Completed Lessons yet
+              itemBuilder: (context, index) => Provider.value(
+                value: userCompletedLessons[index],
+                child: LettersListTile(),
+              ),
+            ),
+          ));
     } else {
       return LoadingScreen();
     }
