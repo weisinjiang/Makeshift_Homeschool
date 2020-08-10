@@ -51,7 +51,7 @@ class NewPostProvider with ChangeNotifier {
     this._newPostForms = [
       lessonTitle(_newPostFormControllers[0]),
       ImageField(
-        imageHeight: 0.50,
+        imageHeight: 0.70,
         imageWidth: 0.60,
       ),
       paragraph(controller: _newPostFormControllers[1], hint: "Introduction"),

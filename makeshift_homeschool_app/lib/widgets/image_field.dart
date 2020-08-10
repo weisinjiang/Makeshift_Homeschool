@@ -83,9 +83,9 @@ class _ImageFieldState extends State<ImageField> {
     if (pickedImage != null) {
       File croppedImage = await ImageCropper.cropImage(
             sourcePath: pickedImage.path,
-            maxWidth: 300,
-            maxHeight: 150,
-            aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0)
+            maxWidth: 500,
+            maxHeight: 200,
+  
       );
       setState(() {
       _userSelectedImage = File(croppedImage.path); // set the image path

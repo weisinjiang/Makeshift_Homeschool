@@ -117,101 +117,105 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           return Container(
             height: screenSize.height,
             width: screenSize.width,
-            child: Column(
-              children: <Widget>[
-                // Avatar in the Center of the screen
-                Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Center(
-                        child: CircleAvatar(
-                            radius: 50,
-                            // if a new image is selected, show it, otherwise current
-                            backgroundImage:
-                                NetworkImage(currentUserData["photoURL"]),
-                            backgroundColor: Colors.transparent))),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Column(
+                children: <Widget>[
+                  // Avatar in the Center of the screen
+                  Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                          child: CircleAvatar(
+                              radius: 50,
+                              // if a new image is selected, show it, otherwise current
+                              backgroundImage:
+                                  NetworkImage(currentUserData["photoURL"]),
+                              backgroundColor: Colors.transparent))),
 
-                // Change Profile Picture Button
-                FlatButton(
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    child: Text(
-                      "Change Profile Photo",
-                      style: TextStyle(
-                          color: Colors.blue, fontWeight: FontWeight.bold),
+                  // Change Profile Picture Button
+                  FlatButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      child: Text(
+                        "Change Profile Photo",
+                        style: TextStyle(
+                            color: Colors.blue, fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        // bring up menu
+                        _buildImagePickerPopUpMenu(context);
+                      }),
+
+                  // Form to change the user's information
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        //User name
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            initialValue: currentUserData["username"],
+                            enabled: false,
+                            maxLength: 300,
+                            decoration: InputDecoration(
+                              labelText: "Username",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.vertical()),
+                            ),
+                            onChanged: (_) => updateProfileInfo = true,
+                            onSaved: (newUsername) =>
+                                toUpdateData["username"] = newUsername,
+                          ),
+                        ),
+
+                        //Bio
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            initialValue: currentUserData["bio"],
+                            maxLength: 250,
+                            decoration: InputDecoration(
+                              labelText: "Bio",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.vertical()),
+                            ),
+                            onChanged: (_) => updateProfileInfo = true,
+                            onSaved: (newBio) => toUpdateData["bio"] = newBio,
+                          ),
+                        ),
+
+                        // //Email Cant change email when account is made
+                        // Padding(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   child: TextFormField(
+                        //     initialValue: widget.currentData["email"],
+                        //     decoration: InputDecoration(
+                        //       labelText: "Email Address",
+                        //       border: OutlineInputBorder(
+                        //           borderRadius: BorderRadius.circular(10)),
+                        //     ),
+                        //   ),
+                        // ),
+
+                        // Save button to pop the screen when done
+                        RaisedButton(
+                          child: Text("Save"),
+                          color: kGreenPrimary,
+                          onPressed: () async {
+                            if (updateProfileInfo) {
+                              _formKey.currentState.save(); // Save the data
+                              await auth.updateProfileInformation(toUpdateData);
+                              _formKey.currentState.reset(); // Clear
+                            }
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
                     ),
-                    onPressed: () {
-                      // bring up menu
-                      _buildImagePickerPopUpMenu(context);
-                    }),
-
-                // Form to change the user's information
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      //User name
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          initialValue: currentUserData["username"],
-                          maxLength: 300,
-                          decoration: InputDecoration(
-                            labelText: "Username",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.vertical()),
-                          ),
-                          onChanged: (_) => updateProfileInfo = true,
-                          onSaved: (newUsername) =>
-                              toUpdateData["username"] = newUsername,
-                        ),
-                      ),
-
-                      //Bio
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          initialValue: currentUserData["bio"],
-                          maxLength: 250,
-                          decoration: InputDecoration(
-                            labelText: "Bio",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.vertical()),
-                          ),
-                          onChanged: (_) => updateProfileInfo = true,
-                          onSaved: (newBio) => toUpdateData["bio"] = newBio,
-                        ),
-                      ),
-
-                      // //Email Cant change email when account is made
-                      // Padding(
-                      //   padding: const EdgeInsets.all(8.0),
-                      //   child: TextFormField(
-                      //     initialValue: widget.currentData["email"],
-                      //     decoration: InputDecoration(
-                      //       labelText: "Email Address",
-                      //       border: OutlineInputBorder(
-                      //           borderRadius: BorderRadius.circular(10)),
-                      //     ),
-                      //   ),
-                      // ),
-
-                      // Save button to pop the screen when done
-                      RaisedButton(
-                        child: Text("Save"),
-                        color: kGreenPrimary,
-                        onPressed: () async {
-                          if (updateProfileInfo) {
-                            _formKey.currentState.save(); // Save the data
-                            await auth.updateProfileInformation(toUpdateData);
-                            _formKey.currentState.reset(); // Clear
-                          }
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         } else {
