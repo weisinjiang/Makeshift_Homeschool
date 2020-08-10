@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
 
 class Post with ChangeNotifier {
@@ -91,31 +92,26 @@ class Post with ChangeNotifier {
   /// Convert the contents into a Widget List that can be displayed on the screen
   List<Widget> constructPostWidgetList(Size screenSize) {
     List<Widget> contentToShowOnScreen = [];
+    var postFieldType = [
+      "introduction",
+      "body 1",
+      "body 2",
+      "body 3",
+      "conclusion"
+    ];
 
     /// Map<String, Map<String, String>> from database
-    var postContentMap = this._postContents;
-    var numBodies = postContentMap.length; // number of keys in the map
+    var postContentList = this._postContents;
+    contentToShowOnScreen
+        .add(buildImage(this._imageUrl, screenSize.height, screenSize.width));
 
-    contentToShowOnScreen.add(buildImage(
-        this._imageUrl, screenSize.height, screenSize.width)); //add image last
-    /// Loop through each body. Body begins with 1
-    for (var body = 0; body < postContentMap.length; body++) {
-      var bodyNum = body + 1; // body1, body2, etc...
-      /// {paragraph1 : text, paragraph2: text, subtitle : text}
-      var bodyContent = postContentMap["body" + bodyNum.toString()];
-
-      /// Add the subtitle first for each body contents
-      var subtitleText = bodyContent["subtitle"];
-      contentToShowOnScreen.add(
-          buildSubTitle(subtitleText, screenSize.width, screenSize.height));
-
-      /// Then add the paragraphs, bodyContent-1 because subtitle is not counted
-      for (var paragraph = 0; paragraph < bodyContent.length - 1; paragraph++) {
-        var paragraphNum = paragraph + 1;
-        var paragraphText = bodyContent["paragraph" + paragraphNum.toString()];
-        contentToShowOnScreen
-            .add(buildParagraph(paragraphText, screenSize.width));
-      }
+    /// For each value in the list, build the paragraph
+    for (var type in postFieldType) {
+      contentToShowOnScreen
+          .add(buildParagraph(postContentList[type], screenSize.width));
+      contentToShowOnScreen.add(SizedBox(
+        height: 20,
+      ));
     }
 
     return contentToShowOnScreen;

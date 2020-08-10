@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:provider/provider.dart';
@@ -46,13 +47,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     Future<void> _chooseNewProfileImageFromSource(ImageSource source) async {
       ImagePicker imagePicker = ImagePicker();
       final pickedImage = await imagePicker.getImage(
-          // ask for permission
-          source: source,
-          maxHeight: 180,
-          maxWidth: 180);
-      setState(() {
-        _imageFile = File(pickedImage.path); // set the image path
+        // ask for permission
+        source: source,
+      );
+      if (pickedImage != null) {
+        File croppedImage = await ImageCropper.cropImage(
+            sourcePath: pickedImage.path,
+            maxWidth: 120,
+            maxHeight: 120,
+            aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0));
+         setState(() {
+        _imageFile = File(croppedImage.path); // set the image path
       });
+      }
+    
       await auth.uploadProfileImage(_imageFile); // upload to Firestore
     }
 
@@ -65,8 +73,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     void _buildImagePickerPopUpMenu(context) {
       showModalBottomSheet(
           context: context, // context of the widget this prompt is showing on
-          builder: (BuildContext contx) {
+          builder: (BuildContext context) {
             return Container(
+              height: 100,
               child: Wrap(
                 children: <Widget>[
                   ListTile(
@@ -117,7 +126,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: CircleAvatar(
                             radius: 50,
                             // if a new image is selected, show it, otherwise current
-                            backgroundImage:  NetworkImage(currentUserData["photoURL"]),
+                            backgroundImage:
+                                NetworkImage(currentUserData["photoURL"]),
                             backgroundColor: Colors.transparent))),
 
                 // Change Profile Picture Button

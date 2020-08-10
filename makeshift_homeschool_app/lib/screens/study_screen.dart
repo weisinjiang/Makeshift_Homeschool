@@ -7,6 +7,7 @@ import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
+import 'package:makeshift_homeschool_app/shared/widget_constants.dart';
 import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
 import 'package:provider/provider.dart';
 
@@ -58,18 +59,13 @@ class _StudyScreenState extends State<StudyScreen> {
       return Scaffold(
           appBar: AppBar(
             title: Text("Let's Read! 📖"),
-            backgroundColor: colorPaleGreen,
+            backgroundColor: kGreenSecondary_analogous2,
             elevation: 0.0,
           ),
           body: _isLoading
               ? LoadingScreen()
               : Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [colorPaleGreen, Colors.white],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter),
-                  ),
+                  decoration: linearGradientSecondaryGreenAnalogous,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ListView.separated(
