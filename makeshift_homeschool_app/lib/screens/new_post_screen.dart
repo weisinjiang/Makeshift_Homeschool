@@ -96,31 +96,25 @@ class _NewPostScreenState extends State<NewPostScreen> {
 
           /// Users can add infinite amount of subtiles and paragraphs, so when
           /// it goes out of screen, it should be scrollable
-          child: Builder(
-            builder: (context) => GestureDetector(
+          child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
               },
-              child: ListView(
-                children: <Widget>[
-                  /// Middle screen where users input paragraphs and subtiles
-                  Container(
-                    height: screenHeight * 0.85,
-                    width: screenWidth * 0.96,
-                    child: Scrollbar(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          /// Get the initial widgetlist
-                          children: newPostProvider.getNewPostWidgetList,
-                        ),
-                      ),
+              child: Container(
+                height: screenHeight * 0.85,
+                width: screenWidth * 0.96,
+                child: Scrollbar(
+                  isAlwaysShown: true,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      /// Get the initial widgetlist
+                      children: newPostProvider.getNewPostWidgetList,
                     ),
                   ),
-
-                ],
+                ),
               ),
             ),
-          ),
+         
         ),
       ),
     );
