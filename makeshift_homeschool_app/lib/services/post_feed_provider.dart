@@ -30,6 +30,7 @@ class PostFeedProvider with ChangeNotifier {
     allPostDocuments.forEach((doc) async {
       Post post = Post();
       post.setCreatedOn = doc["createdOn"];
+      post.setAge = doc["age"];
       post.setTitle = doc["title"];
       post.setImageUrl = doc["imageUrl"];
       post.setLikes = doc["likes"];

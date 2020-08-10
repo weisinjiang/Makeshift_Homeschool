@@ -6,6 +6,7 @@ import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
 class Post with ChangeNotifier {
   int likes; // Database stored as a string, needs to convert
   String _imageUrl;
+  String _age;
   String _createdOn;
   String _ownerName;
   String _ownerUid;
@@ -24,6 +25,7 @@ class Post with ChangeNotifier {
     this._ownerUid = null;
     this._postContents = null;
     this._postId = null;
+    this._age = "0";
     this.isLiked = false;
 
     /// post is not liked initially
@@ -37,6 +39,7 @@ class Post with ChangeNotifier {
   String get getOwnerName => this._ownerName;
   String get getOwnerUid => this._ownerUid;
   String get getPostId => this._postId;
+  String get getAge => this._age;
   Map<String, dynamic> get getPostContents => this._postContents;
 
   //Setters
@@ -48,6 +51,7 @@ class Post with ChangeNotifier {
   set setOwnerUid(String uid) => this._ownerUid = uid;
   set setPostId(String id) => this._postId = id;
   set setIsLiked(bool value) => this.isLiked = value;
+  set setAge(String age) => this._age = age;
   set setPostContents(Map<String, dynamic> contents) =>
       this._postContents = contents;
 

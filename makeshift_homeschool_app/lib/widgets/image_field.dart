@@ -43,6 +43,7 @@ class _ImageFieldState extends State<ImageField> {
               children: <Widget>[
                 /// Choose from Camera Roll
                 ListTile(
+                  leading: Icon(Icons.photo),
                   title: Text("Choose from Library"),
                   onTap: () {
                     _chooseImageFromSource(
@@ -50,9 +51,11 @@ class _ImageFieldState extends State<ImageField> {
                     Navigator.of(context).pop();
                   },
                 ),
+                
 
                 /// Take a picture
                 ListTile(
+                  leading: Icon(Icons.camera_alt),
                   title: Text("Take a Photo"),
                   onTap: () {
                     _chooseImageFromSource(

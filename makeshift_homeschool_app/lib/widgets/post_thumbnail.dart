@@ -11,12 +11,12 @@ import 'package:provider/provider.dart';
 /// Clickable thumbnail before going into the actual post
 
 class PostThumbnail extends StatelessWidget {
- 
-
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+
     /// get the user information
     final user = Provider.of<AuthProvider>(context, listen: false).getUser;
+
     /// get the post data from provider in Study screen
     final postData = Provider.of<Post>(context, listen: false);
 
@@ -54,7 +54,11 @@ class PostThumbnail extends StatelessWidget {
                             color: Colors.red,
                             size: screenSize.height * 0.05,
                           )
-                        : Icon(Icons.favorite_border, color: Colors.red, size:screenSize.height * 0.05,),
+                        : Icon(
+                            Icons.favorite_border,
+                            color: Colors.red,
+                            size: screenSize.height * 0.05,
+                          ),
                     onPressed: () async {
                       await post.toggleLikeButton(
                           user["uid"], postData.getPostId);
@@ -63,17 +67,24 @@ class PostThumbnail extends StatelessWidget {
                 ),
                 title: Container(
                   child: StrokeText(
-                          fontSize: 20,
-                          strokeColor: Colors.black,
-                          strokeWidth: 4.0,
-                          text: postData.getTitle,
-                          textColor: Colors.white),
+                      fontSize: 20,
+                      strokeColor: Colors.black,
+                      strokeWidth: 4.0,
+                      text: postData.getTitle,
+                      textColor: Colors.white),
                 ),
                 subtitle: StrokeText(
                   fontSize: 16,
                   strokeColor: Colors.black,
                   strokeWidth: 4.0,
                   text: "By: ${postData.getOwnerName}",
+                  textColor: Colors.white,
+                ),
+                trailing: StrokeText(
+                  fontSize: 16,
+                  strokeColor: Colors.black,
+                  strokeWidth: 4.0,
+                  text: "Age: ${postData.getAge}",
                   textColor: Colors.white,
                 ),
               ),

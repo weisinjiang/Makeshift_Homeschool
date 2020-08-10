@@ -39,6 +39,7 @@ class NewPostProvider with ChangeNotifier {
       TextEditingController(),
       TextEditingController(),
       TextEditingController(),
+      TextEditingController(),
     ];
 
     // parallel to the above so when adding the post to db, it will be easy to
@@ -58,7 +59,8 @@ class NewPostProvider with ChangeNotifier {
       paragraph(controller: _newPostFormControllers[2], hint: "Body 1"),
       paragraph(controller: _newPostFormControllers[3], hint: "Body 2"),
       paragraph(controller: _newPostFormControllers[4], hint: "Body 3"),
-      paragraph(controller: _newPostFormControllers[5], hint: "Conclusion")
+      paragraph(controller: _newPostFormControllers[5], hint: "Conclusion"),
+      recommendedAge(_newPostFormControllers[6])
     ];
 
     this.currentWidgetListSize = _newPostForms.length;
@@ -241,6 +243,7 @@ class NewPostProvider with ChangeNotifier {
         getNewPostImageFile, databaseRef.documentID);
 
     var newLesson = {
+      "age": postContentsList[6],
       "lessonId": databaseRef.documentID,
       "ownerUid": uid,
       "ownerName": name,
@@ -280,6 +283,7 @@ class NewPostProvider with ChangeNotifier {
       TextEditingController(),
       TextEditingController(),
       TextEditingController(),
+      TextEditingController()
     ];
 
     this._newPostForms = [
@@ -292,7 +296,8 @@ class NewPostProvider with ChangeNotifier {
       paragraph(controller: _newPostFormControllers[2], hint: "Body 1"),
       paragraph(controller: _newPostFormControllers[3], hint: "Body 2"),
       paragraph(controller: _newPostFormControllers[4], hint: "Body 3"),
-      paragraph(controller: _newPostFormControllers[5], hint: "Conclusion")
+      paragraph(controller: _newPostFormControllers[5], hint: "Conclusion"),
+      recommendedAge(_newPostFormControllers[6])
     ];
 
     this.currentWidgetListSize = _newPostForms.length;
