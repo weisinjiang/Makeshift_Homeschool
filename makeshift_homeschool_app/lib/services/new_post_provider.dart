@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -31,6 +32,11 @@ class NewPostProvider with ChangeNotifier {
   NewPostProvider() {
     this._newPostFormControllers = [
       TextEditingController(),
+
+      /// Lesson title
+      TextEditingController(),
+      TextEditingController(),
+      TextEditingController(),
       TextEditingController(),
       TextEditingController(),
     ];
@@ -41,14 +47,18 @@ class NewPostProvider with ChangeNotifier {
     // calling the index
     this._newPostFormControllerType = ["title", "subtitle", "paragraph"];
 
+    /// Actual widgets being build on screen
     this._newPostForms = [
       lessonTitle(_newPostFormControllers[0]),
       ImageField(
         imageHeight: 0.50,
         imageWidth: 0.60,
       ),
-      subTitle(_newPostFormControllers[1]),
-      paragraph(_newPostFormControllers[2])
+      paragraph(controller: _newPostFormControllers[1], hint: "Introduction"),
+      paragraph(controller: _newPostFormControllers[2], hint: "Body 1"),
+      paragraph(controller: _newPostFormControllers[3], hint: "Body 2"),
+      paragraph(controller: _newPostFormControllers[4], hint: "Body 3"),
+      paragraph(controller: _newPostFormControllers[5], hint: "Conclusion")
     ];
 
     this.currentWidgetListSize = _newPostForms.length;
@@ -62,8 +72,8 @@ class NewPostProvider with ChangeNotifier {
   List<String> get getNewPostFormControllerType =>
       this._newPostFormControllerType;
 
-  void incrementcurrentWidgetListSize() => this.currentWidgetListSize++;
-  void decrementcurrentWidgetListSize() => this.currentWidgetListSize--;
+  // void incrementcurrentWidgetListSize() => this.currentWidgetListSize++;
+  // void decrementcurrentWidgetListSize() => this.currentWidgetListSize--;
 
   ///Setter and getter code for image
   set setNewPostImageFile(File imageFile) => this._newPostImagePath = imageFile;
@@ -76,50 +86,49 @@ class NewPostProvider with ChangeNotifier {
 
   /// Add a new paragraph field to the form by first adding a controller and
   /// ref that controller in the widget list
-  void addParagraph() {
-    int controllerIndex = getcurrentWidgetListSize - 1; // Index counts from 0
-    this._newPostFormControllers.add(TextEditingController());
-    this._newPostFormControllerType.add("paragraph");
-    this._newPostForms.add(paragraph(_newPostFormControllers[controllerIndex]));
-    incrementcurrentWidgetListSize(); // increase size
+  // void addParagraph() {
+  //   int controllerIndex = getcurrentWidgetListSize - 1; // Index counts from 0
+  //   this._newPostFormControllers.add(TextEditingController());
+  //   this._newPostFormControllerType.add("paragraph");
+  //   this._newPostForms.add(paragraph(_newPostFormControllers[controllerIndex]));
+  //   incrementcurrentWidgetListSize(); // increase size
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
-  /// Add a new subtitle field to the form by first adding a controller and
-  /// ref that controller in the widget list
-  void addSubtitle() {
-    int controllerIndex = getcurrentWidgetListSize - 1; // Index counts from 0
-    this._newPostFormControllers.add(TextEditingController());
-    this._newPostFormControllerType.add("subtitle");
-    this._newPostForms.add(subTitle(_newPostFormControllers[controllerIndex]));
-    incrementcurrentWidgetListSize(); // increase size
-    notifyListeners();
-  }
+  // /// Add a new subtitle field to the form by first adding a controller and
+  // /// ref that controller in the widget list
+  // void addSubtitle() {
+  //   int controllerIndex = getcurrentWidgetListSize - 1; // Index counts from 0
+  //   this._newPostFormControllers.add(TextEditingController());
+  //   this._newPostFormControllerType.add("subtitle");
+  //   this._newPostForms.add(subTitle(_newPostFormControllers[controllerIndex]));
+  //   incrementcurrentWidgetListSize(); // increase size
+  //   notifyListeners();
+  // }
 
   /// Removes the last added form
   /// If the current widget list size is greater than 4, then remove the last
   /// added widget.
   /// If 4, dont remove because the initial post has 4 widgets:
   ///   Title, Image, Subtile, Paragrah
-  bool removeLastTextForm() {
-    if (getcurrentWidgetListSize > 4) {
-      this._newPostForms.removeLast();
-      this._newPostFormControllers.removeLast();
-      this._newPostFormControllerType.removeLast();
-      decrementcurrentWidgetListSize();
-      notifyListeners();
-      return true;
-    }
-    return false;
-  }
+  // bool removeLastTextForm() {
+  //   if (getcurrentWidgetListSize > 4) {
+  //     this._newPostForms.removeLast();
+  //     this._newPostFormControllers.removeLast();
+  //     this._newPostFormControllerType.removeLast();
+  //     decrementcurrentWidgetListSize();
+  //     notifyListeners();
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   /// Go though the TextEditingController and get the text data on it
-  List<String> getControllerTextDataAsList(
-      List<TextEditingController> textControllersList) {
+  List<String> getControllerTextDataAsList() {
     List<String> controllerTextData = []; // text data to return
 
-    textControllersList.forEach((controller) {
+    this._newPostFormControllers.forEach((controller) {
       // go through each
       controllerTextData.add(controller.text);
     });
@@ -142,37 +151,37 @@ class NewPostProvider with ChangeNotifier {
   /// of the body gets an paragraph1 field, where the number after paragraoph is
   /// the paragraph count of that subtitle:
   ///         {"body1" : {"subtitle": text, paragraph1: text} }
-  Map<String, dynamic> mapControllerTypeWithText() {
-    var controllerText = getNewPostFormControllers;
-    var controllerTextType = getNewPostFormControllerType;
-    int bodyCount = 0;
-    int paragraphCount = 0;
-    Map<String, dynamic> typeTextPairMap = {};
+  // Map<String, dynamic> mapControllerTypeWithText() {
+  //   var controllerText = getNewPostFormControllers;
+  //   var controllerTextType = getNewPostFormControllerType;
+  //   int bodyCount = 0;
+  //   int paragraphCount = 0;
+  //   Map<String, dynamic> typeTextPairMap = {};
 
-    for (var i = 0; i < controllerText.length; i++) {
-      var text = controllerText[i].text;
-      var type = controllerTextType[i];
+  //   for (var i = 0; i < controllerText.length; i++) {
+  //     var text = controllerText[i].text;
+  //     var type = controllerTextType[i];
 
-      if (type == "title") {
-        typeTextPairMap[type] = text;
-      } else if (type == "subtitle") {
-        ///create a inner map
-        ///Every subtitle is another body
-        bodyCount++;
-        paragraphCount = 0; // start of a paragraph
-        typeTextPairMap["body" + bodyCount.toString()] = {"subtitle": text};
-      }
+  //     if (type == "title") {
+  //       typeTextPairMap[type] = text;
+  //     } else if (type == "subtitle") {
+  //       ///create a inner map
+  //       ///Every subtitle is another body
+  //       bodyCount++;
+  //       paragraphCount = 0; // start of a paragraph
+  //       typeTextPairMap["body" + bodyCount.toString()] = {"subtitle": text};
+  //     }
 
-      /// body
-      else {
-        paragraphCount++;
-        typeTextPairMap["body" + bodyCount.toString()]
-            ["paragraph" + paragraphCount.toString()] = text;
-      }
-    }
-    print(typeTextPairMap);
-    return typeTextPairMap;
-  }
+  //     /// body
+  //     else {
+  //       paragraphCount++;
+  //       typeTextPairMap["body" + bodyCount.toString()]
+  //           ["paragraph" + paragraphCount.toString()] = text;
+  //     }
+  //   }
+  //   print(typeTextPairMap);
+  //   return typeTextPairMap;
+  // }
 
   /// Upload the image for the lesson using the lessons uid as its name and return
   /// the download url
@@ -190,7 +199,11 @@ class NewPostProvider with ChangeNotifier {
     /// Return the download url
   }
 
-  /// Method checks that each field is filled in
+  /// Method checks that each field is filled in.
+  /// If there is no image path, then user cannot post, return false.
+  /// Then check the controllers for each paragraph and if it is empty return
+  /// false
+  /// Else, return true
   bool canPost() {
     var canPost = true;
     if (this._newPostImagePath == null) {
@@ -202,7 +215,7 @@ class NewPostProvider with ChangeNotifier {
         canPost = false;
       }
     });
-    return canPost; // if no controller is empty, can post
+    return canPost;
   }
 
   // Post Method to be added into the database
@@ -213,32 +226,41 @@ class NewPostProvider with ChangeNotifier {
     /// Reference the document where the data will be placed
     /// Leaving document empty generates a random id
     var databaseRef = _database.collection("lessons").document();
-    var postContentsMap = mapControllerTypeWithText();
-    var newPostTitle = postContentsMap["title"];
-    postContentsMap.remove(
-        "title"); // remove the title, no var because it returns the value
+    var postContentsList = getControllerTextDataAsList();
+    var newPostTitle = postContentsList[0]; // index0 = title controller
+
+    var contentsAsMap = {
+      "introduction": postContentsList[1],
+      "body 1": postContentsList[2],
+      "body 2": postContentsList[3],
+      "body 3": postContentsList[4],
+      "conclusion": postContentsList[5],
+    };
+
     var imageUrl = await uploadImageAndGetDownloadUrl(
         getNewPostImageFile, databaseRef.documentID);
 
     var newLesson = {
+      "lessonId": databaseRef.documentID,
       "ownerUid": uid,
       "ownerName": name,
       "createdOn": DateTime.now().toString(),
       "likes": 0,
       "imageUrl": imageUrl,
       "title": newPostTitle,
-      "postContents": postContentsMap
+      "postContents": contentsAsMap
     };
 
     /// Add the data into the refernece document made earlier
     await databaseRef.setData(newLesson);
 
+    /// update user's lessons created
     await _database
         .collection("users")
         .document(uid)
         .setData({"lesson_created": lessonCreated}, merge: true);
 
-    resetFields();
+    resetFields(); /// reset the form
   }
 
   void resetFields() {
@@ -251,6 +273,11 @@ class NewPostProvider with ChangeNotifier {
     ///Set up new ones
     this._newPostFormControllers = [
       TextEditingController(),
+
+      /// Lesson title
+      TextEditingController(),
+      TextEditingController(),
+      TextEditingController(),
       TextEditingController(),
       TextEditingController(),
     ];
@@ -259,10 +286,13 @@ class NewPostProvider with ChangeNotifier {
       lessonTitle(_newPostFormControllers[0]),
       ImageField(
         imageHeight: 0.50,
-        imageWidth: 0.90,
+        imageWidth: 0.60,
       ),
-      subTitle(_newPostFormControllers[1]),
-      paragraph(_newPostFormControllers[2])
+      paragraph(controller: _newPostFormControllers[1], hint: "Introduction"),
+      paragraph(controller: _newPostFormControllers[2], hint: "Body 1"),
+      paragraph(controller: _newPostFormControllers[3], hint: "Body 2"),
+      paragraph(controller: _newPostFormControllers[4], hint: "Body 3"),
+      paragraph(controller: _newPostFormControllers[5], hint: "Conclusion")
     ];
 
     this.currentWidgetListSize = _newPostForms.length;

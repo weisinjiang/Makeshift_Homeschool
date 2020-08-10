@@ -50,16 +50,16 @@ Widget subTitle(TextEditingController controller) {
   );
 }
 
-Widget paragraph(TextEditingController controller) {
+Widget paragraph({TextEditingController controller, final String hint}) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(25, 5, 20, 20),
     child: TextFormField(
       controller: controller,
       style: kParagraphTextStyle,
-      keyboardType: TextInputType.multiline,
+      keyboardType: TextInputType.text,
       maxLines: null,
-      decoration: const InputDecoration(
-        hintText: "Add a Paragraph",
+      decoration: InputDecoration(
+        hintText: hint,
         hoverColor: Colors.black,
         //Outline the border at start as black and turns red when pressed
         enabledBorder:
@@ -72,5 +72,3 @@ Widget paragraph(TextEditingController controller) {
     ),
   );
 }
-
-

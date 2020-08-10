@@ -3,7 +3,6 @@ import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
-import 'package:makeshift_homeschool_app/shared/widget_constants.dart';
 import 'package:provider/provider.dart';
 
 ///  Pops up a form for users to create a lesson
@@ -89,7 +88,12 @@ class _NewPostScreenState extends State<NewPostScreen> {
         /// Scaffold of above is not reachable without the Builder widget.
         body: Container(
           /// Color of the entire background of this page
-          decoration: linearGradientSecondaryGreenAnalogous,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              kGreenSecondary_analogous2,
+              kGreenSecondary_analogous1
+            ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+          ),
           height: screenHeight,
           width: screenWidth,
 
@@ -104,7 +108,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 children: <Widget>[
                   /// Middle screen where users input paragraphs and subtiles
                   Container(
-                    height: screenHeight * 0.85,
+                    height: screenHeight * 0.70,
                     width: screenWidth * 0.96,
                     child: Scrollbar(
                       child: SingleChildScrollView(
@@ -116,6 +120,37 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     ),
                   ),
 
+                  /// Bottom Buttons to add/remove paragraphs and subtitles
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        RaisedButton(
+                            onPressed: () => newPostProvider.addParagraph(),
+                            child: Text("+ Paragraph")),
+
+                        // AddSubtile
+                        RaisedButton(
+                            onPressed: () => newPostProvider.addSubtitle(),
+                            child: Text("+ Subtitle")),
+
+                        //Remove last widget
+                        RaisedButton(
+                            onPressed: () {
+                              var isAbleToRemove =
+                                  newPostProvider.removeLastTextForm();
+                              if (!isAbleToRemove) {
+                                Scaffold.of(context).showSnackBar(
+                                    snackBarMessage(
+                                        "You can't remove more fields"));
+                              }
+                            },
+                            child: Text("Delete")),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
