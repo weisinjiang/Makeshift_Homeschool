@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/widgets/image_field.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
 
@@ -31,15 +32,13 @@ class NewPostProvider {
   /// Initialize it
   NewPostProvider() {
     this._newPostFormControllers = [
-      TextEditingController(),
-
-      /// Lesson title
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
+      TextEditingController(), // title
+      TextEditingController(), // intro
+      TextEditingController(), // body 1
+      TextEditingController(), // body 2
+      TextEditingController(), // body 3
+      TextEditingController(), // conclusion
+      TextEditingController(), // age recommendation
     ];
 
     // parallel to the above so when adding the post to db, it will be easy to
@@ -86,46 +85,6 @@ class NewPostProvider {
     print(this._newPostImagePath);
   }
 
-  /// Add a new paragraph field to the form by first adding a controller and
-  /// ref that controller in the widget list
-  // void addParagraph() {
-  //   int controllerIndex = getcurrentWidgetListSize - 1; // Index counts from 0
-  //   this._newPostFormControllers.add(TextEditingController());
-  //   this._newPostFormControllerType.add("paragraph");
-  //   this._newPostForms.add(paragraph(_newPostFormControllers[controllerIndex]));
-  //   incrementcurrentWidgetListSize(); // increase size
-
-  //   notifyListeners();
-  // }
-
-  // /// Add a new subtitle field to the form by first adding a controller and
-  // /// ref that controller in the widget list
-  // void addSubtitle() {
-  //   int controllerIndex = getcurrentWidgetListSize - 1; // Index counts from 0
-  //   this._newPostFormControllers.add(TextEditingController());
-  //   this._newPostFormControllerType.add("subtitle");
-  //   this._newPostForms.add(subTitle(_newPostFormControllers[controllerIndex]));
-  //   incrementcurrentWidgetListSize(); // increase size
-  //   notifyListeners();
-  // }
-
-  /// Removes the last added form
-  /// If the current widget list size is greater than 4, then remove the last
-  /// added widget.
-  /// If 4, dont remove because the initial post has 4 widgets:
-  ///   Title, Image, Subtile, Paragrah
-  // bool removeLastTextForm() {
-  //   if (getcurrentWidgetListSize > 4) {
-  //     this._newPostForms.removeLast();
-  //     this._newPostFormControllers.removeLast();
-  //     this._newPostFormControllerType.removeLast();
-  //     decrementcurrentWidgetListSize();
-  //     notifyListeners();
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   /// Go though the TextEditingController and get the text data on it
   List<String> getControllerTextDataAsList() {
     List<String> controllerTextData = []; // text data to return
@@ -137,53 +96,6 @@ class NewPostProvider {
 
     return controllerTextData;
   }
-
-  ///
-  /// It will take the parallel text controller list and the string list that
-  /// describes what the controller contains ["title", "subtitle", paragraph]
-  ///
-  /// Loop through the controllers list using indexes and also use the same index
-  /// for the type list to get the type [title, subtitle, paragraph] of the controller
-  ///
-  /// If the type is a title, map {"title" : text}
-  /// If the type is a subtitle, increase the body count because 1 subtitle is
-  /// 1 body that contains the subtitle and many paragraphs, mapped as:
-  ///         {"body1" : {"subtitle": text} }
-  /// If the next text type is a paragraph and not a subtitle, then the map inside
-  /// of the body gets an paragraph1 field, where the number after paragraoph is
-  /// the paragraph count of that subtitle:
-  ///         {"body1" : {"subtitle": text, paragraph1: text} }
-  // Map<String, dynamic> mapControllerTypeWithText() {
-  //   var controllerText = getNewPostFormControllers;
-  //   var controllerTextType = getNewPostFormControllerType;
-  //   int bodyCount = 0;
-  //   int paragraphCount = 0;
-  //   Map<String, dynamic> typeTextPairMap = {};
-
-  //   for (var i = 0; i < controllerText.length; i++) {
-  //     var text = controllerText[i].text;
-  //     var type = controllerTextType[i];
-
-  //     if (type == "title") {
-  //       typeTextPairMap[type] = text;
-  //     } else if (type == "subtitle") {
-  //       ///create a inner map
-  //       ///Every subtitle is another body
-  //       bodyCount++;
-  //       paragraphCount = 0; // start of a paragraph
-  //       typeTextPairMap["body" + bodyCount.toString()] = {"subtitle": text};
-  //     }
-
-  //     /// body
-  //     else {
-  //       paragraphCount++;
-  //       typeTextPairMap["body" + bodyCount.toString()]
-  //           ["paragraph" + paragraphCount.toString()] = text;
-  //     }
-  //   }
-  //   print(typeTextPairMap);
-  //   return typeTextPairMap;
-  // }
 
   /// Upload the image for the lesson using the lessons uid as its name and return
   /// the download url
@@ -263,7 +175,28 @@ class NewPostProvider {
         .document(uid)
         .setData({"lesson_created": lessonCreated}, merge: true);
 
-    resetFields(); /// reset the form
+    resetFields();
+
+    /// reset the form
+  }
+
+  /*
+    Metod is for when users want to edit their posts
+    Set the text controllers with default values
+  */
+  void setEditingData(Post postData) {
+    this._newPostForms[1] = ImageField(
+      imageHeight: 0.70,
+      imageWidth: 0.60,
+      editImageUrl: postData.getImageUrl,
+    );
+    this._newPostFormControllers[0].text = postData.getTitle;
+    this._newPostFormControllers[1].text = postData.getIntroduction;
+    this._newPostFormControllers[2].text = postData.getBody1;
+    this._newPostFormControllers[3].text = postData.getBody2;
+    this._newPostFormControllers[4].text = postData.getBody3;
+    this._newPostFormControllers[5].text = postData.getConclusion;
+    this._newPostFormControllers[6].text = postData.getAge;
   }
 
   void resetFields() {

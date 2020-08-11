@@ -13,8 +13,9 @@ class ImageField extends StatefulWidget {
   /// be 70% of the screens width
   final imageHeight;
   final imageWidth;
+  final String editImageUrl;
 
-  const ImageField({Key key, this.imageHeight, this.imageWidth})
+  const ImageField({Key key, this.imageHeight, this.imageWidth, this.editImageUrl})
       : super(key: key);
   @override
   _ImageFieldState createState() => _ImageFieldState();
@@ -51,7 +52,6 @@ class _ImageFieldState extends State<ImageField> {
                     Navigator.of(context).pop();
                   },
                 ),
-                
 
                 /// Take a picture
                 ListTile(
@@ -85,17 +85,15 @@ class _ImageFieldState extends State<ImageField> {
     /// Crop the image
     if (pickedImage != null) {
       File croppedImage = await ImageCropper.cropImage(
-            sourcePath: pickedImage.path,
-            maxWidth: 500,
-            maxHeight: 200,
-  
+        sourcePath: pickedImage.path,
+        maxWidth: 500,
+        maxHeight: 200,
       );
       setState(() {
-      _userSelectedImage = File(croppedImage.path); // set the image path
-    });
- 
+        _userSelectedImage = File(croppedImage.path); // set the image path
+      });
     }
-    
+
     newPostProvider.setNewPostImageFile = _userSelectedImage;
     //return File(pickedImage.path);
     //await auth.uploadProfileImage(_imageFile); // upload to Firestore
@@ -106,6 +104,7 @@ class _ImageFieldState extends State<ImageField> {
     final screenSize = MediaQuery.of(context).size;
     var newPostProvider = Provider.of<NewPostProvider>(context);
 
+
     return GestureDetector(
       // Tap the container with the image, bring up an option to get an image from gallery
       onTap: () {
@@ -115,12 +114,22 @@ class _ImageFieldState extends State<ImageField> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
+          if(widget.editImageUrl != null)...[
           Container(
               decoration:
                   BoxDecoration(border: Border.all(color: Colors.black)),
               child: _userSelectedImage == null
                   ? _onScreenImage
                   : Image.file(_userSelectedImage)),
+          ]
+          else...[
+            Container(
+              decoration:
+                  BoxDecoration(border: Border.all(color: Colors.black)),
+              child: Image.network(widget.editImageUrl),
+            )
+          
+          ],
           SizedBox(
             height: 10,
           ),

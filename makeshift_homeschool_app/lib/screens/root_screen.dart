@@ -23,44 +23,13 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  Stream<QuerySnapshot> collectionStream;
-  Map<String, String> userData;
-  var _isInThisWidget = true; // makes sure getting the providers only execute once
-  var _isLoadingPostThumbnails = false; // loading the lessons 
-
-  @override
-  void initState() {
-    collectionStream =
-          Provider.of<PostFeedProvider>(context, listen: false).lessonsCollectionStream();
-    userData = Provider.of<AuthProvider>(context, listen: false).getUser;
-    super.initState();
-  }
-
-  // ///!
-  // @override
-  // void didChangeDependencies() {
-  //   print("Inside didCHANGE");
-  //   if (_isInThisWidget) {
-  //     setState(() {
-  //       print("Setting loading t true");
-  //       _isLoadingPostThumbnails = true;
-  //     });
-  //     print("Getting collection stream");
-  //     collectionStream =
-  //         Provider.of<PostFeedProvider>(context).lessonsCollectionStream();
-  //     print("Getting user data");
-  //     userData = Provider.of<AuthProvider>(context).getUser;
-  //     print("Setting isin to false");
-  //     _isInThisWidget = false;
-  //   }
-  //   super.didChangeDependencies();
-  // }
 
   @override
   Widget build(BuildContext context) {
+    Map<String, String> userData = Provider.of<AuthProvider>(context, listen: false).getUser;
     print("BUILDING");
-    var screenHeight = MediaQuery.of(context).size.height;
-    var screenWidth = MediaQuery.of(context).size.width;
+    final screenSize = MediaQuery.of(context).size;
+
 
     /// upon signout, userData will be set to null. This conditional is so
     /// that when users signout, an error wont be thrown
@@ -85,8 +54,8 @@ class _RootScreenState extends State<RootScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter),
             ),
-            height: screenHeight,
-            width: screenWidth,
+            height: screenSize.height,
+            width: screenSize.width,
             //color: kGreenSecondary,
             child: SingleChildScrollView(
               child: Column(
@@ -95,8 +64,8 @@ class _RootScreenState extends State<RootScreen> {
                 children: <Widget>[
                   /// What do you want to do today? Greet image
                   Container(
-                    height: screenHeight * 0.20,
-                    width: screenWidth,
+                    height: screenSize.height * 0.20,
+                    width: screenSize.width,
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Image.asset('asset/images/greet.png'),
@@ -109,8 +78,8 @@ class _RootScreenState extends State<RootScreen> {
                     child: ActivityButton(
                       color: kGreenPrimary,
                       borderColor: colorPaleSpring,
-                      height: screenHeight * 0.20,
-                      width: screenWidth,
+                      height: screenSize.height * 0.20,
+                      width: screenSize.width,
                         function: () => Navigator.push(context,
                                 SlideLeftRoute(screen: BootCampScreen())),
                       
@@ -134,15 +103,13 @@ class _RootScreenState extends State<RootScreen> {
                           child: ActivityButton(
                             color: kGreenPrimary,
                             borderColor: colorPaleGreen,
-                            height: screenHeight * 0.10,
-                            width: screenWidth / 2,
+                            height: screenSize.height * 0.10,
+                            width: screenSize.width / 2,
                             canUseButton: true,
                             function: () => Navigator.push(
                                 context,
                                 SlideLeftRoute(
-                                    screen: StudyScreen(
-                                  collectionStream: collectionStream,
-                                ))),
+                                    screen: StudyScreen())),
                             name: "Study",
                             imageLocation: "asset/images/books.png",
                           ),
@@ -154,8 +121,8 @@ class _RootScreenState extends State<RootScreen> {
                           child: ActivityButton(
                             color: kGreenPrimary,
                             borderColor: colorPalePink,
-                            height: screenHeight * 0.10,
-                            width: screenWidth / 2,
+                            height: screenSize.height * 0.10,
+                            width: screenSize.width / 2,
                             canUseButton: (userData["level"] == "Tutor" ||
                                     userData["level"] == "Professor")
                                 ? true
@@ -178,8 +145,8 @@ class _RootScreenState extends State<RootScreen> {
                     child: ActivityButton(
                       color: kGreenSecondary,
                       borderColor: Colors.white,
-                      height: screenHeight * 0.10,
-                      width: screenWidth,
+                      height: screenSize.height * 0.10,
+                      width: screenSize.width,
                       function: () => Navigator.push(context,
                                 SlideLeftRoute(screen: CompletedLetters())),
                       canUseButton: true,

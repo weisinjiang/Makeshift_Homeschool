@@ -40,6 +40,12 @@ class Post with ChangeNotifier {
   String get getOwnerUid => this._ownerUid;
   String get getPostId => this._postId;
   String get getAge => this._age;
+  String get getIntroduction => this._postContents["introduction"];
+  String get getBody1 => this._postContents["body 1"];
+  String get getBody2 => this._postContents["body 2"];
+  String get getBody3 => this._postContents["body 3"];
+  String get getConclusion => this._postContents["conclusion"];
+  
   Map<String, dynamic> get getPostContents => this._postContents;
 
   //Setters
@@ -97,7 +103,7 @@ class Post with ChangeNotifier {
   List<Widget> constructPostWidgetList(Size screenSize) {
     List<Widget> contentToShowOnScreen = [];
     var postFieldType = [
-      "introduction", 
+      "introduction",
       "body 1",
       "body 2",
       "body 3",

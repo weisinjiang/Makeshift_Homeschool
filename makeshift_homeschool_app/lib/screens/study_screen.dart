@@ -17,9 +17,7 @@ import 'package:provider/provider.dart';
 /// multiple times
 
 class StudyScreen extends StatefulWidget {
-  final Stream<QuerySnapshot> collectionStream;
-
-  const StudyScreen({Key key, this.collectionStream}) : super(key: key);
+ 
 
   @override
   _StudyScreenState createState() => _StudyScreenState();

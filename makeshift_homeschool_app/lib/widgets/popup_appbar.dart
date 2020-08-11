@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:provider/provider.dart';
 
 /*
@@ -52,63 +54,71 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                       child: Column(
                         //crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          if (canDelete)...
-                            [
-                              Container(
-                                height: screenSize.height * 0.06,
-                                width: screenSize.width * 0.85,
-                                child: RaisedButton(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    "Delete",
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onPressed: () async {
-                                    await Provider.of<PostFeedProvider>(context,
-                                            listen: false)
-                                        .deletePost(postData.getPostId);
-                                    Navigator.of(context).pop();
+                          if (canDelete) ...[
+                            Container(
+                              height: screenSize.height * 0.06,
+                              width: screenSize.width * 0.85,
+                              child: RaisedButton(
+                                color: Colors.transparent,
+                                child: Text(
+                                  "Delete",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () async {
+                                  await Provider.of<PostFeedProvider>(context,
+                                          listen: false)
+                                      .deletePost(postData.getPostId);
+                                  Navigator.of(context).pop();
 
-                                    /// pop
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
+                                  /// pop
+                                  Navigator.of(context).pop();
+                                },
                               ),
-                              Container(
-                                height: screenSize.height * 0.06,
-                                width: screenSize.width * 0.85,
-                                child: RaisedButton(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    "Edit",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onPressed: () {},
+                            ),
+                            Container(
+                              height: screenSize.height * 0.06,
+                              width: screenSize.width * 0.85,
+                              child: RaisedButton(
+                                color: Colors.transparent,
+                                child: Text(
+                                  "Edit",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
                                 ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.push(
+                                      context,
+                                      SlideLeftRoute(
+                                          screen: NewPostScreen(
+                                        isEditing: true,
+                                        postData: postData,
+                                      )));
+                
+                                },
                               ),
-                          ]                    
+                            ),
+                          ]
                           // Not users post, others can report the post
-                          else...
-                            [
-                              Container(
-                                height: screenSize.height * 0.06,
-                                width: screenSize.width * 0.85,
-                                child: RaisedButton(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    "Report",
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  onPressed: () async {},
+                          else ...[
+                            Container(
+                              height: screenSize.height * 0.06,
+                              width: screenSize.width * 0.85,
+                              child: RaisedButton(
+                                color: Colors.transparent,
+                                child: Text(
+                                  "Report",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold),
                                 ),
+                                onPressed: () async {},
                               ),
-                            ]
+                            ),
+                          ]
                         ],
                       ),
                     );

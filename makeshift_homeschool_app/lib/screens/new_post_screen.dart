@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
@@ -19,17 +20,18 @@ import 'package:provider/provider.dart';
 ///   A form key is provided to keep track of the contents in the forms when
 ///   a new paragraph or subtitle is added
 ///
-///
+/// @param isEditing - If the user is editing the post or not
 
 class NewPostScreen extends StatefulWidget {
+  final isEditing;
+  final Post postData;
+
+  const NewPostScreen({Key key, this.isEditing, this.postData}) : super(key: key);
   @override
   _NewPostScreenState createState() => _NewPostScreenState();
 }
 
 class _NewPostScreenState extends State<NewPostScreen> {
-  /// Tracks user data so that if the build method is redrawn, input is saved
-  final GlobalKey<FormState> _newPostFormKey = GlobalKey();
-
   /// Added widgets are in-order and will be placed into Firestore the same way
   /// Widget index should be the same as the order in which it appears on the
   /// app from top to bottom: index 0 = first item on the screen
@@ -39,18 +41,22 @@ class _NewPostScreenState extends State<NewPostScreen> {
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
-    var authProvider = Provider.of<AuthProvider>(context);
+    var userInfo = Provider.of<AuthProvider>(context).getUser;
 
     /// New post uses this provider as a global variable so users can
     /// add as many paragraphs, subtitles as they want.
     return Provider<NewPostProvider>(
       create: (context) => NewPostProvider(),
-          child: Consumer<NewPostProvider>(
+      child: Consumer<NewPostProvider>(
         //Consumes the provider in main.dart
         /// Consumer that uses NewPostProvider
-        builder: (context, newPostProvider, _) => Scaffold(
+        builder: (context, newPostProvider, _){
+          if(widget.isEditing) {
+            newPostProvider.setEditingData(widget.postData);
+          }
+          return Scaffold(
           appBar: AppBar(
-            title: const Text("New Lesson"),
+            title: widget.isEditing ? Text("Edit Lesson") : Text("New Lesson"),
             elevation: 1.0,
             backgroundColor: kGreenSecondary_analogous2,
 
@@ -58,13 +64,13 @@ class _NewPostScreenState extends State<NewPostScreen> {
             actions: <Widget>[
               FlatButton(
                 onPressed: () {
-                  if (newPostProvider.canPost()) {
+                  // new post and not editing
+                  if (newPostProvider.canPost() && !widget.isEditing) {
                     ///! Change so that it gets info from the local value!!!!!
-                    authProvider.fetchUserInfoFromDatabase().then((userInfo) async {
-                      int lessonCreated = int.parse(userInfo["lesson_created"]);
-                      await newPostProvider.post(
-                          userInfo["uid"], userInfo["username"], lessonCreated);
-                    });
+                    int lessonCreated = int.parse(userInfo["lesson_created"]);
+                    newPostProvider.post(
+                        userInfo["uid"], userInfo["username"], lessonCreated);
+
                     Navigator.of(context).pop();
                   } else {
                     showAlertDialog(
@@ -99,26 +105,24 @@ class _NewPostScreenState extends State<NewPostScreen> {
             /// Users can add infinite amount of subtiles and paragraphs, so when
             /// it goes out of screen, it should be scrollable
             child: GestureDetector(
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                },
-                child: Container(
-                  height: screenHeight * 0.85,
-                  width: screenWidth * 0.96,
-                  child: Scrollbar(
-                    isAlwaysShown: true,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        /// Get the initial widgetlist
-                        children: newPostProvider.getNewPostWidgetList,
-                      ),
-                    ),
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: Container(
+                height: screenHeight * 0.85,
+                width: screenWidth * 0.96,
+                child: SingleChildScrollView(
+                  reverse: true,
+                  child: Column(
+                    /// Get the initial widgetlist
+                    children: newPostProvider.getNewPostWidgetList,
                   ),
                 ),
               ),
-           
+            ),
           ),
-        ),
+        );
+  }
       ),
     );
   }
