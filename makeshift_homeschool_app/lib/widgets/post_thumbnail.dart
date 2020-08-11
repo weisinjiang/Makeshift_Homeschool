@@ -69,7 +69,7 @@ class PostThumbnail extends StatelessWidget {
                   child: StrokeText(
                       fontSize: 20,
                       strokeColor: Colors.black,
-                      strokeWidth: 4.0,
+                      strokeWidth: 5.0,
                       text: postData.getTitle,
                       textColor: Colors.white),
                 ),
@@ -77,16 +77,12 @@ class PostThumbnail extends StatelessWidget {
                   fontSize: 16,
                   strokeColor: Colors.black,
                   strokeWidth: 4.0,
-                  text: "By: ${postData.getOwnerName}",
+                  text:
+                      "By: ${postData.getOwnerName}\nRecommended Age: ${postData.getAge}",
                   textColor: Colors.white,
                 ),
-                trailing: StrokeText(
-                  fontSize: 16,
-                  strokeColor: Colors.black,
-                  strokeWidth: 4.0,
-                  text: "Age: ${postData.getAge}",
-                  textColor: Colors.white,
-                ),
+                isThreeLine: true,
+               
               ),
             ),
           )),
