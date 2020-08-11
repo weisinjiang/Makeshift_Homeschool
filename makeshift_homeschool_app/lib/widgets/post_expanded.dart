@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
-import 'can_edit_post_app_bar.dart';
+import 'popup_appbar.dart';
 
 /// Expanded Post after clicking on a Post Thumbnail.
 /// Enlarged so you can see all the details for the post
@@ -22,13 +22,12 @@ class PostExpanded extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: canDelete
-          ? CanEditPostAppBar(postData: postData, screenSize: screenSize)
-          : AppBar(
-              title: Text(postData.getTitle),
-
-              /// get the title
-            ),
+      appBar: PopupMenuAppBar(
+        postData: postData,
+        screenSize: screenSize,
+        appBar: AppBar(),
+        canDelete: canDelete,
+      ),
       body: Container(
         width: screenSize.width,
         height: screenSize.height,
@@ -44,5 +43,3 @@ class PostExpanded extends StatelessWidget {
     );
   }
 }
-
-

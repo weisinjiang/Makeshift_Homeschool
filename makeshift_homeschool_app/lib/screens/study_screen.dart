@@ -41,7 +41,8 @@ class _StudyScreenState extends State<StudyScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<PostFeedProvider>(context).fetchPostsFromDatabase().then((_) {
+      var postFeedProvider = Provider.of<PostFeedProvider>(context);
+      postFeedProvider.fetchPostsFromDatabase(query: "all").then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -75,7 +76,9 @@ class _StudyScreenState extends State<StudyScreen> {
                         itemCount: postList.length,
                         itemBuilder: (_, index) => ChangeNotifierProvider.value(
                               value: postList[index],
-                              child: PostThumbnail(inUsersProfilePage: false,),
+                              child: PostThumbnail(
+                                inUsersProfilePage: false,
+                              ),
                             )),
                   )));
     } else {

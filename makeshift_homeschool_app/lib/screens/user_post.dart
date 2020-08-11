@@ -26,9 +26,8 @@ class _UserPostsState extends State<UserPosts> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<PostFeedProvider>(context)
-          .fetchUserPostsFromDatabase()
-          .then((_) {
+      var postFeedProvider = Provider.of<PostFeedProvider>(context);
+      postFeedProvider.fetchPostsFromDatabase(query: "user").then((_) {
         setState(() {
           _isLoading = false;
         });

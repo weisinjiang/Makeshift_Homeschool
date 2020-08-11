@@ -34,50 +34,36 @@ class PostFeedProvider with ChangeNotifier {
       }
     }
   }
-  
 
-  /// This fetches users posts and it is used in the profile screen
-  Future<void> fetchUserPostsFromDatabase() async {
-    /// This goes through lessons and gets the users post
-    QuerySnapshot result = await _database
-        .collection("lessons")
-        .where("ownerUid", isEqualTo: uid)
-        .getDocuments();
-    List<DocumentSnapshot> allDocuments = result.documents;
+  /*
+    Method gets lessons from the database based on the query type and saves it
+    into the class variable based on the param.
+    @param query: what to query from lessons database
+      "all" gets all posts and save to _posts
+      "user" gets only user posts and save to _userPosts
+      
+  */
+  Future<void> fetchPostsFromDatabase({String query}) async {
+    QuerySnapshot result; // result of query
+
+    if (query == "all") {
+      // gets all the posts from lessons
+      result = await _database.collection("lessons").getDocuments();
+    } else {
+      // otherwise get the users posts only from lessons
+      result = await _database
+          .collection("lessons")
+          .where("ownerUid", isEqualTo: uid)
+          .getDocuments();
+    }
+
+    // get all the documents from the query
+    List<DocumentSnapshot> allPostDocuments = result.documents;
+    // get user's favorite list so isLiked can be set to true
     List<String> favoritesList = await fetchUsersFavoritesList(this.uid);
 
+    // serialize each document into a Post object and add it to data list
     List<Post> data = [];
-
-    /// For each document, I am creating a new post object for it.
-    allDocuments.forEach((doc) {
-      Post post = Post();
-      post.setCreatedOn = doc["createdOn"];
-      post.setAge = doc["age"];
-      post.setTitle = doc["title"];
-      post.setImageUrl = doc["imageUrl"];
-      post.setLikes = doc["likes"];
-      post.setOwnerName = doc["ownerName"];
-      post.setOwnerUid = doc["ownerUid"];
-      post.setPostContents = doc["postContents"];
-      post.setPostId = doc.documentID;
-
-      if (favoritesList.contains(doc.documentID)) {
-        post.setIsLiked = true;
-      }
-      data.add(post);
-    });
-    _userPosts = data;
-    notifyListeners();
-  }
-
-  Future<void> fetchPostsFromDatabase() async {
-    QuerySnapshot result = await _database.collection("lessons").getDocuments();
-    List<Post> data = [];
-    List<DocumentSnapshot> allPostDocuments =
-        result.documents; // all post documents
-
-    List<String> favoritesList = await fetchUsersFavoritesList(this.uid);
-
     allPostDocuments.forEach((doc) async {
       Post post = Post();
       post.setCreatedOn = doc["createdOn"];
@@ -89,13 +75,18 @@ class PostFeedProvider with ChangeNotifier {
       post.setOwnerUid = doc["ownerUid"];
       post.setPostContents = doc["postContents"];
       post.setPostId = doc.documentID;
-
+      // if the post is a favorite
       if (favoritesList.contains(doc.documentID)) {
         post.setIsLiked = true;
       }
       data.add(post);
     });
-    this._posts = data;
+    // assign the list of data into the class variable
+    if (query == "all") {
+      this._posts = data;
+    } else {
+      this._userPosts = data;
+    }
     notifyListeners();
   }
 
