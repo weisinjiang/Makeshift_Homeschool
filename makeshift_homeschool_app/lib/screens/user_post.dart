@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/shared/widget_constants.dart';
@@ -42,7 +41,7 @@ class _UserPostsState extends State<UserPosts> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    List<Post> usersPosts = Provider.of<PostFeedProvider>(context).getUserPosts;
+
 
     return Scaffold(
         appBar: AppBar(
@@ -52,14 +51,20 @@ class _UserPostsState extends State<UserPosts> {
           height: screenSize.height,
           width: screenSize.width,
           decoration: linearGradientSecondaryGreenAnalogous,
-          child: ListView.separated(
-            itemBuilder: (_, index) => ChangeNotifierProvider.value(
-                              value: usersPosts[index],
-                              child: PostThumbnail(),
-                            ), 
-            separatorBuilder: (context, int index) =>
-                            const Divider(), 
-            itemCount: usersPosts.length
+          child: Consumer<PostFeedProvider>(
+            /// Consumer for the list because when it is deleted, this widget needs to rebuild
+            builder: (context, postFeedProvider, child) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView.separated(
+                itemBuilder: (_, index) => ChangeNotifierProvider.value(
+                                  value: postFeedProvider.getUserPosts[index],
+                                  child: PostThumbnail(inUsersProfilePage: true,),
+                                ), 
+                separatorBuilder: (context, int index) =>
+                                const Divider(), 
+                itemCount: postFeedProvider.getUserPosts.length
+              ),
+            ),
           ),
         ));
   }

@@ -21,6 +21,22 @@ class PostFeedProvider with ChangeNotifier {
     return _database.collection("lessons").snapshots();
   }
 
+  Future<void> deletePost(String postId) async {
+    /// First remove it from the database
+    await _database.collection("lessons").document(postId).delete();
+
+    /// then delete it from the user's page
+    for (var i = 0; i < _userPosts.length; i++) {
+      if (_userPosts[i].getPostId == postId) {
+        _userPosts.removeAt(i);
+        notifyListeners();
+        break;
+      }
+    }
+  }
+  
+
+  /// This fetches users posts and it is used in the profile screen
   Future<void> fetchUserPostsFromDatabase() async {
     /// This goes through lessons and gets the users post
     QuerySnapshot result = await _database
@@ -28,7 +44,7 @@ class PostFeedProvider with ChangeNotifier {
         .where("ownerUid", isEqualTo: uid)
         .getDocuments();
     List<DocumentSnapshot> allDocuments = result.documents;
-    print("DOCUMENT LENGTH: " + allDocuments.length.toString());
+    List<String> favoritesList = await fetchUsersFavoritesList(this.uid);
 
     List<Post> data = [];
 
@@ -44,6 +60,10 @@ class PostFeedProvider with ChangeNotifier {
       post.setOwnerUid = doc["ownerUid"];
       post.setPostContents = doc["postContents"];
       post.setPostId = doc.documentID;
+
+      if (favoritesList.contains(doc.documentID)) {
+        post.setIsLiked = true;
+      }
       data.add(post);
     });
     _userPosts = data;

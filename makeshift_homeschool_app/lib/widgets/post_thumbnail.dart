@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
-import 'package:makeshift_homeschool_app/shared/color_const.dart';
-import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/post_expanded.dart';
 import 'package:provider/provider.dart';
 
+import 'like_button.dart';
+
 /// Clickable thumbnail before going into the actual post
 
 class PostThumbnail extends StatelessWidget {
+  final bool inUsersProfilePage; // if the post belongs to the user. They can delete it
+
+  const PostThumbnail({Key key, this.inUsersProfilePage}) : super(key: key);
+
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
@@ -22,12 +26,25 @@ class PostThumbnail extends StatelessWidget {
 
     return InkWell(
       /// On tap, the screen moves to an expanded post screen
-      onTap: () => Navigator.push(
+      onTap: () => {
+        if (inUsersProfilePage) {
+          Navigator.push(
           context,
           SlideLeftRoute(
               screen: PostExpanded(
             postData: postData,
-          ))),
+            canDelete: true,
+          )))
+        }
+        else {
+          Navigator.push(
+          context,
+          SlideLeftRoute(
+              screen: PostExpanded(
+            postData: postData,
+          )))
+        }
+      },
       child: Container(
           width: screenSize.width * 0.40,
           height: screenSize.height * 0.20,
@@ -46,25 +63,8 @@ class PostThumbnail extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: Center(
               child: ListTile(
-                leading: Consumer<Post>(
-                  builder: (context, post, _) => IconButton(
-                    icon: postData.isLiked
-                        ? Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                            size: screenSize.height * 0.05,
-                          )
-                        : Icon(
-                            Icons.favorite_border,
-                            color: Colors.red,
-                            size: screenSize.height * 0.05,
-                          ),
-                    onPressed: () async {
-                      await post.toggleLikeButton(
-                          user["uid"], postData.getPostId);
-                    },
-                  ),
-                ),
+                leading: LikeButton(
+                    postData: postData, screenSize: screenSize, user: user),
                 title: Container(
                   child: StrokeText(
                       fontSize: 20,
@@ -82,7 +82,6 @@ class PostThumbnail extends StatelessWidget {
                   textColor: Colors.white,
                 ),
                 isThreeLine: true,
-               
               ),
             ),
           )),

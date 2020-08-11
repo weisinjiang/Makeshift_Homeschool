@@ -46,3 +46,21 @@ void showAlertDialog(String message, String title, BuildContext context) {
               ],
             ));
   }
+
+void showTwoOptionAlertDialog(String message, String title, BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+        context: context,
+        builder: (contx) => AlertDialog(
+              title: Center(child: Text(title)),
+              content: Text(message),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("Continue"),
+                  onPressed: () {
+                    Navigator.of(contx).pop();
+                  },
+                )
+              ],
+            ));
+  }

@@ -75,7 +75,7 @@ class _StudyScreenState extends State<StudyScreen> {
                         itemCount: postList.length,
                         itemBuilder: (_, index) => ChangeNotifierProvider.value(
                               value: postList[index],
-                              child: PostThumbnail(),
+                              child: PostThumbnail(inUsersProfilePage: false,),
                             )),
                   )));
     } else {
