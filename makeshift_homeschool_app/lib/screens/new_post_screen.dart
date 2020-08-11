@@ -43,78 +43,81 @@ class _NewPostScreenState extends State<NewPostScreen> {
 
     /// New post uses this provider as a global variable so users can
     /// add as many paragraphs, subtitles as they want.
-    return Consumer<NewPostProvider>(
-      //Consumes the provider in main.dart
-      /// Consumer that uses NewPostProvider
-      builder: (context, newPostProvider, _) => Scaffold(
-        appBar: AppBar(
-          title: Text("New Lesson"),
-          elevation: 1.0,
-          backgroundColor: kGreenSecondary_analogous2,
+    return Provider<NewPostProvider>(
+      create: (context) => NewPostProvider(),
+          child: Consumer<NewPostProvider>(
+        //Consumes the provider in main.dart
+        /// Consumer that uses NewPostProvider
+        builder: (context, newPostProvider, _) => Scaffold(
+          appBar: AppBar(
+            title: const Text("New Lesson"),
+            elevation: 1.0,
+            backgroundColor: kGreenSecondary_analogous2,
 
-          /// Add to the database
-          actions: <Widget>[
-            FlatButton(
-              onPressed: () {
-                if (newPostProvider.canPost()) {
-                  ///! Change so that it gets info from the local value!!!!!
-                  authProvider.fetchUserInfoFromDatabase().then((userInfo) async {
-                    int lessonCreated = int.parse(userInfo["lesson_created"]);
-                    await newPostProvider.post(
-                        userInfo["uid"], userInfo["username"], lessonCreated);
-                  });
-                  Navigator.of(context).pop();
-                } else {
-                  showAlertDialog(
-                      "One or more of your fields are empty. Please fill them in, or remove paragraphs/subtitles that you are not using.",
-                      "ERROR",
-                      context);
-                }
-              },
-              child: Text(
-                "Post",
-                style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-              highlightColor: Colors.transparent,
-              color: Colors.transparent,
-              splashColor: Colors.transparent,
-            )
-          ],
-        ),
-        // used to add paragraphs, images and titles
+            /// Add to the database
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  if (newPostProvider.canPost()) {
+                    ///! Change so that it gets info from the local value!!!!!
+                    authProvider.fetchUserInfoFromDatabase().then((userInfo) async {
+                      int lessonCreated = int.parse(userInfo["lesson_created"]);
+                      await newPostProvider.post(
+                          userInfo["uid"], userInfo["username"], lessonCreated);
+                    });
+                    Navigator.of(context).pop();
+                  } else {
+                    showAlertDialog(
+                        "One or more of your fields are empty. Please fill them in, or remove paragraphs/subtitles that you are not using.",
+                        "ERROR",
+                        context);
+                  }
+                },
+                child: Text(
+                  "Post",
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                highlightColor: Colors.transparent,
+                color: Colors.transparent,
+                splashColor: Colors.transparent,
+              )
+            ],
+          ),
+          // used to add paragraphs, images and titles
 
-        /// Using a builder because a scaffold is shown in one of the child widgets below
-        /// Scaffold of above is not reachable without the Builder widget.
-        body: Container(
-          /// Color of the entire background of this page
-          decoration: linearGradientSecondaryGreenAnalogous,
-          height: screenHeight,
-          width: screenWidth,
+          /// Using a builder because a scaffold is shown in one of the child widgets below
+          /// Scaffold of above is not reachable without the Builder widget.
+          body: Container(
+            /// Color of the entire background of this page
+            decoration: linearGradientSecondaryGreenAnalogous,
+            height: screenHeight,
+            width: screenWidth,
 
-          /// Users can add infinite amount of subtiles and paragraphs, so when
-          /// it goes out of screen, it should be scrollable
-          child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Container(
-                height: screenHeight * 0.85,
-                width: screenWidth * 0.96,
-                child: Scrollbar(
-                  isAlwaysShown: true,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      /// Get the initial widgetlist
-                      children: newPostProvider.getNewPostWidgetList,
+            /// Users can add infinite amount of subtiles and paragraphs, so when
+            /// it goes out of screen, it should be scrollable
+            child: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                },
+                child: Container(
+                  height: screenHeight * 0.85,
+                  width: screenWidth * 0.96,
+                  child: Scrollbar(
+                    isAlwaysShown: true,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        /// Get the initial widgetlist
+                        children: newPostProvider.getNewPostWidgetList,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-         
+           
+          ),
         ),
       ),
     );

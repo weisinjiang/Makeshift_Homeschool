@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/edit_profile_screen.dart';
+import 'package:makeshift_homeschool_app/screens/user_post.dart';
 import '../shared/constants.dart';
 import '../shared/exportShared.dart';
 import 'package:provider/provider.dart';
@@ -130,7 +131,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       height: screenHeight * 0.10,
                       width: screenWidth * 0.95,
-
                       child: Text(
                         "${auth.getUser["bio"]}",
                         textAlign: TextAlign.center,
@@ -159,9 +159,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               builder: (context) => EditProfileScreen())),
                     ),
 
-                    Divider(
+                    Divider(),
                     
-                    ),
+                    RaisedButton(
+                      child: Text("My Posts"),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserPosts()))
+                    )
                   ],
                 ),
               ),

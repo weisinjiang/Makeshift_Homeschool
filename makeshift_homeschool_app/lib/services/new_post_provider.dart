@@ -13,7 +13,7 @@ import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
 ///Cant use Form() because each new widget has its own onSave function, which
 ///cant be dynamically programmed for it to save to a specific variable.
 
-class NewPostProvider with ChangeNotifier {
+class NewPostProvider {
   /// References to the database and storage so we can upload the new post info
   /// into Firestore and the image to FirebaseStorage
   final Firestore _database = Firestore.instance;

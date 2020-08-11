@@ -25,10 +25,10 @@ class MyApp extends StatelessWidget {
             // auth service
             create: (context) => AuthProvider(),
           ),
-          ChangeNotifierProvider<NewPostProvider>(
-            // Tracks user paragraphs and subtitles
-            create: (context) => NewPostProvider(),
-          ),
+          // ChangeNotifierProvider<NewPostProvider>(
+          //   // Tracks user paragraphs and subtitles
+          //   create: (context) => NewPostProvider(),
+          // ),
           ChangeNotifierProxyProvider<AuthProvider, PostFeedProvider>(
             // reteieves user posts in Study
             update: (context, auth, previousPosts) => PostFeedProvider(

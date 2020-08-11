@@ -97,7 +97,7 @@ class Post with ChangeNotifier {
   List<Widget> constructPostWidgetList(Size screenSize) {
     List<Widget> contentToShowOnScreen = [];
     var postFieldType = [
-      "introduction",
+      "introduction", 
       "body 1",
       "body 2",
       "body 3",
