@@ -90,6 +90,7 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
                                   Navigator.push(
                                       context,
                                       SlideLeftRoute(

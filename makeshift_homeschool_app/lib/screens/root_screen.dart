@@ -150,7 +150,7 @@ class _RootScreenState extends State<RootScreen> {
                                 ? true
                                 : false,
                             function: () => Navigator.push(context,
-                                SlideLeftRoute(screen: NewPostScreen())),
+                                SlideLeftRoute(screen: NewPostScreen(isEditing: false, postData: null,))),
                             name: "Teach",
                             imageLocation: "asset/images/teach.png",
                           ),

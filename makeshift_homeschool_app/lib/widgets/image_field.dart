@@ -114,7 +114,7 @@ class _ImageFieldState extends State<ImageField> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          if(widget.editImageUrl != null)...[
+          if(widget.editImageUrl.isEmpty)...[
           Container(
               decoration:
                   BoxDecoration(border: Border.all(color: Colors.black)),
@@ -133,6 +133,7 @@ class _ImageFieldState extends State<ImageField> {
           SizedBox(
             height: 10,
           ),
+          if (widget.editImageUrl.isEmpty)
           RaisedButton(
               child: Text("Clear Image"),
               onPressed: () {

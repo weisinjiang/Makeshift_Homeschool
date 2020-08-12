@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
+import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:makeshift_homeschool_app/shared/widget_constants.dart';
@@ -22,16 +23,13 @@ import 'package:provider/provider.dart';
 ///
 /// @param isEditing - If the user is editing the post or not
 
-class NewPostScreen extends StatefulWidget {
+class NewPostScreen extends StatelessWidget {
   final isEditing;
   final Post postData;
 
-  const NewPostScreen({Key key, this.isEditing, this.postData}) : super(key: key);
-  @override
-  _NewPostScreenState createState() => _NewPostScreenState();
-}
+  const NewPostScreen({Key key, this.isEditing, this.postData})
+      : super(key: key);
 
-class _NewPostScreenState extends State<NewPostScreen> {
   /// Added widgets are in-order and will be placed into Firestore the same way
   /// Widget index should be the same as the order in which it appears on the
   /// app from top to bottom: index 0 = first item on the screen
@@ -48,15 +46,15 @@ class _NewPostScreenState extends State<NewPostScreen> {
     return Provider<NewPostProvider>(
       create: (context) => NewPostProvider(),
       child: Consumer<NewPostProvider>(
-        //Consumes the provider in main.dart
-        /// Consumer that uses NewPostProvider
-        builder: (context, newPostProvider, _){
-          if(widget.isEditing) {
-            newPostProvider.setEditingData(widget.postData);
-          }
-          return Scaffold(
+          //Consumes the provider in main.dart
+          /// Consumer that uses NewPostProvider
+          builder: (context, newPostProvider, _) {
+        if (isEditing) {
+          newPostProvider.setEditingData(postData);
+        }
+        return Scaffold(
           appBar: AppBar(
-            title: widget.isEditing ? Text("Edit Lesson") : Text("New Lesson"),
+            title: isEditing ? Text("Edit Lesson") : Text("New Lesson"),
             elevation: 1.0,
             backgroundColor: kGreenSecondary_analogous2,
 
@@ -65,12 +63,23 @@ class _NewPostScreenState extends State<NewPostScreen> {
               FlatButton(
                 onPressed: () {
                   // new post and not editing
-                  if (newPostProvider.canPost() && !widget.isEditing) {
+                  if (newPostProvider.canPost(isEdit: false) && !isEditing) {
                     ///! Change so that it gets info from the local value!!!!!
                     int lessonCreated = int.parse(userInfo["lesson_created"]);
                     newPostProvider.post(
                         userInfo["uid"], userInfo["username"], lessonCreated);
 
+                    Navigator.of(context).pop();
+                  }
+
+                  /// Editing
+                  else if (isEditing && newPostProvider.canPost(isEdit: true)) {
+                    PostFeedProvider provider =
+                        Provider.of<PostFeedProvider>(context, listen: false);
+
+                    /// Pass in the post feed provider so the post can be updated
+                    newPostProvider.update(postData, provider);
+                    // pop the update screen
                     Navigator.of(context).pop();
                   } else {
                     showAlertDialog(
@@ -122,8 +131,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
             ),
           ),
         );
-  }
-      ),
+      }),
     );
   }
 }

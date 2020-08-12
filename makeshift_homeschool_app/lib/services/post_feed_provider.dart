@@ -35,6 +35,24 @@ class PostFeedProvider with ChangeNotifier {
     }
   }
 
+  /// Update the users post if the post got updated in new post provider's
+  /// edit mode
+  void updateUserPost(
+      {String postId,
+      Map<String, String> postContents,
+      String title,
+      String age}) {
+    for (var i = 0; i < _userPosts.length; i++) {
+      if (_userPosts[i].getPostId == postId) {
+        _userPosts[i].setAge = age;
+        _userPosts[i].setPostContents = postContents;
+        _userPosts[i].setTitle = title;
+        notifyListeners();
+        break;
+      }
+    }
+  }
+
   /*
     Method gets lessons from the database based on the query type and saves it
     into the class variable based on the param.

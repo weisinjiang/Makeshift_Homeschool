@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/widgets/image_field.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
 
@@ -51,6 +52,7 @@ class NewPostProvider {
       ImageField(
         imageHeight: 0.70,
         imageWidth: 0.60,
+        editImageUrl: "", // if not eidting, this is left empty
       ),
       paragraph(controller: _newPostFormControllers[1], hint: "Introduction"),
       paragraph(controller: _newPostFormControllers[2], hint: "Body 1"),
@@ -116,11 +118,15 @@ class NewPostProvider {
   /// Then check the controllers for each paragraph and if it is empty return
   /// false
   /// Else, return true
-  bool canPost() {
+  bool canPost({bool isEdit}) {
     var canPost = true;
-    if (this._newPostImagePath == null) {
+
+    /// image file is emtpy and it is not editing
+    /// If it is editing, image cannot be changed so check only controllers
+    if (this._newPostImagePath == null && !isEdit) {
       canPost = false;
     }
+
     this._newPostFormControllers.forEach((controller) {
       if (controller.text.isEmpty) {
         /// if controller is empty, cant post
@@ -179,6 +185,44 @@ class NewPostProvider {
   }
 
   /*
+    Update the users post on the database and update the local post so that
+    another call to the database can be avoided.
+  */
+  Future<void> update(Post postData, PostFeedProvider provider) async {
+    /// Reference the document where the data will be placed
+    /// Leaving document empty generates a random id
+    var databaseRef =
+        _database.collection("lessons").document(postData.getPostId);
+    var postContentsList = getControllerTextDataAsList();
+    var newPostTitle = postContentsList[0]; // index0 = title controller
+
+    var contentsAsMap = {
+      "introduction": postContentsList[1],
+      "body 1": postContentsList[2],
+      "body 2": postContentsList[3],
+      "body 3": postContentsList[4],
+      "conclusion": postContentsList[5],
+    };
+
+    var newLesson = {
+      "age": postContentsList[6],
+      "title": newPostTitle,
+      "postContents": contentsAsMap
+    };
+
+    /// Add the data into the refernece document made earlier
+    await databaseRef.setData(newLesson, merge: true);
+    provider.updateUserPost(
+        postId: postData.getPostId,
+        postContents: contentsAsMap,
+        title: newPostTitle,
+        age: postContentsList[6]);
+    resetFields();
+
+    /// reset the form
+  }
+
+  /*
     Metod is for when users want to edit their posts
     Set the text controllers with default values
   */
@@ -200,22 +244,9 @@ class NewPostProvider {
   void resetFields() {
     /// Dispose the old widget
     this._newPostFormControllers.forEach((controller) {
-      controller.dispose();
+      controller.clear();
     });
     this._newPostImagePath = null;
-
-    ///Set up new ones
-    this._newPostFormControllers = [
-      TextEditingController(),
-
-      /// Lesson title
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController(),
-      TextEditingController()
-    ];
 
     this._newPostForms = [
       lessonTitle(_newPostFormControllers[0]),
