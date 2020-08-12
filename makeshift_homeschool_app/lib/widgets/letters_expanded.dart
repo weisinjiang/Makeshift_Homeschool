@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/bootcamp_lesson.dart';
-import 'package:makeshift_homeschool_app/models/letter.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 
 class LetterExpanded extends StatelessWidget {

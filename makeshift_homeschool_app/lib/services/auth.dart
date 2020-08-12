@@ -18,6 +18,7 @@ class AuthProvider with ChangeNotifier {
   bool get isAuthenticated => authenticated;
   String get getUserID => _userId;
   Map<String, String> get getUser => _userInformation;
+ 
 
   // Get current Firebase User. Used to see if user data is still valid
   // Not async because it is used after user has logged in and exit the app
@@ -34,8 +35,8 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
       return true;
     } catch (error) {
-      return false;
       print(error); //! todo
+      return false;
     }
   }
 
@@ -174,7 +175,7 @@ class AuthProvider with ChangeNotifier {
           merge: true // Update the photoURL field
           );
     });
-    
+
     notifyListeners();
   }
 

@@ -1,11 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
-import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
-
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/shared/widget_constants.dart';
 import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
@@ -17,8 +13,6 @@ import 'package:provider/provider.dart';
 /// multiple times
 
 class StudyScreen extends StatefulWidget {
- 
-
   @override
   _StudyScreenState createState() => _StudyScreenState();
 }

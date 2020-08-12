@@ -30,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Set<String> _referalList = {
     "Facebook",
     "Instagram",
+    "LinkedIn",
     "Twitter",
     "Wequil Website",
     "Seth Peleg",
@@ -155,21 +156,21 @@ class _LoginScreenState extends State<LoginScreen> {
   ///***************************************************************************
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery.of(context).size;
     var auth = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       //Initial container that fills the entire screen
       body: Container(
         color: Colors.white,
-        width: deviceSize.width,
-        height: deviceSize.height,
+        width: screenSize.width,
+        height: screenSize.height,
         alignment: Alignment.center, // center
         child: Container(
           // goes insude if the outter container for safe area
           color: Colors.white,
-          height: deviceSize.height * 0.95,
-          width: deviceSize.width,
+          height: screenSize.height * 0.95,
+          width: screenSize.width,
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -346,8 +347,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
                           child: ButtonTheme(
-                            minWidth: deviceSize.width * 0.90,
-                            height: deviceSize.height * 0.07,
+                            minWidth: screenSize.width * 0.90,
+                            height: screenSize.height * 0.07,
                             child: RaisedButton(
                               child: Text(_authMode == AuthMode.Login
                                   ? "Login"

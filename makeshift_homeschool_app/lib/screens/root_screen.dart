@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/bootcamp_screen.dart';
 import 'package:makeshift_homeschool_app/screens/completed_letters.dart';
@@ -6,13 +5,11 @@ import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
-import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/widgets/activity_button.dart';
-import 'package:makeshift_homeschool_app/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the main screen where the user can pick what activities they want to
@@ -23,27 +20,54 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
+  var _isInit = true;
+  var _isLoading = false;
+  Map<String, String> userData;
+  Size screenSize;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      userData = Provider.of<AuthProvider>(context, listen: false).getUser;
+      screenSize = MediaQuery.of(context).size;
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    Map<String, String> userData = Provider.of<AuthProvider>(context, listen: false).getUser;
-    print("BUILDING");
-    final screenSize = MediaQuery.of(context).size;
 
 
     /// upon signout, userData will be set to null. This conditional is so
     /// that when users signout, an error wont be thrown
-    if (userData != null) {
-      return Scaffold(
+ 
+ 
+      return _isLoading ? LoadingScreen()
+      :Scaffold(
           appBar: AppBar(
             elevation: 0.0,
             title: Text("Hi, ${userData["username"]}!"),
             actions: <Widget>[
-              IconButton(icon: Icon(Icons.person), onPressed: () => Navigator.push(context,
-                                SlideLeftRoute(screen: ProfileScreen())),)
+              IconButton(
+                icon: Icon(Icons.person),
+                onPressed: () => Navigator.push(
+                    context, SlideLeftRoute(screen: ProfileScreen())),
+              )
             ],
           ),
-          
+
           // endDrawer: AppDrawer(
           //   userData: userData,
           // ),
@@ -80,9 +104,9 @@ class _RootScreenState extends State<RootScreen> {
                       borderColor: colorPaleSpring,
                       height: screenSize.height * 0.20,
                       width: screenSize.width,
-                        function: () => Navigator.push(context,
-                                SlideLeftRoute(screen: BootCampScreen())),
-                      
+                      function: () => Navigator.push(
+                          context, SlideLeftRoute(screen: BootCampScreen())),
+
                       // function: () => Navigator.push(context,
                       //           SlideLeftRoute(screen: BootCampScreen())),
                       canUseButton: true,
@@ -91,7 +115,7 @@ class _RootScreenState extends State<RootScreen> {
                     ),
                   ),
 
-                /// Study and Teach Button
+                  /// Study and Teach Button
                   FittedBox(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -107,9 +131,7 @@ class _RootScreenState extends State<RootScreen> {
                             width: screenSize.width / 2,
                             canUseButton: true,
                             function: () => Navigator.push(
-                                context,
-                                SlideLeftRoute(
-                                    screen: StudyScreen())),
+                                context, SlideLeftRoute(screen: StudyScreen())),
                             name: "Study",
                             imageLocation: "asset/images/books.png",
                           ),
@@ -147,20 +169,17 @@ class _RootScreenState extends State<RootScreen> {
                       borderColor: Colors.white,
                       height: screenSize.height * 0.10,
                       width: screenSize.width,
-                      function: () => Navigator.push(context,
-                                SlideLeftRoute(screen: CompletedLetters())),
+                      function: () => Navigator.push(
+                          context, SlideLeftRoute(screen: CompletedLetters())),
                       canUseButton: true,
                       name: "My Lessons",
                       imageLocation: "asset/images/letter.png",
                     ),
                   ),
                 ],
-                
               ),
             ),
           ));
-    } else {
-      return LoadingScreen();
-    }
+
   }
 }

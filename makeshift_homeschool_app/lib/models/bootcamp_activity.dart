@@ -31,25 +31,7 @@ class BootCampActivity {
     return this.template[field].split("<userinput>").length - 1;
   }
 
-  // /// Given the number of user inputs needed, make a list of text controllers of
-  // /// the same size and fill it with TextEditingControllers
 
-  // List<TextEditingController> getTextControllerListMatchingUserinputLenght() {
-  //   int size = getNumberOfInputs();
-  //   List<TextEditingController> controllers = List(size);
-  //   controllers.fillRange(0, size, TextEditingController());
-  //   return controllers;
-  // }
-
-  /// Split the string in the intro, body or conclusion fields and return the
-  /// list after removing <userinput>
-  List<String> getSplitListAfterRemovingUserinputBrackets(String field) {
-    try {
-      return this.template[field].split("<userinput>");
-    } catch (error) {
-      print(error);
-    }
-  }
 
   /// Matches the string in said field: intro, body, conclusion, etc
   /// with the userinput format <userinput> and put these matches in a list

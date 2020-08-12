@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 
 class ActivityButton extends StatelessWidget {

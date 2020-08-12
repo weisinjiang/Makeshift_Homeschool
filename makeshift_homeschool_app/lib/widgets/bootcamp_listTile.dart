@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/models/bootcamp_activity.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
-import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
-import 'package:makeshift_homeschool_app/widgets/bootcamp_expanded.dart';
+
 
 /// ListTile for Bootcamp.
 /// Users will click before showing them the lesson details

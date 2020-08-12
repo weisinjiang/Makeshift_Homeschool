@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/models/bootcamp_activity.dart';
 import 'package:makeshift_homeschool_app/models/bootcamp_lesson.dart';
-import 'package:makeshift_homeschool_app/models/letter.dart';
-import 'package:makeshift_homeschool_app/services/auth.dart';
+
 
 /// This is a provider that deals with Bootcamp data
 /// It gets the activities avaliable and it saves bootcamp letters to the users

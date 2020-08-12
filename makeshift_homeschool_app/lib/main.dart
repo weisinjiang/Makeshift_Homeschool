@@ -5,7 +5,6 @@ import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
-import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
@@ -18,17 +17,13 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Build of main.dart");
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<AuthProvider>(
             // auth service
             create: (context) => AuthProvider(),
           ),
-          // ChangeNotifierProvider<NewPostProvider>(
-          //   // Tracks user paragraphs and subtitles
-          //   create: (context) => NewPostProvider(),
-          // ),
+
           ChangeNotifierProxyProvider<AuthProvider, PostFeedProvider>(
             // reteieves user posts in Study
             update: (context, auth, previousPosts) => PostFeedProvider(
