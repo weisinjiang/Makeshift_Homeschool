@@ -158,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     var auth = Provider.of<AuthProvider>(context);
-
+  
     return Scaffold(
       //Initial container that fills the entire screen
       body: Container(

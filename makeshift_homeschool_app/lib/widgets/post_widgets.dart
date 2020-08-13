@@ -49,7 +49,7 @@ Widget buildImage(String url, double height, double width) {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50.0),
           border: Border.all(color: Colors.black, style: BorderStyle.solid, width:3),
-          image: DecorationImage(image: NetworkImage(url), fit: BoxFit.fill)),
+          image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover)),
           
       
     ),

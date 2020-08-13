@@ -27,35 +27,18 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   void initState() {
+    userData = Provider.of<AuthProvider>(context, listen: false).getUser;
     super.initState();
   }
 
   @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-      userData = Provider.of<AuthProvider>(context, listen: false).getUser;
-      screenSize = MediaQuery.of(context).size;
-      setState(() {
-        _isLoading = false;
-      });
-    }
-    _isInit = false;
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
-
-
+    final screenSize = MediaQuery.of(context).size;
     /// upon signout, userData will be set to null. This conditional is so
     /// that when users signout, an error wont be thrown
- 
- 
-      return _isLoading ? LoadingScreen()
-      :Scaffold(
+
+    if (userData != null) {
+      return Scaffold(
           appBar: AppBar(
             elevation: 0.0,
             title: Text("Hi, ${userData["username"]}!"),
@@ -149,8 +132,13 @@ class _RootScreenState extends State<RootScreen> {
                                     userData["level"] == "Professor")
                                 ? true
                                 : false,
-                            function: () => Navigator.push(context,
-                                SlideLeftRoute(screen: NewPostScreen(isEditing: false, postData: null,))),
+                            function: () => Navigator.push(
+                                context,
+                                SlideLeftRoute(
+                                    screen: NewPostScreen(
+                                  isEditing: false,
+                                  postData: null,
+                                ))),
                             name: "Teach",
                             imageLocation: "asset/images/teach.png",
                           ),
@@ -180,6 +168,8 @@ class _RootScreenState extends State<RootScreen> {
               ),
             ),
           ));
-
+    } else {
+      return LoadingScreen();
+    }
   }
 }
