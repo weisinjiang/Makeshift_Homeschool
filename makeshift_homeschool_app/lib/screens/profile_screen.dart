@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/edit_profile_screen.dart';
 import 'package:makeshift_homeschool_app/screens/user_post.dart';
+import 'package:makeshift_homeschool_app/widgets/user_profile_appbar.dart';
 import '../shared/constants.dart';
 import '../shared/exportShared.dart';
 import 'package:provider/provider.dart';
@@ -27,146 +28,127 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
+    var screenSize = MediaQuery.of(context).size;
 
     /// Consumer of Authprovider because this entire widget depends on
     /// the user data that AuthProvider has. When an update is changed, Auth
     /// Provider will notify the widget to rebuild
     return Consumer<AuthProvider>(builder: (context, auth, _) {
       if (auth.getUser != null) {
+        List<String> test = ["1", "2", "3", "4", "5", "6", "7", "8"];
         /// if auth provider has user data
         return Scaffold(
-            appBar: AppBar(
-              title: Text("Profile"),
-              elevation: 0,
-            ),
+            appBar: UserProfileAppBar(screenSize: screenSize,appBar: AppBar(),),
             body: Container(
               // Main box for the entire profile screen
               height: screenHeight,
               width: screenWidth,
-              color: Colors.white,
-              // decoration: BoxDecoration(
-              //   gradient: LinearGradient(
-              //       colors: [kGreenSecondary, kGreenSecondary_shade1],
-              //       begin: Alignment.topCenter,
-              //       end: Alignment.bottomCenter),
-              // ),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [kGreenSecondary, kGreenSecondary_shade1],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter),
+              ),
               child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    // Contains: Avatar, Name, Level, Bio
-                    Container(
-                      //height: screenHeight * 0.30, // top 30% of the screen
-                      width: screenWidth,
-                      child: Row(
-                        children: <Widget>[
-                          // Avatar
-                          Flexible(
-                            child: Padding(
-                                padding: const EdgeInsets.all(20.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // Contains: Avatar, Name, Level, Bio
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        child: Container(
+                          //height: screenHeight * 0.30, // top 30% of the screen
+                          width: screenWidth,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              // Avatar
+                              Flexible(
                                 child: CircleAvatar(
                                   radius: 50,
                                   backgroundImage:
                                       NetworkImage(auth.getUser["photoURL"]),
                                   backgroundColor: Colors.greenAccent,
                                   // child: Text("${userData["username"][0]}"),
-                                )),
-                          ),
-
-                          // Username, Level and Bio
-                          Flexible(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 40.0, horizontal: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Text(
-                                    "${auth.getUser["username"]}",
-                                    style: kTitleTextStyle,
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    "${auth.getUser["level"]}",
-                                    style: kTitleTextStyle,
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Container(
-                                    height: 40.0,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            color: Colors.black, width: 2.0)),
-                                    child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      child: LinearProgressIndicator(
-                                        value: getLevelAsPercentage(
-                                            auth.getUser["level"]),
-                                        backgroundColor: Colors.grey[300],
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                kGreenPrimary),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                          )
-                        ],
+                              Flexible(
+                                  child: ListTile(
+                                title: Text(
+                                  auth.getUser["lesson_created"],
+                                  style: kBoldTextStyle,
+                                ),
+                                subtitle: Text("Lessons\nCreated"),
+                              )),
+
+                              Flexible(
+                                  child: ListTile(
+                                title: Text(
+                                  auth.getUser["lesson_completed"],
+                                  style: kBoldTextStyle,
+                                ),
+                                subtitle: Text("Lessons\nCompleted"),
+                              )),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                    Divider(),
-                    Container(
-                      height: screenHeight * 0.10,
-                      width: screenWidth * 0.95,
-                      child: Text(
-                        "${auth.getUser["bio"]}",
-                        textAlign: TextAlign.center,
-                        style: kParagraphTextStyle,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "${auth.getUser["username"]}",
+                          style: kTitleTextStyle,
+                          textAlign: TextAlign.start,
+                        ),
                       ),
-                    ),
-                    Divider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                          width: screenWidth,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                child: LinearProgressIndicator(
+                                  minHeight: 30.0,
+                                  value: getLevelAsPercentage(
+                                      auth.getUser["level"]),
+                                  backgroundColor: Colors.grey[300],
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      kGreenPrimary),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  auth.getUser["level"],
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ],
+                          )),
 
-                    RaisedButton(
-                      color: Colors.red[200],
-                      child: Text("Sign out"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pushReplacementNamed("/login");
-                        Provider.of<AuthProvider>(context, listen: false)
-                            .signOut();
-                      },
-                    ),
-
-                    ///Edit Profile Button
-                    RaisedButton(
-                      child: Text("Edit Profile"),
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditProfileScreen())),
-                    ),
-
-                    Divider(),
-                    
-                    RaisedButton(
-                      child: Text("My Posts"),
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UserPosts()))
-                    )
-                  ],
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Container(
+                        height: screenHeight * 0.10,
+                        width: screenWidth * 0.95,
+                        child: Text(
+                          "${auth.getUser["bio"]}",
+                          textAlign: TextAlign.start,
+                          style: kParagraphTextStyle,
+                        ),
+                      ),
+    
+                    ],
+                  ),
                 ),
               ),
             ));
