@@ -79,7 +79,7 @@ class PostThumbnail extends StatelessWidget {
                   strokeColor: Colors.black,
                   strokeWidth: 4.0,
                   text:
-                      "By: ${postData.getOwnerName}\nRecommended Age: ${postData.getAge}",
+                      "By: ${postData.getOwnerName}\nRecommended Age: ${postData.getAge}+",
                   textColor: Colors.white,
                 ),
                 isThreeLine: true,

@@ -39,6 +39,7 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      
       title: Text(postData.getTitle),
       actions: <Widget>[
         IconButton(

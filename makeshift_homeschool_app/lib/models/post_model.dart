@@ -112,7 +112,9 @@ class Post with ChangeNotifier {
     /// Map<String, Map<String, String>> from database
     var postContentList = this._postContents;
     contentToShowOnScreen
-        .add(buildImage(this._imageUrl, screenSize.height, screenSize.width));
+        .add(buildImage(this._imageUrl,this._title, screenSize.height, screenSize.width));
+        contentToShowOnScreen
+        .add(SizedBox(height: 30,));
 
     /// For each value in the list, build the paragraph
     for (var type in postFieldType) {

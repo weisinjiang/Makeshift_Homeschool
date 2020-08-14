@@ -31,13 +31,10 @@ class PostExpanded extends StatelessWidget {
       body: Container(
         width: screenSize.width,
         height: screenSize.height,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: ListView(
-            children: postData.constructPostWidgetList(screenSize),
+        child: ListView(
+          children: postData.constructPostWidgetList(screenSize),
 
-            /// make list
-          ),
+          /// make list
         ),
       ),
     );
