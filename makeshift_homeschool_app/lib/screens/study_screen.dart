@@ -57,25 +57,38 @@ class _StudyScreenState extends State<StudyScreen> {
           ),
           body: _isLoading
               ? LoadingScreen()
-              : Container(
+              : Container( // entire screen color
+                  height: screenSize.height,
+                  width: screenSize.width,
                   decoration: linearGradientSecondaryGreenAnalogous,
-                  child: Container(
-                    height: screenSize.height * 0.20,
-              
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
-                          separatorBuilder: (context, int index) =>
-                              const SizedBox(width: 5,),
-                          itemCount: postList.length,
-                          itemBuilder: (_, index) => ChangeNotifierProvider.value(
-                                value: postList[index],
-                                child: PostThumbnail(
-                                  inUsersProfilePage: false,
-                                ),
-                              )),
+                  child: SingleChildScrollView( // scroll up/down
+
+                    child: Column(
+                      children: [
+                        // 
+                        Container(
+                          alignment: Alignment.topCenter,
+                          height: screenSize.height * 0.20,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
+                                separatorBuilder: (context, int index) =>
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                itemCount: postList.length,
+                                itemBuilder: (_, index) =>
+                                    ChangeNotifierProvider.value(
+                                      value: postList[index],
+                                      child: PostThumbnail(
+                                        inUsersProfilePage: false,
+                                      ),
+                                    )),
+                          ),
+                        ),
+                      ],
                     ),
                   )));
     } else {

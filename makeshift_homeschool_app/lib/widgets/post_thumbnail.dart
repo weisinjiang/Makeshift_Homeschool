@@ -56,8 +56,8 @@ class PostThumbnail extends StatelessWidget {
           /// Box decoration for the shape of the container and the image that
           /// goes inside of it
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.0),
-              border: Border.all(color: Colors.black, width: 2),
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(color: Colors.white, width: 2),
               image: DecorationImage(
                   colorFilter: ColorFilter.mode(
                       Colors.grey.withOpacity(0.80), BlendMode.dstATop),
@@ -96,8 +96,8 @@ class PostThumbnail extends StatelessWidget {
                   ),
                 ),
 
-                // LikeButton(
-                //     postData: postData, screenSize: screenSize, user: user),
+                LikeButton(
+                    postData: postData, screenSize: screenSize, user: user),
 
                 // Center(
                 //   child: ListTile(

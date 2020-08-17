@@ -44,7 +44,7 @@ class Post with ChangeNotifier {
   String get getBody2 => this._postContents["body 2"];
   String get getBody3 => this._postContents["body 3"];
   String get getConclusion => this._postContents["conclusion"];
-  
+
   Map<String, dynamic> get getPostContents => this._postContents;
 
   //Setters
@@ -82,14 +82,27 @@ class Post with ChangeNotifier {
             .collection("favorites")
             .document(postID)
             .setData({});
+
+        // Increment the likes count on the post
+        await Firestore.instance
+            .collection("lessons")
+            .document(postID)
+            .updateData({"likes": FieldValue.increment(1)});
       } else {
-        /// if unlike, remove the post from user favorites
+
+        // if unlike, remove the post from user favorites
         await Firestore.instance
             .collection("users")
             .document(uid)
             .collection("favorites")
             .document(postID)
             .delete();
+            
+        // Decrement the likes count on the post
+        await Firestore.instance
+            .collection("lessons")
+            .document(postID)
+            .updateData({"likes": FieldValue.increment(-1)});
       }
     } catch (error) {
       /// if there was an error, change the value back
@@ -111,10 +124,11 @@ class Post with ChangeNotifier {
 
     /// Map<String, Map<String, String>> from database
     var postContentList = this._postContents;
-    contentToShowOnScreen
-        .add(buildImage(this._imageUrl,this._title, screenSize.height, screenSize.width));
-        contentToShowOnScreen
-        .add(SizedBox(height: 30,));
+    contentToShowOnScreen.add(buildImage(
+        this._imageUrl, this._title, screenSize.height, screenSize.width));
+    contentToShowOnScreen.add(SizedBox(
+      height: 30,
+    ));
 
     /// For each value in the list, build the paragraph
     for (var type in postFieldType) {
