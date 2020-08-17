@@ -47,7 +47,8 @@ class _AlternativeMovieEndingsState extends State<AlternativeMovieEndings> {
     ${textController[3].text}\n
     The reason why I think my plot is better is because...\n
     ${textController[4].text}.\n
-    I hope you reconsider the plot of ${textController[5].text}!\n
+    I hope you reconsider the plot of 
+    ${textController[5].text}!\n
     Thank you for reading!\n
     """;
     textController.forEach((controller) {
