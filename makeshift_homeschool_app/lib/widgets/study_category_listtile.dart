@@ -25,7 +25,7 @@ class StudyCategoryListTile extends StatelessWidget {
               text: categoryTitle,
               strokeColor: Colors.black,
               textColor: Colors.white,
-              strokeWidth: 5.0,
+              strokeWidth: 3.0,
             ),
           ),
         ),
@@ -33,7 +33,7 @@ class StudyCategoryListTile extends StatelessWidget {
         ? Container(  height: screenSize.height * 0.20,child: Center(child: Text("Nothing, yet..."),),)
         : Container(
           alignment: Alignment.topCenter,
-          height: screenSize.height * 0.20,
+          height: screenSize.height * 0.25,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView.separated(

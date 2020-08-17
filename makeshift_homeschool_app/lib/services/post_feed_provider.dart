@@ -25,36 +25,6 @@ class PostFeedProvider with ChangeNotifier {
     return _database.collection("lessons").snapshots();
   }
 
-  void get5MostLikedPost() {
-    List<Post> allPosts = this._posts;
-    List<Post> top5Likes = [];
-    // Sort the list in decending order
-    allPosts.sort((Post postB, Post postA) {
-      int postBLikes = postB.getLikes;
-      int postALikes = postA.getLikes;
-      //print("${postALikes.toString()}   ${postBLikes.toString()}");
-      return postALikes.compareTo(postBLikes);
-    });
-    for (int i = 0; i < 5; i++) {
-      top5Likes.add(allPosts[i]);
-      print(allPosts[i].getLikes.toString());
-    }
-    // get the first 5 most liked posts
-    this._top5Likes = top5Likes;
-  }
-
-  void get5MostViewedPost() {
-    List<Post> allPosts = getPosts;
-    // Sort the list in decending order
-    allPosts.sort((Post postB, Post postA) {
-      int postBViews = postB.getViews;
-      int postAViews = postA.getViews;
-      print("${postAViews.toString()}   ${postBViews.toString()}");
-      return postAViews.compareTo(postBViews);
-    });
-    // get the first 5 most liked posts
-    this._top5Viewed = allPosts.sublist(0, 4);
-  }
 
   Future<void> deletePost(String postId) async {
     /// First remove it from the database
@@ -146,6 +116,37 @@ class PostFeedProvider with ChangeNotifier {
     get5MostLikedPost();
     get5MostViewedPost();
     notifyListeners();
+  }
+
+  void get5MostLikedPost() {
+    List<Post> allPosts = this._posts;
+    List<Post> top5Likes = [];
+    // Sort the list in decending order
+    allPosts.sort((Post postB, Post postA) {
+      int postBLikes = postB.getLikes;
+      int postALikes = postA.getLikes;
+      //print("${postALikes.toString()}   ${postBLikes.toString()}");
+      return postALikes.compareTo(postBLikes);
+    });
+    for (int i = 0; i < 5; i++) {
+      top5Likes.add(allPosts[i]);
+      print(allPosts[i].getLikes.toString());
+    }
+    // get the first 5 most liked posts
+    this._top5Likes = top5Likes;
+  }
+
+  void get5MostViewedPost() {
+    List<Post> allPosts = getPosts;
+    // Sort the list in decending order
+    allPosts.sort((Post postB, Post postA) {
+      int postBViews = postB.getViews;
+      int postAViews = postA.getViews;
+      //print("${postAViews.toString()}   ${postBViews.toString()}");
+      return postAViews.compareTo(postBViews);
+    });
+    // get the first 5 most liked posts
+    this._top5Viewed = allPosts.sublist(0, 4);
   }
 
   /*
