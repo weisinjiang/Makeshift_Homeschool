@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
 
 class Post with ChangeNotifier {
-  int likes; // Database stored as a string, needs to convert
+  int _likes;
+  int _views;
   String _imageUrl;
   String _age;
   String _createdOn;
@@ -16,7 +17,8 @@ class Post with ChangeNotifier {
   Map<String, dynamic> _postContents;
 
   Post() {
-    this.likes = 0;
+    this._views = 0;
+    this._likes = 0;
     this._title = null;
     this._imageUrl = null;
     this._createdOn = null;
@@ -31,7 +33,8 @@ class Post with ChangeNotifier {
   }
 
   //Getters
-  int get getLikes => this.likes;
+  int get getLikes => this._likes;
+  int get getViews => this._views;
   String get getTitle => this._title; // First in array is title
   String get getImageUrl => this._imageUrl;
   String get getCreatedOn => this._createdOn;
@@ -48,7 +51,8 @@ class Post with ChangeNotifier {
   Map<String, dynamic> get getPostContents => this._postContents;
 
   //Setters
-  set setLikes(int likes) => this.likes = likes;
+  set setLikes(int likes) => this._likes = likes;
+  set setViews(int views) => this._views = views;
   set setTitle(String title) => this._title = title;
   set setImageUrl(String url) => this._imageUrl = url;
   set setCreatedOn(String time) => this._createdOn = time;

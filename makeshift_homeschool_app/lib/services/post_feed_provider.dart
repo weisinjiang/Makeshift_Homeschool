@@ -7,18 +7,53 @@ class PostFeedProvider with ChangeNotifier {
 
   List<Post> _posts = []; //post list to be shown on the feed
   List<Post> _userPosts = [];
+  List<Post> _top5Likes = [];
+  List<Post> _top5Viewed = [];
   final String uid;
 
   PostFeedProvider(this.uid, this._posts);
 
   // Get the posts, not a ref to _post but a deep copy of it
   ///[...] does this
-  List<Post> get getPosts => [..._posts];
+  List<Post> get getPosts => [...this._posts];
   List<Post> get getUserPosts => [..._userPosts];
+  List<Post> get getTop5Likes => [..._top5Likes];
+  List<Post> get getTop5Viewed => [..._top5Viewed];
 
   Stream<QuerySnapshot> lessonsCollectionStream() {
     print("STREAM CALLED");
     return _database.collection("lessons").snapshots();
+  }
+
+  void get5MostLikedPost() {
+    List<Post> allPosts = this._posts;
+    List<Post> top5Likes = [];
+    // Sort the list in decending order
+    allPosts.sort((Post postB, Post postA) {
+      int postBLikes = postB.getLikes;
+      int postALikes = postA.getLikes;
+      //print("${postALikes.toString()}   ${postBLikes.toString()}");
+      return postALikes.compareTo(postBLikes);
+    });
+    for (int i = 0; i < 5; i++) {
+      top5Likes.add(allPosts[i]);
+      print(allPosts[i].getLikes.toString());
+    }
+    // get the first 5 most liked posts
+    this._top5Likes = top5Likes;
+  }
+
+  void get5MostViewedPost() {
+    List<Post> allPosts = getPosts;
+    // Sort the list in decending order
+    allPosts.sort((Post postB, Post postA) {
+      int postBViews = postB.getViews;
+      int postAViews = postA.getViews;
+      print("${postAViews.toString()}   ${postBViews.toString()}");
+      return postAViews.compareTo(postBViews);
+    });
+    // get the first 5 most liked posts
+    this._top5Viewed = allPosts.sublist(0, 4);
   }
 
   Future<void> deletePost(String postId) async {
@@ -84,6 +119,8 @@ class PostFeedProvider with ChangeNotifier {
     List<Post> data = [];
     allPostDocuments.forEach((doc) async {
       Post post = Post();
+      post.setLikes = doc["likes"];
+      post.setViews = doc["views"];
       post.setCreatedOn = doc["createdOn"];
       post.setAge = doc["age"];
       post.setTitle = doc["title"];
@@ -99,14 +136,21 @@ class PostFeedProvider with ChangeNotifier {
       }
       data.add(post);
     });
+
     // assign the list of data into the class variable
     if (query == "all") {
       this._posts = data;
     } else {
       this._userPosts = data;
     }
+    get5MostLikedPost();
+    get5MostViewedPost();
     notifyListeners();
   }
+
+  /*
+    Gets the id of the user's favorite post
+  */
 
   Future<List<String>> fetchUsersFavoritesList(String uid) async {
     List<String> favoritesList = [];

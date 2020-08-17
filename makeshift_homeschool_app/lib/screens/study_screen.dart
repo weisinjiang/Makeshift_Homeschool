@@ -3,8 +3,10 @@ import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
+import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/shared/widget_constants.dart';
 import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
+import 'package:makeshift_homeschool_app/widgets/study_category_listtile.dart';
 import 'package:provider/provider.dart';
 
 /// Study screen where lessons are retrieved from the database and posted
@@ -46,7 +48,11 @@ class _StudyScreenState extends State<StudyScreen> {
 
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final postList = Provider.of<PostFeedProvider>(context).getPosts;
+    final feedProvider = Provider.of<PostFeedProvider>(context);
+    final top5LikedList = feedProvider.getTop5Likes;
+    final top5ViewList = feedProvider.getTop5Viewed;
+    final allPosts = feedProvider.getPosts;
+
     final user = Provider.of<AuthProvider>(context).getUser;
     if (user != null) {
       return Scaffold(
@@ -57,37 +63,28 @@ class _StudyScreenState extends State<StudyScreen> {
           ),
           body: _isLoading
               ? LoadingScreen()
-              : Container( // entire screen color
+              : Container(
+                  // entire screen color
                   height: screenSize.height,
                   width: screenSize.width,
                   decoration: linearGradientSecondaryGreenAnalogous,
-                  child: SingleChildScrollView( // scroll up/down
+                  child: SingleChildScrollView(
+                    // scroll up/down
 
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // 
-                        Container(
-                          alignment: Alignment.topCenter,
-                          height: screenSize.height * 0.20,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
-                                separatorBuilder: (context, int index) =>
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                itemCount: postList.length,
-                                itemBuilder: (_, index) =>
-                                    ChangeNotifierProvider.value(
-                                      value: postList[index],
-                                      child: PostThumbnail(
-                                        inUsersProfilePage: false,
-                                      ),
-                                    )),
-                          ),
-                        ),
+                        StudyCategoryListTile(
+                            categoryTitle: "For Your Age", postList: null),
+                        StudyCategoryListTile(
+                            categoryTitle: "Most Liked",
+                            postList: top5LikedList),
+                        StudyCategoryListTile(
+                            categoryTitle: "Most Viewed",
+                            postList: top5ViewList),
+                        StudyCategoryListTile(
+                            categoryTitle: "All Posts",
+                            postList: allPosts),
                       ],
                     ),
                   )));

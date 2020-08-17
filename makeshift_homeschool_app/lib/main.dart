@@ -47,13 +47,13 @@ class MyApp extends StatelessWidget {
                 textTheme:
                     GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
             home: auth.isAuthenticated ? RootScreen() : LoginScreen(),
-            // routes: {
-            //   '/login': (context) => LoginScreen(),
-            //   '/root': (context) => RootScreen(),
-            //   '/about': (context) => AboutScreen(),
-            //   '/study': (context) => StudyScreen(),
-            //   '/profile': (context) => ProfileScreen(),
-            // },
+            routes: {
+              '/login': (context) => LoginScreen(),
+              '/root': (context) => RootScreen(),
+              '/about': (context) => AboutScreen(),
+              '/study': (context) => StudyScreen(),
+              '/profile': (context) => ProfileScreen(),
+            },
           ),
         ));
   }

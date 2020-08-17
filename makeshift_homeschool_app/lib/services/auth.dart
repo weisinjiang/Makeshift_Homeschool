@@ -21,8 +21,6 @@ class AuthProvider with ChangeNotifier {
   String get getUserID => _userId;
   Map<String, String> get getUser => _userInformation;
 
-  
-
   // Get current Firebase User. Used to see if user data is still valid
   // Not async because it is used after user has logged in and exit the app
   // Future<FirebaseUser> get getUser => _firebaseAuth.currentUser();
@@ -138,6 +136,7 @@ class AuthProvider with ChangeNotifier {
     authenticated = false;
     _userId = null;
     _userInformation = null;
+    _auth.signOut();
     notifyListeners();
     // return Future.delayed(Duration.zero);
   }

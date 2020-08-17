@@ -70,7 +70,7 @@ class PostThumbnail extends StatelessWidget {
               children: [
                 Flexible(
                   child: StrokeText(
-                      fontSize: 16,
+                      fontSize: 15,
                       strokeColor: Colors.black,
                       strokeWidth: 3.0,
                       text: postData.getTitle,
@@ -81,7 +81,7 @@ class PostThumbnail extends StatelessWidget {
                 ),
 
                 Flexible(
-                  fit: FlexFit.tight,
+                
                   child: Container(
                     child: StrokeText(
                         fontSize: 16,
@@ -92,8 +92,7 @@ class PostThumbnail extends StatelessWidget {
                   ),
                 ),
 
-                LikeButton(
-                    postData: postData, screenSize: screenSize, user: user),
+                
 
                 // Center(
                 //   child: ListTile(
