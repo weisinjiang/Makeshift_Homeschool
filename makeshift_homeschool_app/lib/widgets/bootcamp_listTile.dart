@@ -35,7 +35,7 @@ class BootCampListTile extends StatelessWidget {
                   radius: 25,
                   backgroundColor: Colors.transparent,
                   child: Image.asset(
-                    'asset/bootcamp/lovelanguage.png', //! To add. Name the same as title
+                    'asset/bootcamp/${title}.png', //! To add. Name the same as title
                     fit: BoxFit.contain,
                   )),
               title: Text(
