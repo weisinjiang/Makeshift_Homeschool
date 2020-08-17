@@ -64,7 +64,10 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _authMode = AuthMode.Signup;
       });
-      showAlertDialog("By clicking continue you are confirming that you are a parent signing up your child for Makeshift Homeschool and you will not use your child's real name during sign up", "LEGAL",context);
+      showAlertDialog(
+          "By clicking continue you are confirming that you are a parent signing up your child for Makeshift Homeschool and you will not use your child's real name during sign up",
+          "LEGAL",
+          context);
     } else {
       setState(() {
         _authMode = AuthMode.Login;
@@ -87,14 +90,16 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       // Attempt to log user in
       if (_authMode == AuthMode.Login) {
-        var result =
+        var isSignedIn =
             await auth.signIn(_userInput.getEmail, _userInput.getPassword);
 
-        if (result == true) {
-          Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
-        } else {
+        if (!isSignedIn) {
           _showErrorMessage("Email or Password is incorrect or does not exist");
         }
+        //Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
+        //  else {
+        //   _showErrorMessage("Email or Password is incorrect or does not exist");
+        // }
 
         // User Sign up
       } else {
@@ -158,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     var auth = Provider.of<AuthProvider>(context);
-  
+
     return Scaffold(
       //Initial container that fills the entire screen
       body: Container(
@@ -215,7 +220,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               onSaved: (userNameInput) =>
                                   _userInput.setUsername = userNameInput,
                             ),
-                            
                           ),
 
                         // Email Field
@@ -334,7 +338,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 Navigator.of(context).push(
                                     ScaleRoute(screen: ResetPasswordScreen()));
-                              }, 
+                              },
                               child: const Text(
                                 "Reset Password",
                                 style: TextStyle(
