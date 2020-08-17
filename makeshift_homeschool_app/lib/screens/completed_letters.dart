@@ -52,7 +52,7 @@ class _CompletedLettersState extends State<CompletedLetters> {
     if (userData != null) {
       return Scaffold(
           appBar: AppBar(
-            title: Text("Your Letters"),
+            title: Text("Your Lessons"),
           ),
           body: _isLoading ? LoadingScreen() :Container(
             decoration: const BoxDecoration(
