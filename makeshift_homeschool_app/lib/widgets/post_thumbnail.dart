@@ -50,66 +50,54 @@ class PostThumbnail extends StatelessWidget {
           }
       },
       child: Container(
-          width: screenSize.width * 0.40,
-          height: screenSize.height * 0.30,
+          height: screenSize.height * 0.20,
+          width: screenSize.width * 0.30,
 
           /// Box decoration for the shape of the container and the image that
           /// goes inside of it
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
-              border: Border.all(color: Colors.black, width: 5),
+              border: Border.all(color: Colors.black, width: 2),
               image: DecorationImage(
-                colorFilter: ColorFilter.mode(Colors.grey.withOpacity(0.80), BlendMode.dstATop),
+                  colorFilter: ColorFilter.mode(
+                      Colors.grey.withOpacity(0.80), BlendMode.dstATop),
                   image: NetworkImage(postData.getImageUrl),
                   fit: BoxFit.cover)),
 
           /// Title of the post
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
+          child: Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                          alignment: Alignment.topLeft,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            child: Text(postData.getOwnerName[0]),
-                          )),
-                    ),
-                    StrokeText(
+              
+
+                Flexible(
+                  child: StrokeText(
                       fontSize: 16,
                       strokeColor: Colors.black,
-                      strokeWidth: 4.0,
-                      text: postData.getOwnerName,
-                      textColor: Colors.white,
-                    ),
-                  ],
-                ),
-
-                Center(
-                  child: StrokeText(
-                      fontSize: 25,
-                      strokeColor: Colors.black,
-                      strokeWidth: 6.0,
+                      strokeWidth: 3.0,
                       text: postData.getTitle,
                       textColor: Colors.white),
                 ),
-                SizedBox(height: 10,),
-
-                 Center(
-                  child: StrokeText(
-                      fontSize: 16,
-                      strokeColor: Colors.black,
-                      strokeWidth: 6.0,
-                      text: "Recommended Age: ${postData.getAge}+",
-                      textColor: Colors.white),
+                SizedBox(
+                  height: 10,
                 ),
-                SizedBox(height: 20,),
-                LikeButton(
-                        postData: postData, screenSize: screenSize, user: user),
+
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Container(
+                    child: StrokeText(
+                        fontSize: 16,
+                        strokeColor: Colors.black,
+                        strokeWidth: 3.0,
+                        text: "Age: ${postData.getAge}+",
+                        textColor: Colors.white),
+                  ),
+                ),
+
+                // LikeButton(
+                //     postData: postData, screenSize: screenSize, user: user),
 
                 // Center(
                 //   child: ListTile(

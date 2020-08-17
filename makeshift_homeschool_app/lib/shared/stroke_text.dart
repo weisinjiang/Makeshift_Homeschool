@@ -18,6 +18,7 @@ class StrokeText extends StatelessWidget {
         // Stroked text as border.
         Text(
           text,
+          textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: fontSize,
               foreground: Paint()
@@ -25,9 +26,11 @@ class StrokeText extends StatelessWidget {
                 ..strokeWidth = strokeWidth
                 ..color = strokeColor),
         ),
+        
         // Solid text as fill.
         Text(
           text,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: fontSize,
             color: textColor,

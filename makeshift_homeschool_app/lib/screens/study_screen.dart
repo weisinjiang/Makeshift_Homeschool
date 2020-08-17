@@ -59,19 +59,24 @@ class _StudyScreenState extends State<StudyScreen> {
               ? LoadingScreen()
               : Container(
                   decoration: linearGradientSecondaryGreenAnalogous,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView.separated(
-                        padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
-                        separatorBuilder: (context, int index) =>
-                            const Divider(),
-                        itemCount: postList.length,
-                        itemBuilder: (_, index) => ChangeNotifierProvider.value(
-                              value: postList[index],
-                              child: PostThumbnail(
-                                inUsersProfilePage: false,
-                              ),
-                            )),
+                  child: Container(
+                    height: screenSize.height * 0.20,
+              
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
+                          separatorBuilder: (context, int index) =>
+                              const SizedBox(width: 5,),
+                          itemCount: postList.length,
+                          itemBuilder: (_, index) => ChangeNotifierProvider.value(
+                                value: postList[index],
+                                child: PostThumbnail(
+                                  inUsersProfilePage: false,
+                                ),
+                              )),
+                    ),
                   )));
     } else {
       LoadingScreen();
