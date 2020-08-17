@@ -30,7 +30,7 @@ class LikeButton extends StatelessWidget {
                 size: screenSize.height * 0.05,
               ),
         onPressed: () async {
-          await post.toggleLikeButton(user["uid"], postData.getPostId);
+          await post.toggleLikeButton(user["uid"]);
         },
       ),
     );

@@ -160,6 +160,7 @@ class NewPostProvider {
 
     var newLesson = {
       "age": postContentsList[6],
+      "views": 0,
       "lessonId": databaseRef.documentID,
       "ownerUid": uid,
       "ownerName": name,

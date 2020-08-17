@@ -60,9 +60,21 @@ class Post with ChangeNotifier {
   set setPostContents(Map<String, dynamic> contents) =>
       this._postContents = contents;
 
+  // Increment the view count on a post everytime someone clicks on a post
+  Future<void> incrementPostViewCount() async {
+    try {
+      await Firestore.instance
+          .collection("lessons")
+          .document(getPostId)
+          .updateData({"views": FieldValue.increment(1)});
+    } catch (error) {
+      print("InrementPostViewCount error");
+    }
+  }
+
   /// Toggle the like button, marking it a favorite
-  Future<void> toggleLikeButton(String uid, String postID) async {
-    print("POST ID " + postID);
+  Future<void> toggleLikeButton(String uid) async {
+    print("POST ID " + getPostId);
     final oldValue = this.isLiked;
     this.isLiked = !this.isLiked;
     print("TOGGLE");
@@ -80,28 +92,27 @@ class Post with ChangeNotifier {
             .collection("users")
             .document(uid)
             .collection("favorites")
-            .document(postID)
+            .document(getPostId)
             .setData({});
 
         // Increment the likes count on the post
         await Firestore.instance
             .collection("lessons")
-            .document(postID)
+            .document(getPostId)
             .updateData({"likes": FieldValue.increment(1)});
       } else {
-
         // if unlike, remove the post from user favorites
         await Firestore.instance
             .collection("users")
             .document(uid)
             .collection("favorites")
-            .document(postID)
+            .document(getPostId)
             .delete();
-            
+
         // Decrement the likes count on the post
         await Firestore.instance
             .collection("lessons")
-            .document(postID)
+            .document(getPostId)
             .updateData({"likes": FieldValue.increment(-1)});
       }
     } catch (error) {

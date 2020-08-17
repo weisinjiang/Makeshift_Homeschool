@@ -27,27 +27,25 @@ class PostThumbnail extends StatelessWidget {
 
     return InkWell(
       /// On tap, the screen moves to an expanded post screen
-      onTap: () => {
-        if (inUsersProfilePage)
-          {
-            Navigator.push(
-                context,
-                SlideLeftRoute(
-                    screen: PostExpanded(
-                  postData: postData,
-                  canDelete: true,
-                )))
-          }
-        else
-          {
-            Navigator.push(
-                context,
-                SlideLeftRoute(
-                    screen: PostExpanded(
-                  postData: postData,
-                  canDelete: false,
-                )))
-          }
+      onTap: () {
+        if (inUsersProfilePage) {
+          Navigator.push(
+              context,
+              SlideLeftRoute(
+                  screen: PostExpanded(
+                postData: postData,
+                canDelete: true,
+              )));
+        } else {
+          postData.incrementPostViewCount();
+          Navigator.push(
+              context,
+              SlideLeftRoute(
+                  screen: PostExpanded(
+                postData: postData,
+                canDelete: false,
+              )));
+        }
       },
       child: Container(
           height: screenSize.height * 0.20,
@@ -70,8 +68,6 @@ class PostThumbnail extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-              
-
                 Flexible(
                   child: StrokeText(
                       fontSize: 16,
