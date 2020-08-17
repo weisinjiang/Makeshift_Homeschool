@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/screens/export_screens.dart';
+import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 
 class AuthProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance; // Connect to Firestore
@@ -18,6 +20,8 @@ class AuthProvider with ChangeNotifier {
   bool get isAuthenticated => authenticated;
   String get getUserID => _userId;
   Map<String, String> get getUser => _userInformation;
+
+  
 
   // Get current Firebase User. Used to see if user data is still valid
   // Not async because it is used after user has logged in and exit the app
@@ -194,6 +198,27 @@ class AuthProvider with ChangeNotifier {
     await _database
         .collection("users")
         .document(_userId)
+        .get()
+        .then((firestoreData) {
+      userData["email"] = firestoreData["email"];
+      userData["bio"] = firestoreData["bio"];
+      userData["photoURL"] = firestoreData["photoURL"];
+      userData["uid"] = firestoreData["uid"];
+      userData["username"] = firestoreData["username"];
+      userData["lesson_completed"] =
+          firestoreData["lesson_completed"].toString();
+      userData["lesson_created"] = firestoreData["lesson_created"].toString();
+      userData["level"] = firestoreData["level"];
+    });
+
+    return userData;
+  }
+
+  Future<Map<String, String>> fetchUserInfoFromDatabaseAutoLogin(uid) async {
+    Map<String, String> userData = {};
+    await _database
+        .collection("users")
+        .document(uid)
         .get()
         .then((firestoreData) {
       userData["email"] = firestoreData["email"];
