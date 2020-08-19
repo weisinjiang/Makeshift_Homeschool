@@ -136,9 +136,17 @@ class NewPostProvider {
     return canPost;
   }
 
-  // Post Method to be added into the database
+  /* 
+    Post Method to be added into the database
+    If the userLevel is a tutor, then the post will be added to the review
+    database for review before being posted into lesson
 
-  Future<void> post(String uid, String name, int lessonCreated) async {
+    If the userLevel is teacher and above, it gets added to the lessons
+    collection and requires no review
+  */
+
+  Future<void> post(
+      {String uid, String name, int lessonCreated, String userLevel}) async {
     lessonCreated++; // increment # of lessons user created, cant do it when adding to database
 
     /// Reference the document where the data will be placed

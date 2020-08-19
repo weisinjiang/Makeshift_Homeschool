@@ -67,7 +67,11 @@ class NewPostScreen extends StatelessWidget {
                     ///! Change so that it gets info from the local value!!!!!
                     int lessonCreated = int.parse(userInfo["lesson_created"]);
                     newPostProvider.post(
-                        userInfo["uid"], userInfo["username"], lessonCreated);
+                      uid: userInfo["uid"],
+                      name: userInfo["username"],
+                      userLevel: userInfo["level"],
+                      lessonCreated: lessonCreated
+                    );
 
                     Navigator.of(context).pop();
                   }
