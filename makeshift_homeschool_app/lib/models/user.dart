@@ -1,3 +1,7 @@
+  /*
+    User object that holds their data
+  */
+
 class User {
   String _username;
   String _email;
@@ -35,5 +39,8 @@ class User {
   String get getEmail => this._email;
   String get getUid => this._uid;
   String get getPhotoUrl => this._photoUrl;
-  String
+  String get getBio => this._bio;
+  String get getLevel => this._level;
+  int get getLessonCreated => this._lessonsCreated;
+  int get getLessonCompleted => this._lessonsCompleted;
 }

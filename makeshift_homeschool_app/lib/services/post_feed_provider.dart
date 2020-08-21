@@ -20,12 +20,6 @@ class PostFeedProvider with ChangeNotifier {
   List<Post> get getTop5Likes => [..._top5Likes];
   List<Post> get getTop5Viewed => [..._top5Viewed];
 
-  Stream<QuerySnapshot> lessonsCollectionStream() {
-    print("STREAM CALLED");
-    return _database.collection("lessons").snapshots();
-  }
-
-
   Future<void> deletePost(String postId) async {
     /// First remove it from the database
     await _database.collection("lessons").document(postId).delete();
@@ -100,6 +94,7 @@ class PostFeedProvider with ChangeNotifier {
       post.setOwnerUid = doc["ownerUid"];
       post.setPostContents = doc["postContents"];
       post.setPostId = doc.documentID;
+      post.setQuiz = doc["quiz"];
       // if the post is a favorite
       if (favoritesList.contains(doc.documentID)) {
         post.setIsLiked = true;

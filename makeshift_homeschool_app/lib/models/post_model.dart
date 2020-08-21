@@ -15,6 +15,7 @@ class Post with ChangeNotifier {
   bool isLiked;
   // Subtitles and paragraphs in order from Firestore
   Map<String, dynamic> _postContents;
+  Map<String, Map<String, dynamic>> _quiz;
 
   Post() {
     this._views = 0;
@@ -26,6 +27,7 @@ class Post with ChangeNotifier {
     this._ownerUid = null;
     this._postContents = null;
     this._postId = null;
+    this._quiz = null;
     this._age = "0";
     this.isLiked = false;
 
@@ -63,6 +65,7 @@ class Post with ChangeNotifier {
   set setAge(String age) => this._age = age;
   set setPostContents(Map<String, dynamic> contents) =>
       this._postContents = contents;
+  set setQuiz(Map<String, Map<String, dynamic>> quiz) => this._quiz = quiz;
 
   // Increment the view count on a post everytime someone clicks on a post
   Future<void> incrementPostViewCount() async {

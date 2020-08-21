@@ -117,19 +117,14 @@ class NewPostScreen extends StatelessWidget {
 
             /// Users can add infinite amount of subtiles and paragraphs, so when
             /// it goes out of screen, it should be scrollable
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Container(
-                height: screenHeight * 0.85,
-                width: screenWidth * 0.96,
-                child: SingleChildScrollView(
-                  reverse: true,
-                  child: Column(
-                    /// Get the initial widgetlist
-                    children: newPostProvider.getNewPostWidgetList,
-                  ),
+            child: Container(
+              height: screenHeight * 0.85,
+              width: screenWidth * 0.96,
+              child: SingleChildScrollView(
+                reverse: true,
+                child: Column(
+                  /// Get the initial widgetlist
+                  children: newPostProvider.getNewPostWidgetList,
                 ),
               ),
             ),

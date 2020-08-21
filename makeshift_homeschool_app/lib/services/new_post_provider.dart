@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -6,12 +7,12 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/widgets/image_field.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
-
-///Handles new paragraph and subtitle widgets being added to a new post
-///and saving its contents
-/// Use a list for the widgets and another list for textcontrollers
-///Cant use Form() because each new widget has its own onSave function, which
-///cant be dynamically programmed for it to save to a specific variable.
+import 'package:makeshift_homeschool_app/widgets/newpost_questions.dart';
+/*
+Handles new paragraph and subtitle widgets being added to a new post
+and saving its contents
+Use a list for the widgets and another list for textcontrollers
+*/
 
 class NewPostProvider {
   /// References to the database and storage so we can upload the new post info
@@ -20,13 +21,13 @@ class NewPostProvider {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   /// One list for widgets and one for text controllers
-  /// Did not use map because a text controller needs to be passed into the key
   List<Widget> _newPostForms;
   List<TextEditingController> _newPostFormControllers;
-  List<String>
-      _newPostFormControllerType; // parallel to _newPostFormController, indicating what info it is
+  // Each post requires 5 question and this list contains a controller for them
+  List<TextEditingController> _newPostQuestionsControllers;
   int currentWidgetListSize; // used to add and delete textforms
   File _newPostImagePath;
+  Map<String, List<TextEditingController>> _quizControllers;
 
   /// Initialize it
   NewPostProvider() {
@@ -40,11 +41,36 @@ class NewPostProvider {
       TextEditingController(), // age recommendation
     ];
 
-    // parallel to the above so when adding the post to db, it will be easy to
-    // determine if the text was for a subtile, etc
-    // O(n) time because when looping through controllers, this can be access by
-    // calling the index
-    this._newPostFormControllerType = ["title", "subtitle", "paragraph"];
+    this._newPostQuestionsControllers = [
+      TextEditingController(), // Default question 1
+      TextEditingController(), // Default question 2
+      TextEditingController(), // Intro question
+      TextEditingController(), // Body question
+      TextEditingController(), // Conclusion question
+    ];
+    this._quizControllers = {
+      "intro": [
+        TextEditingController(), // question
+        TextEditingController(), // correct answer
+        TextEditingController(), // wrong answers down
+        TextEditingController(),
+        TextEditingController()
+      ],
+      "body": [
+        TextEditingController(),
+        TextEditingController(),
+        TextEditingController(),
+        TextEditingController(),
+        TextEditingController()
+      ],
+      "conclusion": [
+        TextEditingController(),
+        TextEditingController(),
+        TextEditingController(),
+        TextEditingController(),
+        TextEditingController()
+      ]
+    };
 
     /// Actual widgets being build on screen
     this._newPostForms = [
@@ -59,31 +85,27 @@ class NewPostProvider {
       paragraph(controller: _newPostFormControllers[3], hint: "Body 2"),
       paragraph(controller: _newPostFormControllers[4], hint: "Body 3"),
       paragraph(controller: _newPostFormControllers[5], hint: "Conclusion"),
-      recommendedAge(_newPostFormControllers[6])
+      recommendedAge(_newPostFormControllers[6]),
+      SizedBox(
+        height: 30,
+      ),
+      quizQuestionField(
+          controllers: this._quizControllers["intro"], part: "Introduction"),
+      quizQuestionField(
+          controllers: this._quizControllers["body"], part: "Body"),
+      quizQuestionField(
+          controllers: this._quizControllers["conclusion"], part: "Conclusion")
     ];
-
-    this.currentWidgetListSize = _newPostForms.length;
   }
 
   /// Getters for the variables
-  int get getcurrentWidgetListSize => this.currentWidgetListSize;
   List<Widget> get getNewPostWidgetList => this._newPostForms;
   List<TextEditingController> get getNewPostFormControllers =>
       this._newPostFormControllers;
-  List<String> get getNewPostFormControllerType =>
-      this._newPostFormControllerType;
-
-  // void incrementcurrentWidgetListSize() => this.currentWidgetListSize++;
-  // void decrementcurrentWidgetListSize() => this.currentWidgetListSize--;
 
   ///Setter and getter code for image
   set setNewPostImageFile(File imageFile) => this._newPostImagePath = imageFile;
   File get getNewPostImageFile => this._newPostImagePath;
-
-//!!!!!!!!!
-  void debugPrint() {
-    print(this._newPostImagePath);
-  }
 
   /// Go though the TextEditingController and get the text data on it
   List<String> getControllerTextDataAsList() {
@@ -95,6 +117,51 @@ class NewPostProvider {
     });
 
     return controllerTextData;
+  }
+
+  /*
+    This method constructs the quiz question field for a post
+  */
+
+  Map<String, Map<String, dynamic>> constructQuizDataForDatabase() {
+    // Reference all the controllers for each field
+    var introControllers = this._quizControllers["intro"];
+    var bodyControllers = this._quizControllers["body"];
+    var conclusionControllers = this._quizControllers["conclusion"];
+
+    Map<String, Map<String, dynamic>> quiz = {
+      "intro": {
+        "question": introControllers[0].text,
+        "correctOption": introControllers[1].text,
+        "options": [
+          introControllers[1].text,
+          introControllers[2].text,
+          introControllers[3].text,
+          introControllers[4].text
+        ]
+      },
+      "body": {
+        "question": bodyControllers[0].text,
+        "correctOption": bodyControllers[1].text,
+        "options": [
+          bodyControllers[1].text,
+          bodyControllers[2].text,
+          bodyControllers[3].text,
+          bodyControllers[4].text
+        ]
+      },
+      "conclusion": {
+        "question": conclusionControllers[0].text,
+        "correctOption": conclusionControllers[1].text,
+        "options": [
+          conclusionControllers[1].text,
+          conclusionControllers[2].text,
+          conclusionControllers[3].text,
+          conclusionControllers[4].text
+        ]
+      },
+    };
+    return quiz;
   }
 
   /// Upload the image for the lesson using the lessons uid as its name and return
@@ -133,6 +200,22 @@ class NewPostProvider {
         canPost = false;
       }
     });
+    // Check if the quiz fields are all filled out
+    this._quizControllers["intro"].forEach((controller) {
+      if (controller.text.isEmpty) {
+        canPost = false;
+      }
+    });
+    this._quizControllers["body"].forEach((controller) {
+      if (controller.text.isEmpty) {
+        canPost = false;
+      }
+    });
+    this._quizControllers["conclusion"].forEach((controller) {
+      if (controller.text.isEmpty) {
+        canPost = false;
+      }
+    });
     return canPost;
   }
 
@@ -153,6 +236,7 @@ class NewPostProvider {
     /// Leaving document empty generates a random id
     var databaseRef = _database.collection("lessons").document();
     var postContentsList = getControllerTextDataAsList();
+    var quiz = constructQuizDataForDatabase();
     var newPostTitle = postContentsList[0]; // index0 = title controller
 
     var contentsAsMap = {
@@ -176,7 +260,8 @@ class NewPostProvider {
       "likes": 0,
       "imageUrl": imageUrl,
       "title": newPostTitle,
-      "postContents": contentsAsMap
+      "postContents": contentsAsMap,
+      "quiz": quiz
     };
 
     /// Add the data into the refernece document made earlier
@@ -188,7 +273,7 @@ class NewPostProvider {
         .document(uid)
         .setData({"lesson_created": lessonCreated}, merge: true);
 
-    resetFields();
+    //resetFields();
 
     /// reset the form
   }
@@ -251,10 +336,17 @@ class NewPostProvider {
   }
 
   void resetFields() {
-    /// Dispose the old widget
+    // Clear text that is on the controllers
     this._newPostFormControllers.forEach((controller) {
       controller.clear();
     });
+
+    // Clear the question;s controllers
+    this._newPostQuestionsControllers.forEach((controller) {
+      controller.clear();
+    });
+
+    // Clear image path
     this._newPostImagePath = null;
 
     this._newPostForms = [
@@ -270,7 +362,5 @@ class NewPostProvider {
       paragraph(controller: _newPostFormControllers[5], hint: "Conclusion"),
       recommendedAge(_newPostFormControllers[6])
     ];
-
-    this.currentWidgetListSize = _newPostForms.length;
   }
 }

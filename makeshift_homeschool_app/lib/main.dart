@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         child: Consumer<AuthProvider>(
           builder: (context, auth, _) => MaterialApp(
             theme: ThemeData(
-                primaryColor: kGreenSecondary,
+                primaryColor: Colors.black,
                 textTheme:
                     GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
             home: auth.isAuthenticated ? RootScreen() : LoginScreen(),
