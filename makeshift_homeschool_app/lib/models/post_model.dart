@@ -15,7 +15,7 @@ class Post with ChangeNotifier {
   bool isLiked;
   // Subtitles and paragraphs in order from Firestore
   Map<String, dynamic> _postContents;
-  Map<String, Map<String, dynamic>> _quiz;
+  Map<String, dynamic> _quiz;
 
   Post() {
     this._views = 0;
@@ -50,6 +50,7 @@ class Post with ChangeNotifier {
   String get getBody3 => this._postContents["body 3"];
   String get getConclusion => this._postContents["conclusion"];
 
+  Map<String, dynamic> get getQuiz => this._quiz;
   Map<String, dynamic> get getPostContents => this._postContents;
 
   //Setters
@@ -65,7 +66,7 @@ class Post with ChangeNotifier {
   set setAge(String age) => this._age = age;
   set setPostContents(Map<String, dynamic> contents) =>
       this._postContents = contents;
-  set setQuiz(Map<String, Map<String, dynamic>> quiz) => this._quiz = quiz;
+  set setQuiz(Map<String, dynamic> quiz) => this._quiz = quiz;
 
   // Increment the view count on a post everytime someone clicks on a post
   Future<void> incrementPostViewCount() async {
@@ -78,6 +79,10 @@ class Post with ChangeNotifier {
       print("InrementPostViewCount error");
     }
   }
+
+  /*
+    Serialize the quix
+  */
 
   /// Toggle the like button, marking it a favorite
   Future<void> toggleLikeButton(String uid) async {
