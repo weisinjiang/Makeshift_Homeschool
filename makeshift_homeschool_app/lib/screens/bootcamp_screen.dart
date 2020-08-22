@@ -12,7 +12,6 @@ import '../bootcamp_templates/WriteAboutYourFavoriteMemory.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/bootcamp_listTile.dart';
-
 import '../shared/slide_transition.dart';
 
 /// Only have 10 bootcamps, so the 10 lessons will be hard coded

@@ -32,8 +32,6 @@ class _AlternativeMovieEndingsState extends State<AlternativeMovieEndings> {
 
     /// controller for "Why?" index4
     TextEditingController(),
-
-    /// controller for "Why?" index4
   ];
 
   Future<void> save(BootCampProvider database, String uid, String activityID,
