@@ -41,7 +41,7 @@ class QuizScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 100,
+                            height: 100.0,
                           ),
               
                           quizProvider.showQuestion(),
