@@ -8,6 +8,7 @@ import 'package:makeshift_homeschool_app/bootcamp_templates/Makeyourfavoritegame
 import 'package:makeshift_homeschool_app/bootcamp_templates/Practicewinningfriends.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Writeaboutafamilyvacation.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Yourfavoritefictionalcharacter.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import '../bootcamp_templates/WriteAboutYourFavoriteMemory.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
@@ -53,7 +54,7 @@ class BootCampScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text("Boot Camp"),
-          backgroundColor: colorPaleSpring,
+          backgroundColor: kPaleBlue,
         ),
         body: Container(
           height: screenSize.height,

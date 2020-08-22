@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/post_expanded.dart';
@@ -55,7 +56,7 @@ class PostThumbnail extends StatelessWidget {
           /// goes inside of it
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              border: Border.all(color: Colors.white, width: 2),
+              border: Border.all(color: kRedOrange, width: 3),
               image: DecorationImage(
                   colorFilter: ColorFilter.mode(
                       Colors.grey.withOpacity(0.80), BlendMode.dstATop),
@@ -91,6 +92,7 @@ class PostThumbnail extends StatelessWidget {
                         textColor: Colors.white),
                   ),
                 ),
+                LikeButton(postData: postData, screenSize: screenSize, user: user)
 
                 
 

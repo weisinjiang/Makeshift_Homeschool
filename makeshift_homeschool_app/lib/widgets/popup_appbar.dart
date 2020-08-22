@@ -3,6 +3,7 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
+import 'package:makeshift_homeschool_app/widgets/like_button.dart';
 import 'package:provider/provider.dart';
 
 /*
@@ -24,11 +25,13 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
     Key key,
     @required final this.postData,
     @required final this.screenSize,
+    this.backgroundColor,
     this.appBar,
     this.canDelete,
   }) : super(key: key);
 
   final Post postData;
+  final Color backgroundColor;
   final bool canDelete;
   final AppBar appBar;
   final Size screenSize;
@@ -41,6 +44,7 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       
       title: Text(postData.getTitle),
+      backgroundColor: backgroundColor,
       actions: <Widget>[
         IconButton(
             icon: Icon(Icons.more_horiz),

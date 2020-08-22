@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 
 Widget recommendedAge(TextEditingController controller) {
@@ -10,7 +11,7 @@ Widget recommendedAge(TextEditingController controller) {
     child: TextFormField(
       controller: controller,
       style: kParagraphTextStyle,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.text,
       // only digits
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       maxLength: 2,
@@ -110,8 +111,8 @@ Widget questionField({TextEditingController controller, final String hint}) {
       maxLength: 40,
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
-          prefixIcon: Icon(FontAwesomeIcons.solidQuestionCircle),
-          labelText: hint,
+          prefixIcon: Icon(FontAwesomeIcons.solidQuestionCircle, color: Colors.black,),
+          hintText: hint,
           enabledBorder:
               UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
           focusedBorder:
@@ -131,14 +132,16 @@ Widget answerField({TextEditingController controller, bool isCorrect}) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(25, 5, 20, 20),
     child: TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        prefixIcon: isCorrect ? Icon(FontAwesomeIcons.solidCheckCircle) : Icon(FontAwesomeIcons.solidTimesCircle),
-        labelText: isCorrect ? "Correct Answer" : "Wrong Answer",
-        border: OutlineInputBorder(borderRadius: BorderRadius.vertical()),
+        controller: controller,
+        decoration: InputDecoration(
+    prefixIcon: isCorrect ? Icon(FontAwesomeIcons.solidCheckCircle, color: Colors.green,) : Icon(FontAwesomeIcons.solidTimesCircle, color: Colors.red),
+    hintText: isCorrect ? "Correct Answer" : "Wrong Answer",
+    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+    border: OutlineInputBorder(borderRadius: BorderRadius.vertical()),
+    
+        ),
+        // When user's press "Done" on keyboard
       ),
-      // When user's press "Done" on keyboard
-    ),
   );
 }
 

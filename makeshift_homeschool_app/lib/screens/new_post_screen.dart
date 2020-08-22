@@ -3,6 +3,7 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:makeshift_homeschool_app/shared/widget_constants.dart';
@@ -54,9 +55,10 @@ class NewPostScreen extends StatelessWidget {
         }
         return Scaffold(
           appBar: AppBar(
-            title: isEditing ? Text("Edit Lesson") : Text("New Lesson"),
-            elevation: 1.0,
-            backgroundColor: kGreenSecondary_analogous2,
+            title: isEditing ? Text("Edit Lesson", style: TextStyle(color: Colors.black),) : Text("New Lesson", style: TextStyle(color: Colors.black)),
+            backgroundColor: kPaleBlue,
+            elevation: 0.0,
+           
 
             /// Add to the database
             actions: <Widget>[
@@ -111,7 +113,7 @@ class NewPostScreen extends StatelessWidget {
           /// Scaffold of above is not reachable without the Builder widget.
           body: Container(
             /// Color of the entire background of this page
-            decoration: linearGradientSecondaryGreenAnalogous,
+            color: kPaleBlue,
             height: screenHeight,
             width: screenWidth,
 
@@ -121,7 +123,6 @@ class NewPostScreen extends StatelessWidget {
               height: screenHeight * 0.85,
               width: screenWidth * 0.96,
               child: SingleChildScrollView(
-                reverse: true,
                 child: Column(
                   /// Get the initial widgetlist
                   children: newPostProvider.getNewPostWidgetList,

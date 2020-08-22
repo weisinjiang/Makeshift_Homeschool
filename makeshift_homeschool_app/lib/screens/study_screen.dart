@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
@@ -58,7 +59,7 @@ class _StudyScreenState extends State<StudyScreen> {
       return Scaffold(
           appBar: AppBar(
             title: Text("Let's Read! 📖"),
-            backgroundColor: kGreenSecondary_analogous2,
+            backgroundColor: kPaleBlue,
             elevation: 0.0,
           ),
           body: _isLoading
@@ -67,12 +68,13 @@ class _StudyScreenState extends State<StudyScreen> {
                   // entire screen color
                   height: screenSize.height,
                   width: screenSize.width,
-                  decoration: linearGradientSecondaryGreenAnalogous,
+                  color: kPaleBlue,
+                  // decoration: linearGradientSecondaryGreenAnalogous,
                   child: SingleChildScrollView(
                     // scroll up/down
 
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         StudyCategoryListTile(
                             categoryTitle: "For Your Age", postList: null),

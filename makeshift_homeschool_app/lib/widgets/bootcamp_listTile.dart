@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 
@@ -18,7 +19,7 @@ class BootCampListTile extends StatelessWidget {
       child: Material(
         child: Ink(
           decoration: BoxDecoration(
-              color: colorPaleSpring,
+              color: kPaleBlue,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.black, width: 2.0)),
           child: InkWell(

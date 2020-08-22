@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/models/quiz_model.dart';
 import 'package:makeshift_homeschool_app/screens/quiz.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/widgets/popup_appbar.dart';
 
@@ -27,6 +28,7 @@ class PostExpanded extends StatelessWidget {
     return Scaffold(
       appBar: PopupMenuAppBar(
         postData: postData,
+        backgroundColor: kPeachRed,
         screenSize: screenSize,
         appBar: AppBar(),
         canDelete: canDelete,

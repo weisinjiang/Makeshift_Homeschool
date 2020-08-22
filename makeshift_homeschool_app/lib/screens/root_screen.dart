@@ -5,6 +5,7 @@ import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
@@ -41,6 +42,7 @@ class _RootScreenState extends State<RootScreen> {
       return Scaffold(
           appBar: AppBar(
             elevation: 0.0,
+            backgroundColor: kPaleBlue,
             title: Text("Hi, ${userData["username"]}!"),
             actions: <Widget>[
               IconButton(
@@ -55,18 +57,12 @@ class _RootScreenState extends State<RootScreen> {
           //   userData: userData,
           // ),
           body: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [kGreenSecondary, kGreenSecondary_analogous1],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter),
-            ),
+            color: kPaleBlue,
             height: screenSize.height,
             width: screenSize.width,
-            //color: kGreenSecondary,
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   /// What do you want to do today? Greet image
@@ -74,7 +70,7 @@ class _RootScreenState extends State<RootScreen> {
                     height: screenSize.height * 0.20,
                     width: screenSize.width,
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(15.0),
                       child: Image.asset('asset/images/greet.png'),
                     ),
                   ),
@@ -84,7 +80,7 @@ class _RootScreenState extends State<RootScreen> {
                     padding: const EdgeInsets.all(10.0),
                     child: ActivityButton(
                       color: kGreenPrimary,
-                      borderColor: colorPaleSpring,
+                      borderColor: kRedOrange,
                       height: screenSize.height * 0.20,
                       width: screenSize.width,
                       function: () => Navigator.push(
@@ -93,7 +89,7 @@ class _RootScreenState extends State<RootScreen> {
                       // function: () => Navigator.push(context,
                       //           SlideLeftRoute(screen: BootCampScreen())),
                       canUseButton: true,
-                      name: "Boot Camp",
+                      name: "Bootcamp",
                       imageLocation: "asset/images/campFire.png",
                     ),
                   ),
@@ -109,13 +105,13 @@ class _RootScreenState extends State<RootScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: ActivityButton(
                             color: kGreenPrimary,
-                            borderColor: colorPaleGreen,
-                            height: screenSize.height * 0.10,
+                            borderColor: kRedOrange,
+                            height: screenSize.height * 0.20,
                             width: screenSize.width / 2,
                             canUseButton: true,
                             function: () => Navigator.push(
                                 context, SlideLeftRoute(screen: StudyScreen())),
-                            name: "Study",
+                            name: "Learn",
                             imageLocation: "asset/images/books.png",
                           ),
                         ),
@@ -125,8 +121,8 @@ class _RootScreenState extends State<RootScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: ActivityButton(
                             color: kGreenPrimary,
-                            borderColor: colorPalePink,
-                            height: screenSize.height * 0.10,
+                            borderColor: kRedOrange,
+                            height: screenSize.height * 0.20,
                             width: screenSize.width / 2,
                             canUseButton: (userData["level"] == "Tutor" ||
                                     userData["level"] == "Professor")
@@ -149,18 +145,18 @@ class _RootScreenState extends State<RootScreen> {
 
                   //const SizedBox(height: 40,),
 
-                  // Saved letters
+                  // Saved Bootcamp
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: ActivityButton(
                       color: kGreenSecondary,
-                      borderColor: Colors.white,
-                      height: screenSize.height * 0.10,
+                      borderColor: kPeachRed,
+                      height: screenSize.height * 0.15,
                       width: screenSize.width,
                       function: () => Navigator.push(
                           context, SlideLeftRoute(screen: CompletedLetters())),
                       canUseButton: true,
-                      name: "My Lessons",
+                      name: "My Bootcamp",
                       imageLocation: "asset/images/letter.png",
                     ),
                   ),

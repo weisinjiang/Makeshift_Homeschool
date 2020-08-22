@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:provider/provider.dart';
 
 /// First provides an empty image and on tap, let's the user pick an image
@@ -136,6 +137,7 @@ class _ImageFieldState extends State<ImageField> {
           if (widget.editImageUrl.isEmpty)
           RaisedButton(
               child: Text("Clear Image"),
+              color: kLightBlue,
               onPressed: () {
                 newPostProvider.setNewPostImageFile = null;
                 setState(() {
