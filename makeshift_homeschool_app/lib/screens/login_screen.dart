@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _launchURL(context) async {
     const privacyUrl =
-        "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/PRIVACY%20NOTICE.pdf?alt=media&token=d605ef83-2bdd-4891-b38f-87f69a9bb384";
+        "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/PRIVACY%20NOTICE.pdf?alt=media&token=35bbadd4-5e47-42d7-b9c5-bee4daa2f0ce";
     if (await canLaunch(privacyUrl)) {
       await launch(privacyUrl);
     } else {
