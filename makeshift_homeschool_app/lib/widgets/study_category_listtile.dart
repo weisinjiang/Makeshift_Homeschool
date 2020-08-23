@@ -34,7 +34,7 @@ class StudyCategoryListTile extends StatelessWidget {
               ),
             ),
           ),
-          postList == null 
+          postList == null || postList.length == 0
           ? Container(height: screenSize.height * 0.20,child: Center(child: Text("Nothing, yet..."),),)
           : Container(
             //color: kLightBlue,
