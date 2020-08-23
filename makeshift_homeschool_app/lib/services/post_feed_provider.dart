@@ -81,7 +81,7 @@ class PostFeedProvider with ChangeNotifier {
 
     // serialize each document into a Post object and add it to data list
     List<Post> data = [];
-    allPostDocuments.forEach((doc) async {
+    allPostDocuments.forEach((doc) {
       Post post = Post();
       post.setLikes = doc["likes"];
       post.setViews = doc["views"];
@@ -125,7 +125,6 @@ class PostFeedProvider with ChangeNotifier {
     });
     for (int i = 0; i < 5; i++) {
       top5Likes.add(allPosts[i]);
-      print(allPosts[i].getLikes.toString());
     }
     // get the first 5 most liked posts
     this._top5Likes = top5Likes;
@@ -137,7 +136,6 @@ class PostFeedProvider with ChangeNotifier {
     allPosts.sort((Post postB, Post postA) {
       int postBViews = postB.getViews;
       int postAViews = postA.getViews;
-      //print("${postAViews.toString()}   ${postBViews.toString()}");
       return postAViews.compareTo(postBViews);
     });
     // get the first 5 most liked posts
