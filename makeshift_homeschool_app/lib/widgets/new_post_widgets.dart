@@ -109,20 +109,17 @@ Widget questionField({TextEditingController controller, final String hint}) {
     child: TextFormField(
       controller: controller,
       maxLength: 40,
-      keyboardType: TextInputType.name,
+      keyboardType: TextInputType.text,
       decoration: InputDecoration(
-          prefixIcon: Icon(FontAwesomeIcons.solidQuestionCircle, color: Colors.black,),
+          prefixIcon: Icon(
+            FontAwesomeIcons.solidQuestionCircle,
+            color: Colors.black,
+          ),
           hintText: hint,
           enabledBorder:
               UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
           focusedBorder:
               UnderlineInputBorder(borderSide: BorderSide(color: Colors.red))),
-      validator: (userInput) {
-        if (!userInput.endsWith("?")) {
-          return "Missing question mark.";
-        }
-        return null;
-      },
     ),
   );
 }
@@ -132,16 +129,22 @@ Widget answerField({TextEditingController controller, bool isCorrect}) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(25, 5, 20, 20),
     child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-    prefixIcon: isCorrect ? Icon(FontAwesomeIcons.solidCheckCircle, color: Colors.green,) : Icon(FontAwesomeIcons.solidTimesCircle, color: Colors.red),
-    hintText: isCorrect ? "Correct Answer" : "Wrong Answer",
-    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-    border: OutlineInputBorder(borderRadius: BorderRadius.vertical()),
-    
-        ),
-        // When user's press "Done" on keyboard
+      keyboardType: TextInputType.text,
+      controller: controller,
+      decoration: InputDecoration(
+        prefixIcon: isCorrect
+            ? Icon(
+                FontAwesomeIcons.solidCheckCircle,
+                color: Colors.green,
+              )
+            : Icon(FontAwesomeIcons.solidTimesCircle, color: Colors.red),
+        hintText: isCorrect ? "Correct Answer" : "Wrong Answer",
+        focusedBorder:
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.vertical()),
       ),
+      // When user's press "Done" on keyboard
+    ),
   );
 }
 
@@ -157,15 +160,18 @@ Widget quizQuestionField(
     padding: const EdgeInsets.all(8.0),
     child: Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0),
-              border: Border.all(color: Colors.black, width: 2.0)
-            ),
+          borderRadius: BorderRadius.circular(20.0),
+          border: Border.all(color: Colors.black, width: 2.0)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text("Make a quiz question for the $part", style: kBoldParagraphTextStyle,),
-          questionField(controller: controllers[0], hint: "Question about the $part"),
+          Text(
+            "Make a quiz question for the $part",
+            style: kBoldParagraphTextStyle,
+          ),
+          questionField(
+              controller: controllers[0], hint: "Question about the $part"),
           answerField(controller: controllers[1], isCorrect: true),
           Text("Trick your readers by putting 3 wrong answers "),
           answerField(controller: controllers[2], isCorrect: false),
