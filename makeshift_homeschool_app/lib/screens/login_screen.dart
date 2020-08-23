@@ -90,6 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       // Attempt to log user in
       if (_authMode == AuthMode.Login) {
+        print(_userInput.getEmail);
+        print(_userInput.getPassword);
         var isSignedIn =
             await auth.signIn(_userInput.getEmail, _userInput.getPassword);
 
