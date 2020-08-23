@@ -12,6 +12,7 @@ import 'package:makeshift_homeschool_app/shared/constants.dart';
 class QuizProvider with ChangeNotifier {
   Quiz quiz;
   double _progress;
+  int _score;
   int _currentQuestionIndex;
   Question currentQuestion;
 
@@ -20,11 +21,15 @@ class QuizProvider with ChangeNotifier {
     this._progress = 0.0;
     this._currentQuestionIndex = 0;
     this.currentQuestion = quiz.getQuestionAt(0);
+    this._score = 0;
   }
 
   Question get getCurrentQuestion => this.currentQuestion;
   int get getCurrentQuestionIndex => this._currentQuestionIndex;
   double get getProgress => this._progress;
+  int get getScore => this._score;
+
+  void scoreUp() => this._score++;
 
   void nextQuestion() {
     // Questions 1-3 has indexes 0, 1, 2
@@ -84,6 +89,7 @@ class QuizProvider with ChangeNotifier {
     );
   }
 
+  // shows a bottom nav when a question is answered
   _bottomSheet(BuildContext context, bool correct) {
     showModalBottomSheet(
         context: context,
@@ -96,21 +102,40 @@ class QuizProvider with ChangeNotifier {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  correct ? "That's correct!" : "Oops, not quite right",
+                  "Are you sure about your answer?",
                   style: kBoldTextStyle,
                 ),
-                FlatButton(
-                  onPressed: () {
-                    if (correct) {
-                      nextQuestion();
-                    }
-                    Navigator.pop(context);
-                  },
-                  color: correct ? Colors.green : Colors.red,
-                  child: Text(
-                    correct ? "Next Question!" : "Try again",
-                    style: kBoldTextStyle,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FlatButton(
+                      onPressed: () {
+                        nextQuestion();
+                        // if the answer was correct, score up
+                        if (correct) {
+                          scoreUp();
+                        }
+
+                        Navigator.pop(context);
+                      },
+                      color: Colors.green,
+                      child: Text(
+                        "Onwards!",
+                        style: kBoldTextStyle,
+                      ),
+                    ),
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      color: Colors.red,
+                      child: Text(
+                        "Hold on a minute!",
+                        style: kBoldTextStyle,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

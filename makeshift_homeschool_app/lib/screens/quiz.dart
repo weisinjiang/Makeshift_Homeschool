@@ -40,17 +40,25 @@ class QuizScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 100.0,
-                          ),
-              
-                          quizProvider.showQuestion(),
-                          SizedBox(
-                            height: 200,
-                          ),
-                          Container(
-                              width: screenSize.width * 0.80,
-                              child: quizProvider.showOptions(context)),
+                          if (quizProvider.getProgress != 1) ...[
+                            SizedBox(
+                              height: 100.0,
+                            ),
+                            quizProvider.showQuestion(),
+                            SizedBox(
+                              height: 200,
+                            ),
+                            Container(
+                                width: screenSize.width * 0.80,
+                                child: quizProvider.showOptions(context)),
+                          ] else ...
+                            [
+                              Center(
+                                child: Text("You scored: ${quizProvider.getScore.toString()}/3",
+                                style: kTitleTextStyle,),
+                              )
+
+                            ]
                         ],
                       ),
                     ),
