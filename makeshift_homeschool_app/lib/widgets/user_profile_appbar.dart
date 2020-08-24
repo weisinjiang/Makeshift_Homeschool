@@ -51,13 +51,14 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     color: Colors.blue,
                                     fontWeight: FontWeight.bold),
                               ),
-                              onPressed: () async {
+                              onPressed: () {
+                                Navigator.of(context).pop();
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => EditProfileScreen(
                                             currentData: userData)));
-                                Navigator.of(context).pop();
+                                
                               },
                             ),
                           ),

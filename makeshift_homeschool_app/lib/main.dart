@@ -37,20 +37,21 @@ class MyApp extends StatelessWidget {
                 auth.getUserID,
                 previousLessons == null ? [] : previousLessons.getUserLessons))
       ],
-      child: MaterialApp(
+      child: Consumer<AuthProvider>(
+        builder: (context, auth, _) =>
+      MaterialApp(
         theme: ThemeData(
             primaryColor: kGreenSecondary,
             textTheme:
                 GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
-        home: Consumer<AuthProvider>(
-            builder: (context, auth, _) =>
-                auth.isAuthenticated ? RootScreen()
+        home: auth.isAuthenticated ? RootScreen()
                 : FutureBuilder( 
                   future: auth.tryAutoLogin(),
                   builder: (context, authResultSnapshot) =>
                   authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : LoginScreen(),
-                )
                 ),
+      
+                
         routes: {
           '/login': (context) => LoginScreen(),
           '/root': (context) => RootScreen(),
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
           '/study': (context) => StudyScreen(),
           '/profile': (context) => ProfileScreen(),
         },
-      ),
-    );
+     
+    )));
   }
 }

@@ -85,7 +85,7 @@ class Post with ChangeNotifier {
   */
 
   /// Toggle the like button, marking it a favorite
-  Future<void> toggleLikeButton(String uid) async {
+  Future<void> toggleBookmarkButton(String uid) async {
     print("POST ID " + getPostId);
     final oldValue = this.isLiked;
     this.isLiked = !this.isLiked;

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:provider/provider.dart';
 
-class LikeButton extends StatelessWidget {
-  const LikeButton({
+class BookmarkButton extends StatelessWidget {
+  const BookmarkButton({
     Key key,
     @required this.postData,
     @required this.screenSize,
@@ -20,17 +21,17 @@ class LikeButton extends StatelessWidget {
       builder: (context, post, _) => IconButton(
         icon: postData.isLiked
             ? Icon(
-                Icons.favorite,
-                color: Colors.red,
+                Icons.bookmark,
+                color: kRedOrange,
                 size: screenSize.height * 0.05,
               )
             : Icon(
-                Icons.favorite_border,
-                color: Colors.red,
+                Icons.bookmark_border,
+                color: kRedOrange,
                 size: screenSize.height * 0.05,
               ),
         onPressed: () async {
-          await post.toggleLikeButton(user["uid"]);
+          await post.toggleBookmarkButton(user["uid"]);
         },
       ),
     );

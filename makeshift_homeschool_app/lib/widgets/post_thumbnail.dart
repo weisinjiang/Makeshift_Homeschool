@@ -50,7 +50,7 @@ class PostThumbnail extends StatelessWidget {
       },
       child: Container(
           height: screenSize.height * 0.20,
-          width: screenSize.width * 0.30,
+          width: screenSize.width * 0.35,
 
           /// Box decoration for the shape of the container and the image that
           /// goes inside of it
@@ -66,10 +66,19 @@ class PostThumbnail extends StatelessWidget {
           /// Title of the post
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
+
               children: [
+                Align(
+                  alignment: Alignment.topRight,
+                     child: Container(
+                       
+                    child: BookmarkButton(postData: postData, screenSize: screenSize, user: user),
+                  ),
+                ),
                 Flexible(
+                  fit: FlexFit.tight,
                   child: StrokeText(
                       fontSize: 15,
                       strokeColor: Colors.black,
@@ -82,7 +91,7 @@ class PostThumbnail extends StatelessWidget {
                 ),
 
                 Flexible(
-                
+                fit: FlexFit.tight,
                   child: Container(
                     child: StrokeText(
                         fontSize: 16,
@@ -92,7 +101,7 @@ class PostThumbnail extends StatelessWidget {
                         textColor: Colors.white),
                   ),
                 ),
-                LikeButton(postData: postData, screenSize: screenSize, user: user)
+                //LikeButton(postData: postData, screenSize: screenSize, user: user)
 
                 
 
