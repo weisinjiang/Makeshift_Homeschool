@@ -98,7 +98,8 @@ Widget paragraph({TextEditingController controller, final String hint}) {
             OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
       ),
       validator: null,
-      onSaved: null,
+      onSaved: (newString) => controller.text = newString ,
+    
     ),
   );
 }

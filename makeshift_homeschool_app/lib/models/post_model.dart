@@ -44,11 +44,23 @@ class Post with ChangeNotifier {
   String get getOwnerUid => this._ownerUid;
   String get getPostId => this._postId;
   String get getAge => this._age;
+
+  // Get post content data
   String get getIntroduction => this._postContents["introduction"];
   String get getBody1 => this._postContents["body 1"];
   String get getBody2 => this._postContents["body 2"];
   String get getBody3 => this._postContents["body 3"];
   String get getConclusion => this._postContents["conclusion"];
+
+  // Get post quiz data as Map
+  Map<String, dynamic> getQuizDataAsMapFor(String part) {
+    Map<String, dynamic> map = {};
+    Map<String, dynamic> dataOnPart = this._quiz[part];
+    map["question"] = dataOnPart["question"]; // string
+    map["correctOption"] = dataOnPart["correctOption"]; // string
+    map["options"] = dataOnPart["options"]; //array of length 4
+    return map;
+  }
 
   Map<String, dynamic> get getQuiz => this._quiz;
   Map<String, dynamic> get getPostContents => this._postContents;

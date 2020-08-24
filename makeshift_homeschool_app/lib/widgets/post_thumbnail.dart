@@ -7,7 +7,7 @@ import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/post_expanded.dart';
 import 'package:provider/provider.dart';
 
-import 'like_button.dart';
+import 'bookmark_button.dart';
 
 /// Clickable thumbnail before going into the actual post
 
@@ -30,6 +30,7 @@ class PostThumbnail extends StatelessWidget {
       /// On tap, the screen moves to an expanded post screen
       onTap: () {
         if (inUsersProfilePage) {
+
           Navigator.push(
               context,
               SlideLeftRoute(
@@ -101,33 +102,7 @@ class PostThumbnail extends StatelessWidget {
                         textColor: Colors.white),
                   ),
                 ),
-                //LikeButton(postData: postData, screenSize: screenSize, user: user)
-
-                
-
-                // Center(
-                //   child: ListTile(
-                //     leading: LikeButton(
-                //         postData: postData, screenSize: screenSize, user: user),
-                //     title: Container(
-                //       child: StrokeText(
-                //           fontSize: 20,
-                //           strokeColor: Colors.black,
-                //           strokeWidth: 5.0,
-                //           text: postData.getTitle,
-                //           textColor: Colors.white),
-                //     ),
-                //     subtitle: StrokeText(
-                //       fontSize: 16,
-                //       strokeColor: Colors.black,
-                //       strokeWidth: 4.0,
-                //       text:
-                //           "Recommended Age: ${postData.getAge}+",
-                //       textColor: Colors.white,
-                //     ),
-
-                //   ),
-                // ),
+              
               ],
             ),
           )),

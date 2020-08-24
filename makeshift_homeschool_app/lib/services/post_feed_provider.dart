@@ -40,12 +40,14 @@ class PostFeedProvider with ChangeNotifier {
       {String postId,
       Map<String, String> postContents,
       String title,
-      String age}) {
+      String age,
+      Map<String, dynamic> newQuiz}) {
     for (var i = 0; i < _userPosts.length; i++) {
       if (_userPosts[i].getPostId == postId) {
         _userPosts[i].setAge = age;
         _userPosts[i].setPostContents = postContents;
         _userPosts[i].setTitle = title;
+        _userPosts[i].setQuiz = newQuiz;
         notifyListeners();
         break;
       }

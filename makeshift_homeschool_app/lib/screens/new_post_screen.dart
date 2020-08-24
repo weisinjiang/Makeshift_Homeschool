@@ -33,103 +33,104 @@ class NewPostScreen extends StatelessWidget {
   /// Widget index should be the same as the order in which it appears on the
   /// app from top to bottom: index 0 = first item on the screen
   //NewPostProvider newPost = NewPostProvider();
-
   @override
   Widget build(BuildContext context) {
-    var screenHeight = MediaQuery.of(context).size.height;
-    var screenWidth = MediaQuery.of(context).size.width;
-    var userInfo = Provider.of<AuthProvider>(context).getUser;
+    final screenSize = MediaQuery.of(context).size;
+    final userInfo = Provider.of<AuthProvider>(context).getUser;
 
     /// New post uses this provider as a global variable so users can
     /// add as many paragraphs, subtitles as they want.
     return Provider<NewPostProvider>(
-      create: (context) => NewPostProvider(),
+      create: (context) => NewPostProvider(postData: postData),
       child: Consumer<NewPostProvider>(
           //Consumes the provider in main.dart
           /// Consumer that uses NewPostProvider
-          builder: (context, newPostProvider, _) {
-        if (isEditing) {
-          newPostProvider.setEditingData(postData);
-        }
-        return Scaffold(
-          appBar: AppBar(
-            title: isEditing ? Text("Edit Lesson", style: TextStyle(color: Colors.black),) : Text("New Lesson", style: TextStyle(color: Colors.black)),
-            backgroundColor: kPaleBlue,
-            elevation: 0.0,
-           
+          builder: (context, newPostProvider, _) => Scaffold(
+                appBar: AppBar(
+                  title: isEditing
+                      ? Text(
+                          "Edit Lesson",
+                          style: TextStyle(color: Colors.black),
+                        )
+                      : Text("New Lesson",
+                          style: TextStyle(color: Colors.black)),
+                  backgroundColor: kPaleBlue,
+                  elevation: 0.0,
 
-            /// Add to the database
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  // new post and not editing
-                  if (newPostProvider.canPost(isEdit: false) && !isEditing) {
-                    ///! Change so that it gets info from the local value!!!!!
-                    int lessonCreated = int.parse(userInfo["lesson_created"]);
-                    newPostProvider.post(
-                      uid: userInfo["uid"],
-                      name: userInfo["username"],
-                      userLevel: userInfo["level"],
-                      lessonCreated: lessonCreated
-                    );
+                  /// Add to the database
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        // new post and not editing
+                        if (newPostProvider.canPost(isEdit: false) &&
+                            !isEditing) {
+                          ///! Change so that it gets info from the local value!!!!!
+                          int lessonCreated =
+                              int.parse(userInfo["lesson_created"]);
+                          newPostProvider.post(
+                              uid: userInfo["uid"],
+                              name: userInfo["username"],
+                              userLevel: userInfo["level"],
+                              lessonCreated: lessonCreated);
 
-                    Navigator.of(context).pop();
-                  }
+                          Navigator.of(context).pop();
+                        }
 
-                  /// Editing
-                  else if (isEditing && newPostProvider.canPost(isEdit: true)) {
-                    PostFeedProvider provider =
-                        Provider.of<PostFeedProvider>(context, listen: false);
+                        /// Editing
+                        else if (isEditing &&
+                            newPostProvider.canPost(isEdit: true)) {
+                          PostFeedProvider provider =
+                              Provider.of<PostFeedProvider>(context,
+                                  listen: false);
 
-                    /// Pass in the post feed provider so the post can be updated
-                    newPostProvider.update(postData, provider);
-                    // pop the update screen
-                    Navigator.of(context).pop();
-                  } else {
-                    showAlertDialog(
-                        "One or more of your fields are empty. Please fill them in, or remove paragraphs/subtitles that you are not using.",
-                        "ERROR",
-                        context);
-                  }
-                },
-                child: Text(
-                  "Post",
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                          /// Pass in the post feed provider so the post can be updated
+                          newPostProvider.update(postData, provider);
+                          // pop the update screen
+                          Navigator.of(context).pop();
+                        } else {
+                          showAlertDialog(
+                              "One or more of your fields are empty. Please fill them in, or remove paragraphs/subtitles that you are not using.",
+                              "ERROR",
+                              context);
+                        }
+                      },
+                      child: Text(
+                        isEditing ? "Update" : "Post",
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      highlightColor: Colors.transparent,
+                      color: Colors.transparent,
+                      splashColor: Colors.transparent,
+                    )
+                  ],
                 ),
-                highlightColor: Colors.transparent,
-                color: Colors.transparent,
-                splashColor: Colors.transparent,
-              )
-            ],
-          ),
-          // used to add paragraphs, images and titles
+                // used to add paragraphs, images and titles
 
-          /// Using a builder because a scaffold is shown in one of the child widgets below
-          /// Scaffold of above is not reachable without the Builder widget.
-          body: Container(
-            /// Color of the entire background of this page
-            color: kPaleBlue,
-            height: screenHeight,
-            width: screenWidth,
+                /// Using a builder because a scaffold is shown in one of the child widgets below
+                /// Scaffold of above is not reachable without the Builder widget.
+                body: Container(
+                  /// Color of the entire background of this page
+                  color: kPaleBlue,
+                  height: screenSize.height,
+                  width: screenSize.width,
 
-            /// Users can add infinite amount of subtiles and paragraphs, so when
-            /// it goes out of screen, it should be scrollable
-            child: Container(
-              height: screenHeight * 0.85,
-              width: screenWidth * 0.96,
-              child: SingleChildScrollView(
-                child: Column(
-                  /// Get the initial widgetlist
-                  children: newPostProvider.getNewPostWidgetList,
+                  /// Users can add infinite amount of subtiles and paragraphs, so when
+                  /// it goes out of screen, it should be scrollable
+                  child: Container(
+                    height: screenSize.height * 0.85,
+                    width: screenSize.width * 0.96,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        /// Get the initial widgetlist
+                        children: newPostProvider.getNewPostWidgetList,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-        );
-      }),
+              )),
     );
   }
 }

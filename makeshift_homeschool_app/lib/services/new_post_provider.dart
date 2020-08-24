@@ -29,8 +29,8 @@ class NewPostProvider {
   File _newPostImagePath;
   Map<String, List<TextEditingController>> _quizControllers;
 
-  /// Initialize it
-  NewPostProvider() {
+  /// Initialize it. If postData is given, set the data onto the textfields
+  NewPostProvider({Post postData}) {
     this._newPostFormControllers = [
       TextEditingController(), // title
       TextEditingController(), // intro
@@ -96,6 +96,10 @@ class NewPostProvider {
       quizQuestionField(
           controllers: this._quizControllers["conclusion"], part: "Conclusion")
     ];
+
+    if (postData != null) {
+      setEditingData(postData);
+    }
   }
 
   /// Getters for the variables
@@ -288,6 +292,7 @@ class NewPostProvider {
     var databaseRef =
         _database.collection("lessons").document(postData.getPostId);
     var postContentsList = getControllerTextDataAsList();
+    var quiz = constructQuizDataForDatabase(); // updated quiz data
     var newPostTitle = postContentsList[0]; // index0 = title controller
 
     var contentsAsMap = {
@@ -301,16 +306,20 @@ class NewPostProvider {
     var newLesson = {
       "age": postContentsList[6],
       "title": newPostTitle,
-      "postContents": contentsAsMap
+      "postContents": contentsAsMap,
+      "quiz": quiz
     };
 
     /// Add the data into the refernece document made earlier
     await databaseRef.setData(newLesson, merge: true);
+
+    // update the post feed with the new data so it does not need to fetch again
     provider.updateUserPost(
         postId: postData.getPostId,
         postContents: contentsAsMap,
         title: newPostTitle,
-        age: postContentsList[6]);
+        age: postContentsList[6],
+        newQuiz: quiz);
     resetFields();
 
     /// reset the form
@@ -326,6 +335,7 @@ class NewPostProvider {
       imageWidth: 0.60,
       editImageUrl: postData.getImageUrl,
     );
+    // Set data of post
     this._newPostFormControllers[0].text = postData.getTitle;
     this._newPostFormControllers[1].text = postData.getIntroduction;
     this._newPostFormControllers[2].text = postData.getBody1;
@@ -333,6 +343,24 @@ class NewPostProvider {
     this._newPostFormControllers[4].text = postData.getBody3;
     this._newPostFormControllers[5].text = postData.getConclusion;
     this._newPostFormControllers[6].text = postData.getAge;
+
+    // Set data on Questions
+    for (String part in ["intro", "body", "conclusion"]) {
+      // data as map with keys being "question," "options," "correctOptons"
+      Map<String, dynamic> dataAsMap = postData.getQuizDataAsMapFor(part);
+      print(dataAsMap.toString());
+
+      // List of all options. Remove the correct option
+      List<dynamic> optionsList = dataAsMap["options"];
+      optionsList.remove(dataAsMap["correctOption"]);
+      print(optionsList.toString());
+
+      this._quizControllers[part][0].text = dataAsMap["question"];
+      this._quizControllers[part][1].text = dataAsMap["correctOption"];
+      this._quizControllers[part][2].text = optionsList[0];
+      this._quizControllers[part][3].text = optionsList[1];
+      this._quizControllers[part][4].text = optionsList[2];
+    }
   }
 
   void resetFields() {
