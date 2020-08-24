@@ -220,7 +220,35 @@ class NewPostProvider {
         canPost = false;
       }
     });
+
+    // check for matching answers/options
+    for (String part in ["intro", "body", "conclusion"]) {
+      print(part);
+      if (matchingOptions(this._quizControllers[part])) {
+        canPost = false;
+        
+      }
+    }
     return canPost;
+  }
+
+  // Checks if response are matching. Wrong answer cannot match correct answer
+  bool matchingOptions(List<TextEditingController> controllers) {
+    List<String> options;
+    options = controllers.map((controller) {
+      // trim white space and convert to lower case
+      return controller.text.trim().toLowerCase();
+    }).toList();
+    int setLength = options
+        .toSet()
+        .length; // make it into a set so there are no repeating elememts
+
+    // if less than 4, then the options had matching answers.
+    print(setLength.toString());
+    if (setLength < 5) {
+      return true;
+    }
+    return false;
   }
 
   /* 

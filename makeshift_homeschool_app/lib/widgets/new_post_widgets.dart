@@ -163,22 +163,25 @@ Widget quizQuestionField(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
           border: Border.all(color: Colors.black, width: 2.0)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            "Make a quiz question for the $part",
-            style: kBoldParagraphTextStyle,
-          ),
-          questionField(
-              controller: controllers[0], hint: "Question about the $part"),
-          answerField(controller: controllers[1], isCorrect: true),
-          Text("Trick your readers by putting 3 wrong answers "),
-          answerField(controller: controllers[2], isCorrect: false),
-          answerField(controller: controllers[3], isCorrect: false),
-          answerField(controller: controllers[4], isCorrect: false),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              "Make a quiz question for the $part",
+              style: kBoldParagraphTextStyle,
+            ),
+            questionField(
+                controller: controllers[0], hint: "Question about the $part"),
+            answerField(controller: controllers[1], isCorrect: true),
+            Text("Trick your readers by putting 3 wrong answers "),
+            answerField(controller: controllers[2], isCorrect: false),
+            answerField(controller: controllers[3], isCorrect: false),
+            answerField(controller: controllers[4], isCorrect: false),
+          ],
+        ),
       ),
     ),
   );

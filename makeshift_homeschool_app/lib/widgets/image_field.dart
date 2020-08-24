@@ -87,8 +87,11 @@ class _ImageFieldState extends State<ImageField> {
     if (pickedImage != null) {
       File croppedImage = await ImageCropper.cropImage(
         sourcePath: pickedImage.path,
-        maxWidth: 500,
+        maxWidth: 400,
         maxHeight: 200,
+        // wide x image and not a long y image
+        aspectRatio: CropAspectRatio(ratioX:16.0 , ratioY:9.0)
+
       );
       setState(() {
         _userSelectedImage = File(croppedImage.path); // set the image path
@@ -117,8 +120,8 @@ class _ImageFieldState extends State<ImageField> {
         children: <Widget>[
           if(widget.editImageUrl.isEmpty)...[
           Container(
-              decoration:
-                  BoxDecoration(border: Border.all(color: Colors.black)),
+            height: 200,
+            width: 400,
               child: _userSelectedImage == null
                   ? _onScreenImage
                   : Image.file(_userSelectedImage)),

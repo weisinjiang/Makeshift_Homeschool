@@ -47,7 +47,7 @@ Widget buildImage(String url, String title, double height, double width) {
       width: width,
       decoration: BoxDecoration(
           //borderRadius: BorderRadius.circular(0.0),
-          border: Border.all(color: Colors.black, style: BorderStyle.solid, width:3),
+          border: Border.all(color: Colors.black, style: BorderStyle.solid, width:1),
           image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover)),
       child: Align(
         alignment: Alignment.bottomLeft,
