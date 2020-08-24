@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance; // Connect to Firestore
@@ -14,17 +16,15 @@ class AuthProvider with ChangeNotifier {
   //Firebase User Information
   FirebaseAuth _auth = FirebaseAuth.instance; //Status of the authentication
   String _userId;
-  FirebaseUser _firebaseUser;
   bool authenticated;
   Map<String, String> _userInformation;
 
-  // AuthProvider() {
-  //   this._userId = null;
-  //   this.authenticated = false;
-  //   this._userInformation = null;
-  //   this._firebaseUser = null;
-  // }
-  bool get isAuthenticated => this._firebaseUser != null;
+  AuthProvider() {
+    this._userId = null;
+    this.authenticated = false;
+    this._userInformation = null;
+  }
+  bool get isAuthenticated => this.authenticated;
   String get getUserID => this._userId;
   Map<String, String> get getUser => this._userInformation;
 
@@ -36,12 +36,15 @@ class AuthProvider with ChangeNotifier {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      print(result.user.uid);
       this._userId = result.user.uid;
-      this._firebaseUser = result.user;
+      this.authenticated = true;
       await fetchUserInfoFromDatabase()
           .then((value) => this._userInformation = value);
       notifyListeners();
+
+      // save a copy of the users information on their disk
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString("uid", json.encode(this._userId));
       return true;
     } catch (error) {
       print(error); //! todo
@@ -99,55 +102,80 @@ class AuthProvider with ChangeNotifier {
 
   Future<bool> signUp(
       String email, String password, String userName, String referral) async {
-    var blankPhotoURL =
-        "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/profile%2FblankProfile.png?alt=media&token=a547754d-551e-4e18-a5ce-680d41bd1226";
-    AuthResult result = await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    this._userId = result.user.uid;
+    try {
+      var blankPhotoURL =
+          "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/profile%2FblankProfile.png?alt=media&token=a547754d-551e-4e18-a5ce-680d41bd1226";
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      this._userId = result.user.uid;
+      this.authenticated = true;
+
+      _database.collection("users").document(result.user.uid).setData({
+        // add new database for the user
+        "username": userName,
+        "photoURL": blankPhotoURL,
+        "uid": _userId,
+        "email": result.user.email,
+        "level": "Student",
+        "bio": "Add a bio",
+        "lesson_created": 0,
+        "lesson_completed": 0
+      });
+      var todaysDate = DateTime.now(); // today's date
+      var todaysMonth = DateTime.now().month;
+      var monthYear =
+          getMonthNameFromInt(todaysMonth) + " " + todaysDate.year.toString();
+
+      // Add referral to the database
+      _database
+          .collection("referral") // referral database
+          .document(monthYear) // Today's month + year collection
+          .setData({
+        _userId: {
+          "first name": userName,
+          "referral": referral,
+          "day": todaysDate.day
+        }
+      }, merge: true);
+      await fetchUserInfoFromDatabase()
+          .then((value) => _userInformation = value);
+      // save a copy of the users information on their disk
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString("userInformation", json.encode(this._userId));
+      result.user.sendEmailVerification();
+      notifyListeners();
+      return true;
+    } catch (error) {
+      print(error.toString());
+      throw error;
+    }
+  }
+
+  Future<bool> tryAutoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey("userInformation")) {
+      return false;
+    }
+    final extractUserData =
+        json.decode(prefs.getString("userData")) as Map<String, String>;
+    this._userId = extractUserData["uid"];
+    await fetchUserInfoFromDatabase()
+        .then((value) => this._userInformation = value);
     this.authenticated = true;
-    notifyListeners();
-
-    _database.collection("users").document(result.user.uid).setData({
-      // add new database for the user
-      "username": userName,
-      "photoURL": blankPhotoURL,
-      "uid": _userId,
-      "email": result.user.email,
-      "level": "Student",
-      "bio": "Add a bio",
-      "lesson_created": 0,
-      "lesson_completed": 0
-    });
-    var todaysDate = DateTime.now(); // today's date
-    var todaysMonth = DateTime.now().month;
-    var monthYear =
-        getMonthNameFromInt(todaysMonth) + " " + todaysDate.year.toString();
-
-    // Add referral to the database
-    _database
-        .collection("referral") // referral database
-        .document(monthYear) // Today's month + year collection
-        .setData({
-      _userId: {
-        "first name": userName,
-        "referral": referral,
-        "day": todaysDate.day
-      }
-    }, merge: true);
-    await fetchUserInfoFromDatabase().then((value) => _userInformation = value);
-    result.user.sendEmailVerification();
     notifyListeners();
     return true;
   }
 
-  void signOut() {
+  Future<void> signOut() async {
     this.authenticated = false;
     this._userId = null;
     this._userInformation = null;
-    this._firebaseUser = null;
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear(); // dont want persisting data when users log out manually
+    await _auth.signOut();
+
     notifyListeners();
-    //_auth.signOut();
-    
+
     // return Future.delayed(Duration.zero);
   }
 

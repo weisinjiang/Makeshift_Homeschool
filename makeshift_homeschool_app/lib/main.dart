@@ -6,6 +6,7 @@ import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
 import 'shared/constants.dart';
@@ -43,9 +44,13 @@ class MyApp extends StatelessWidget {
                 GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
         home: Consumer<AuthProvider>(
             builder: (context, auth, _) =>
-                auth.isAuthenticated ? RootScreen() : LoginScreen()),
-        //home: LoginScreen(),
-        //home: auth.isAuthenticated ? RootScreen() : LoginScreen(),
+                auth.isAuthenticated ? RootScreen()
+                : FutureBuilder( 
+                  future: auth.tryAutoLogin(),
+                  builder: (context, authResultSnapshot) =>
+                  authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : LoginScreen(),
+                )
+                ),
         routes: {
           '/login': (context) => LoginScreen(),
           '/root': (context) => RootScreen(),

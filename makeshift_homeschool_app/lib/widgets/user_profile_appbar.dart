@@ -93,7 +93,8 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 // pop until the stack is the first index
                                 Navigator.of(context).popUntil((route) => route.isFirst);
                                 // signout so Provider can swap the screen
-                                Provider.of<AuthProvider>(context,
+                                await Provider.of<AuthProvider>(
+                                        context,
                                         listen: false)
                                     .signOut();
                               },
