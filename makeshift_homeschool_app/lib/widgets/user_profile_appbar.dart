@@ -19,7 +19,10 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String,String> userData = Provider.of<AuthProvider>(context).getUser;
+    AuthProvider authProvider =
+        Provider.of<AuthProvider>(context, listen: false);
+    Map<String, String> userData = authProvider.getUser;
+
     return AppBar(
       elevation: 0.0,
       title: Text("Profile"),
@@ -52,7 +55,8 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => EditProfileScreen(currentData: userData)));
+                                        builder: (context) => EditProfileScreen(
+                                            currentData: userData)));
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -91,12 +95,10 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                               onPressed: () async {
                                 Navigator.of(context).pop(); // pop the popup
                                 // pop until the stack is the first index
-                                Navigator.of(context).popUntil((route) => route.isFirst);
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
                                 // signout so Provider can swap the screen
-                                await Provider.of<AuthProvider>(
-                                        context,
-                                        listen: false)
-                                    .signOut();
+                                await authProvider.signOut();
                               },
                             ),
                           ),
