@@ -24,8 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   AuthMode _authMode = AuthMode.Login; // Signup or login page
 
-  UserAuth _userInput = UserAuth(); // Stores user info and validates it
-
   // Dropdown list for referal section
   Set<String> _referalList = {
     "Facebook",
@@ -80,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
   /// Login/Signup Button Pressed Logic
   ///***************************************************************************
 
-  Future<void> _submit(AuthProvider auth) async {
+  Future<void> _submit(AuthProvider auth, UserAuth _userInput) async {
     if (!_formKey.currentState.validate()) {
       // Validation failed
       return;
@@ -94,10 +92,11 @@ class _LoginScreenState extends State<LoginScreen> {
         print(_userInput.getPassword);
         var isSignedIn =
             await auth.signIn(_userInput.getEmail, _userInput.getPassword);
-
+        print(auth.isAuthenticated.toString());
         if (!isSignedIn) {
           _showErrorMessage("Email or Password is incorrect or does not exist");
         }
+        // Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
         //Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
         //  else {
         //   _showErrorMessage("Email or Password is incorrect or does not exist");
@@ -131,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
           error.contains("ERROR_WRONG_PASSWORD")) {
         messageForUser = "Email or Password is incorrect";
       }
-      _formKey.currentState.reset();
+      //_formKey.currentState.reset();
       _passwordController.clear();
       _showErrorMessage(messageForUser.toString());
     }
@@ -164,7 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    var auth = Provider.of<AuthProvider>(context);
+    var auth = Provider.of<AuthProvider>(context, listen: false);
+    UserAuth _userInput = UserAuth(); // Stores user info and validates it
 
     return Scaffold(
       //Initial container that fills the entire screen
@@ -361,8 +361,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   : "Sign up"),
                               color: kGreenPrimary,
                               onPressed: () async {
-                                _submit(
-                                    auth); // pass auth object into the function for access
+                                _submit(auth, _userInput);
                               },
                             ),
                           ),

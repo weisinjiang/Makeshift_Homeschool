@@ -14,12 +14,19 @@ class AuthProvider with ChangeNotifier {
   //Firebase User Information
   FirebaseAuth _auth = FirebaseAuth.instance; //Status of the authentication
   String _userId;
-  bool authenticated = false;
+  FirebaseUser _firebaseUser;
+  bool authenticated;
   Map<String, String> _userInformation;
 
-  bool get isAuthenticated => authenticated;
-  String get getUserID => _userId;
-  Map<String, String> get getUser => _userInformation;
+  // AuthProvider() {
+  //   this._userId = null;
+  //   this.authenticated = false;
+  //   this._userInformation = null;
+  //   this._firebaseUser = null;
+  // }
+  bool get isAuthenticated => this._firebaseUser != null;
+  String get getUserID => this._userId;
+  Map<String, String> get getUser => this._userInformation;
 
   // Get current Firebase User. Used to see if user data is still valid
   // Not async because it is used after user has logged in and exit the app
@@ -29,10 +36,11 @@ class AuthProvider with ChangeNotifier {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      _userId = result.user.uid;
-      authenticated = true;
+      print(result.user.uid);
+      this._userId = result.user.uid;
+      this._firebaseUser = result.user;
       await fetchUserInfoFromDatabase()
-          .then((value) => _userInformation = value);
+          .then((value) => this._userInformation = value);
       notifyListeners();
       return true;
     } catch (error) {
@@ -95,8 +103,8 @@ class AuthProvider with ChangeNotifier {
         "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/profile%2FblankProfile.png?alt=media&token=a547754d-551e-4e18-a5ce-680d41bd1226";
     AuthResult result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
-    _userId = result.user.uid;
-    authenticated = true;
+    this._userId = result.user.uid;
+    this.authenticated = true;
     notifyListeners();
 
     _database.collection("users").document(result.user.uid).setData({
@@ -132,12 +140,14 @@ class AuthProvider with ChangeNotifier {
     return true;
   }
 
-  Future<void> signOut() async {
-    authenticated = false;
-    _userId = null;
-    _userInformation = null;
-    _auth.signOut();
+  void signOut() {
+    this.authenticated = false;
+    this._userId = null;
+    this._userInformation = null;
+    this._firebaseUser = null;
     notifyListeners();
+    //_auth.signOut();
+    
     // return Future.delayed(Duration.zero);
   }
 

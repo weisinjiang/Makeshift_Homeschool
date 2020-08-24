@@ -121,7 +121,7 @@ class QuizProvider with ChangeNotifier {
                       },
                       color: Colors.green,
                       child: Text(
-                        "Onwards!",
+                        "Yes!",
                         style: kBoldTextStyle,
                       ),
                     ),
@@ -131,7 +131,7 @@ class QuizProvider with ChangeNotifier {
                       },
                       color: Colors.red,
                       child: Text(
-                        "Hold on a minute!",
+                        "No!",
                         style: kBoldTextStyle,
                       ),
                     ),

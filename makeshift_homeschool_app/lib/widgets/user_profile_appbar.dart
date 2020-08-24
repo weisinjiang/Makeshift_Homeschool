@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/screens/edit_profile_screen.dart';
 import 'package:makeshift_homeschool_app/screens/user_post.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    Map<String,String> userData = Provider.of<AuthProvider>(context).getUser;
     return AppBar(
       elevation: 0.0,
       title: Text("Profile"),
@@ -48,6 +49,10 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     fontWeight: FontWeight.bold),
                               ),
                               onPressed: () async {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditProfileScreen(currentData: userData)));
                                 Navigator.of(context).pop();
                               },
                             ),
@@ -83,12 +88,11 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     color: Colors.red,
                                     fontWeight: FontWeight.bold),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 Navigator.of(context).pop(); // pop the popup
-                                Navigator.of(context)
-                                    .pop(); // pop profile screen
-                                Navigator.of(context)
-                                    .pushReplacementNamed("/login");
+                                // pop until the stack is the first index
+                                Navigator.of(context).popUntil((route) => route.isFirst);
+                                // signout so Provider can swap the screen
                                 Provider.of<AuthProvider>(context,
                                         listen: false)
                                     .signOut();

@@ -35,7 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     /// Provider will notify the widget to rebuild
     return Consumer<AuthProvider>(builder: (context, auth, _) {
       if (auth.getUser != null) {
-        List<String> test = ["1", "2", "3", "4", "5", "6", "7", "8"];
         /// if auth provider has user data
         return Scaffold(
             appBar: UserProfileAppBar(screenSize: screenSize,appBar: AppBar(),),

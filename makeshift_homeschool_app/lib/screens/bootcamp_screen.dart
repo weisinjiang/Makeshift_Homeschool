@@ -10,7 +10,6 @@ import 'package:makeshift_homeschool_app/bootcamp_templates/Writeaboutafamilyvac
 import 'package:makeshift_homeschool_app/bootcamp_templates/Yourfavoritefictionalcharacter.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import '../bootcamp_templates/WriteAboutYourFavoriteMemory.dart';
-import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/bootcamp_listTile.dart';
 import '../shared/slide_transition.dart';
