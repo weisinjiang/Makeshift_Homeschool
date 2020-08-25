@@ -293,7 +293,9 @@ class NewPostProvider {
       "imageUrl": imageUrl,
       "title": newPostTitle,
       "postContents": contentsAsMap,
-      "quiz": quiz
+      "quiz": quiz,
+      "rating": 5.0,
+      "raters": 1
     };
 
     /// Add the data into the refernece document made earlier

@@ -65,54 +65,61 @@ class PostFeedProvider with ChangeNotifier {
   Future<void> fetchPostsFromDatabase({String query}) async {
     QuerySnapshot result; // result of query
 
-    if (query == "all") {
-      // gets all the posts from lessons
-      result = await _database.collection("lessons").getDocuments();
-    } else {
-      // otherwise get the users posts only from lessons
-      result = await _database
-          .collection("lessons")
-          .where("ownerUid", isEqualTo: uid)
-          .getDocuments();
-    }
-
-    // get all the documents from the query
-    List<DocumentSnapshot> allPostDocuments = result.documents;
-    // get user's favorite list so isLiked can be set to true
-    List<String> favoritesList = await fetchUsersFavoritesList(this.uid);
-
-    // serialize each document into a Post object and add it to data list
-    List<Post> data = [];
-    allPostDocuments.forEach((doc) {
-      Post post = Post();
-      post.setLikes = doc["likes"];
-      post.setViews = doc["views"];
-      post.setCreatedOn = doc["createdOn"];
-      post.setAge = doc["age"];
-      post.setTitle = doc["title"];
-      post.setImageUrl = doc["imageUrl"];
-      post.setLikes = doc["likes"];
-      post.setOwnerName = doc["ownerName"];
-      post.setOwnerUid = doc["ownerUid"];
-      post.setPostContents = doc["postContents"];
-      post.setPostId = doc.documentID;
-      post.setQuiz = doc["quiz"];
-      // if the post is a favorite
-      if (favoritesList.contains(doc.documentID)) {
-        post.setIsLiked = true;
+    try {
+      if (query == "all") {
+        // gets all the posts from lessons
+        result = await _database.collection("lessons").getDocuments();
+      } else {
+        // otherwise get the users posts only from lessons
+        result = await _database
+            .collection("lessons")
+            .where("ownerUid", isEqualTo: uid)
+            .getDocuments();
       }
-      data.add(post);
-    });
 
-    // assign the list of data into the class variable
-    if (query == "all") {
-      this._posts = data;
-    } else {
-      this._userPosts = data;
+      // get all the documents from the query
+      List<DocumentSnapshot> allPostDocuments = result.documents;
+      // get user's favorite list so isLiked can be set to true
+      List<String> favoritesList = await fetchUsersFavoritesList(this.uid);
+
+      // serialize each document into a Post object and add it to data list
+      List<Post> data = [];
+      allPostDocuments.forEach((doc) {
+        Post post = Post();
+        post.setLikes = doc["likes"];
+        post.setViews = doc["views"];
+        post.setRating = doc["rating"].toDouble();
+        post.setNumRaters = doc["raters"];
+        post.setCreatedOn = doc["createdOn"];
+        post.setAge = doc["age"];
+        post.setTitle = doc["title"];
+        post.setImageUrl = doc["imageUrl"];
+        post.setLikes = doc["likes"];
+        post.setOwnerName = doc["ownerName"];
+        post.setOwnerUid = doc["ownerUid"];
+        post.setPostContents = doc["postContents"];
+        post.setPostId = doc.documentID;
+        post.setQuiz = doc["quiz"];
+        // if the post is a favorite
+        if (favoritesList.contains(doc.documentID)) {
+          post.setIsLiked = true;
+        }
+        data.add(post);
+      });
+
+      // assign the list of data into the class variable
+      if (query == "all") {
+        this._posts = data;
+      } else {
+        this._userPosts = data;
+      }
+      get5MostLikedPost();
+      get5MostViewedPost();
+      notifyListeners();
+    } catch (error) {
+      print(error.toString());
+      throw error;
     }
-    get5MostLikedPost();
-    get5MostViewedPost();
-    notifyListeners();
   }
 
   void get5MostLikedPost() {

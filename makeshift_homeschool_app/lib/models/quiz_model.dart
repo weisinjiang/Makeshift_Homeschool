@@ -10,6 +10,9 @@ class Quiz {
 
   void addQuestion(Question question) => this.questionsList.add(question);
 
+  // shuffle the question list
+  void shuffleQuestionList() => this.questionsList.shuffle();
+  
   // convert the map into a list of Quiz objects that contains Questions
   // and objects
   void serializeQuizData() {

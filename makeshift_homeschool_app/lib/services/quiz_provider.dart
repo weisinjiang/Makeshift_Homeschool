@@ -15,6 +15,7 @@ class QuizProvider with ChangeNotifier {
   int _score;
   int _currentQuestionIndex;
   Question currentQuestion;
+  List<Widget> _reviewWidgets;
 
   // List of quiz must be passed when initialized
   QuizProvider({this.quiz}) {
@@ -24,13 +25,27 @@ class QuizProvider with ChangeNotifier {
     this._score = 0;
   }
 
+  // Getters
   Question get getCurrentQuestion => this.currentQuestion;
   int get getCurrentQuestionIndex => this._currentQuestionIndex;
   double get getProgress => this._progress;
   int get getScore => this._score;
 
+  // Score + 1 if users get answers correct
   void scoreUp() => this._score++;
 
+  // reset the question and score for user to try again
+  // shuffle the question list so they dont appear in the same order
+  void tryAgain() {
+    this._progress = 0.0;
+    this._score = 0;
+    this._currentQuestionIndex = 0;
+    this.quiz.shuffleQuestionList();
+    this.currentQuestion = quiz.getQuestionAt(0);
+    notifyListeners();
+  }
+
+  // move the question index by 1
   void nextQuestion() {
     // Questions 1-3 has indexes 0, 1, 2
     if (this._currentQuestionIndex < 2) {
@@ -45,6 +60,17 @@ class QuizProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Shows only when users get a 3/3 in the quiz section.
+  // This widget is used to rate the lesson and provide feedback for the owner
+  Widget showRatingsAndFeedback() {
+    return Column(
+      children: [
+        
+      ],
+    );
+  }
+
+  // used together with showOptions()
   Widget showQuestion() {
     Question currentQuestion = getCurrentQuestion;
     return Text(
@@ -53,6 +79,7 @@ class QuizProvider with ChangeNotifier {
     );
   }
 
+  // multiple choice for question
   Widget showOptions(BuildContext context) {
     List<Option> allOptions = getCurrentQuestion.getAllOptions;
 

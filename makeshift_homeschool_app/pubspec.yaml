@@ -33,7 +33,8 @@ dependencies:
   # stores data on disk to allow autologin
   shared_preferences: ^0.5.10
 
-
+  # Rating 
+  flutter_rating_bar: ^3.0.1+1
   
   provider: ^4.1.3
 

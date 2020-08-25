@@ -57,7 +57,7 @@ class PostExpanded extends StatelessWidget {
                           context,
                           SlideLeftRoute(
                               screen: QuizScreen(
-                            postId: postData.getTitle,
+                            postData: postData,
                             quiz: quiz,
                           )));
                     },

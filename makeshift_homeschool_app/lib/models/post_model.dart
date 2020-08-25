@@ -5,6 +5,8 @@ import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
 class Post with ChangeNotifier {
   int _likes;
   int _views;
+  double _rating;
+  int _raters;
   String _imageUrl;
   String _age;
   String _createdOn;
@@ -20,6 +22,8 @@ class Post with ChangeNotifier {
   Post() {
     this._views = 0;
     this._likes = 0;
+    this._raters = 0;
+    this._rating = 0.0;
     this._title = null;
     this._imageUrl = null;
     this._createdOn = null;
@@ -37,6 +41,8 @@ class Post with ChangeNotifier {
   //Getters
   int get getLikes => this._likes;
   int get getViews => this._views;
+  double get getRating => this._rating;
+  int get getNumRaters => this._raters;
   String get getTitle => this._title; // First in array is title
   String get getImageUrl => this._imageUrl;
   String get getCreatedOn => this._createdOn;
@@ -68,6 +74,8 @@ class Post with ChangeNotifier {
   //Setters
   set setLikes(int likes) => this._likes = likes;
   set setViews(int views) => this._views = views;
+  set setRating(double rating) => this._rating = rating;
+  set setNumRaters(int raters) => this._raters = raters;
   set setTitle(String title) => this._title = title;
   set setImageUrl(String url) => this._imageUrl = url;
   set setCreatedOn(String time) => this._createdOn = time;
@@ -92,9 +100,37 @@ class Post with ChangeNotifier {
     }
   }
 
-  /*
-    Serialize the quix
-  */
+  // Update the posts rating when a user completes it
+  Future<void> updatePostRating(
+      {double userRating, String feedback, String uid}) async {
+    DocumentReference documentRef =
+        Firestore.instance.collection("lessons").document(getPostId);
+    // calculating new average
+    double currentRating = getRating;
+    int currentRaters = getNumRaters;
+    double ratingTotal = currentRating * currentRaters;
+    ratingTotal += userRating; // update new total
+    currentRaters++; // 1 additional rating
+    double newAverage = ratingTotal / currentRaters;
+      try {
+        await documentRef
+            .updateData({"rating": newAverage, "raters": currentRaters});
+
+        // Add feedback to the lessons feedback collection
+        // if there's no feedback, only add the user's uid
+        if (feedback.isEmpty || feedback == "None") {
+          await documentRef.collection("feedback").document(uid).setData({});
+        } else {
+          await documentRef
+              .collection("feedback")
+              .document(uid)
+              .setData({"feedback": feedback});
+        }
+      } catch (error) {
+        print("Update Post Rating Error ${error.toString()}");
+        throw error;
+      }
+  }
 
   /// Toggle the like button, marking it a favorite
   Future<void> toggleBookmarkButton(String uid) async {

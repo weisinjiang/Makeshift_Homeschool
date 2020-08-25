@@ -26,6 +26,24 @@ class PostThumbnail extends StatelessWidget {
     /// get the post data from provider in Study screen
     final postData = Provider.of<Post>(context, listen: false);
 
+    Widget ratingsIcon(double rating) {
+      if (rating <= 5.0 && rating > 4.0) {
+        return Icon(Icons.sentiment_very_satisfied, color: Colors.green,size: 30,);
+      }
+      else if (rating <= 4.0 && rating > 3.0) {
+        return Icon(Icons.sentiment_satisfied, color: Colors.lightGreen,);
+      }
+      else if (rating <= 3.0 && rating > 2.0) {
+        return Icon(Icons.sentiment_neutral, color: Colors.amber, size: 30,);
+      }
+      else if (rating <= 2.0 && rating > 1.0) {
+        return Icon(Icons.sentiment_dissatisfied, color: Colors.redAccent,size: 30,);
+      } 
+      else {
+        return Icon(Icons.sentiment_dissatisfied, color: Colors.red,size: 30,);
+      }
+    }
+
     return InkWell(
       /// On tap, the screen moves to an expanded post screen
       onTap: () {
@@ -67,7 +85,7 @@ class PostThumbnail extends StatelessWidget {
           /// Title of the post
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
 
               children: [
@@ -78,6 +96,7 @@ class PostThumbnail extends StatelessWidget {
                     child: BookmarkButton(postData: postData, screenSize: screenSize, user: user),
                   ),
                 ),
+                
                 Flexible(
                   fit: FlexFit.tight,
                   child: StrokeText(
@@ -86,6 +105,13 @@ class PostThumbnail extends StatelessWidget {
                       strokeWidth: 3.0,
                       text: postData.getTitle,
                       textColor: Colors.white),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: ratingsIcon(postData.getRating),
                 ),
                 SizedBox(
                   height: 10,
