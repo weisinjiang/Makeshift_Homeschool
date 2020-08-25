@@ -16,7 +16,8 @@ class ImageField extends StatefulWidget {
   final imageWidth;
   final String editImageUrl;
 
-  const ImageField({Key key, this.imageHeight, this.imageWidth, this.editImageUrl})
+  const ImageField(
+      {Key key, this.imageHeight, this.imageWidth, this.editImageUrl})
       : super(key: key);
   @override
   _ImageFieldState createState() => _ImageFieldState();
@@ -86,16 +87,16 @@ class _ImageFieldState extends State<ImageField> {
     /// Crop the image
     if (pickedImage != null) {
       File croppedImage = await ImageCropper.cropImage(
-        sourcePath: pickedImage.path,
-        maxWidth: 400,
-        maxHeight: 200,
-        // wide x image and not a long y image
-        aspectRatio: CropAspectRatio(ratioX:16.0 , ratioY:9.0)
-
-      );
-      setState(() {
-        _userSelectedImage = File(croppedImage.path); // set the image path
-      });
+          sourcePath: pickedImage.path,
+          maxWidth: 400,
+          maxHeight: 200,
+          // wide x image and not a long y image
+          aspectRatio: CropAspectRatio(ratioX: 16.0, ratioY: 9.0));
+      if (croppedImage != null) {
+        setState(() {
+          _userSelectedImage = File(croppedImage.path); // set the image path
+        });
+      }
     }
 
     newPostProvider.setNewPostImageFile = _userSelectedImage;
@@ -108,7 +109,6 @@ class _ImageFieldState extends State<ImageField> {
     final screenSize = MediaQuery.of(context).size;
     var newPostProvider = Provider.of<NewPostProvider>(context);
 
-
     return GestureDetector(
       // Tap the container with the image, bring up an option to get an image from gallery
       onTap: () {
@@ -118,35 +118,33 @@ class _ImageFieldState extends State<ImageField> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          if(widget.editImageUrl.isEmpty)...[
-          Container(
-            height: 200,
-            width: 400,
-              child: _userSelectedImage == null
-                  ? _onScreenImage
-                  : Image.file(_userSelectedImage)),
-          ]
-          else...[
+          if (widget.editImageUrl.isEmpty) ...[
+            Container(
+                height: 200,
+                width: 400,
+                child: _userSelectedImage == null
+                    ? _onScreenImage
+                    : Image.file(_userSelectedImage)),
+          ] else ...[
             Container(
               decoration:
                   BoxDecoration(border: Border.all(color: Colors.black)),
               child: Image.network(widget.editImageUrl),
             )
-          
           ],
           SizedBox(
             height: 10,
           ),
           if (widget.editImageUrl.isEmpty)
-          RaisedButton(
-              child: Text("Clear Image"),
-              color: kLightBlue,
-              onPressed: () {
-                newPostProvider.setNewPostImageFile = null;
-                setState(() {
-                  _userSelectedImage = null;
-                });
-              })
+            RaisedButton(
+                child: Text("Clear Image"),
+                color: kLightBlue,
+                onPressed: () {
+                  newPostProvider.setNewPostImageFile = null;
+                  setState(() {
+                    _userSelectedImage = null;
+                  });
+                })
         ],
       ),
     );

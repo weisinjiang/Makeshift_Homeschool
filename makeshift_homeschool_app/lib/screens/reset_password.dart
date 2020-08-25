@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
+import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +37,7 @@ class ResetPasswordScreen extends StatelessWidget {
               ),
               RaisedButton(
                   child: Text("Reset Password"),
+                  color: kGreenPrimary,
                   onPressed: () {
                     auth.resetPassword(emailInputController.text);
                     emailInputController.clear();

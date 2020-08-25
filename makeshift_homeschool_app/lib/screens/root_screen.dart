@@ -24,17 +24,20 @@ class _RootScreenState extends State<RootScreen> {
   var _isInit = true;
   var _isLoading = false;
   Map<String, String> userData;
+  bool isEmailVerified;
   Size screenSize;
 
   @override
   void initState() {
     userData = Provider.of<AuthProvider>(context, listen: false).getUser;
+    isEmailVerified = Provider.of<AuthProvider>(context, listen: false).isEmailVerified;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+
     /// upon signout, userData will be set to null. This conditional is so
     /// that when users signout, an error wont be thrown
 
@@ -74,6 +77,10 @@ class _RootScreenState extends State<RootScreen> {
                       child: Image.asset('asset/images/greet.png'),
                     ),
                   ),
+
+                  if (!isEmailVerified)
+                    Text(
+                        "Email not Verified", style: kBoldTextStyle,),
 
                   // Boot camp
                   Padding(

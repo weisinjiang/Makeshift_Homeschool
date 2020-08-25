@@ -1,6 +1,6 @@
 /// Stores information for when users signup or login
 
-class UserAuth{
+class UserAuth {
   Map<String, String> _userInput;
 
   UserAuth() {
@@ -42,8 +42,10 @@ class UserAuth{
       3. At least 1 lower case char
       4. At least 1 special char
   */
-  final regExValidPassword = RegExp(
-      r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$");
+  final regExValidPassword =
+      RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$");
+
+  final regExHasUppercase = RegExp(r"([A-Z])");
 
   /* 
     Validates the password the user enters
@@ -54,9 +56,12 @@ class UserAuth{
     if (regExValidPassword.hasMatch(userInput)) {
       return null;
     } else if (userInput.length < 8) {
-      return "Password needs to be at least 8 characters long";
+      return "Not at least 8 characters long";
+    } else if (!regExHasUppercase.hasMatch(userInput)) {
+      return "Missing uppercase letter";
+    } else {
+      return "Include at least 1 number, special character";
     }
-    return "Password must have at least 1 number, special character, upper and lower case letter";
   }
 
   /// **************************************************************************

@@ -16,15 +16,20 @@ class AuthProvider with ChangeNotifier {
   //Firebase User Information
   FirebaseAuth _auth = FirebaseAuth.instance; //Status of the authentication
   String _userId;
-  bool authenticated;
+  bool _emailVerified;
+  bool _authenticated;
   Map<String, String> _userInformation;
 
   AuthProvider() {
     this._userId = null;
-    this.authenticated = false;
+    this._emailVerified = false;
+    this._authenticated = false;
     this._userInformation = null;
   }
-  bool get isAuthenticated => this.authenticated;
+
+  // Getters
+  bool get isAuthenticated => this._authenticated;
+  bool get isEmailVerified => this._emailVerified;
   String get getUserID => this._userId;
   Map<String, String> get getUser => this._userInformation;
 
@@ -37,7 +42,8 @@ class AuthProvider with ChangeNotifier {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       this._userId = result.user.uid;
-      this.authenticated = true;
+      this._authenticated = true;
+      this._emailVerified = result.user.isEmailVerified;
       await fetchUserInfoFromDatabase()
           .then((value) => this._userInformation = value);
       notifyListeners();
@@ -108,7 +114,7 @@ class AuthProvider with ChangeNotifier {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       this._userId = result.user.uid;
-      this.authenticated = true;
+      this._authenticated = true;
 
       _database.collection("users").document(result.user.uid).setData({
         // add new database for the user
@@ -161,13 +167,13 @@ class AuthProvider with ChangeNotifier {
     this._userId = extractUserData["uid"];
     await fetchUserInfoFromDatabase()
         .then((value) => this._userInformation = value);
-    this.authenticated = true;
+    this._authenticated = true;
     notifyListeners();
     return true;
   }
 
   Future<void> signOut() async {
-    this.authenticated = false;
+    this._authenticated = false;
     this._userId = null;
     this._userInformation = null;
     final prefs = await SharedPreferences.getInstance();
@@ -184,10 +190,10 @@ class AuthProvider with ChangeNotifier {
     user.sendEmailVerification();
   }
 
-  Future<bool> isEmailVerified() async {
-    FirebaseUser user = await _auth.currentUser();
-    return user.isEmailVerified;
-  }
+  // Future<bool> isEmailVerified() async {
+  //   FirebaseUser user = await _auth.currentUser();
+  //   return user.isEmailVerified;
+  // }
 
   Future<void> resetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
