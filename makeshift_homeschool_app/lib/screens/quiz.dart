@@ -16,7 +16,7 @@ class QuizScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final userId = Provider.of<AuthProvider>(context).getUserID;
+    final auth = Provider.of<AuthProvider>(context);
     return ChangeNotifierProvider<QuizProvider>(
       create: (context) => QuizProvider(quiz: quiz),
       child: Scaffold(
@@ -111,6 +111,8 @@ class QuizScreen extends StatelessWidget {
                                       Navigator.of(context).pop();
                                     }),
                               ),
+                            // user scored 3/3, now needs to provide rating
+                            // and feed back
                             ] else ...[
                               Container(
                                 height: screenSize.height * 0.15,
@@ -145,15 +147,17 @@ class QuizScreen extends StatelessWidget {
 
                               // Ratings Provider
                               ChangeNotifierProvider<Rating_FeedbackProvider>(
-                                create: (context) =>
+                                create: (_) =>
                                     Rating_FeedbackProvider(postData: postData),
                                 child: Consumer<Rating_FeedbackProvider>(
                                   builder: (context, ratingFeedback, _) =>
-                                      Padding(
+                                    Padding(
                                     padding:
                                         const EdgeInsets.only(bottom: 10.0),
-                                    child: ratingFeedback.buildRatingBar(
-                                        context, screenSize, userId),
+                                    child: Container(
+                                      child: ratingFeedback.buildRatingBar(
+                                          context, screenSize, auth),
+                                    ),
                                   ),
                                 ),
                               ),

@@ -4,11 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/screens/promotion.dart';
+import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
+import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
+import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 
 class Rating_FeedbackProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance;
   double _userRating;
+  bool promoted;
   double _allTimeRating;
   int _numUsersRated;
   Post postData;
@@ -16,6 +22,7 @@ class Rating_FeedbackProvider with ChangeNotifier {
 
   Rating_FeedbackProvider({Post postData}) {
     this._userRating = 0.0;
+    this.promoted = false;
     this.postData = postData;
     this._allTimeRating = 0.0;
     this._numUsersRated = 0;
@@ -33,9 +40,12 @@ class Rating_FeedbackProvider with ChangeNotifier {
   double get getAllTimeRating => this._allTimeRating;
   int get getNumberOfUsersRated => this._numUsersRated;
   Post get getPostData => this.postData;
+  String get getPostId => this.postData.getPostId;
   String get getFeedback => this._userFeedbackController.text;
+  bool get isPromoted => this.isPromoted;
 
-  Widget buildRatingBar(BuildContext context, Size screenSize, String uid) {
+  Widget buildRatingBar(
+      BuildContext context, Size screenSize, AuthProvider auth) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -139,8 +149,29 @@ class Rating_FeedbackProvider with ChangeNotifier {
             onPressed: () async {
               // update the ratings for the post
               postData.updatePostRating(
-                  userRating: getUserRating, feedback: getFeedback, uid: uid);
-              Navigator.of(context).pop();
+                  userRating: getUserRating,
+                  feedback: getFeedback,
+                  uid: auth.getUserID);
+
+              // access user's collection and increment the value
+              bool rankedUp =
+                  await auth.incrementUserCompletedLessons(getPostId);
+
+              if (rankedUp) {
+                Navigator.of(context).pop(); // pop the feedback screen
+                // then push the promotion screen
+                Navigator.push(
+                          context,
+                          SlideLeftRoute(
+                              screen: PromotionScreen(
+                            promotionType: PromotionType.student_to_tutor,
+                          )));
+              }
+              // no promotion, just pop the feedback screen 
+              else {
+                Navigator.of(context).pop();
+              }
+             
             },
           ),
         )

@@ -33,14 +33,14 @@ void showAlertDialog(String message, String title, BuildContext context) {
     showDialog(
       barrierDismissible: false,
         context: context,
-        builder: (contx) => AlertDialog(
+        builder: (context) => AlertDialog(
               title: Center(child: Text(title)),
               content: Text(message),
               actions: <Widget>[
                 FlatButton(
                   child: Text("Continue"),
                   onPressed: () {
-                    Navigator.of(contx).pop();
+                    Navigator.of(context).pop();
                   },
                 )
               ],

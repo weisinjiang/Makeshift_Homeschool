@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
 
 class Post with ChangeNotifier {
@@ -128,7 +129,7 @@ class Post with ChangeNotifier {
       );
     } else {
       return Icon(
-        Icons.sentiment_dissatisfied,
+        Icons.sentiment_very_dissatisfied,
         color: Colors.red,
         size: 30,
       );
@@ -140,6 +141,7 @@ class Post with ChangeNotifier {
       {double userRating, String feedback, String uid}) async {
     DocumentReference documentRef =
         Firestore.instance.collection("lessons").document(getPostId);
+
     // calculating new average
     double currentRating = getRating;
     int currentRaters = getNumRaters;
@@ -151,11 +153,8 @@ class Post with ChangeNotifier {
       await documentRef
           .updateData({"rating": newAverage, "raters": currentRaters});
 
-      // Add feedback to the lessons feedback collection
-      // if there's no feedback, only add the user's uid
-      if (feedback.isEmpty || feedback == "None") {
-        await documentRef.collection("feedback").document(uid).setData({});
-      } else {
+      // Add feedback to the lessons feedback collection only if there is one
+      if (feedback.isNotEmpty && feedback != "None") {
         await documentRef
             .collection("feedback")
             .document(uid)
@@ -166,6 +165,7 @@ class Post with ChangeNotifier {
       throw error;
     }
   }
+
 
   /// Toggle the like button, marking it a favorite
   Future<void> toggleBookmarkButton(String uid) async {

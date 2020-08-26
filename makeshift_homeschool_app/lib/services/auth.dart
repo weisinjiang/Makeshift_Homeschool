@@ -278,6 +278,44 @@ class AuthProvider with ChangeNotifier {
     return userData;
   }
 
+  // Add the post id to the user's completed lessons collection and increment
+  // the user's completed lesson by 1
+  // Return the new lesson completed to the rating and feedback provider, so
+  // that if the new rating is 5, then prompt a "Rank up.""
+  Future<bool> incrementUserCompletedLessons(String postId) async {
+    // users data document in Firestore
+    DocumentReference userDocument =
+        Firestore.instance.collection("users").document(getUserID);
+    try {
+      // Add the post to the user's completed lessons collection
+      await userDocument
+          .collection("completed lessons")
+          .document(postId)
+          .setData({});
+
+      // update the map data with the new lesson completed
+      int lessonCompleted =
+          int.parse(this._userInformation["lesson_completed"]) + 1;
+      this._userInformation["lesson_completed"] = lessonCompleted.toString();
+
+      if (lessonCompleted == 5) {
+        // increase lesson completed by 1 and update level
+        await userDocument.updateData(
+            {"lesson_completed": FieldValue.increment(1), "level": "Tutor"});
+        this._userInformation["level"] = "Tutor";
+      } else {
+        // increase lesson completed by 1
+        await userDocument
+            .updateData({"lesson_completed": FieldValue.increment(1)});
+      }
+      this._userInformation["lesson_completed"] = lessonCompleted.toString();
+      notifyListeners();
+      return lessonCompleted == 5;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // Future<dynamic> userDataFuture() async {
   //   if (_user != null) {
   //     await _database
