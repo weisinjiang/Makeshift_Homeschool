@@ -26,27 +26,11 @@ class PostThumbnail extends StatelessWidget {
     /// get the post data from provider in Study screen
     final postData = Provider.of<Post>(context, listen: false);
 
-    Widget ratingsIcon(double rating) {
-      if (rating <= 5.0 && rating > 4.0) {
-        return Icon(Icons.sentiment_very_satisfied, color: Colors.green,size: 30,);
-      }
-      else if (rating <= 4.0 && rating > 3.0) {
-        return Icon(Icons.sentiment_satisfied, color: Colors.lightGreen,);
-      }
-      else if (rating <= 3.0 && rating > 2.0) {
-        return Icon(Icons.sentiment_neutral, color: Colors.amber, size: 30,);
-      }
-      else if (rating <= 2.0 && rating > 1.0) {
-        return Icon(Icons.sentiment_dissatisfied, color: Colors.redAccent,size: 30,);
-      } 
-      else {
-        return Icon(Icons.sentiment_dissatisfied, color: Colors.red,size: 30,);
-      }
-    }
-
+    // makes the entire thumbnail widget to be clickable
     return InkWell(
       /// On tap, the screen moves to an expanded post screen
       onTap: () {
+        // user profile page allows the post to be deleted
         if (inUsersProfilePage) {
 
           Navigator.push(
@@ -56,7 +40,10 @@ class PostThumbnail extends StatelessWidget {
                 postData: postData,
                 canDelete: true,
               )));
+        
+        // if not user's profile, user cant delete posts
         } else {
+          // view count goes up whenever the post is accessed
           postData.incrementPostViewCount();
           Navigator.push(
               context,
@@ -111,7 +98,7 @@ class PostThumbnail extends StatelessWidget {
                 ),
                 Flexible(
                   fit: FlexFit.tight,
-                  child: ratingsIcon(postData.getRating),
+                  child: postData.ratingsWidgetIcon(),
                 ),
                 SizedBox(
                   height: 10,

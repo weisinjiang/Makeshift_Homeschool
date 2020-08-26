@@ -100,6 +100,41 @@ class Post with ChangeNotifier {
     }
   }
 
+  // Returns a facial expression based on the ratings on a post
+  Widget ratingsWidgetIcon() {
+    double rating = getRating;
+    if (rating <= 5.0 && rating > 4.0) {
+      return Icon(
+        Icons.sentiment_very_satisfied,
+        color: Colors.green,
+        size: 30,
+      );
+    } else if (rating <= 4.0 && rating > 3.0) {
+      return Icon(
+        Icons.sentiment_satisfied,
+        color: Colors.lightGreen,
+      );
+    } else if (rating <= 3.0 && rating > 2.0) {
+      return Icon(
+        Icons.sentiment_neutral,
+        color: Colors.amber,
+        size: 30,
+      );
+    } else if (rating <= 2.0 && rating > 1.0) {
+      return Icon(
+        Icons.sentiment_dissatisfied,
+        color: Colors.redAccent,
+        size: 30,
+      );
+    } else {
+      return Icon(
+        Icons.sentiment_dissatisfied,
+        color: Colors.red,
+        size: 30,
+      );
+    }
+  }
+
   // Update the posts rating when a user completes it
   Future<void> updatePostRating(
       {double userRating, String feedback, String uid}) async {
@@ -112,37 +147,30 @@ class Post with ChangeNotifier {
     ratingTotal += userRating; // update new total
     currentRaters++; // 1 additional rating
     double newAverage = ratingTotal / currentRaters;
-      try {
-        await documentRef
-            .updateData({"rating": newAverage, "raters": currentRaters});
+    try {
+      await documentRef
+          .updateData({"rating": newAverage, "raters": currentRaters});
 
-        // Add feedback to the lessons feedback collection
-        // if there's no feedback, only add the user's uid
-        if (feedback.isEmpty || feedback == "None") {
-          await documentRef.collection("feedback").document(uid).setData({});
-        } else {
-          await documentRef
-              .collection("feedback")
-              .document(uid)
-              .setData({"feedback": feedback});
-        }
-      } catch (error) {
-        print("Update Post Rating Error ${error.toString()}");
-        throw error;
+      // Add feedback to the lessons feedback collection
+      // if there's no feedback, only add the user's uid
+      if (feedback.isEmpty || feedback == "None") {
+        await documentRef.collection("feedback").document(uid).setData({});
+      } else {
+        await documentRef
+            .collection("feedback")
+            .document(uid)
+            .setData({"feedback": feedback});
       }
+    } catch (error) {
+      print("Update Post Rating Error ${error.toString()}");
+      throw error;
+    }
   }
 
   /// Toggle the like button, marking it a favorite
   Future<void> toggleBookmarkButton(String uid) async {
-    print("POST ID " + getPostId);
-    final oldValue = this.isLiked;
-    this.isLiked = !this.isLiked;
-    print("TOGGLE");
-
-    /// Convert the old value into its opposite
-    notifyListeners();
-
-    /// tell the consumer to change colors
+    final oldValue = this.isLiked; // if something went wrong, revert it back
+    this.isLiked = !this.isLiked; // invert the current like value
 
     /// Add or remove the post from the user's favorites database
     try {
@@ -154,6 +182,9 @@ class Post with ChangeNotifier {
             .collection("favorites")
             .document(getPostId)
             .setData({});
+
+        // update the bookmark icon's fill color
+        notifyListeners();
 
         // Increment the likes count on the post
         await Firestore.instance
@@ -169,6 +200,8 @@ class Post with ChangeNotifier {
             .document(getPostId)
             .delete();
 
+        notifyListeners();
+
         // Decrement the likes count on the post
         await Firestore.instance
             .collection("lessons")
@@ -179,6 +212,7 @@ class Post with ChangeNotifier {
       /// if there was an error, change the value back
       this.isLiked = oldValue;
       notifyListeners();
+      throw error;
     }
   }
 
