@@ -135,12 +135,6 @@ class QuizScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              // Center(
-                              //   child: Text(
-                              //     "🎉 Hurray! You got ${quizProvider.getScore.toString()}/3! 🎉",
-                              //     style: kTitleTextStyle,
-                              //   ),
-                              // ),
                               const SizedBox(
                                 height: 50,
                               ),

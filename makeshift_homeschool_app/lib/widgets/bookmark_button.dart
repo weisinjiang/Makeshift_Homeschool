@@ -22,12 +22,12 @@ class BookmarkButton extends StatelessWidget {
         icon: postData.isLiked
             ? Icon(
                 Icons.bookmark,
-                color: kRedOrange,
+                color: Colors.black,
                 size: screenSize.height * 0.05,
               )
             : Icon(
                 Icons.bookmark_border,
-                color: kRedOrange,
+                color: Colors.black,
                 size: screenSize.height * 0.05,
               ),
         onPressed: () async {

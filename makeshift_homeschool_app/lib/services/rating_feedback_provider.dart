@@ -18,7 +18,7 @@ class Rating_FeedbackProvider with ChangeNotifier {
   double _allTimeRating;
   int _numUsersRated;
   Post postData;
-  TextEditingController _userFeedbackController;
+  // TextEditingController _userFeedbackController;
 
   Rating_FeedbackProvider({Post postData}) {
     this._userRating = 0.0;
@@ -26,8 +26,8 @@ class Rating_FeedbackProvider with ChangeNotifier {
     this.postData = postData;
     this._allTimeRating = 0.0;
     this._numUsersRated = 0;
-    this._userFeedbackController = TextEditingController();
-    this._userFeedbackController.text = "None";
+    // this._userFeedbackController = TextEditingController();
+    // this._userFeedbackController.text = "None";
   }
 
   // Setters
@@ -41,7 +41,7 @@ class Rating_FeedbackProvider with ChangeNotifier {
   int get getNumberOfUsersRated => this._numUsersRated;
   Post get getPostData => this.postData;
   String get getPostId => this.postData.getPostId;
-  String get getFeedback => this._userFeedbackController.text;
+  // String get getFeedback => this._userFeedbackController.text;
   bool get isPromoted => this.isPromoted;
 
   Widget buildRatingBar(
@@ -55,7 +55,7 @@ class Rating_FeedbackProvider with ChangeNotifier {
           style: kBoldTextStyle,
         ),
         Text(
-          "Tap on a face ",
+          "Tap or drag your finger across the ⭐️'s",
           style: kBoldTextStyle,
         ),
         const SizedBox(
@@ -68,37 +68,46 @@ class Rating_FeedbackProvider with ChangeNotifier {
             itemCount: 5,
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
             unratedColor: Colors.grey[300],
-            itemBuilder: (context, index) {
-              switch (index) {
-                case 0:
-                  return Icon(
-                    Icons.sentiment_dissatisfied,
-                    color: Colors.red,
-                  );
-                case 1:
-                  return Icon(
-                    Icons.sentiment_dissatisfied,
-                    color: Colors.redAccent,
-                  );
-                case 2:
-                  return Icon(
-                    Icons.sentiment_neutral,
-                    color: Colors.amber,
-                  );
-                case 3:
-                  return Icon(
-                    Icons.sentiment_satisfied,
-                    color: Colors.lightGreen,
-                  );
-                case 4:
-                  return Icon(
-                    Icons.sentiment_very_satisfied,
-                    color: Colors.green,
-                  );
-                default:
-                  return Container();
-              }
+            glow: true,
+            glowColor: Colors.green,
+            itemBuilder: (context, _) {
+              return Icon(
+                Icons.star,
+                color: Colors.amber,
+              );
             },
+            // happy face ratings
+            // itemBuilder: (context, index) {
+            //   switch (index) {
+            //     case 0:
+            //       return Icon(
+            //         Icons.sentiment_dissatisfied,
+            //         color: Colors.red,
+            //       );
+            //     case 1:
+            //       return Icon(
+            //         Icons.sentiment_dissatisfied,
+            //         color: Colors.redAccent,
+            //       );
+            //     case 2:
+            //       return Icon(
+            //         Icons.sentiment_neutral,
+            //         color: Colors.amber,
+            //       );
+            //     case 3:
+            //       return Icon(
+            //         Icons.sentiment_satisfied,
+            //         color: Colors.lightGreen,
+            //       );
+            //     case 4:
+            //       return Icon(
+            //         Icons.sentiment_very_satisfied,
+            //         color: Colors.green,
+            //       );
+            //     default:
+            //       return Container();
+            //   }
+            // },
             onRatingUpdate: (rating) {
               this._userRating = rating;
               notifyListeners();
@@ -106,28 +115,28 @@ class Rating_FeedbackProvider with ChangeNotifier {
         const SizedBox(
           height: 50,
         ),
-        Text(
-          "Any feedback for ${getPostData.getOwnerName} on the lesson?",
-          style: kBoldTextStyle,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        TextFormField(
-          controller: this._userFeedbackController,
-          maxLength: 400,
-          maxLines: null,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-              prefixIcon: Icon(
-                FontAwesomeIcons.solidCommentAlt,
-                color: Colors.black,
-              ),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red))),
-        ),
+        // Text(
+        //   "Any feedback for ${getPostData.getOwnerName} on the lesson?",
+        //   style: kBoldTextStyle,
+        // ),
+        // const SizedBox(
+        //   height: 20,
+        // ),
+        // TextFormField(
+        //   controller: this._userFeedbackController,
+        //   maxLength: 400,
+        //   maxLines: null,
+        //   keyboardType: TextInputType.text,
+        //   decoration: InputDecoration(
+        //       prefixIcon: Icon(
+        //         FontAwesomeIcons.solidCommentAlt,
+        //         color: Colors.black,
+        //       ),
+        //       enabledBorder: OutlineInputBorder(
+        //           borderSide: BorderSide(color: Colors.black)),
+        //       focusedBorder: OutlineInputBorder(
+        //           borderSide: BorderSide(color: Colors.red))),
+        // ),
 
         const SizedBox(
           height: 80,
@@ -150,7 +159,6 @@ class Rating_FeedbackProvider with ChangeNotifier {
               // update the ratings for the post
               postData.updatePostRating(
                   userRating: getUserRating,
-                  feedback: getFeedback,
                   uid: auth.getUserID);
 
               // access user's collection and increment the value
@@ -161,17 +169,16 @@ class Rating_FeedbackProvider with ChangeNotifier {
                 Navigator.of(context).pop(); // pop the feedback screen
                 // then push the promotion screen
                 Navigator.push(
-                          context,
-                          SlideLeftRoute(
-                              screen: PromotionScreen(
-                            promotionType: PromotionType.student_to_tutor,
-                          )));
+                    context,
+                    SlideLeftRoute(
+                        screen: PromotionScreen(
+                      promotionType: PromotionType.student_to_tutor,
+                    )));
               }
-              // no promotion, just pop the feedback screen 
+              // no promotion, just pop the feedback screen
               else {
                 Navigator.of(context).pop();
               }
-             
             },
           ),
         )

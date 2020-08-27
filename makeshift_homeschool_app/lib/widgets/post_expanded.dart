@@ -5,6 +5,7 @@ import 'package:makeshift_homeschool_app/models/quiz_model.dart';
 import 'package:makeshift_homeschool_app/screens/quiz.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
+import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:makeshift_homeschool_app/widgets/popup_appbar.dart';
 
 /// Expanded Post after clicking on a Post Thumbnail.
@@ -43,26 +44,29 @@ class PostExpanded extends StatelessWidget {
               Column(
                 children: postData.constructPostWidgetList(screenSize),
               ),
-              Container(
-                  width: screenSize.width * 0.80,
-                  child: RaisedButton(
-                    color: Colors.green[300],
-                    onPressed: () {
-                      // Pass the quiz map into the Quiz object
-                      Quiz quiz = Quiz(quizData: postData.getQuiz);
-                      // serialize the data and make them into Question and
-                      // options objects before passing it into the quiz screen
-                      quiz.serializeQuizData();
-                      Navigator.push(
-                          context,
-                          SlideLeftRoute(
-                              screen: QuizScreen(
-                            postData: postData,
-                            quiz: quiz,
-                          )));
-                    },
-                    child: Text("Complete Lesson"),
-                  ))
+
+              // if in user profile, then dont show "Complete Lesson"
+              if (!canDelete)
+                Container(
+                    width: screenSize.width * 0.80,
+                    child: RaisedButton(
+                      color: Colors.green[300],
+                      onPressed: () {
+                        // Pass the quiz map into the Quiz object
+                        Quiz quiz = Quiz(quizData: postData.getQuiz);
+                        // serialize the data and make them into Question and
+                        // options objects before passing it into the quiz screen
+                        quiz.serializeQuizData();
+                        Navigator.push(
+                            context,
+                            SlideLeftRoute(
+                                screen: QuizScreen(
+                              postData: postData,
+                              quiz: quiz,
+                            )));
+                      },
+                      child: Text("Complete Lesson"),
+                    )),
             ],
           ),
         ),

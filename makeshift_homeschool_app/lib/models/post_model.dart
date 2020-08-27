@@ -138,7 +138,7 @@ class Post with ChangeNotifier {
 
   // Update the posts rating when a user completes it
   Future<void> updatePostRating(
-      {double userRating, String feedback, String uid}) async {
+      {double userRating, String uid}) async {
     DocumentReference documentRef =
         Firestore.instance.collection("lessons").document(getPostId);
 
@@ -150,16 +150,10 @@ class Post with ChangeNotifier {
     currentRaters++; // 1 additional rating
     double newAverage = ratingTotal / currentRaters;
     try {
+      // update the data
       await documentRef
           .updateData({"rating": newAverage, "raters": currentRaters});
 
-      // Add feedback to the lessons feedback collection only if there is one
-      if (feedback.isNotEmpty && feedback != "None") {
-        await documentRef
-            .collection("feedback")
-            .document(uid)
-            .setData({"feedback": feedback});
-      }
     } catch (error) {
       print("Update Post Rating Error ${error.toString()}");
       throw error;
