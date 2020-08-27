@@ -36,7 +36,7 @@ class NewPostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final userInfo = Provider.of<AuthProvider>(context).getUser;
+    final userInfo = Provider.of<AuthProvider>(context);
 
     /// New post uses this provider as a global variable so users can
     /// add as many paragraphs, subtitles as they want.
@@ -61,17 +61,15 @@ class NewPostScreen extends StatelessWidget {
                   actions: <Widget>[
                     FlatButton(
                       onPressed: () {
-                        // new post and not editing
-                        if (newPostProvider.canPost(isEdit: false) &&
-                            !isEditing) {
-                          ///! Change so that it gets info from the local value!!!!!
-                          int lessonCreated =
-                              int.parse(userInfo["lesson_created"]);
+                        // check if the user can post
+                        bool canPost = newPostProvider.canPost(isEdit: false);
+                        // Not editing 
+                        if (canPost && !isEditing) {
                           newPostProvider.post(
-                              uid: userInfo["uid"],
-                              name: userInfo["username"],
-                              userLevel: userInfo["level"],
-                              lessonCreated: lessonCreated);
+                              uid: userInfo.getUserID,
+                              name: userInfo.getUserName,
+                              userLevel: userInfo.getUserLevel, 
+                              lessonCreated: userInfo.getLessonCreatedAsInt);
 
                           Navigator.of(context).pop();
                         }

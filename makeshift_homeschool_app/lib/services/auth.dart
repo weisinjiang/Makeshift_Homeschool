@@ -32,6 +32,10 @@ class AuthProvider with ChangeNotifier {
   bool get isEmailVerified => this._emailVerified;
   String get getUserID => this._userId;
   Map<String, String> get getUser => this._userInformation;
+  String get getUserLevel => this._userInformation["level"];
+  String get getUserName => this._userInformation["username"];
+  int get getLessonCreatedAsInt =>
+      int.parse(this._userInformation["lesson_created"]);
 
   // Get current Firebase User. Used to see if user data is still valid
   // Not async because it is used after user has logged in and exit the app

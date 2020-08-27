@@ -221,17 +221,17 @@ class NewPostProvider {
       }
     });
 
-    // check for matching answers/options
-    for (String part in ["intro", "body", "conclusion"]) {
-      print(part);
-      if (matchingOptions(this._quizControllers[part])) {
-        canPost = false;
-        
-      }
-    }
+    // // check for matching answers/options
+    // for (String part in ["intro", "body", "conclusion"]) {
+    //   print(part);
+    //   if (matchingOptions(this._quizControllers[part])) {
+    //     canPost = false;
+    //   }
+    // }
     return canPost;
   }
 
+  //! TEST AGIAN
   // Checks if response are matching. Wrong answer cannot match correct answer
   bool matchingOptions(List<TextEditingController> controllers) {
     List<String> options;
@@ -258,19 +258,30 @@ class NewPostProvider {
 
     If the userLevel is teacher and above, it gets added to the lessons
     collection and requires no review
+
+    @collection - "lesson" or "review"
   */
 
   Future<void> post(
       {String uid, String name, int lessonCreated, String userLevel}) async {
     lessonCreated++; // increment # of lessons user created, cant do it when adding to database
+    var databaseRef; // refernece to document the post will go into
 
-    /// Reference the document where the data will be placed
-    /// Leaving document empty generates a random id
-    var databaseRef = _database.collection("lessons").document();
+    // if user is a Tutor, add it to approval collection
+    if (userLevel == "Tutor") {
+      databaseRef = _database.collection("approval required").document();
+    }
+    // teachers and above gets their post added to lessons directly
+    else {
+      databaseRef = _database.collection("lessons").document();
+    }
+
+    // Contruct all the data from the text controllers
     var postContentsList = getControllerTextDataAsList();
     var quiz = constructQuizDataForDatabase();
     var newPostTitle = postContentsList[0]; // index0 = title controller
 
+    // Post contents
     var contentsAsMap = {
       "introduction": postContentsList[1],
       "body 1": postContentsList[2],
@@ -279,9 +290,11 @@ class NewPostProvider {
       "conclusion": postContentsList[5],
     };
 
+    // upload the image and get the url so it can be referenced
     var imageUrl = await uploadImageAndGetDownloadUrl(
         getNewPostImageFile, databaseRef.documentID);
 
+    // all data needed for a new post
     var newLesson = {
       "age": postContentsList[6],
       "views": 0,
@@ -298,18 +311,20 @@ class NewPostProvider {
       "raters": 1
     };
 
-    /// Add the data into the refernece document made earlier
+    // Add the data into the refernece document made earlier
     await databaseRef.setData(newLesson);
 
-    /// update user's lessons created
-    await _database
-        .collection("users")
-        .document(uid)
-        .setData({"lesson_created": lessonCreated}, merge: true);
+    // update user's lessons created if they are not a tutor
+    // Tutors will have this incremented after review
+    if (userLevel != "Tutor") {
+      lessonCreated++; // increment by 1
+      await _database
+          .collection("users")
+          .document(uid)
+          .updateData({"lesson_created": lessonCreated});
+    }
 
     //resetFields();
-
-    /// reset the form
   }
 
   /*
