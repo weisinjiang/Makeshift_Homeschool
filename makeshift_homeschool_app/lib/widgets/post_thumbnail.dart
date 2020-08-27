@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/post_expanded.dart';
+import 'package:makeshift_homeschool_app/widgets/post_review.dart';
 import 'package:provider/provider.dart';
 
 import 'bookmark_button.dart';
@@ -12,10 +14,8 @@ import 'bookmark_button.dart';
 /// Clickable thumbnail before going into the actual post
 
 class PostThumbnail extends StatelessWidget {
-  final bool
-      inUsersProfilePage; // if the post belongs to the user. They can delete it
-
-  const PostThumbnail({Key key, this.inUsersProfilePage}) : super(key: key);
+  final PostExpandedViewType viewType;
+  const PostThumbnail({Key key, this.viewType}) : super(key: key);
 
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -31,18 +31,24 @@ class PostThumbnail extends StatelessWidget {
       /// On tap, the screen moves to an expanded post screen
       onTap: () {
         // user profile page allows the post to be deleted
-        if (inUsersProfilePage) {
-
+        if (viewType == PostExpandedViewType.owner) {
           Navigator.push(
               context,
               SlideLeftRoute(
                   screen: PostExpanded(
                 postData: postData,
-                canDelete: true,
+                viewType: PostExpandedViewType.owner,
               )));
-        
+        } else if (viewType == PostExpandedViewType.principle) {
+          Navigator.push(
+              context,
+              SlideLeftRoute(
+                  screen: PostReview(
+                postData: postData,
+              )));
+        }
         // if not user's profile, user cant delete posts
-        } else {
+        else {
           // view count goes up whenever the post is accessed
           postData.incrementPostViewCount();
           Navigator.push(
@@ -50,7 +56,7 @@ class PostThumbnail extends StatelessWidget {
               SlideLeftRoute(
                   screen: PostExpanded(
                 postData: postData,
-                canDelete: false,
+                viewType: PostExpandedViewType.global,
               )));
         }
       },
@@ -74,16 +80,31 @@ class PostThumbnail extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-
               children: [
-                Align(
-                  alignment: Alignment.topRight,
-                     child: Container(
-                       
-                    child: BookmarkButton(postData: postData, screenSize: screenSize, user: user),
+                // Bookmark option is avliable to people learning only
+                if (viewType == PostExpandedViewType.global)
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      child: BookmarkButton(
+                          postData: postData,
+                          screenSize: screenSize,
+                          user: user),
+                    ),
                   ),
-                ),
-                
+
+                // Show the post date for Principles
+                if (viewType == PostExpandedViewType.principle)
+                  Flexible(
+                      fit: FlexFit.tight,
+                      child: StrokeText(
+                        fontSize: 26,
+                        strokeColor: Colors.black,
+                        strokeWidth: 3.0,
+                        text: postData.getCreatedOn(),
+                        textColor: Colors.white,
+                      )),
+
                 Flexible(
                   fit: FlexFit.tight,
                   child: StrokeText(
@@ -96,16 +117,30 @@ class PostThumbnail extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: postData.ratingsWidgetIcon(),
-                ),
+
+                // Principles do not need to see the rating
+                if (viewType != PostExpandedViewType.principle)
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: postData.ratingsWidgetIcon(),
+                  ),
+
+                if (viewType == PostExpandedViewType.principle)
+                  Flexible(
+                      fit: FlexFit.tight,
+                      child: StrokeText(
+                        fontSize: 15,
+                        strokeColor: Colors.black,
+                        strokeWidth: 3.0,
+                        text: "By: ${postData.getOwnerName}",
+                        textColor: Colors.white,
+                      )),
+
                 SizedBox(
                   height: 10,
                 ),
-
                 Flexible(
-                fit: FlexFit.tight,
+                  fit: FlexFit.tight,
                   child: Container(
                     child: StrokeText(
                         fontSize: 16,
@@ -115,7 +150,6 @@ class PostThumbnail extends StatelessWidget {
                         textColor: Colors.white),
                   ),
                 ),
-              
               ],
             ),
           )),

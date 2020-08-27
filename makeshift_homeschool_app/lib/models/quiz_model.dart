@@ -12,7 +12,7 @@ class Quiz {
 
   // shuffle the question list
   void shuffleQuestionList() => this.questionsList.shuffle();
-  
+
   // convert the map into a list of Quiz objects that contains Questions
   // and objects
   void serializeQuizData() {
@@ -63,4 +63,8 @@ class Question {
 
   get getQuestion => this.question;
   get getAllOptions => this.options;
+  get getOption1 => this.options[0];
+  get getOption2 => this.options[1];
+  get getOption3 => this.options[2];
+  get getOption4 => this.options[3];
 }

@@ -4,6 +4,7 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/models/quiz_model.dart';
 import 'package:makeshift_homeschool_app/screens/quiz.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:makeshift_homeschool_app/widgets/popup_appbar.dart';
@@ -13,14 +14,14 @@ import 'package:makeshift_homeschool_app/widgets/popup_appbar.dart';
 /// Post has a method called constructPostWidgetListthat makes the widget list
 /// to be displayed in ListView
 class PostExpanded extends StatelessWidget {
-  final bool canDelete;
+  final PostExpandedViewType viewType;
 
   /// if in user's profile, they can delete the post
   final Post postData;
 
   /// post data passed from PostThumbnail
 
-  const PostExpanded({Key key, this.postData, this.canDelete})
+  const PostExpanded({Key key, this.postData, this.viewType})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class PostExpanded extends StatelessWidget {
         backgroundColor: kPeachRed,
         screenSize: screenSize,
         appBar: AppBar(),
-        canDelete: canDelete,
+        canDelete: viewType == PostExpandedViewType.owner ? true : false,
       ),
       body: Container(
         width: screenSize.width,
@@ -46,7 +47,7 @@ class PostExpanded extends StatelessWidget {
               ),
 
               // if in user profile, then dont show "Complete Lesson"
-              if (!canDelete)
+              if (viewType == PostExpandedViewType.global)
                 Container(
                     width: screenSize.width * 0.80,
                     child: RaisedButton(
@@ -67,6 +68,7 @@ class PostExpanded extends StatelessWidget {
                       },
                       child: Text("Complete Lesson"),
                     )),
+
             ],
           ),
         ),

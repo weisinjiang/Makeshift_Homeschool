@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/shared/widget_constants.dart';
 import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
@@ -57,7 +58,7 @@ class _UserPostsState extends State<UserPosts> {
               child: ListView.separated(
                 itemBuilder: (_, index) => ChangeNotifierProvider.value(
                                   value: postFeedProvider.getUserPosts[index],
-                                  child: PostThumbnail(inUsersProfilePage: true,),
+                                  child: PostThumbnail(viewType: PostExpandedViewType.owner,),
                                 ), 
                 separatorBuilder: (context, int index) =>
                                 const Divider(), 

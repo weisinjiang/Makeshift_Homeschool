@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/bootcamp_screen.dart';
 import 'package:makeshift_homeschool_app/screens/completed_letters.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
+import 'package:makeshift_homeschool_app/screens/lesson_approval.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
@@ -11,6 +12,7 @@ import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/widgets/activity_button.dart';
+import 'package:makeshift_homeschool_app/widgets/ghostButton.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the main screen where the user can pick what activities they want to
@@ -150,8 +152,8 @@ class _RootScreenState extends State<RootScreen> {
                     ),
                   ),
 
-                  //const SizedBox(height: 40,),
-
+                  // if professor or lower, My Bootcamp shows up
+                  if(userData["level"] != "Professor")
                   // Saved Bootcamp
                   Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -165,6 +167,24 @@ class _RootScreenState extends State<RootScreen> {
                       canUseButton: true,
                       name: "My Bootcamp",
                       imageLocation: "asset/images/letter.png",
+                    ),
+                  ),
+
+                  //if(userData["level"] == "Professor")
+                  Container(
+                    height: screenSize.height * 0.15,
+                    width: screenSize.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GhostButton(
+                        borderRadius: 0.0,
+                        buttonBorderColor: kRedOrange,
+                        buttonFillColor: kPaleBlue,
+                        buttonName: "Approve Lessons",
+                        buttonTextColor: Colors.black,
+                        function: () => Navigator.push(
+                          context, SlideLeftRoute(screen: LessonApprovalScreen())),
+                      ),
                     ),
                   ),
                 ],

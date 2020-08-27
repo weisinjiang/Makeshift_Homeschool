@@ -9,6 +9,7 @@ class PostFeedProvider with ChangeNotifier {
   List<Post> _userPosts = [];
   List<Post> _top5Likes = [];
   List<Post> _top5Viewed = [];
+  List<Post> _approvalNeeded = [];
   final String uid;
 
   PostFeedProvider(this.uid, this._posts);
@@ -19,6 +20,7 @@ class PostFeedProvider with ChangeNotifier {
   List<Post> get getUserPosts => [..._userPosts];
   List<Post> get getTop5Likes => [..._top5Likes];
   List<Post> get getTop5Viewed => [..._top5Viewed];
+  List<Post> get getApprovalNeeded => [..._approvalNeeded];
 
   Future<void> deletePost(String postId) async {
     /// First remove it from the database
@@ -51,6 +53,46 @@ class PostFeedProvider with ChangeNotifier {
         notifyListeners();
         break;
       }
+    }
+  }
+
+  /*
+    Method gets posts from the "Approval Required" database.
+    Used for Principle to retrieve posts that needs approval before adding
+    it to the database
+  */
+
+  Future<void> fetchApprovalNeededPosts() async {
+    try {
+      QuerySnapshot fetchedData =
+          await _database.collection("approval required").getDocuments();
+
+      List<DocumentSnapshot> allDocuments = fetchedData.documents;
+      List<Post> serializedPosts = [];
+
+      // serialize all documents and make them into Post objects
+      allDocuments.forEach((doc) {
+        Post post = Post();
+        post.setLikes = doc["likes"];
+        post.setViews = doc["views"];
+        post.setRating = doc["rating"].toDouble();
+        post.setNumRaters = doc["raters"];
+        post.setCreatedOn = doc["createdOn"];
+        post.setAge = doc["age"];
+        post.setTitle = doc["title"];
+        post.setImageUrl = doc["imageUrl"];
+        post.setLikes = doc["likes"];
+        post.setOwnerName = doc["ownerName"];
+        post.setOwnerUid = doc["ownerUid"];
+        post.setPostContents = doc["postContents"];
+        post.setPostId = doc.documentID;
+        post.setQuiz = doc["quiz"];
+        serializedPosts.add(post); // add to local list
+      });
+
+      this._approvalNeeded = serializedPosts;
+    } catch (error) {
+      throw error;
     }
   }
 

@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,7 +6,6 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/widgets/image_field.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
-import 'package:makeshift_homeschool_app/widgets/newpost_questions.dart';
 /*
 Handles new paragraph and subtitle widgets being added to a new post
 and saving its contents

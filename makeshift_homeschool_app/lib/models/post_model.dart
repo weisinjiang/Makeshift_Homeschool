@@ -46,11 +46,17 @@ class Post with ChangeNotifier {
   int get getNumRaters => this._raters;
   String get getTitle => this._title; // First in array is title
   String get getImageUrl => this._imageUrl;
-  String get getCreatedOn => this._createdOn;
   String get getOwnerName => this._ownerName;
   String get getOwnerUid => this._ownerUid;
   String get getPostId => this._postId;
   String get getAge => this._age;
+
+  // gets the date posted. Format it into month/day/year
+  String getCreatedOn() {
+    DateTime date = DateTime.parse(this._createdOn);
+    String formatted = "${date.month}-${date.day}-${date.year}";
+    return formatted;
+  }
 
   // Get post content data
   String get getIntroduction => this._postContents["introduction"];
@@ -137,8 +143,7 @@ class Post with ChangeNotifier {
   }
 
   // Update the posts rating when a user completes it
-  Future<void> updatePostRating(
-      {double userRating, String uid}) async {
+  Future<void> updatePostRating({double userRating, String uid}) async {
     DocumentReference documentRef =
         Firestore.instance.collection("lessons").document(getPostId);
 
@@ -153,13 +158,11 @@ class Post with ChangeNotifier {
       // update the data
       await documentRef
           .updateData({"rating": newAverage, "raters": currentRaters});
-
     } catch (error) {
       print("Update Post Rating Error ${error.toString()}");
       throw error;
     }
   }
-
 
   /// Toggle the like button, marking it a favorite
   Future<void> toggleBookmarkButton(String uid) async {

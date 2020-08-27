@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,7 @@ class StudyCategoryListTile extends StatelessWidget {
                   itemBuilder: (_, index) => ChangeNotifierProvider.value(
                         value: postList[index],
                         child: PostThumbnail(
-                          inUsersProfilePage: false,
+                          viewType: PostExpandedViewType.global,
                         ),
                       )),
             ),
