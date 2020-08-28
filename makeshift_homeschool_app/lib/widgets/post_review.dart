@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/review_post_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
@@ -20,6 +21,10 @@ class PostReview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    String email =
+        Provider.of<AuthProvider>(context, listen: false).getUser["email"];
+        String token =
+        Provider.of<AuthProvider>(context, listen: false).getToken;
 
     return Provider<PostReviewProvider>(
       create: (context) =>
@@ -36,7 +41,10 @@ class PostReview extends StatelessWidget {
                   FontAwesomeIcons.solidTimesCircle,
                   color: Colors.red,
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  await postReviewProvider.deny(postData, email, token);
+                  Navigator.of(context).pop();
+                },
               ),
               IconButton(
                 icon: Icon(
@@ -44,8 +52,9 @@ class PostReview extends StatelessWidget {
                   color: Colors.green,
                 ),
                 onPressed: () async {
+                  // approval from principle, allow teachers to review
                   await postReviewProvider.approve();
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(); // pop the screen
                 },
               ),
             ],

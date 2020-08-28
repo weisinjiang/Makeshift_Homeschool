@@ -19,12 +19,14 @@ class AuthProvider with ChangeNotifier {
   bool _emailVerified;
   bool _authenticated;
   Map<String, String> _userInformation;
+  IdTokenResult _token;
 
   AuthProvider() {
     this._userId = null;
     this._emailVerified = false;
     this._authenticated = false;
     this._userInformation = null;
+    this._token = null;
   }
 
   // Getters
@@ -36,6 +38,7 @@ class AuthProvider with ChangeNotifier {
   String get getUserName => this._userInformation["username"];
   int get getLessonCreatedAsInt =>
       int.parse(this._userInformation["lesson_created"]);
+  String get getToken => this._token.toString();
 
   // Get current Firebase User. Used to see if user data is still valid
   // Not async because it is used after user has logged in and exit the app
@@ -45,7 +48,9 @@ class AuthProvider with ChangeNotifier {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
+      result.user.getIdToken();
       this._userId = result.user.uid;
+      this._token = await result.user.getIdToken();
       this._authenticated = true;
       this._emailVerified = result.user.isEmailVerified;
       await fetchUserInfoFromDatabase()

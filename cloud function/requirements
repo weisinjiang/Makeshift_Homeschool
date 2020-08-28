@@ -1,0 +1,4 @@
+# Function dependencies, for example:
+# package>=version
+requests == 2.22.0
+sendgrid <= 6.1.0

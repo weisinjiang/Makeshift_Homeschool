@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:async';
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -32,6 +35,27 @@ class PostReviewProvider {
       "body 3": TextEditingController(),
       "conclusion": TextEditingController(),
     };
+  }
+
+  Future<String> deny(Post postData, String email, String token) async {
+    String url =
+        "https://us-east4-makeshift-homeschool-281816.cloudfunctions.net/send_lesson_denied_email";
+
+    Map<String, dynamic> jsonData = {
+      "data": {
+        "username": postData.getOwnerName,
+        "email": email,
+        "lessonTitle": postData.getTitle
+      }
+    };
+    HttpClient httpClient = HttpClient();
+    HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
+    request.headers.set('content-type', 'application/json');
+    request.add(utf8.encode(json.encode(jsonData)));
+    HttpClientResponse response = await request.close();
+    String reply = await response.transform(utf8.decoder).join();
+    httpClient.close();
+    print(reply);
   }
 
   // Approve the post and move it into the review collection
