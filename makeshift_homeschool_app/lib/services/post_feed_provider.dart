@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 
 class PostFeedProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance; // connect to firestore
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   List<Post> _posts = []; //post list to be shown on the feed
   List<Post> _userPosts = [];
@@ -23,8 +25,9 @@ class PostFeedProvider with ChangeNotifier {
   List<Post> get getApprovalNeeded => [..._approvalNeeded];
 
   Future<void> deletePost(String postId) async {
-    /// First remove it from the database
+    /// First remove it from the database and the image from storage
     await _database.collection("lessons").document(postId).delete();
+    await _storage.ref().child("lessons").child(postId).delete();
 
     /// then delete it from the user's page
     for (var i = 0; i < _userPosts.length; i++) {
