@@ -37,7 +37,9 @@ class PostReviewProvider {
     };
   }
 
-  Future<void> deny(Post postData, String email, String token) async {
+  // When Principle denies the lesson, email is send to the owner informing them
+  Future<void> deny(Post postData, String email) async {
+    // REST API link
     String url =
         "https://us-east4-makeshift-homeschool-281816.cloudfunctions.net/send_lesson_denied_email";
 
@@ -49,6 +51,7 @@ class PostReviewProvider {
         "lessonTitle": postData.getTitle
       }
     };
+
     HttpClient httpClient = HttpClient();
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
     // describes the type of data of the http request

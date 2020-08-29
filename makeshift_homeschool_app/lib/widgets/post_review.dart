@@ -21,10 +21,6 @@ class PostReview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    String email =
-        Provider.of<AuthProvider>(context, listen: false).getUser["email"];
-        String token =
-        Provider.of<AuthProvider>(context, listen: false).getToken;
 
     return Provider<PostReviewProvider>(
       create: (context) =>
@@ -42,7 +38,7 @@ class PostReview extends StatelessWidget {
                   color: Colors.red,
                 ),
                 onPressed: () async {
-                  await postReviewProvider.deny(postData, email, token);
+                  await postReviewProvider.deny(postData, postData.getOwnerEmail);
                   Navigator.of(context).pop();
                 },
               ),
