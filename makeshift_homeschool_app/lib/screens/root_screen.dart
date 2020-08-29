@@ -134,10 +134,9 @@ class _RootScreenState extends State<RootScreen> {
                             borderColor: kRedOrange,
                             height: screenSize.height * 0.20,
                             width: screenSize.width / 2,
-                            canUseButton: (userData["level"] == "Tutor" ||
-                                    userData["level"] == "Professor")
-                                ? true
-                                : false,
+                            canUseButton: (userData["level"] == "Student")
+                                ? false
+                                : true,
                             function: () => Navigator.push(
                                 context,
                                 SlideLeftRoute(

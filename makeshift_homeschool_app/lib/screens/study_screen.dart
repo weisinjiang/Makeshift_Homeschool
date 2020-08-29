@@ -66,24 +66,30 @@ class _StudyScreenState extends State<StudyScreen> {
                   width: screenSize.width,
                   color: kPaleBlue,
                   // decoration: linearGradientSecondaryGreenAnalogous,
-                  child: SingleChildScrollView(
-                    // scroll up/down
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      var postFeedProvider =
+                          Provider.of<PostFeedProvider>(context, listen: false);
+                      postFeedProvider.fetchPostsFromDatabase(query: "all");
+                    },
+                    child: SingleChildScrollView(
+                      // scroll up/down
 
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        StudyCategoryListTile(
-                            categoryTitle: "For Your Age", postList: null),
-                        StudyCategoryListTile(
-                            categoryTitle: "Most Liked",
-                            postList: top5LikedList),
-                        StudyCategoryListTile(
-                            categoryTitle: "Most Viewed",
-                            postList: top5ViewList),
-                        StudyCategoryListTile(
-                            categoryTitle: "All Posts",
-                            postList: allPosts),
-                      ],
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          StudyCategoryListTile(
+                              categoryTitle: "For Your Age", postList: null),
+                          StudyCategoryListTile(
+                              categoryTitle: "Most Liked",
+                              postList: top5LikedList),
+                          StudyCategoryListTile(
+                              categoryTitle: "Most Viewed",
+                              postList: top5ViewList),
+                          StudyCategoryListTile(
+                              categoryTitle: "All Posts", postList: allPosts),
+                        ],
+                      ),
                     ),
                   )));
     } else {

@@ -64,19 +64,25 @@ class _LessonApprovalScreenState extends State<LessonApprovalScreen> {
                   height: screenSize.height,
                   width: screenSize.width,
                   color: kPaleBlue,
-                  child: ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
-                    separatorBuilder: (context, int index) => const SizedBox(
-                      width: 5,
-                    ),
-                    itemCount: postList.length,
-                    itemBuilder: (_, index) => ChangeNotifierProvider.value(
-                      value: postList[index],
-                      child: PostThumbnail(
-                        viewType: widget.reviewer == Reviewer.principle
-                        ? PostExpandedViewType.principle
-                        : PostExpandedViewType.teacher,
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      await Provider.of<PostFeedProvider>(context, listen: false)
+                          .fetchInReviewPosts(widget.reviewer);
+                    },
+                    child: ListView.separated(
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
+                      separatorBuilder: (context, int index) => const SizedBox(
+                        width: 5,
+                      ),
+                      itemCount: postList.length,
+                      itemBuilder: (_, index) => ChangeNotifierProvider.value(
+                        value: postList[index],
+                        child: PostThumbnail(
+                          viewType: widget.reviewer == Reviewer.principle
+                              ? PostExpandedViewType.principle
+                              : PostExpandedViewType.teacher,
+                        ),
                       ),
                     ),
                   ),

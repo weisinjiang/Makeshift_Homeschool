@@ -105,6 +105,7 @@ class PostFeedProvider with ChangeNotifier {
       });
 
       this._approvalNeeded = serializedPosts;
+      notifyListeners();
     } catch (error) {
       throw error;
     }
