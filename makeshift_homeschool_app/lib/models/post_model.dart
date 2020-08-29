@@ -6,6 +6,7 @@ import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
 class Post with ChangeNotifier {
   int _likes;
   int _views;
+  int _approval;
   double _rating;
   int _raters;
   String _imageUrl;
@@ -17,6 +18,7 @@ class Post with ChangeNotifier {
   String _postId;
   String _ownerEmail;
   bool isLiked;
+
   // Subtitles and paragraphs in order from Firestore
   Map<String, dynamic> _postContents;
   Map<String, dynamic> _quiz;
@@ -37,6 +39,7 @@ class Post with ChangeNotifier {
     this._age = "0";
     this.isLiked = false;
     this._ownerEmail = null;
+    this._approval = 0;
 
     /// post is not liked initially
   }
@@ -53,6 +56,7 @@ class Post with ChangeNotifier {
   String get getPostId => this._postId;
   String get getAge => this._age;
   String get getOwnerEmail => this._ownerEmail;
+  int get getNumApprovals => this._approval;
 
   // gets the date posted. Format it into month/day/year
   String getCreatedOn() {
@@ -98,6 +102,7 @@ class Post with ChangeNotifier {
   set setPostContents(Map<String, dynamic> contents) =>
       this._postContents = contents;
   set setQuiz(Map<String, dynamic> quiz) => this._quiz = quiz;
+  set setNumApprovals(int approvals) => this._approval = approvals;
 
   // Increment the view count on a post everytime someone clicks on a post
   Future<void> incrementPostViewCount() async {

@@ -9,6 +9,7 @@ import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/widgets/activity_button.dart';
@@ -170,6 +171,7 @@ class _RootScreenState extends State<RootScreen> {
                     ),
                   ),
 
+                  // only professor/principles can approve lessons
                   //if(userData["level"] == "Professor")
                   Container(
                     height: screenSize.height * 0.15,
@@ -177,13 +179,31 @@ class _RootScreenState extends State<RootScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GhostButton(
-                        borderRadius: 0.0,
+                        borderRadius: 20.0,
                         buttonBorderColor: kRedOrange,
                         buttonFillColor: kPaleBlue,
                         buttonName: "Approve Lessons",
                         buttonTextColor: Colors.black,
                         function: () => Navigator.push(
-                          context, SlideLeftRoute(screen: LessonApprovalScreen())),
+                          context, SlideLeftRoute(screen: LessonApprovalScreen(reviewer: Reviewer.principle,))),
+                      ),
+                    ),
+                  ),
+                  // show this to teachers so they can review posts
+                  // if (userData["level"] == "Teacher")
+                  Container(
+                    height: screenSize.height * 0.15,
+                    width: screenSize.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GhostButton(
+                        borderRadius: 20.0,
+                        buttonBorderColor: kRedOrange,
+                        buttonFillColor: kPaleBlue,
+                        buttonName: "Review Tutor Lessons",
+                        buttonTextColor: Colors.black,
+                        function: () => Navigator.push(
+                          context, SlideLeftRoute(screen: LessonApprovalScreen(reviewer: Reviewer.teacher,))),
                       ),
                     ),
                   ),

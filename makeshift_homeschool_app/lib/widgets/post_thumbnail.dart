@@ -45,7 +45,16 @@ class PostThumbnail extends StatelessWidget {
               SlideLeftRoute(
                   screen: PostReview(
                 postData: postData,
+                reviewer: Reviewer.principle,
               )));
+        } else if (viewType == PostExpandedViewType.teacher) {
+          Navigator.push(
+              context,
+              SlideLeftRoute(
+                  screen: PostReview(
+                postData: postData,
+                reviewer: Reviewer.teacher,
+              )));      
         }
         // if not user's profile, user cant delete posts
         else {

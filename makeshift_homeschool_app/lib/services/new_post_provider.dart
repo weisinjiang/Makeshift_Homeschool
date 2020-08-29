@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -263,7 +264,7 @@ class NewPostProvider {
   Future<void> post(
       {String uid, String name, int lessonCreated, String userLevel, String email}) async {
     lessonCreated++; // increment # of lessons user created, cant do it when adding to database
-    var databaseRef; // refernece to document the post will go into
+    DocumentReference databaseRef; // refernece to document the post will go into
 
     // if user is a Tutor, add it to approval collection
     if (userLevel == "Tutor") {
@@ -307,11 +308,14 @@ class NewPostProvider {
       "quiz": quiz,
       "rating": 5.0,
       "raters": 1,
-      "ownerEmail": email
+      "ownerEmail": email,
+      "approvals": 0
     };
 
     // Add the data into the refernece document made earlier
     await databaseRef.setData(newLesson);
+
+
 
     // update user's lessons created if they are not a tutor
     // Tutors will have this incremented after review

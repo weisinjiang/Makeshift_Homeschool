@@ -13,6 +13,9 @@ import 'package:provider/provider.dart';
 */
 
 class LessonApprovalScreen extends StatefulWidget {
+  final Reviewer reviewer;
+
+  const LessonApprovalScreen({Key key, this.reviewer}) : super(key: key);
   @override
   _LessonApprovalScreenState createState() => _LessonApprovalScreenState();
 }
@@ -33,7 +36,7 @@ class _LessonApprovalScreenState extends State<LessonApprovalScreen> {
         _isLoading = true;
       });
       var postFeedProvider = Provider.of<PostFeedProvider>(context);
-      postFeedProvider.fetchApprovalNeededPosts().then((_) {
+      postFeedProvider.fetchInReviewPosts(widget.reviewer).then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -52,7 +55,7 @@ class _LessonApprovalScreenState extends State<LessonApprovalScreen> {
     if (user != null) {
       return Scaffold(
           appBar: AppBar(
-            title: Text("Approval"),
+            title: Text("Review Tutor Lessons"),
             backgroundColor: kPaleBlue,
           ),
           body: _isLoading
@@ -71,7 +74,9 @@ class _LessonApprovalScreenState extends State<LessonApprovalScreen> {
                     itemBuilder: (_, index) => ChangeNotifierProvider.value(
                       value: postList[index],
                       child: PostThumbnail(
-                        viewType: PostExpandedViewType.principle,
+                        viewType: widget.reviewer == Reviewer.principle
+                        ? PostExpandedViewType.principle
+                        : PostExpandedViewType.teacher,
                       ),
                     ),
                   ),

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 
 class PostFeedProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance; // connect to firestore
@@ -63,12 +64,20 @@ class PostFeedProvider with ChangeNotifier {
     Method gets posts from the "Approval Required" database.
     Used for Principle to retrieve posts that needs approval before adding
     it to the database
+
+    if teacher, then fetch the tutor posts that have been approved by
+    the principle
   */
 
-  Future<void> fetchApprovalNeededPosts() async {
+  Future<void> fetchInReviewPosts(Reviewer reviewer) async {
     try {
-      QuerySnapshot fetchedData =
-          await _database.collection("approval required").getDocuments();
+      QuerySnapshot fetchedData;
+      if (reviewer == Reviewer.principle) {
+        fetchedData =
+            await _database.collection("approval required").getDocuments();
+      } else if (reviewer == Reviewer.teacher) {
+        fetchedData = await _database.collection("review").getDocuments();
+      }
 
       List<DocumentSnapshot> allDocuments = fetchedData.documents;
       List<Post> serializedPosts = [];
@@ -90,6 +99,8 @@ class PostFeedProvider with ChangeNotifier {
         post.setPostContents = doc["postContents"];
         post.setPostId = doc.documentID;
         post.setQuiz = doc["quiz"];
+        post.setOwnerEmail = doc["ownerEmail"];
+        post.setNumApprovals = doc["approvals"];
         serializedPosts.add(post); // add to local list
       });
 
@@ -146,6 +157,7 @@ class PostFeedProvider with ChangeNotifier {
         post.setPostId = doc.documentID;
         post.setQuiz = doc["quiz"];
         post.setOwnerEmail = doc["ownerEmail"];
+        // post does not need approval if it is in Lessons collection
         // if the post is a favorite
         if (favoritesList.contains(doc.documentID)) {
           post.setIsLiked = true;

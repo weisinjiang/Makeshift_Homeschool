@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
@@ -28,13 +29,127 @@ class PostReviewProvider {
   PostReviewProvider({this.postData, this.reviewer}) {
     this.quizData = Quiz(quizData: postData.getQuiz);
     this.quizData.serializeQuizData(); // make data into objects
-    this.feedback = {
-      "intro": TextEditingController(),
-      "body 1": TextEditingController(),
-      "body 2": TextEditingController(),
-      "body 3": TextEditingController(),
-      "conclusion": TextEditingController(),
-    };
+
+    // only initialize controllers if it's a teacher
+    if (reviewer == Reviewer.teacher) {
+      this.feedback = {
+        "introduction": TextEditingController(),
+        "body 1": TextEditingController(),
+        "body 2": TextEditingController(),
+        "body 3": TextEditingController(),
+        "conclusion": TextEditingController(),
+        "question 0": TextEditingController(),
+        "question 1": TextEditingController(),
+        "question 2": TextEditingController()
+      };
+    }
+  }
+
+  // increment the user's lesson created field and promote if the lastest
+  // approved post makes it 5.
+  Future<void> incrementUserLessonCreated() async {
+    try {
+      DocumentReference doc =
+          Firestore.instance.collection("users").document(postData.getOwnerUid);
+      DocumentSnapshot docData = await doc.get();
+
+      if (docData["lesson_created"] + 1 == 5) {
+        doc.updateData({"level": "Teacher", "lesson_created": 5});
+      } else {
+        doc.updateData({"lesson_created": FieldValue.increment(1)});
+      }
+    } catch (error) {
+      print("Errror with incrementing lesson created $error");
+      throw error;
+    }
+  }
+
+  // Increment the posts "approval" counter by 1. When it reaches 2, move it
+  // to the global lessons collection
+  // Also increment the user's "Lesson Created by 1"
+  Future<void> teacherApprove() async {
+    try {
+      DocumentReference doc =
+          Firestore.instance.collection("review").document(postData.getPostId);
+      DocumentSnapshot docData = await doc.get();
+      // if this approval makes the approval 2, then add it to lessons
+      if (docData["approvals"] + 1 == 2) {
+        // Post data, Firestore cant move documents
+        Map<String, dynamic> data = {
+          "age": postData.getAge,
+          "views": 0,
+          "lessonId": postData.getPostId,
+          "ownerUid": postData.getOwnerUid,
+          "ownerName": postData.getOwnerName,
+          "createdOn": DateTime.now().toString(),
+          "likes": 0,
+          "imageUrl": postData.getImageUrl,
+          "title": postData.getTitle,
+          "postContents": postData.getPostContents,
+          "quiz": postData.getQuiz,
+          "rating": 5.0,
+          "raters": 1,
+          "ownerEmail": postData.getOwnerEmail,
+        };
+
+        // Write the data into review collection
+        await _database
+            .collection("lessons")
+            .document(postData.getPostId)
+            .setData(data);
+
+        // Delete from Review collection
+        await _database
+            .collection("review")
+            .document(postData.getPostId)
+            .delete();
+
+        // increment the lesson created by 1 and promote if it becomes 5
+        await incrementUserLessonCreated();
+      
+      // if approve is not 2 yet
+      } else {
+        doc.updateData({"approvals": FieldValue.increment(1)});
+      }
+    } catch (error) {
+      // !if the post is no longer in th
+      print(
+          "Teacher Approve post that doesnt exists in Review Collection $error");
+      throw error;
+    }
+  }
+
+  bool canSend() {
+    bool canSend = true;
+    this.feedback.forEach((key, value) {
+      if (value.text.isEmpty) {
+        canSend = false;
+      }
+    });
+    return canSend;
+  }
+
+  // Add the feedback into a Feedback collection in the document
+  Future<void> sendFeedback() async {
+    bool isSuccessful = false;
+    Map<String, String> feedbacks = {};
+    this.feedback.forEach((key, controller) {
+      feedbacks[key] = controller.text;
+    });
+    // add it to the
+    try {
+      await Firestore.instance
+          .collection("review")
+          .document(postData.getPostId)
+          .collection("feedback")
+          .document()
+          .setData(feedbacks);
+    } catch (error) {
+      // !if the post is no longer in th
+      print(
+          "Teacher sending feedback to a post that doesnt exists in Review Collection$error");
+      throw error;
+    }
   }
 
   // When Principle denies the lesson, email is send to the owner informing them
@@ -69,7 +184,7 @@ class PostReviewProvider {
   // Approve the post and move it into the review collection
   // First read the document from the approval required collection
   // Then delete it and write the copied data into "Review" collection
-  Future<void> approve() async {
+  Future<void> principleApprove() async {
     try {
       // Post data, Firestore cant move documents
       Map<String, dynamic> data = {
@@ -86,7 +201,8 @@ class PostReviewProvider {
         "quiz": postData.getQuiz,
         "rating": 5.0,
         "raters": 1,
-        "ownerEmail": postData.getOwnerEmail
+        "ownerEmail": postData.getOwnerEmail,
+        "approvals": 0
       };
 
       // Write the data into review collection
@@ -208,6 +324,12 @@ class PostReviewProvider {
       Question question = this.quizData.getQuestionAt(i);
 
       contentToShowOnScreen.add(quizQuestionAndOption(question, screenSize));
+      // add feedback box if reviewer is a teacher
+      if (reviewer == Reviewer.teacher) {
+        contentToShowOnScreen.add(feedbackForm(
+            getControllerFor("question $i"), "Question $i Feedback Box"));
+        contentToShowOnScreen.add(SizedBox(height: 50));
+      }
     }
 
     return contentToShowOnScreen;

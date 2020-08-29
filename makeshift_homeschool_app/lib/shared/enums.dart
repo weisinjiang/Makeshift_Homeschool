@@ -19,7 +19,8 @@ enum PromotionType{
 enum PostExpandedViewType {
   owner, 
   global,
-  principle
+  principle,
+  teacher
 }
 
 /*
@@ -30,3 +31,4 @@ enum Reviewer {
   principle,
   teacher
 }
+
