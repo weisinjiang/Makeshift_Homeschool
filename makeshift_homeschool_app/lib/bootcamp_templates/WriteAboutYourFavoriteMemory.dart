@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
+import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
 
 
@@ -23,8 +24,8 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
     TextEditingController(), /// controller for "Why?" index4
   ];
 
-  Future<void> save(BootCampProvider database, String uid, String activityID, BuildContext context) async {
-    String userReponse = 
+  Future<void> save(BootCampProvider database, Map<String, dynamic> userData, String activityID, BuildContext context) async {
+    String userResponse = 
     """
     I remember this time when ${textController[0].text}!\n
     First, ${textController[1].text}.\n
@@ -33,10 +34,12 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
     This is my favorite memory because ${textController[4].text}.\n
     Thank you for reading about my favorite memory!\n
     """;
-    textController.forEach((controller) { 
-      //userReponse.add(controller.text);
-    });
-    await database.saveToUserProfile(uid, activityID, userReponse);
+    if (database.isBootcampComplete(this.textController)) {
+      await database.saveToUserProfile(userData, activityID, userResponse);
+      Navigator.of(context).pop();
+    } else {
+      showAlertDialog("Bootcamp has missing fields", "Not Complete", context);
+    }
 
     
     Navigator.of(context).pop();
@@ -183,7 +186,7 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
                   RaisedButton(
                     child: Text("Save"),
                     onPressed: () async {
-                      await save(database, user["uid"],"Write About Your Favorite Memory", context);
+                      await save(database, user,"Write About Your Favorite Memory", context);
                     }
                   )
   

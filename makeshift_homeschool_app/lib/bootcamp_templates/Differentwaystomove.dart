@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
+import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
 
 class DifferentWaysToMove extends StatefulWidget {
@@ -23,11 +24,8 @@ class _DifferentWaysToMoveState extends State<DifferentWaysToMove> {
     /// controller for "Explain why..." index2
   ];
 
-  Future<void> save(BootCampProvider database, String uid, String activityID,
+  Future<void> save(BootCampProvider database, Map<String, dynamic> userData, String activityID,
       BuildContext context) async {
-    
-
-    
     String userResponse = 
     """ 
     The name of my new way of walking is ${textController[0].text}.\n
@@ -39,9 +37,12 @@ class _DifferentWaysToMoveState extends State<DifferentWaysToMove> {
 
 
 
-    await database.saveToUserProfile(uid, activityID, userResponse);
-
-    Navigator.of(context).pop();
+    if (database.isBootcampComplete(this.textController)) {
+      await database.saveToUserProfile(userData, activityID, userResponse);
+      Navigator.of(context).pop();
+    } else {
+      showAlertDialog("Bootcamp has missing fields", "Not Complete", context);
+    }
   }
 
   void dispose() {
@@ -141,7 +142,7 @@ class _DifferentWaysToMoveState extends State<DifferentWaysToMove> {
               RaisedButton(
                   child: Text("Save"),
                   onPressed: () async {
-                    await save(database, user["uid"], "Different ways to move",
+                    await save(database, user, "Different ways to move",
                         context);
                   })
             ],

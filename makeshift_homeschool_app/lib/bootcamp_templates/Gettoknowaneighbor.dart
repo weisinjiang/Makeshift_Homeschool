@@ -6,9 +6,8 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
+import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
-
-
 
 class GetToKnowANeighbor extends StatefulWidget {
   @override
@@ -17,22 +16,44 @@ class GetToKnowANeighbor extends StatefulWidget {
 
 class _GetToKnowANeighborState extends State<GetToKnowANeighbor> {
   List<TextEditingController> textController = [
-    TextEditingController(), /// controller for "What happened?" index0
-    TextEditingController(), /// controller for "What happened?" index1
-    TextEditingController(), /// controller for "How did it start out?" index2
-    TextEditingController(), /// controller for "What happened next?" index3
-    TextEditingController(), /// controller for "How did it end?" index4
-    TextEditingController(), /// controller for "Why?" index5
-    TextEditingController(), /// controller for "Why?" index6
-    TextEditingController(), /// controller for "What happened next?" index7
-    TextEditingController(), /// controller for "How did it end?" index8
-    TextEditingController(), /// controller for "Why?" index9
-    TextEditingController(), /// controller for "Why?" index10
+    TextEditingController(),
+
+    /// controller for "What happened?" index0
+    TextEditingController(),
+
+    /// controller for "What happened?" index1
+    TextEditingController(),
+
+    /// controller for "How did it start out?" index2
+    TextEditingController(),
+
+    /// controller for "What happened next?" index3
+    TextEditingController(),
+
+    /// controller for "How did it end?" index4
+    TextEditingController(),
+
+    /// controller for "Why?" index5
+    TextEditingController(),
+
+    /// controller for "Why?" index6
+    TextEditingController(),
+
+    /// controller for "What happened next?" index7
+    TextEditingController(),
+
+    /// controller for "How did it end?" index8
+    TextEditingController(),
+
+    /// controller for "Why?" index9
+    TextEditingController(),
+
+    /// controller for "Why?" index10
   ];
 
-  Future<void> save(BootCampProvider database, String uid, String activityID, BuildContext context) async {
-    String userReponse = 
-    """
+  Future<void> save(BootCampProvider database, Map<String, dynamic> userData,
+      String activityID, BuildContext context) async {
+    String userResponse = """
     Who are you interviewing? ${textController[0].text}\n
     1. What's something you wish you did?\n
     ${textController[1].text}\n
@@ -55,308 +76,284 @@ class _GetToKnowANeighborState extends State<GetToKnowANeighbor> {
     10. What is something you do to relax or recharge after a long day?\n
     ${textController[10].text}\n
     """;
-    textController.forEach((controller) { 
-      //userReponse.add(controller.text);
-    });
-    await database.saveToUserProfile(uid, activityID, userReponse);
-
-    
-    Navigator.of(context).pop();
-  
+    if (database.isBootcampComplete(this.textController)) {
+      await database.saveToUserProfile(userData, activityID, userResponse);
+      Navigator.of(context).pop();
+    } else {
+      showAlertDialog("Bootcamp has missing fields", "Not Complete", context);
+    }
   }
 
   void dispose() {
-    textController.forEach((element) {element.dispose();});
+    textController.forEach((element) {
+      element.dispose();
+    });
     super.dispose();
   }
 
-    @override
-    Widget build(BuildContext context) {
-     
+  @override
+  Widget build(BuildContext context) {
+    var database = Provider.of<BootCampProvider>(context);
+    var user = Provider.of<AuthProvider>(context).getUser;
+    final screenSize = MediaQuery.of(context).size; // size of the screen
 
-      var database = Provider.of<BootCampProvider>(context);
-      var user = Provider.of<AuthProvider>(context).getUser;
-      final screenSize = MediaQuery.of(context).size; // size of the screen
-  
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("Get to know your neighbor"),
-        ),
-        body: Container(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Get to know your neighbor"),
+      ),
+      body: Container(
+        color: Colors.white,
+        padding: EdgeInsets.all(15),
+        height: screenSize.height,
+        width: screenSize.width,
+        child: Container(
           color: Colors.white,
-          padding: EdgeInsets.all(15),
-          height: screenSize.height,
-          width: screenSize.width,
-          child: Container(
-            color: Colors.white,
-            height: screenSize.height * 0.95,
-          
-            child: ListView(
-                
-                children: <Widget>[
-  
-  
-  
-                  /// Image on top
-                  
-                  
-                  Image.asset(
-                    "asset/bootcamp/interview.gif", 
-                    height: screenSize.height*0.3,
-                    width: screenSize.width,
-                    ),
+          height: screenSize.height * 0.95,
+          child: ListView(
+            children: <Widget>[
+              /// Image on top
 
-                    SizedBox(height: screenSize.height*0.03,),
-                  
-                 
-  
-  
-                  Row(
-                    children: [
-
-                      Text("Who are you interviewing?  "),
-
-                      SizedBox(
-                        width: 120,
-                        child: TextFormField(
-                          
-                /// add a controller and attach it to this field
-                // keyboardType: TextInputType.multiline,
-                //     maxLines: null,
-                controller: textController[0],
-                decoration: InputDecoration(
-                      hintText: "Name"
+              Image.asset(
+                "asset/bootcamp/interview.gif",
+                height: screenSize.height * 0.3,
+                width: screenSize.width,
               ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
               ),
-                        
-                      ),
 
-                    
-
-                      
-
-
-
-                    ],
-                  ),
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-                  Text("1. What's something you wish you did?"),
+              Row(
+                children: [
+                  Text("Who are you interviewing?  "),
                   SizedBox(
                     width: 120,
                     child: TextFormField(
-                      
-                /// add a controller and attach it to this field
-                // keyboardType: TextInputType.multiline,
-                //     maxLines: null,
-                controller: textController[1],
-                decoration: InputDecoration(
-                  hintText: "Answer One"
-              ),
-              ),
-                    
+                      /// add a controller and attach it to this field
+                      // keyboardType: TextInputType.multiline,
+                      //     maxLines: null,
+                      controller: textController[0],
+                      decoration: InputDecoration(hintText: "Name"),
+                    ),
                   ),
-
-                  SizedBox(height: screenSize.height*0.03,),
-  
-                  SizedBox(height: screenSize.height*0.03,),
-                  
-
-
-                  Text("2. What's your favorite relaxing activity?"),
-  
-               
-  
-                  SizedBox(
-                    child: TextFormField(
-                /// add a controller and attach it to this field
-                keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                controller: textController[2],
-                decoration: InputDecoration(
-                  hintText: "Answer Two"
-              ),
-              ),
-                    width: screenSize.width,
-                  ),
-
-
-                  SizedBox(height: screenSize.height*0.03,),
-  
-                  
-                  Text("3. What would be your ideal vacation?"),
-  
-  
-                  SizedBox(
-                    child: TextFormField(
-                /// add a controller and attach it to this field
-                keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                controller: textController[3],
-                decoration: InputDecoration(
-                  hintText: "Answer Three"
-              ),
-              ),
-                    width: screenSize.width,
-                  ),
-
-                  SizedBox(height: screenSize.height*0.03,),
-  
-                  Text("4. If you could go back and tell your younger self something, what would you tell them?"),
-  
-                  SizedBox(
-                    child: TextFormField(
-                /// add a controller and attach it to this field
-                keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                controller: textController[4],
-                decoration: InputDecoration(
-                  hintText: "Answer Four"
-              ),
-              ),
-                    width: screenSize.width,
-                  ),
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-  
-                  Text("5. What's something about yourself you especially like?"),
-  
-                  SizedBox(width: 300,),
-  
-                  SizedBox(
-                    child: TextFormField(
-                /// add a controller and attach it to this field
-                keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                controller: textController[5],
-                decoration: InputDecoration(
-                  hintText: "Answer Five"
-              ),
-              ),
-                    width: screenSize.width,
-                  ),
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-                  Text("6. How has your childhood shaped you, and you personality?"),
-  
-                  SizedBox(width: 300,),
-  
-                  SizedBox(
-                    child: TextFormField(
-                /// add a controller and attach it to this field
-                keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                controller: textController[6],
-                decoration: InputDecoration(
-                  hintText: "Answer Six"
-              ),
-              ),
-                    width: screenSize.width,
-                  ),
-
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-                  Text("7. What do your friends and family like best about you?"),
-  
-                  SizedBox(width: 300,),
-  
-                  SizedBox(
-                    child: TextFormField(
-                /// add a controller and attach it to this field
-                keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                controller: textController[7],
-                decoration: InputDecoration(
-                  hintText: "Answer Seven"
-              ),
-              ),
-                    width: screenSize.width,
-                  ),
-
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-                  Text("8. What's something you regret or a lesson learned?"),
-  
-                  SizedBox(width: 300,),
-  
-                  SizedBox(
-                    child: TextFormField(
-                /// add a controller and attach it to this field
-                keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                controller: textController[8],
-                decoration: InputDecoration(
-                  hintText: "Answer Eight"
-              ),
-              ),
-                    width: screenSize.width,
-                  ),
-
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-
-                  Text("9. What is a belief or a point of view that you hold that is not shared by most people?"),
-  
-                  SizedBox(width: 300,),
-  
-                  SizedBox(
-                    child: TextFormField(
-                /// add a controller and attach it to this field
-                keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                controller: textController[9],
-                decoration: InputDecoration(
-                  hintText: "Answer Nine"
-              ),
-              ),
-                    width: screenSize.width,
-                  ),
-
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-
-                  Text("10. What is something you do to relax and recharge after a long day?"),
-  
-                  SizedBox(width: 300,),
-  
-                  SizedBox(
-                    child: TextFormField(
-                /// add a controller and attach it to this field
-                keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                controller: textController[10],
-                decoration: InputDecoration(
-                  hintText: "Answer Ten"
-              ),
-              ),
-                    width: screenSize.width,
-                  ),
-
-
-                  SizedBox(height: screenSize.height*0.03,),
-
-
-
-                  RaisedButton(
-                    child: Text("Save"),
-                    onPressed: () async {
-                      await save(database, user["uid"],"Get to know a neighbor", context);
-                    }
-                  )
-  
-  
                 ],
               ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              Text("1. What's something you wish you did?"),
+              SizedBox(
+                width: 120,
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  // keyboardType: TextInputType.multiline,
+                  //     maxLines: null,
+                  controller: textController[1],
+                  decoration: InputDecoration(hintText: "Answer One"),
+                ),
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              Text("2. What's your favorite relaxing activity?"),
+
+              SizedBox(
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: textController[2],
+                  decoration: InputDecoration(hintText: "Answer Two"),
+                ),
+                width: screenSize.width,
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              Text("3. What would be your ideal vacation?"),
+
+              SizedBox(
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: textController[3],
+                  decoration: InputDecoration(hintText: "Answer Three"),
+                ),
+                width: screenSize.width,
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              Text(
+                  "4. If you could go back and tell your younger self something, what would you tell them?"),
+
+              SizedBox(
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: textController[4],
+                  decoration: InputDecoration(hintText: "Answer Four"),
+                ),
+                width: screenSize.width,
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              Text("5. What's something about yourself you especially like?"),
+
+              SizedBox(
+                width: 300,
+              ),
+
+              SizedBox(
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: textController[5],
+                  decoration: InputDecoration(hintText: "Answer Five"),
+                ),
+                width: screenSize.width,
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              Text(
+                  "6. How has your childhood shaped you, and you personality?"),
+
+              SizedBox(
+                width: 300,
+              ),
+
+              SizedBox(
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: textController[6],
+                  decoration: InputDecoration(hintText: "Answer Six"),
+                ),
+                width: screenSize.width,
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              Text("7. What do your friends and family like best about you?"),
+
+              SizedBox(
+                width: 300,
+              ),
+
+              SizedBox(
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: textController[7],
+                  decoration: InputDecoration(hintText: "Answer Seven"),
+                ),
+                width: screenSize.width,
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              Text("8. What's something you regret or a lesson learned?"),
+
+              SizedBox(
+                width: 300,
+              ),
+
+              SizedBox(
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: textController[8],
+                  decoration: InputDecoration(hintText: "Answer Eight"),
+                ),
+                width: screenSize.width,
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              Text(
+                  "9. What is a belief or a point of view that you hold that is not shared by most people?"),
+
+              SizedBox(
+                width: 300,
+              ),
+
+              SizedBox(
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: textController[9],
+                  decoration: InputDecoration(hintText: "Answer Nine"),
+                ),
+                width: screenSize.width,
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              Text(
+                  "10. What is something you do to relax and recharge after a long day?"),
+
+              SizedBox(
+                width: 300,
+              ),
+
+              SizedBox(
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: textController[10],
+                  decoration: InputDecoration(hintText: "Answer Ten"),
+                ),
+                width: screenSize.width,
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              RaisedButton(
+                  child: Text("Save"),
+                  onPressed: () async {
+                    await save(
+                        database, user, "Get to know a neighbor", context);
+                  })
+            ],
           ),
         ),
-      );
-    }
+      ),
+    );
+  }
 }
-  

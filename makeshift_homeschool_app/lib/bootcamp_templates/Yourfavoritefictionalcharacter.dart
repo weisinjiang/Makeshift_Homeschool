@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
+import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
 
 class Yourfavoritefictionalcharacter extends StatefulWidget {
@@ -40,9 +41,9 @@ class _YourfavoritefictionalcharacterState
     /// controller for "Why?" index4
   ];
 
-  Future<void> save(BootCampProvider database, String uid, String activityID,
+  Future<void> save(BootCampProvider database, Map<String, dynamic> userData, String activityID,
       BuildContext context) async {
-    String userReponse = """
+    String userResponse = """
     My favorite fictional charecter is ${textController[0].text} from ${textController[1].text}.\n
     Here are some reasons why I like this character:\n
     1. ${textController[2].text}\n
@@ -52,12 +53,13 @@ class _YourfavoritefictionalcharacterState
     5. ${textController[6].text}\n
     Thank you for reading about my favorite fictional charecter! I hope you enjoyed!\n
     """;
-    textController.forEach((controller) {
-      //userReponse.add(controller.text);
-    });
-    await database.saveToUserProfile(uid, activityID, userReponse);
 
-    Navigator.of(context).pop();
+    if (database.isBootcampComplete(this.textController)) {
+      await database.saveToUserProfile(userData, activityID, userResponse);
+      Navigator.of(context).pop();
+    } else {
+      showAlertDialog("Bootcamp has missing fields", "Not Complete", context);
+    }
   }
 
   void dispose() {
@@ -232,7 +234,7 @@ class _YourfavoritefictionalcharacterState
               RaisedButton(
                   child: Text("Save"),
                   onPressed: () async {
-                    await save(database, user["uid"], "Your favorite character",
+                    await save(database, user, "Your favorite character",
                         context);
                   })
             ],

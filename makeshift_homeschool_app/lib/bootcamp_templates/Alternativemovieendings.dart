@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
+import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
 
 class AlternativeMovieEndings extends StatefulWidget {
@@ -34,9 +35,9 @@ class _AlternativeMovieEndingsState extends State<AlternativeMovieEndings> {
     TextEditingController(),
   ];
 
-  Future<void> save(BootCampProvider database, String uid, String activityID,
-      BuildContext context) async {
-    String userReponse = """
+  Future<void> save(BootCampProvider database, Map<String, dynamic> userData,
+      String activityID, BuildContext context) async {
+    String userResponse = """
     Today I'm questioning ${textController[0].text} plot.\n
     For those of you who don't know ${textController[1].text} is a movie.\n
     The actual plot goes like this:\n
@@ -49,12 +50,12 @@ class _AlternativeMovieEndingsState extends State<AlternativeMovieEndings> {
     ${textController[5].text}!\n
     Thank you for reading!\n
     """;
-    textController.forEach((controller) {
-      //userReponse.add(controller.text);
-    });
-    await database.saveToUserProfile(uid, activityID, userReponse);
-
-    Navigator.of(context).pop();
+    if (database.isBootcampComplete(this.textController)) {
+      await database.saveToUserProfile(userData, activityID, userResponse);
+      Navigator.of(context).pop();
+    } else {
+      showAlertDialog("Bootcamp has missing fields", "Not Complete", context);
+    }
   }
 
   void dispose() {
@@ -208,8 +209,8 @@ class _AlternativeMovieEndingsState extends State<AlternativeMovieEndings> {
               RaisedButton(
                   child: Text("Save"),
                   onPressed: () async {
-                    await save(database, user["uid"],
-                        "Alternative Movie Endings", context);
+                    await save(
+                        database, user, "Alternative Movie Endings", context);
                   })
             ],
           ),

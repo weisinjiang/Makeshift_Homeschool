@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
+import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
 
 class MakeYourFavoriteGameEvenBetter extends StatefulWidget {
@@ -38,9 +39,9 @@ class _MakeYourFavoriteGameEvenBetterState
     /// controller for "Why?" index4
   ];
 
-  Future<void> save(BootCampProvider database, String uid, String activityID,
-      BuildContext context) async {
-    String userReponse = """
+  Future<void> save(BootCampProvider database, Map<String, dynamic> userData,
+      String activityID, BuildContext context) async {
+    String userResponse = """
     Dear creator of ${textController[0].text},\n
     I really enjoy playing ${textController[1].text}.\n
     And I have some ideas on how to make it even better!\n
@@ -51,12 +52,12 @@ class _MakeYourFavoriteGameEvenBetterState
     5. ${textController[6].text}\n
     Thank you for considering my ideas!
     """;
-    textController.forEach((controller) {
-      //userReponse.add(controller.text);
-    });
-    await database.saveToUserProfile(uid, activityID, userReponse);
-
-    Navigator.of(context).pop();
+    if (database.isBootcampComplete(this.textController)) {
+      await database.saveToUserProfile(userData, activityID, userResponse);
+      Navigator.of(context).pop();
+    } else {
+      showAlertDialog("Bootcamp has missing fields", "Not Complete", context);
+    }
   }
 
   void dispose() {
@@ -245,7 +246,7 @@ class _MakeYourFavoriteGameEvenBetterState
               RaisedButton(
                   child: Text("Save"),
                   onPressed: () async {
-                    await save(database, user["uid"],
+                    await save(database, user,
                         "Make your favorite game even better", context);
                   })
             ],

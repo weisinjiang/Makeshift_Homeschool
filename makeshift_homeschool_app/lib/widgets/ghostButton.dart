@@ -34,7 +34,8 @@ class GhostButton extends StatelessWidget {
             child: Center(
               child: Text(buttonName, style: TextStyle(
                 color: buttonTextColor,
-                fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold,
+                fontSize: 26
               ),),
             ),
           ),

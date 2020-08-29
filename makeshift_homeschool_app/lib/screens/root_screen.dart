@@ -180,7 +180,7 @@ class _RootScreenState extends State<RootScreen> {
                       child: GhostButton(
                         borderRadius: 20.0,
                         buttonBorderColor: kRedOrange,
-                        buttonFillColor: kPaleBlue,
+                        buttonFillColor: kRedOrange,
                         buttonName: "Approve Lessons",
                         buttonTextColor: Colors.black,
                         function: () => Navigator.push(
@@ -198,7 +198,7 @@ class _RootScreenState extends State<RootScreen> {
                       child: GhostButton(
                         borderRadius: 20.0,
                         buttonBorderColor: kRedOrange,
-                        buttonFillColor: kPaleBlue,
+                        buttonFillColor: kRedOrange,
                         buttonName: "Review Tutor Lessons",
                         buttonTextColor: Colors.black,
                         function: () => Navigator.push(
