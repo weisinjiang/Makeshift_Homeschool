@@ -142,6 +142,7 @@ class PostFeedProvider with ChangeNotifier {
         post.setPostContents = doc["postContents"];
         post.setPostId = doc.documentID;
         post.setQuiz = doc["quiz"];
+        post.setOwnerEmail = doc["ownerEmail"];
         // if the post is a favorite
         if (favoritesList.contains(doc.documentID)) {
           post.setIsLiked = true;

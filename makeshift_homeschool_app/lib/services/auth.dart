@@ -36,6 +36,7 @@ class AuthProvider with ChangeNotifier {
   Map<String, String> get getUser => this._userInformation;
   String get getUserLevel => this._userInformation["level"];
   String get getUserName => this._userInformation["username"];
+  String get getEmail => this._userInformation["email"];
   int get getLessonCreatedAsInt =>
       int.parse(this._userInformation["lesson_created"]);
   String get getToken => this._token.toString();

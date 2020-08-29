@@ -69,6 +69,7 @@ class NewPostScreen extends StatelessWidget {
                               uid: userInfo.getUserID,
                               name: userInfo.getUserName,
                               userLevel: userInfo.getUserLevel, 
+                              email: userInfo.getEmail,
                               lessonCreated: userInfo.getLessonCreatedAsInt);
 
                           Navigator.of(context).pop();

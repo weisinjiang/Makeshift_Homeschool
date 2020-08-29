@@ -261,7 +261,7 @@ class NewPostProvider {
   */
 
   Future<void> post(
-      {String uid, String name, int lessonCreated, String userLevel}) async {
+      {String uid, String name, int lessonCreated, String userLevel, String email}) async {
     lessonCreated++; // increment # of lessons user created, cant do it when adding to database
     var databaseRef; // refernece to document the post will go into
 
@@ -306,7 +306,8 @@ class NewPostProvider {
       "postContents": contentsAsMap,
       "quiz": quiz,
       "rating": 5.0,
-      "raters": 1
+      "raters": 1,
+      "ownerEmail": email
     };
 
     // Add the data into the refernece document made earlier

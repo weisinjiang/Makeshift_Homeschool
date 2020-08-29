@@ -37,10 +37,11 @@ class PostReviewProvider {
     };
   }
 
-  Future<String> deny(Post postData, String email, String token) async {
+  Future<void> deny(Post postData, String email, String token) async {
     String url =
         "https://us-east4-makeshift-homeschool-281816.cloudfunctions.net/send_lesson_denied_email";
 
+    // Cloud function takes in a json body
     Map<String, dynamic> jsonData = {
       "data": {
         "username": postData.getOwnerName,
@@ -50,9 +51,13 @@ class PostReviewProvider {
     };
     HttpClient httpClient = HttpClient();
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
+    // describes the type of data of the http request
     request.headers.set('content-type', 'application/json');
+    // encode the json and add it to the http request
     request.add(utf8.encode(json.encode(jsonData)));
+    // calls the request and returns a val, then close it
     HttpClientResponse response = await request.close();
+    // reponse of the request
     String reply = await response.transform(utf8.decoder).join();
     httpClient.close();
     print(reply);
