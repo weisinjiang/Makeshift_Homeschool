@@ -236,7 +236,7 @@ class Post with ChangeNotifier {
     /// Map<String, Map<String, String>> from database
     var postContentList = this._postContents;
     contentToShowOnScreen.add(buildImage(
-        this._imageUrl, this._title, screenSize.height, screenSize.width));
+        this._imageUrl, this._title, screenSize.height, this._ownerName, screenSize.width));
     contentToShowOnScreen.add(SizedBox(
       height: 30,
     ));

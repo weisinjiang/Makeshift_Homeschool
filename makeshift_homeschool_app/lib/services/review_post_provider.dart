@@ -286,7 +286,7 @@ class PostReviewProvider {
     /// Map<String, Map<String, String>> from database
     var postContentList = postData.getPostContents;
     contentToShowOnScreen.add(buildImage(postData.getImageUrl,
-        postData.getTitle, screenSize.height, screenSize.width));
+        postData.getTitle, screenSize.height, postData.getOwnerName, screenSize.width));
     contentToShowOnScreen.add(SizedBox(
       height: 30,
     ));

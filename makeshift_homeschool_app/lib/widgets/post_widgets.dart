@@ -41,7 +41,7 @@ Widget buildParagraph(String text, double width) {
   );
 }
 
-Widget buildImage(String url, String title, double height, double width) {
+Widget buildImage(String url, String title, double height, String username, double width) {
   return Container(
       height: height * 0.25,
       width: width,
@@ -49,16 +49,26 @@ Widget buildImage(String url, String title, double height, double width) {
           //borderRadius: BorderRadius.circular(0.0),
           border: Border.all(color: Colors.black, style: BorderStyle.solid, width:1),
           image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover)),
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: StrokeText(
-          fontSize: width * 0.10,
-          strokeColor: Colors.black,
-          strokeWidth: 6,
-          text: title,
-          textColor: Colors.white,
-        )
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          StrokeText(
+            fontSize: width * 0.10,
+            strokeColor: Colors.black,
+            strokeWidth: 6,
+            text: title,
+            textColor: Colors.white,
+          ),
+          StrokeText(
+            fontSize: width * 0.10,
+            strokeColor: Colors.black,
+            strokeWidth: 6,
+            text: "By: $username",
+            textColor: Colors.white,
+          ),
+        ],
+      ),
           
       
     
