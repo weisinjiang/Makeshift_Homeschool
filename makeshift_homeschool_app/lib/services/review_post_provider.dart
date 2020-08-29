@@ -82,7 +82,8 @@ class PostReviewProvider {
         "postContents": postData.getPostContents,
         "quiz": postData.getQuiz,
         "rating": 5.0,
-        "raters": 1
+        "raters": 1,
+        "ownerEmail": postData.getOwnerEmail
       };
 
       // Write the data into review collection
