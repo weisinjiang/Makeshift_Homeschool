@@ -115,16 +115,17 @@ class NewPostScreen extends StatelessWidget {
                   color: kPaleBlue,
                   height: screenSize.height,
                   width: screenSize.width,
-
-                  /// Users can add infinite amount of subtiles and paragraphs, so when
-                  /// it goes out of screen, it should be scrollable
-                  child: Container(
-                    height: screenSize.height * 0.85,
-                    width: screenSize.width * 0.96,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        /// Get the initial widgetlist
-                        children: newPostProvider.getNewPostWidgetList,
+                  // Users can tap anywhere on the screen to exit keyboard
+                  child: GestureDetector(
+                    onTap: () => FocusScope.of(context).unfocus(),
+                                      child: Container(
+                      height: screenSize.height * 0.85,
+                      width: screenSize.width * 0.96,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          /// Get the initial widgetlist
+                          children: newPostProvider.getNewPostWidgetList,
+                        ),
                       ),
                     ),
                   ),
