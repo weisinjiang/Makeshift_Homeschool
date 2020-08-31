@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/promo/firstsignup.dart';
 import 'package:makeshift_homeschool_app/screens/reset_password.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
@@ -111,6 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
             _userInput.getReferral);
         if (result == true) {
           Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => IntroSlides()));
           // this is where you add the code
         }
       }

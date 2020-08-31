@@ -84,6 +84,7 @@ flutter:
     - asset/gif/
     - asset/bootcamp/
     - asset/icons/
+    - asset/intro_slides/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
