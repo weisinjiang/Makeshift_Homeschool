@@ -48,7 +48,7 @@ class ActivityButton extends StatelessWidget {
               : () {
                   // show a snack bar if user has no permission
                   Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text("You cannot use this, yet"),
+                    content: Text("Complete five lessons to unlock lesson builder!"),
                     duration: Duration(seconds: 2),
                   ));
                 }, // Function this button will perform

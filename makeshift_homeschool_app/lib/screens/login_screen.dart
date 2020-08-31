@@ -111,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
             _userInput.getReferral);
         if (result == true) {
           Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
+          // this is where you add the code
         }
       }
       _formKey.currentState.reset(); // Clear the form when logged in
