@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/promo/tutor_bootcamp.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 
@@ -27,9 +28,13 @@ class PromotionScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if(promotionType == PromotionType.student_to_tutor)...[
-              Text("You have completed 5 lesson!", style: kBoldTextStyle,),
+              Text("Congradulations! You have completed 5 lessons!", style: kBoldTextStyle,),
               Text("You are now a Tutor and you can now use the Teach Button!", style: kBoldTextStyle,),
-              Text("Show the new features slides here")
+              RaisedButton(  
+                child: Text("Continue"),
+                color: Colors.greenAccent,
+                onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TutorBootcamp1()));},
+              )
             ]
           ],
         ),
