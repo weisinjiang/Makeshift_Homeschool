@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 
-/// 
-/// First set of slides before the first question
+///
+//! First set of slides before the first question
 /// 
 
 class TutorBootcamp1 extends StatelessWidget {
@@ -44,14 +44,14 @@ class TutorBootcamp1 extends StatelessWidget {
 }
 
 /// 
-/// First question
+//! First question
 /// 
 
 
 class TutorBootcampQuestion1 extends StatelessWidget {
   @override
 
-  /// Alert Dialog to tell you if you were correct
+  //! Alert Dialog to tell you if you were correct
   
   showAlertDialog1(BuildContext context) {
 
@@ -65,7 +65,7 @@ class TutorBootcampQuestion1 extends StatelessWidget {
       onPressed:  () {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TutorBootcamp2()));},
     );
 
-    // set up the AlertDialog
+    //! set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Correct!"),
       content: Text("Your answer is correct! Would you like to continue?"),
@@ -75,7 +75,7 @@ class TutorBootcampQuestion1 extends StatelessWidget {
       ],
     );
 
-    // show the dialog
+    //! show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -84,7 +84,7 @@ class TutorBootcampQuestion1 extends StatelessWidget {
     );
   }
 
-  /// Alert Dialog to tell you if you were incorrect
+  //! Alert Dialog to tell you if you were incorrect
 
   showAlertDialog2(BuildContext context) {
     
@@ -93,7 +93,7 @@ class TutorBootcampQuestion1 extends StatelessWidget {
       onPressed:  () {Navigator.of(context).pop();},
     );
 
-    // set up the AlertDialog
+    //! set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Wrong"),
       content: Text("Your answer is incorrect. Try again!"),
@@ -102,7 +102,7 @@ class TutorBootcampQuestion1 extends StatelessWidget {
       ],
     );
 
-    // show the dialog
+    //! show the dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -112,7 +112,7 @@ class TutorBootcampQuestion1 extends StatelessWidget {
   }
 
 
-  /// Question and buttons to answer
+  //! Question and buttons to answer
   Widget build(BuildContext context) {
     return Scaffold(  
       appBar: AppBar(title: Text("qUeStIoN OnE"),),
@@ -125,7 +125,7 @@ class TutorBootcampQuestion1 extends StatelessWidget {
 
 
 
-                  /// Answers
+                  //! Answers
                   RaisedButton(  
                     child: Text("How you start a post"),
                     onPressed: () {showAlertDialog1(context);}, // Says you were correct
@@ -158,7 +158,7 @@ class TutorBootcampQuestion1 extends StatelessWidget {
 
 
 ///
-/// Next set of slides before second question
+//! Next set of slides before second question
 /// 
 
 class TutorBootcamp2 extends StatelessWidget {
