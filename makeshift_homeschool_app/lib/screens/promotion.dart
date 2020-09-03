@@ -28,6 +28,7 @@ class PromotionScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if(promotionType == PromotionType.student_to_tutor)...[
+              SizedBox(child: Image.asset("asset/tutor_slides/congrats.gif", width: screenSize.width,), width: screenSize.width,),
               Text("Congradulations! You have completed 5 lessons!", style: kBoldTextStyle,),
               Text("You are now a Tutor and you can now use the Teach Button!", style: kBoldTextStyle,),
               RaisedButton(  

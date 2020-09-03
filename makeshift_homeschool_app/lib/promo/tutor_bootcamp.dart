@@ -14,22 +14,22 @@ class TutorBootcamp1 extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         children: [
           Container(
-            child: SizedBox(child: Image.asset("asset/tutor_slides/congrats.gif", width: screenSize.width,), width: screenSize.width, height: screenSize.height,),
-            color: Colors.white,
-          ),
-          Container(
             child: Center(child: Image.asset("asset/tutor_slides/tutorslide1.png")),
             color: Colors.white,
           ),
           Container(
-            color: Colors.greenAccent,
+            child: Center(child: Image.asset("asset/tutor_slides/tutorslide2.png")),
+            color: Colors.white,
+          ),
+          Container(
+            color: Colors.white,
             child: Column(  
               children: [
-                SizedBox(height: 200,),
-                Text("Page 3"),
+                SizedBox(height: 91,),
+                Center(child: Image.asset("asset/tutor_slides/tutorslide3.png")),
                 RaisedButton(  
                   onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TutorBootcampQuestion1()));},
-                  color: Colors.red,
+                  color: Colors.greenAccent,
                   child: Text("Next Page"),
                 ),
               ],
@@ -114,38 +114,38 @@ class TutorBootcampQuestion1 extends StatelessWidget {
 
   //! Question and buttons to answer
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size; // size of the screen
     return Scaffold(  
-      appBar: AppBar(title: Text("qUeStIoN OnE"),),
       body: Center(
         child: Column(  
                 children: [
                   SizedBox(height: 150,),
-                  Text("QuEsTiOn fOr yOu, wHaT iS aN iNtRoDuCtIon?"), // Question
+                  Text("What is an introduction?", style: TextStyle(fontSize: 25),), // Question
                   SizedBox(height: 50,),
 
 
 
-                  //! Answers
+                  //! Answers !\\
                   RaisedButton(  
-                    child: Text("How you start a post"),
-                    onPressed: () {showAlertDialog1(context);}, // Says you were correct
-                  ),
+                          child: SizedBox(child: Text("How you start a post", textAlign: TextAlign.center,), width: screenSize.width/1.7,),
+                          onPressed: () {showAlertDialog1(context);}, // Says you were correct
+                        ),
                   RaisedButton(  
-                    child: Text("Where you say Goodbye"),
+                    child: SizedBox(child: Text("Wrong", textAlign: TextAlign.center,), width: screenSize.width/1.7,),
                     onPressed: () {showAlertDialog2(context);}, // Says you were incorrect
                   ),
                   RaisedButton(  
-                    child: Text("You play with rubber duckies"),
+                    child: SizedBox(child: Text("Wrong", textAlign: TextAlign.center,), width: screenSize.width/1.7,),
                     onPressed: () {showAlertDialog2(context);}, // Says you were incorrect
                   ),
                   RaisedButton(  
-                    child: Text("La la la la la"),
+                    child: SizedBox(child: Text("Wrong", textAlign: TextAlign.center,), width: screenSize.width/1.7,),
                     onPressed: () {showAlertDialog2(context);}, // Says you were incorrect
                   ),
 
                   RaisedButton(  
                   onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TutorBootcamp1()));}, 
-                  color: Colors.orange,
+                  color: Colors.greenAccent,
                   child: Text("Back"),
                 ),
                 ],
