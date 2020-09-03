@@ -22,14 +22,15 @@ class _PracticeWinningFriendsState extends State<PracticeWinningFriends> {
     TextEditingController(),
 
     /// controller for "What happened?" index1
+    
+    
   ];
 
   Future<void> save(BootCampProvider database, Map<String, dynamic> userData,
       String activityID, BuildContext context) async {
     String userResponse = """
-      How did it go?\n
-      ${textController[0].text}\n
-      Will you use the stratagy again?\n
+      I tried a how to win friends strategy on ${textController[0].text} today.\n
+      And this is what happened:\n
       ${textController[1].text}\n
     """;
     if (database.isBootcampComplete(this.textController)) {
@@ -119,7 +120,7 @@ class _PracticeWinningFriendsState extends State<PracticeWinningFriends> {
                 height: screenSize.height * 0.03,
               ),
 
-              Text("How did it go?"),
+              Text("Who are you testing the strategy on?"),
 
               SizedBox(
                 width: 120,
@@ -129,15 +130,16 @@ class _PracticeWinningFriendsState extends State<PracticeWinningFriends> {
                   //     maxLines: null,
                   controller: textController[0],
                   decoration: InputDecoration(
-                      hintText: "Did it go well? Did nothing change?"),
+                      hintText: "Write their name here"),
                 ),
               ),
 
               SizedBox(
                 height: screenSize.height * 0.03,
               ),
-
-              Text("Will you use the stratagy again?"),
+              
+              
+              Text("What happened?"),
 
               SizedBox(
                 width: 120,
@@ -146,9 +148,11 @@ class _PracticeWinningFriendsState extends State<PracticeWinningFriends> {
                   // keyboardType: TextInputType.multiline,
                   //     maxLines: null,
                   controller: textController[1],
-                  decoration: InputDecoration(hintText: "Why or why not?"),
+                  decoration: InputDecoration(
+                      hintText: "Did it go well? Did nothing change?"),
                 ),
               ),
+
 
               SizedBox(
                 height: screenSize.height * 0.03,

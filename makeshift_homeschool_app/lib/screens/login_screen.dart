@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/promo/firstsignup.dart';
 import 'package:makeshift_homeschool_app/screens/reset_password.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
@@ -111,6 +112,8 @@ class _LoginScreenState extends State<LoginScreen> {
             _userInput.getReferral);
         if (result == true) {
           Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => IntroSlides()));
+          // this is where you add the code
         }
       }
       _formKey.currentState.reset(); // Clear the form when logged in
@@ -141,6 +144,16 @@ class _LoginScreenState extends State<LoginScreen> {
         "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/PRIVACY%20NOTICE.pdf?alt=media&token=35bbadd4-5e47-42d7-b9c5-bee4daa2f0ce";
     if (await canLaunch(privacyUrl)) {
       await launch(privacyUrl);
+    } else {
+      showErrorMessage("Unable to make the connection to host", context);
+    }
+  }
+
+    _launchURL2(context) async {
+    const termsofuseUrl =
+        "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/END%20USER%20LICENSE%20AGREEMENT.pdf?alt=media&token=0dc52b43-2e35-4c33-9001-ef7de7ca3a1f";
+    if (await canLaunch(termsofuseUrl)) {
+      await launch(termsofuseUrl);
     } else {
       showErrorMessage("Unable to make the connection to host", context);
     }
@@ -416,9 +429,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               onTap: () {
                                 _launchURL(context);
                               },
+                            ),
+                            Text(
+                              " and ",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            InkWell(
+                              child: Text(
+                                "Terms Of Use",
+                                style: TextStyle(
+                                    color: kGreenSecondary,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onTap: () {
+                                _launchURL2(context);
+                              },
                             )
                           ],
                         ),
+
+
+                        
                       ],
                     ),
                   ),
