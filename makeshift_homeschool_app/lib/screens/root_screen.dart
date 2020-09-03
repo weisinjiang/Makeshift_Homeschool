@@ -33,7 +33,8 @@ class _RootScreenState extends State<RootScreen> {
   @override
   void initState() {
     userData = Provider.of<AuthProvider>(context, listen: false).getUser;
-    isEmailVerified = Provider.of<AuthProvider>(context, listen: false).isEmailVerified;
+    isEmailVerified =
+        Provider.of<AuthProvider>(context, listen: false).isEmailVerified;
     super.initState();
   }
 
@@ -83,7 +84,9 @@ class _RootScreenState extends State<RootScreen> {
 
                   if (!isEmailVerified)
                     Text(
-                        "Email not Verified", style: kBoldTextStyle,),
+                      "Email not Verified",
+                      style: kBoldTextStyle,
+                    ),
 
                   // Boot camp
                   Padding(
@@ -134,9 +137,8 @@ class _RootScreenState extends State<RootScreen> {
                             borderColor: kRedOrange,
                             height: screenSize.height * 0.20,
                             width: screenSize.width / 2,
-                            canUseButton: (userData["level"] == "Student")
-                                ? false
-                                : true,
+                            canUseButton:
+                                (userData["level"] == "Student") ? false : true,
                             function: () => Navigator.push(
                                 context,
                                 SlideLeftRoute(
@@ -153,59 +155,67 @@ class _RootScreenState extends State<RootScreen> {
                   ),
 
                   // if professor or lower, My Bootcamp shows up
-                  if(userData["level"] != "Professor")
-                  // Saved Bootcamp
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ActivityButton(
-                      color: kGreenSecondary,
-                      borderColor: kPeachRed,
-                      height: screenSize.height * 0.15,
-                      width: screenSize.width,
-                      function: () => Navigator.push(
-                          context, SlideLeftRoute(screen: CompletedLetters())),
-                      canUseButton: true,
-                      name: "My Bootcamp",
-                      imageLocation: "asset/images/letter.png",
+                  if (userData["level"] != "Professor")
+                    // Saved Bootcamp
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: ActivityButton(
+                        color: kGreenSecondary,
+                        borderColor: kPeachRed,
+                        height: screenSize.height * 0.15,
+                        width: screenSize.width,
+                        function: () => Navigator.push(context,
+                            SlideLeftRoute(screen: CompletedLetters())),
+                        canUseButton: true,
+                        name: "My Bootcamp",
+                        imageLocation: "asset/images/letter.png",
+                      ),
                     ),
-                  ),
 
                   // only professor/principles can approve lessons
-                  //if(userData["level"] == "Professor")
-                  Container(
-                    height: screenSize.height * 0.15,
-                    width: screenSize.width,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GhostButton(
-                        borderRadius: 20.0,
-                        buttonBorderColor: kRedOrange,
-                        buttonFillColor: kRedOrange,
-                        buttonName: "Approve Lessons",
-                        buttonTextColor: Colors.black,
-                        function: () => Navigator.push(
-                          context, SlideLeftRoute(screen: LessonApprovalScreen(reviewer: Reviewer.principle,))),
+                  if (userData["level"] == "Professor")
+                    Container(
+                      height: screenSize.height * 0.15,
+                      width: screenSize.width,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GhostButton(
+                          borderRadius: 20.0,
+                          buttonBorderColor: kRedOrange,
+                          buttonFillColor: kRedOrange,
+                          buttonName: "Approve Lessons",
+                          buttonTextColor: Colors.black,
+                          function: () => Navigator.push(
+                              context,
+                              SlideLeftRoute(
+                                  screen: LessonApprovalScreen(
+                                reviewer: Reviewer.principle,
+                              ))),
+                        ),
                       ),
                     ),
-                  ),
-                  // show this to teachers so they can review posts
-                  // if (userData["level"] == "Teacher")
-                  Container(
-                    height: screenSize.height * 0.15,
-                    width: screenSize.width,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GhostButton(
-                        borderRadius: 20.0,
-                        buttonBorderColor: kRedOrange,
-                        buttonFillColor: kRedOrange,
-                        buttonName: "Review Tutor Lessons",
-                        buttonTextColor: Colors.black,
-                        function: () => Navigator.push(
-                          context, SlideLeftRoute(screen: LessonApprovalScreen(reviewer: Reviewer.teacher,))),
+                  // show this to teachers so they can review posts or Principle
+                  if (userData["level"] == "Professor" || userData["level"] == "Teacher")
+                    Container(
+                      height: screenSize.height * 0.15,
+                      width: screenSize.width,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GhostButton(
+                          borderRadius: 20.0,
+                          buttonBorderColor: kRedOrange,
+                          buttonFillColor: kRedOrange,
+                          buttonName: "Review Tutor Lessons",
+                          buttonTextColor: Colors.black,
+                          function: () => Navigator.push(
+                              context,
+                              SlideLeftRoute(
+                                  screen: LessonApprovalScreen(
+                                reviewer: Reviewer.teacher,
+                              ))),
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
