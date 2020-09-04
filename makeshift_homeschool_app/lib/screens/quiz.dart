@@ -5,6 +5,7 @@ import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/quiz_provider.dart';
 import 'package:makeshift_homeschool_app/services/rating_feedback_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:provider/provider.dart';
 
@@ -62,7 +63,7 @@ class QuizScreen extends StatelessWidget {
                               ),
                               Container(
                                   width: screenSize.width * 0.80,
-                                  child: quizProvider.showOptions(context)),
+                                  child: quizProvider.showOptions(context, QuizMode.correctAndIncorrect)),
 
                               // If quiz scroe is not 3/3, then show how much they got
                               // and ask them to start again

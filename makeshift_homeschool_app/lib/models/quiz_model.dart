@@ -6,6 +6,7 @@ class Quiz {
     this.questionsList = [];
   }
   get getQuestionList => this.questionsList;
+  get getQuestionListSize => this.questionsList.length;
   Question getQuestionAt(int index) => this.questionsList[index];
 
   void addQuestion(Question question) => this.questionsList.add(question);

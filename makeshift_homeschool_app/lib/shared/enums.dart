@@ -32,3 +32,25 @@ enum Reviewer {
   teacher
 }
 
+/*
+  Indicate what type of quiz should be shown
+*/
+
+enum QuizMode {
+  correctOnly,
+  correctAndIncorrect
+}
+
+/*
+  Tutors have a mini tutorial slide after answering each question
+  This enum describes which slide to show next during the tutorial
+*/
+enum TutorTutorialSlides {
+  intro,
+  body,
+  conclusion,
+  quiz,
+  finish
+
+
+}

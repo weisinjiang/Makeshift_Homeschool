@@ -29,7 +29,10 @@ class TutorBootcamp1 extends StatelessWidget {
                 SizedBox(height: 91,),
                 Center(child: Image.asset("asset/tutor_slides/tutorslide3.png")),
                 RaisedButton(  
-                  onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TutorBootcampQuestion1()));},
+                  onPressed: () {
+                    Navigator.pop(context); // pop, push next question
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TutorBootcampQuestion1()));
+                    },
                   color: Colors.greenAccent,
                   child: Text("Next Page"),
                 ),

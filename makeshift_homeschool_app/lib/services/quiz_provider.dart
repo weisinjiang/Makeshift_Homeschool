@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/quiz_model.dart';
+import 'package:makeshift_homeschool_app/promo/tutor_tutorial.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 
 /*
   Quiz Provider that tracks the users quiz progress when they attempt to 
@@ -13,14 +15,15 @@ class QuizProvider with ChangeNotifier {
   Quiz quiz;
   double _progress;
   int _score;
+  int _totalQuestions;
   int _currentQuestionIndex;
   Question currentQuestion;
-  List<Widget> _reviewWidgets;
 
   // List of quiz must be passed when initialized
   QuizProvider({this.quiz}) {
     this._progress = 0.0;
     this._currentQuestionIndex = 0;
+    this._totalQuestions = quiz.getQuestionListSize;
     this.currentQuestion = quiz.getQuestionAt(0);
     this._score = 0;
   }
@@ -30,6 +33,7 @@ class QuizProvider with ChangeNotifier {
   int get getCurrentQuestionIndex => this._currentQuestionIndex;
   double get getProgress => this._progress;
   int get getScore => this._score;
+  int get numberOfQuestions => this._totalQuestions;
 
   // Score + 1 if users get answers correct
   void scoreUp() => this._score++;
@@ -47,10 +51,10 @@ class QuizProvider with ChangeNotifier {
 
   // move the question index by 1
   void nextQuestion() {
-    // Questions 1-3 has indexes 0, 1, 2
-    if (this._currentQuestionIndex < 2) {
+    // Question index is less by 1
+    if (this._currentQuestionIndex < numberOfQuestions - 1) {
       this._currentQuestionIndex++;
-      this._progress = this._currentQuestionIndex / 3;
+      this._progress = this._currentQuestionIndex / numberOfQuestions;
       this.currentQuestion = quiz.getQuestionAt(this._currentQuestionIndex);
     } else {
       // at 2, do not progress to next question, only update progress
@@ -58,16 +62,6 @@ class QuizProvider with ChangeNotifier {
       this._currentQuestionIndex++;
     }
     notifyListeners();
-  }
-
-  // Shows only when users get a 3/3 in the quiz section.
-  // This widget is used to rate the lesson and provide feedback for the owner
-  Widget showRatingsAndFeedback() {
-    return Column(
-      children: [
-        
-      ],
-    );
   }
 
   // used together with showOptions()
@@ -79,40 +73,33 @@ class QuizProvider with ChangeNotifier {
     );
   }
 
-  // multiple choice for question
-  Widget showOptions(BuildContext context) {
-    List<Option> allOptions = getCurrentQuestion.getAllOptions;
+  // Multiple choice for questions
+  // Quizmode will determine if the quiz will continue like a test or let the
+  // user retry until it's correct
+  Widget showOptions(BuildContext context, QuizMode mode) {
+    List<Widget> allOptions;
+
+    if (mode == QuizMode.correctAndIncorrect) {
+      allOptions = getCurrentQuestion.getAllOptions
+          .map<Widget>((option) => RaisedButton(
+                onPressed: () => _bottomSheet(context, option.isCorrect),
+                child: Text(option.getValue),
+              ))
+          .toList();
+    } else {
+      allOptions = getCurrentQuestion.getAllOptions
+          .map<Widget>((option) => RaisedButton(
+                onPressed: () =>
+                    _bottomSheetCorrectAnsOnly(context, option.isCorrect),
+                child: Text(option.getValue),
+              ))
+          .toList();
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        RaisedButton(
-          onPressed: () {
-            _bottomSheet(context, allOptions[0].isCorrect);
-          },
-          child: Text(allOptions[0].getValue),
-        ),
-        RaisedButton(
-          onPressed: () {
-            _bottomSheet(context, allOptions[1].isCorrect);
-          },
-          child: Text(allOptions[1].getValue),
-        ),
-        RaisedButton(
-          onPressed: () {
-            print(allOptions[0].isCorrect.toString());
-            _bottomSheet(context, allOptions[2].isCorrect);
-          },
-          child: Text(allOptions[2].getValue),
-        ),
-        RaisedButton(
-          onPressed: () {
-            _bottomSheet(context, allOptions[3].isCorrect);
-          },
-          child: Text(allOptions[3].getValue),
-        )
-      ],
+      children: allOptions,
     );
   }
 
@@ -148,7 +135,7 @@ class QuizProvider with ChangeNotifier {
                       },
                       color: Colors.green,
                       child: Text(
-                        "Yes!",
+                        "Yes 😃",
                         style: kBoldTextStyle,
                       ),
                     ),
@@ -158,11 +145,90 @@ class QuizProvider with ChangeNotifier {
                       },
                       color: Colors.red,
                       child: Text(
-                        "No!",
+                        "No 🤔",
                         style: kBoldTextStyle,
                       ),
                     ),
                   ],
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  // shows a bottom nav when a question is answered, but only allows you to
+  // continue if it's the correct answer
+  _bottomSheetCorrectAnsOnly(BuildContext context, bool correct) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 250,
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  correct ? "Correct! 😃" : "Wrong! 💩",
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: correct ? Colors.green : Colors.red),
+                ),
+                FlatButton(
+                  onPressed: () {
+                    // if correct move onto the next question
+                    if (correct) {
+                      nextQuestion();
+                      scoreUp();
+                      Navigator.pop(context);
+
+                      if (getScore == 1) {
+                        Navigator.push(
+                            // start the tutor intro tutorial
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    TutorTutorialScreen(
+                                      slide: TutorTutorialSlides.body,
+                                    )));
+                      } else if (getScore == 2) {
+                        Navigator.push(
+                            // start the tutor intro tutorial
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    TutorTutorialScreen(
+                                      slide: TutorTutorialSlides.conclusion,
+                                    )));
+                      } else if (getScore == 3) {
+                        Navigator.push(
+                            // start the tutor intro tutorial
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    TutorTutorialScreen(
+                                      slide: TutorTutorialSlides.quiz,
+                                    )));
+                      } else if (getScore == 4) {
+                        Navigator.push(
+                            // start the tutor intro tutorial
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    TutorTutorialScreen(
+                                      slide: TutorTutorialSlides.finish,
+                                    )));
+                      }
+                    } else {
+                      // otherwise, just pop the screen and try again
+                      Navigator.pop(context);
+                    }
+                  },
+                  color: correct ? Colors.greenAccent : Colors.redAccent,
+                  child: Text(correct ? "Contine" : "Try Again"),
                 ),
               ],
             ),

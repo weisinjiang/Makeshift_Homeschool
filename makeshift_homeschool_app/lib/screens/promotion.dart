@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/promo/tutor.dart';
 import 'package:makeshift_homeschool_app/promo/tutor_bootcamp.dart';
+import 'package:makeshift_homeschool_app/promo/tutor_tutorial.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 
@@ -27,14 +29,32 @@ class PromotionScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if(promotionType == PromotionType.student_to_tutor)...[
-              SizedBox(child: Image.asset("asset/tutor_slides/congrats.gif", width: screenSize.width,), width: screenSize.width,),
-              Text("Congradulations! You have completed 5 lessons!", style: kBoldTextStyle,),
-              Text("You are now a Tutor and you can now use the Teach Button!", style: kBoldTextStyle,),
-              RaisedButton(  
-                child: Text("Continue"),
+            if (promotionType == PromotionType.student_to_tutor) ...[
+              SizedBox(
+                child: Image.asset(
+                  "asset/tutor_slides/congrats.gif",
+                  width: screenSize.width,
+                ),
+                width: screenSize.width,
+              ),
+              Text(
+                "Congradulations! You have completed 5 lessons!",
+                style: kBoldTextStyle,
+              ),
+              Text(
+                "You are now a Tutor and you can now use the Teach Button!",
+                style: kBoldTextStyle,
+              ),
+              RaisedButton(
+                child: Text("Tutorial for Tutors"),
                 color: Colors.greenAccent,
-                onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TutorBootcamp1()));},
+                onPressed: () {
+                  Navigator.pop(context); // pop the promo screen
+                  Navigator.push( // start the tutor intro tutorial
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => TutorTutorialScreen(slide: TutorTutorialSlides.intro,)));
+                },
               )
             ]
           ],
