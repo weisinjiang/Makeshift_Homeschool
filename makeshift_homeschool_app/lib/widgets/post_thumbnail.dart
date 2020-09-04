@@ -70,14 +70,14 @@ class PostThumbnail extends StatelessWidget {
         }
       },
       child: Container(
-          height: screenSize.height * 0.20,
+          //height: screenSize.height * 0.20,
           width: screenSize.width * 0.40,
 
           /// Box decoration for the shape of the container and the image that
           /// goes inside of it
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              border: Border.all(color: kRedOrange, width: 3),
+              borderRadius: BorderRadius.circular(5.0),
+              border: Border.all(color: Colors.black, width: 2),
               image: DecorationImage(
                   colorFilter: ColorFilter.mode(
                       Colors.grey.withOpacity(0.80), BlendMode.dstATop),
@@ -131,12 +131,7 @@ class PostThumbnail extends StatelessWidget {
                 if (viewType != PostExpandedViewType.principle)
                   Flexible(
                     fit: FlexFit.tight,
-                    child: StrokeText(
-                        fontSize: 15,
-                        strokeColor: Colors.black,
-                        strokeWidth: 3.0,
-                        text: postData.ratingsEmojiString(),
-                        textColor: Colors.white),
+                    child: Text(postData.ratingsEmojiString(), style: TextStyle(fontSize: 20),)
                   ),
 
                 if (viewType == PostExpandedViewType.principle)

@@ -40,14 +40,14 @@ class StudyCategoryListTile extends StatelessWidget {
           : Container(
             //color: kLightBlue,
             alignment: Alignment.topCenter,
-            height: screenSize.height * 0.25,
+            height: screenSize.height * 0.30,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
                   separatorBuilder: (context, int index) => const SizedBox(
-                        width: 5,
+                        width: 20,
                       ),
                   itemCount: postList.length,
                   itemBuilder: (_, index) => ChangeNotifierProvider.value(
