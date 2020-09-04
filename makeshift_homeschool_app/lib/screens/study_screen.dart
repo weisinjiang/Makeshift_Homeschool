@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
@@ -45,10 +46,8 @@ class _StudyScreenState extends State<StudyScreen> {
 
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    // used to call the filter method to retrieve posts
     final feedProvider = Provider.of<PostFeedProvider>(context);
-    final top5LikedList = feedProvider.getTop5Likes;
-    final top5ViewList = feedProvider.getTop5Viewed;
-    final allPosts = feedProvider.getPosts;
 
     final user = Provider.of<AuthProvider>(context).getUser;
     if (user != null) {
@@ -78,16 +77,46 @@ class _StudyScreenState extends State<StudyScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          // under 8
                           StudyCategoryListTile(
-                              categoryTitle: "For Your Age", postList: null),
+                              categoryTitle: "Under 8",
+                              postList: feedProvider.filterPostAgeFrom(
+                                greaterThanAge: false,
+                                targetAge: 8 
+                              )
+                          ),
+                          // age 8-9
+                          StudyCategoryListTile(
+                              categoryTitle: "Age 8 & 9",
+                              postList: feedProvider.filterPostAgeBetween(
+                                lowerInclusive: 8,
+                                upperInclusive: 9 
+                              )
+                          ),
+                          StudyCategoryListTile(
+                              categoryTitle: "Age 10 & 11",
+                              postList: feedProvider.filterPostAgeBetween(
+                                lowerInclusive: 10,
+                                upperInclusive: 11 
+                              )
+                          ),
+                          // 12 and Above
+                          StudyCategoryListTile(
+                              categoryTitle: "Ages 12+",
+                              postList: feedProvider.filterPostAgeBetween(
+                                lowerInclusive: 12,
+                                upperInclusive: 100
+                              )
+                          ),
                           StudyCategoryListTile(
                               categoryTitle: "Most Bookmarked",
-                              postList: top5LikedList),
+                              postList: feedProvider.getMostBookmarkedPost(5)
+                          ),
                           StudyCategoryListTile(
                               categoryTitle: "Most Viewed",
-                              postList: top5ViewList),
-                          StudyCategoryListTile(
-                              categoryTitle: "All Posts", postList: allPosts),
+                              postList: feedProvider.getMostViewedPost(5)
+                          ),
+                         
                         ],
                       ),
                     ),

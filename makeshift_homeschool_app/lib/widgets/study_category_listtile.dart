@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
+import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
@@ -18,27 +19,30 @@ class StudyCategoryListTile extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black, width: 1.0),
+        //border: Border.all(color: Colors.black, width: 1.0),
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: StrokeText(
-                fontSize: 20,
-                text: categoryTitle,
-                strokeColor: Colors.transparent,
-                textColor: Colors.black,
-                strokeWidth: 3.0,
+          Container(
+            color: Colors.grey,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: StrokeText(
+                  fontSize: 20,
+                  text: categoryTitle,
+                  strokeColor: Colors.black,
+                  textColor: Colors.white,
+                  strokeWidth: 3.0,
+                ),
               ),
             ),
           ),
           postList == null || postList.length == 0
           ? Container(height: screenSize.height * 0.20,child: Center(child: Text("Nothing, yet..."),),)
           : Container(
-            //color: kLightBlue,
+            
             alignment: Alignment.topCenter,
             height: screenSize.height * 0.30,
             child: Padding(

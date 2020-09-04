@@ -10,8 +10,6 @@ class PostFeedProvider with ChangeNotifier {
 
   List<Post> _posts = []; //post list to be shown on the feed
   List<Post> _userPosts = [];
-  List<Post> _top5Likes = [];
-  List<Post> _top5Viewed = [];
   List<Post> _approvalNeeded = [];
   final String uid;
 
@@ -21,8 +19,6 @@ class PostFeedProvider with ChangeNotifier {
   ///[...] does this
   List<Post> get getPosts => [...this._posts];
   List<Post> get getUserPosts => [..._userPosts];
-  List<Post> get getTop5Likes => [..._top5Likes];
-  List<Post> get getTop5Viewed => [..._top5Viewed];
   List<Post> get getApprovalNeeded => [..._approvalNeeded];
 
   Future<void> deletePost(String postId) async {
@@ -187,8 +183,6 @@ class PostFeedProvider with ChangeNotifier {
       } else {
         this._userPosts = data;
       }
-      get5MostLikedPost();
-      get5MostViewedPost();
       notifyListeners();
     } catch (error) {
       print(error.toString());
@@ -196,37 +190,78 @@ class PostFeedProvider with ChangeNotifier {
     }
   }
 
-  void get5MostLikedPost() {
-    List<Post> allPosts = this._posts;
+  /*
+    Filters the post list and returns only the posts by the upper and lower
+    bound ages.
+  */
+
+  List<Post> filterPostAgeBetween({int upperInclusive, int lowerInclusive}) {
+    List<Post> filtered = getPosts.where((post) {
+      int age = int.parse(post.getAge);
+      if (age >= lowerInclusive && age <= upperInclusive) {
+        return true;
+      }
+      return false;
+    }).toList();
+
+    return filtered;
+  }
+
+  /*
+    Filters the post list and returns only the posts by the upper and lower
+    bound ages.
+  */
+
+  List<Post> filterPostAgeFrom({int targetAge, bool greaterThanAge}) {
+    List<Post> filtered = getPosts.where((post) {
+      int age = int.parse(post.getAge);
+
+      // if age should be greater than the target age
+      if (greaterThanAge) {
+        if (age > targetAge) {
+          return true;
+        }
+        return false;
+        // if age is less than the target age
+      } else {
+        if (age < targetAge) {
+          return true;
+        }
+        return false;
+      }
+    }).toList();
+
+    return filtered;
+  }
+
+  /*
+    Gets the most bookmarked posts
+    @take - amount of posts you want to show
+  */
+  List<Post> getMostBookmarkedPost(int take) {
+    List<Post> allPosts = getPosts;
     if (allPosts.length == 0) {
-      return;
+      return null;
     }
     List<Post> top5Likes = [];
     // Sort the list in decending order
     allPosts.sort((Post postB, Post postA) {
       int postBLikes = postB.getLikes;
       int postALikes = postA.getLikes;
-      //print("${postALikes.toString()}   ${postBLikes.toString()}");
       return postALikes.compareTo(postBLikes);
     });
 
-    int limit = 0;
-    if (allPosts.length > 5) {
-      limit = 5;
-    } else {
-      limit = allPosts.length;
-    }
-    for (int i = 0; i < limit; i++) {
-      top5Likes.add(allPosts[i]);
-    }
-    // get the first 5 most liked posts
-    this._top5Likes = top5Likes;
+    return allPosts.take(take).toList();
   }
 
-  void get5MostViewedPost() {
+/*
+    Gets the most viewed posts
+    @take - amount of posts you want to show
+  */
+  List<Post> getMostViewedPost(int take) {
     List<Post> allPosts = getPosts;
     if (allPosts.length == 0) {
-      return;
+      return null;
     }
     // Sort the list in decending order
     allPosts.sort((Post postB, Post postA) {
@@ -234,15 +269,7 @@ class PostFeedProvider with ChangeNotifier {
       int postAViews = postA.getViews;
       return postAViews.compareTo(postBViews);
     });
-    int limit = 0;
-
-    if (allPosts.length > 5) {
-      limit = 5;
-    } else {
-      limit = allPosts.length;
-    }
-    // get the first 5 most liked posts
-    this._top5Viewed = allPosts.sublist(0, limit);
+    return allPosts.take(take).toList();
   }
 
   /*

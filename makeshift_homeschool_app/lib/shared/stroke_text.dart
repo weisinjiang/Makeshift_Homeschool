@@ -33,6 +33,7 @@ class StrokeText extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: fontSize,
+            fontWeight: FontWeight.bold,
             color: textColor,
           ),
         ),
