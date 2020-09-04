@@ -21,8 +21,7 @@ class PostExpanded extends StatelessWidget {
 
   /// post data passed from PostThumbnail
 
-  const PostExpanded({Key key, this.postData, this.viewType})
-      : super(key: key);
+  const PostExpanded({Key key, this.postData, this.viewType}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -52,23 +51,24 @@ class PostExpanded extends StatelessWidget {
                     width: screenSize.width * 0.80,
                     child: RaisedButton(
                       color: Colors.green[300],
-                      onPressed: () {
-                        // Pass the quiz map into the Quiz object
-                        Quiz quiz = Quiz(quizData: postData.getQuiz);
-                        // serialize the data and make them into Question and
-                        // options objects before passing it into the quiz screen
-                        quiz.serializeQuizData();
-                        Navigator.push(
-                            context,
-                            SlideLeftRoute(
-                                screen: QuizScreen(
-                              postData: postData,
-                              quiz: quiz,
-                            )));
-                      },
+                      onPressed: postData.isCompleted
+                          ? null
+                          : () {
+                              // Pass the quiz map into the Quiz object
+                              Quiz quiz = Quiz(quizData: postData.getQuiz);
+                              // serialize the data and make them into Question and
+                              // options objects before passing it into the quiz screen
+                              quiz.serializeQuizData();
+                              Navigator.push(
+                                  context,
+                                  SlideLeftRoute(
+                                      screen: QuizScreen(
+                                    postData: postData,
+                                    quiz: quiz,
+                                  )));
+                            },
                       child: Text("Complete Lesson"),
                     )),
-
             ],
           ),
         ),

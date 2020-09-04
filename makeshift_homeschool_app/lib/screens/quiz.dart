@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/models/quiz_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
+import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/services/quiz_provider.dart';
 import 'package:makeshift_homeschool_app/services/rating_feedback_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
@@ -18,6 +19,7 @@ class QuizScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final auth = Provider.of<AuthProvider>(context);
+    final feed = Provider.of<PostFeedProvider>(context);
     return ChangeNotifierProvider<QuizProvider>(
       create: (context) => QuizProvider(quiz: quiz),
       child: Scaffold(
@@ -63,7 +65,8 @@ class QuizScreen extends StatelessWidget {
                               ),
                               Container(
                                   width: screenSize.width * 0.80,
-                                  child: quizProvider.showOptions(context, QuizMode.correctAndIncorrect)),
+                                  child: quizProvider.showOptions(
+                                      context, QuizMode.correctAndIncorrect)),
 
                               // If quiz scroe is not 3/3, then show how much they got
                               // and ask them to start again
@@ -112,8 +115,8 @@ class QuizScreen extends StatelessWidget {
                                       Navigator.of(context).pop();
                                     }),
                               ),
-                            // user scored 3/3, now needs to provide rating
-                            // and feed back
+                              // user scored 3/3, now needs to provide rating
+                              // and feed back
                             ] else ...[
                               Container(
                                 height: screenSize.height * 0.15,
@@ -146,12 +149,16 @@ class QuizScreen extends StatelessWidget {
                                     Rating_FeedbackProvider(postData: postData),
                                 child: Consumer<Rating_FeedbackProvider>(
                                   builder: (context, ratingFeedback, _) =>
-                                    Padding(
+                                      Padding(
                                     padding:
                                         const EdgeInsets.only(bottom: 10.0),
                                     child: Container(
                                       child: ratingFeedback.buildRatingBar(
-                                          context, screenSize, auth),
+                                        context,
+                                        screenSize,
+                                        auth,
+                                        feed
+                                      ),
                                     ),
                                   ),
                                 ),

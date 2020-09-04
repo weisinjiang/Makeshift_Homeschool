@@ -40,6 +40,16 @@ class PostFeedProvider with ChangeNotifier {
     }
   }
 
+  void markAsComplete(String postId) {
+    for (var i = 0; i < getPosts.length; i++) {
+      if (this._posts[i].getPostId == postId) {
+        this._posts[i].setHasCompleted = true;
+        notifyListeners();
+        break;
+      }
+    }
+  }
+
   /// Update the users post if the post got updated in new post provider's
   /// edit mode
   void updateUserPost(
@@ -138,6 +148,8 @@ class PostFeedProvider with ChangeNotifier {
       List<DocumentSnapshot> allPostDocuments = result.documents;
       // get user's favorite list so isLiked can be set to true
       List<String> favoritesList = await fetchUsersFavoritesList(this.uid);
+      List<String> completedLessons =
+          await fetchUsersCompletedLessonsList(this.uid);
 
       // serialize each document into a Post object and add it to data list
       List<Post> data = [];
@@ -162,6 +174,9 @@ class PostFeedProvider with ChangeNotifier {
         // if the post is a favorite
         if (favoritesList.contains(doc.documentID)) {
           post.setIsLiked = true;
+        }
+        if (completedLessons.contains(doc.documentID)) {
+          post.setHasCompleted = true;
         }
         data.add(post);
       });
@@ -248,5 +263,22 @@ class PostFeedProvider with ChangeNotifier {
       favoritesList.add(document.documentID);
     });
     return favoritesList;
+  }
+
+  /*
+    Gets a list of ids for lessons that user's completed 
+  */
+
+  Future<List<String>> fetchUsersCompletedLessonsList(String uid) async {
+    QuerySnapshot snapshot = await _database
+        .collection("users")
+        .document(uid)
+        .collection("completed lessons")
+        .getDocuments();
+
+    List<DocumentSnapshot> allDocuments = snapshot.documents;
+
+    // for each document, convert it to a id and return the list
+    return allDocuments.map((document) => document.documentID).toList();
   }
 }

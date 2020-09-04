@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/screens/promotion.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
+import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
@@ -44,8 +45,8 @@ class Rating_FeedbackProvider with ChangeNotifier {
   // String get getFeedback => this._userFeedbackController.text;
   bool get isPromoted => this.isPromoted;
 
-  Widget buildRatingBar(
-      BuildContext context, Size screenSize, AuthProvider auth) {
+  Widget buildRatingBar(BuildContext context, Size screenSize,
+      AuthProvider auth, PostFeedProvider feed) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,38 +77,6 @@ class Rating_FeedbackProvider with ChangeNotifier {
                 color: Colors.amber,
               );
             },
-            // happy face ratings
-            // itemBuilder: (context, index) {
-            //   switch (index) {
-            //     case 0:
-            //       return Icon(
-            //         Icons.sentiment_dissatisfied,
-            //         color: Colors.red,
-            //       );
-            //     case 1:
-            //       return Icon(
-            //         Icons.sentiment_dissatisfied,
-            //         color: Colors.redAccent,
-            //       );
-            //     case 2:
-            //       return Icon(
-            //         Icons.sentiment_neutral,
-            //         color: Colors.amber,
-            //       );
-            //     case 3:
-            //       return Icon(
-            //         Icons.sentiment_satisfied,
-            //         color: Colors.lightGreen,
-            //       );
-            //     case 4:
-            //       return Icon(
-            //         Icons.sentiment_very_satisfied,
-            //         color: Colors.green,
-            //       );
-            //     default:
-            //       return Container();
-            //   }
-            // },
             onRatingUpdate: (rating) {
               this._userRating = rating;
               notifyListeners();
@@ -115,28 +84,6 @@ class Rating_FeedbackProvider with ChangeNotifier {
         const SizedBox(
           height: 50,
         ),
-        // Text(
-        //   "Any feedback for ${getPostData.getOwnerName} on the lesson?",
-        //   style: kBoldTextStyle,
-        // ),
-        // const SizedBox(
-        //   height: 20,
-        // ),
-        // TextFormField(
-        //   controller: this._userFeedbackController,
-        //   maxLength: 400,
-        //   maxLines: null,
-        //   keyboardType: TextInputType.text,
-        //   decoration: InputDecoration(
-        //       prefixIcon: Icon(
-        //         FontAwesomeIcons.solidCommentAlt,
-        //         color: Colors.black,
-        //       ),
-        //       enabledBorder: OutlineInputBorder(
-        //           borderSide: BorderSide(color: Colors.black)),
-        //       focusedBorder: OutlineInputBorder(
-        //           borderSide: BorderSide(color: Colors.red))),
-        // ),
 
         const SizedBox(
           height: 80,
@@ -158,9 +105,8 @@ class Rating_FeedbackProvider with ChangeNotifier {
             onPressed: () async {
               // update the ratings for the post
               postData.updatePostRating(
-                  userRating: getUserRating,
-                  uid: auth.getUserID);
-
+                  userRating: getUserRating, uid: auth.getUserID);
+              feed.markAsComplete(getPostId);
               // access user's collection and increment the value
               bool rankedUp =
                   await auth.incrementUserCompletedLessons(getPostId);
@@ -177,7 +123,8 @@ class Rating_FeedbackProvider with ChangeNotifier {
               }
               // no promotion, just pop the feedback screen
               else {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // pop feed back
+                Navigator.of(context).pop(); // pop the lesson
               }
             },
           ),

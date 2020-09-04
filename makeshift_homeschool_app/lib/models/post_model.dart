@@ -18,6 +18,7 @@ class Post with ChangeNotifier {
   String _postId;
   String _ownerEmail;
   bool isLiked;
+  bool hasCompleted;
 
   // Subtitles and paragraphs in order from Firestore
   Map<String, dynamic> _postContents;
@@ -40,6 +41,7 @@ class Post with ChangeNotifier {
     this.isLiked = false;
     this._ownerEmail = null;
     this._approval = 0;
+    this.hasCompleted = false;
 
     /// post is not liked initially
   }
@@ -57,6 +59,7 @@ class Post with ChangeNotifier {
   String get getAge => this._age;
   String get getOwnerEmail => this._ownerEmail;
   int get getNumApprovals => this._approval;
+  bool get isCompleted => this.hasCompleted;
 
   // gets the date posted. Format it into month/day/year
   String getCreatedOn() {
@@ -87,6 +90,7 @@ class Post with ChangeNotifier {
 
   //Setters
   set setLikes(int likes) => this._likes = likes;
+  set setHasCompleted(bool value) => this.hasCompleted = value;
   set setViews(int views) => this._views = views;
   set setRating(double rating) => this._rating = rating;
   set setNumRaters(int raters) => this._raters = raters;

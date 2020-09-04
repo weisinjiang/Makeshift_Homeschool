@@ -295,8 +295,9 @@ class AuthProvider with ChangeNotifier {
   Future<bool> incrementUserCompletedLessons(String postId) async {
     // users data document in Firestore
     DocumentReference userDocument =
-        Firestore.instance.collection("users").document(getUserID);
+        _database.collection("users").document(getUserID);
     try {
+      await addPostIdToCompletedCollection(postId); // add completed lesson
       // Add the post to the user's completed lessons collection
       await userDocument
           .collection("completed lessons")
@@ -324,6 +325,15 @@ class AuthProvider with ChangeNotifier {
     } catch (error) {
       throw error;
     }
+  }
+
+  Future<void> addPostIdToCompletedCollection(String postId) async {
+    _database
+        .collection("users")
+        .document(getUserID)
+        .collection("completed lessons")
+        .document(postId)
+        .setData({});
   }
 
   // Future<dynamic> userDataFuture() async {
