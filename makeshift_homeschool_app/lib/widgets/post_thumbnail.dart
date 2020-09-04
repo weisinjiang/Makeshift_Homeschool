@@ -54,7 +54,7 @@ class PostThumbnail extends StatelessWidget {
                   screen: PostReview(
                 postData: postData,
                 reviewer: Reviewer.teacher,
-              )));      
+              )));
         }
         // if not user's profile, user cant delete posts
         else {
@@ -71,7 +71,7 @@ class PostThumbnail extends StatelessWidget {
       },
       child: Container(
           height: screenSize.height * 0.20,
-          width: screenSize.width * 0.35,
+          width: screenSize.width * 0.40,
 
           /// Box decoration for the shape of the container and the image that
           /// goes inside of it
@@ -124,14 +124,19 @@ class PostThumbnail extends StatelessWidget {
                       textColor: Colors.white),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
 
                 // Principles do not need to see the rating
                 if (viewType != PostExpandedViewType.principle)
                   Flexible(
                     fit: FlexFit.tight,
-                    child: postData.ratingsWidgetIcon(),
+                    child: StrokeText(
+                        fontSize: 15,
+                        strokeColor: Colors.black,
+                        strokeWidth: 3.0,
+                        text: postData.ratingsEmojiString(),
+                        textColor: Colors.white),
                   ),
 
                 if (viewType == PostExpandedViewType.principle)

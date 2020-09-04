@@ -117,37 +117,18 @@ class Post with ChangeNotifier {
   }
 
   // Returns a facial expression based on the ratings on a post
-  Widget ratingsWidgetIcon() {
+  String ratingsEmojiString() {
     double rating = getRating;
     if (rating <= 5.0 && rating > 4.0) {
-      return Icon(
-        Icons.sentiment_very_satisfied,
-        color: Colors.green,
-        size: 30,
-      );
+      return "⭐️⭐️⭐️⭐️⭐️";
     } else if (rating <= 4.0 && rating > 3.0) {
-      return Icon(
-        Icons.sentiment_satisfied,
-        color: Colors.lightGreen,
-      );
+      return "⭐️⭐️⭐️⭐️";
     } else if (rating <= 3.0 && rating > 2.0) {
-      return Icon(
-        Icons.sentiment_neutral,
-        color: Colors.amber,
-        size: 30,
-      );
+      return "⭐️⭐️⭐️";
     } else if (rating <= 2.0 && rating > 1.0) {
-      return Icon(
-        Icons.sentiment_dissatisfied,
-        color: Colors.redAccent,
-        size: 30,
-      );
+      return "⭐️⭐️";
     } else {
-      return Icon(
-        Icons.sentiment_very_dissatisfied,
-        color: Colors.red,
-        size: 30,
-      );
+      return "⭐️";
     }
   }
 
@@ -235,8 +216,8 @@ class Post with ChangeNotifier {
 
     /// Map<String, Map<String, String>> from database
     var postContentList = this._postContents;
-    contentToShowOnScreen.add(buildImage(
-        this._imageUrl, this._title, screenSize.height, this._ownerName, screenSize.width));
+    contentToShowOnScreen.add(buildImage(this._imageUrl, this._title,
+        screenSize.height, this._ownerName, screenSize.width));
     contentToShowOnScreen.add(SizedBox(
       height: 30,
     ));

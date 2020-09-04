@@ -81,7 +81,7 @@ class _StudyScreenState extends State<StudyScreen> {
                           StudyCategoryListTile(
                               categoryTitle: "For Your Age", postList: null),
                           StudyCategoryListTile(
-                              categoryTitle: "Most Liked",
+                              categoryTitle: "Most Bookmarked",
                               postList: top5LikedList),
                           StudyCategoryListTile(
                               categoryTitle: "Most Viewed",
