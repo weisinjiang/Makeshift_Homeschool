@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
@@ -123,9 +124,7 @@ class PostThumbnail extends StatelessWidget {
                       text: postData.getTitle,
                       textColor: Colors.white),
                 ),
-                SizedBox(
-                  height: 5,
-                ),
+               
 
                 // Principles do not need to see the rating
                 if (viewType != PostExpandedViewType.principle)
@@ -145,9 +144,7 @@ class PostThumbnail extends StatelessWidget {
                         textColor: Colors.white,
                       )),
 
-                SizedBox(
-                  height: 10,
-                ),
+                
                 Flexible(
                   fit: FlexFit.tight,
                   child: Container(
@@ -159,6 +156,11 @@ class PostThumbnail extends StatelessWidget {
                         textColor: Colors.white),
                   ),
                 ),
+                if (postData.isCompleted)
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Icon(FontAwesomeIcons.check, color: Colors.green[300],)
+                  ),
               ],
             ),
           )),
