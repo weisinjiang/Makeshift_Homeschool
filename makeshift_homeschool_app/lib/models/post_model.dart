@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
 
 class Post with ChangeNotifier {

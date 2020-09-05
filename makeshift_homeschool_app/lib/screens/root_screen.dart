@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/screens/bootcamp_screen.dart';
-import 'package:makeshift_homeschool_app/screens/completed_letters.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/lesson_approval.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
-import 'package:makeshift_homeschool_app/shared/color_const.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
+import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/activity_button.dart';
 import 'package:makeshift_homeschool_app/widgets/ghostButton.dart';
+import 'package:makeshift_homeschool_app/widgets/icon_lead_button.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the main screen where the user can pick what activities they want to
@@ -76,7 +77,11 @@ class _RootScreenState extends State<RootScreen> {
                   Container(
                     height: screenSize.height * 0.20,
                     width: screenSize.width,
-                    child: Center(child: Image.asset('asset/images/greetJoseph1.png', fit: BoxFit.contain,)),
+                    child: Center(
+                        child: Image.asset(
+                      'asset/images/greetJoseph1.png',
+                      fit: BoxFit.contain,
+                    )),
                   ),
 
                   if (!isEmailVerified)
@@ -151,23 +156,6 @@ class _RootScreenState extends State<RootScreen> {
                     ),
                   ),
 
-                  // // if professor or lower, My Bootcamp shows up
-                  // if (userData["level"] != "Professor")
-                  //   // Saved Bootcamp
-                  //   Padding(
-                  //     padding: const EdgeInsets.all(10.0),
-                  //     child: ActivityButton(
-                  //       color: kGreenSecondary,
-                  //       borderColor: kPeachRed,
-                  //       height: screenSize.height * 0.15,
-                  //       width: screenSize.width,
-                  //       function: () => Navigator.push(context,
-                  //           SlideLeftRoute(screen: CompletedLetters())),
-                  //       canUseButton: true,
-                  //       name: "My Bootcamp",
-                  //       imageLocation: "asset/images/letter.png",
-                  //     ),
-                  //   ),
 
                   // only professor/principles can approve lessons
                   if (userData["level"] == "Professor")
@@ -192,7 +180,8 @@ class _RootScreenState extends State<RootScreen> {
                       ),
                     ),
                   // show this to teachers so they can review posts or Principle
-                  if (userData["level"] == "Professor" || userData["level"] == "Teacher")
+                  if (userData["level"] == "Professor" ||
+                      userData["level"] == "Teacher")
                     Container(
                       height: screenSize.height * 0.15,
                       width: screenSize.width,
