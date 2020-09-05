@@ -43,7 +43,7 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       
-      title: Text(postData.getTitle),
+      title: Text(postData.getTitle.toUpperCase()),
       backgroundColor: backgroundColor,
       actions: <Widget>[
         IconButton(

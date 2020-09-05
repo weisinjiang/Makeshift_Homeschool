@@ -76,15 +76,12 @@ class _RootScreenState extends State<RootScreen> {
                   Container(
                     height: screenSize.height * 0.20,
                     width: screenSize.width,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Image.asset('asset/images/greet.png'),
-                    ),
+                    child: Image.asset('asset/images/josephGreet.png', fit: BoxFit.contain,),
                   ),
 
                   if (!isEmailVerified)
                     Text(
-                      "Email not Verified",
+                      "Please secure your account by verifying your email",
                       style: kBoldTextStyle,
                     ),
 

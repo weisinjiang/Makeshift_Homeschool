@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/screens/promotion.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
@@ -10,7 +8,6 @@ import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
-import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 
 class Rating_FeedbackProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance;

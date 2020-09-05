@@ -243,7 +243,6 @@ class PostFeedProvider with ChangeNotifier {
     if (allPosts.length == 0) {
       return null;
     }
-    List<Post> top5Likes = [];
     // Sort the list in decending order
     allPosts.sort((Post postB, Post postA) {
       int postBLikes = postB.getLikes;
