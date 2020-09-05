@@ -13,6 +13,7 @@ import '../bootcamp_templates/WriteAboutYourFavoriteMemory.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/bootcamp_listTile.dart';
 import '../shared/slide_transition.dart';
+import 'completed_letters.dart';
 
 /// Only have 10 bootcamps, so the 10 lessons will be hard coded
 
@@ -23,6 +24,7 @@ class BootCampScreen extends StatelessWidget {
 
     /// 10 Boot camp activity names. Final bc it is never changing
     final List<String> bootCampActivityNames = [
+      "See your Completed Bootcamps",
       "Make your favorite game even better",
       "Write About Your Favorite Memory",
       "Get to know a neighbor",
@@ -32,11 +34,12 @@ class BootCampScreen extends StatelessWidget {
       "Get what I want from my parents",
       "Practice winning friends",
       "Write about a family vacation",
-      "Different ways to move"
+      "Different ways to move",
     ];
 
     ///
     final List<Function> bootcampNav = [
+      () => Navigator.push(context,SlideLeftRoute(screen: CompletedLetters())),
       () => Navigator.push(context,SlideLeftRoute(screen: MakeYourFavoriteGameEvenBetter())),
       () => Navigator.push(context,SlideLeftRoute(screen: WriteAboutYourFavoriteMemory())),
       () => Navigator.push(context,SlideLeftRoute(screen: GetToKnowANeighbor())),
@@ -74,7 +77,7 @@ class BootCampScreen extends StatelessWidget {
                       child: StrokeText(
                     fontSize: 50,
                     strokeColor: Colors.black,
-                    strokeWidth: 4.0,
+                    strokeWidth: 6.0,
                     text: "Pick an Activity",
                     textColor: Colors.white,
                   ))),
@@ -83,7 +86,7 @@ class BootCampScreen extends StatelessWidget {
                 width: screenSize.width,
                 child: ListView.builder(
                   padding: const EdgeInsets.all(10.0),
-                  itemCount: 10,
+                  itemCount: 11,
                   itemBuilder: (context, index) => BootCampListTile(
                     title: bootCampActivityNames[index],
                     navigationFunction: bootcampNav[index], /// Make list of nagivation function that matches activity list

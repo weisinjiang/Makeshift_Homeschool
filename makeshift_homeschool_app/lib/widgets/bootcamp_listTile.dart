@@ -23,19 +23,15 @@ class BootCampListTile extends StatelessWidget {
               border: Border.all(color: Colors.black, width: 2.0)),
           child: InkWell(
             splashColor: Colors.grey,
-            // onTap: () => Navigator.push(
-            //     context,
-            //     ScaleRoute(
-            //         screen: BootCampExpanded(
-            //       activity: activity,
-            //     ))),
             onTap: navigationFunction, // fire the nav function passed from Bootcamp Screen
             child: ListTile(
               leading: CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.transparent,
-                  child: Image.asset(
-                    'asset/bootcamp/${title}.png', //! To add. Name the same as title
+                  child: title == "See your Completed Bootcamps" 
+                  ? FittedBox(child: Icon(Icons.email, color: Colors.black,))
+                  :Image.asset(
+                    'asset/bootcamp/$title.png', //! To add. Name the same as title
                     fit: BoxFit.contain,
                   )),
               title: Text(

@@ -69,14 +69,14 @@ class _RootScreenState extends State<RootScreen> {
             width: screenSize.width,
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   /// What do you want to do today? Greet image
                   Container(
                     height: screenSize.height * 0.20,
                     width: screenSize.width,
-                    child: Image.asset('asset/images/josephGreet.png', fit: BoxFit.contain,),
+                    child: Center(child: Image.asset('asset/images/greetJoseph1.png', fit: BoxFit.contain,)),
                   ),
 
                   if (!isEmailVerified)
@@ -90,7 +90,7 @@ class _RootScreenState extends State<RootScreen> {
                     padding: const EdgeInsets.all(10.0),
                     child: ActivityButton(
                       color: kGreenPrimary,
-                      borderColor: kRedOrange,
+                      borderColor: Colors.green[300],
                       height: screenSize.height * 0.20,
                       width: screenSize.width,
                       function: () => Navigator.push(
@@ -115,7 +115,7 @@ class _RootScreenState extends State<RootScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: ActivityButton(
                             color: kGreenPrimary,
-                            borderColor: kRedOrange,
+                            borderColor: Colors.green[300],
                             height: screenSize.height * 0.20,
                             width: screenSize.width / 2,
                             canUseButton: true,
@@ -131,7 +131,7 @@ class _RootScreenState extends State<RootScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: ActivityButton(
                             color: kGreenPrimary,
-                            borderColor: kRedOrange,
+                            borderColor: Colors.green[300],
                             height: screenSize.height * 0.20,
                             width: screenSize.width / 2,
                             canUseButton:
@@ -151,23 +151,23 @@ class _RootScreenState extends State<RootScreen> {
                     ),
                   ),
 
-                  // if professor or lower, My Bootcamp shows up
-                  if (userData["level"] != "Professor")
-                    // Saved Bootcamp
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: ActivityButton(
-                        color: kGreenSecondary,
-                        borderColor: kPeachRed,
-                        height: screenSize.height * 0.15,
-                        width: screenSize.width,
-                        function: () => Navigator.push(context,
-                            SlideLeftRoute(screen: CompletedLetters())),
-                        canUseButton: true,
-                        name: "My Bootcamp",
-                        imageLocation: "asset/images/letter.png",
-                      ),
-                    ),
+                  // // if professor or lower, My Bootcamp shows up
+                  // if (userData["level"] != "Professor")
+                  //   // Saved Bootcamp
+                  //   Padding(
+                  //     padding: const EdgeInsets.all(10.0),
+                  //     child: ActivityButton(
+                  //       color: kGreenSecondary,
+                  //       borderColor: kPeachRed,
+                  //       height: screenSize.height * 0.15,
+                  //       width: screenSize.width,
+                  //       function: () => Navigator.push(context,
+                  //           SlideLeftRoute(screen: CompletedLetters())),
+                  //       canUseButton: true,
+                  //       name: "My Bootcamp",
+                  //       imageLocation: "asset/images/letter.png",
+                  //     ),
+                  //   ),
 
                   // only professor/principles can approve lessons
                   if (userData["level"] == "Professor")
