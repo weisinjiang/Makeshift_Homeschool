@@ -77,6 +77,21 @@ class _StudyScreenState extends State<StudyScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+
+                          StudyCategoryListTile(
+                              categoryTitle: "New Posts",
+                              postList: null
+                          ),
+
+                          StudyCategoryListTile(
+                              categoryTitle: "Most Bookmarked",
+                              postList: feedProvider.getMostBookmarkedPost(5)
+                          ),
+
+                          StudyCategoryListTile(
+                              categoryTitle: "Most Viewed",
+                              postList: feedProvider.getMostViewedPost(5)
+                          ),
                           // under 8
                           StudyCategoryListTile(
                               categoryTitle: "Under 8",
@@ -108,14 +123,7 @@ class _StudyScreenState extends State<StudyScreen> {
                                 upperInclusive: 100
                               )
                           ),
-                          StudyCategoryListTile(
-                              categoryTitle: "Most Bookmarked",
-                              postList: feedProvider.getMostBookmarkedPost(5)
-                          ),
-                          StudyCategoryListTile(
-                              categoryTitle: "Most Viewed",
-                              postList: feedProvider.getMostViewedPost(5)
-                          ),
+                          
                          
                         ],
                       ),
