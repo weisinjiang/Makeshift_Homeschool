@@ -1,14 +1,22 @@
 import firebase_admin
 from firebase_admin import credentials
-from firebase_admin import firestore
+from firebase_admin import firestore, storage
 import os
 import docx
 import re
+import imageParser
+
 
 
 # NOTES
 # Be sure to install the firebase-admin and python-docx packages into your project
+# Make sure you have opencv-python-headless installed to use cv2
+# Image Folder on Desktop is named "Images for lessons"
+# Lesson Folder on Desktop is named "Lessons with tags"
 
+
+
+# Gets Firebase uid for creators
 def getCreatorUid(name):
     contentCreators = {
         "Joseph McPhail": "a0BTYBqCE9gnMK8j60dRicNArkI2",
@@ -16,18 +24,35 @@ def getCreatorUid(name):
         "Aila McPhail": "MdxiRsClquMrlMc9nZxotZNwjI72",
         "Seth Peleg": "1qJlCn0U4HVJS2urQPoAYsO3KD63",
         "William Denherder": "gS7CD2VeXfV8KcjdM1sBxz0oT992",
+        "James McCoy": "04cmEhCGuGTrrOj9XirQr6bFLLG2",
+        "Lihong McPhail": "F8XRw14A5kXUYCzuSrKhK3qxkUI2"
     }
     return contentCreators[name]
 
+# Gets email for lesson creator
+def getCreatorEmail(name):
+    emails = {
+        "Joseph McPhail": "joseph.e.mcphail@gmail.com",
+        "Sumay McPhail": "sumay.l.mcphail@gmail.com",
+        "Aila McPhail": "aila.mcphail@gmail.com ",
+        "Seth Peleg": "sethvpeleg13@gmail.com",
+        "William Denherder": "william.parker.denherder@gmail.com",
+        "James McCoy": "jamesphilipnccoy@yahoo.com",
+        "Lihong McPhail": "lihong.l.mcphail@gmail.com"
+    }
 
+
+# Gets rid of the tag <> and left with only the value inside
 def getTagType(string):
     return string.replace("<", "").replace(">", "")
 
 
+# Gets the string that is in-between the start and end HTML style tags
 def removeTagFromString(string, startTag, endTag):
     return string.replace(startTag, "").replace(endTag, "")
 
 
+# Generate a question object for a single question
 def generateQuestion(contents):
 
     # regex to match HTML tags <>
@@ -56,9 +81,7 @@ def generateQuestion(contents):
 
 
 
-
-
-
+# Retrieves data that is ONLY the post: intro, body, conclusion
 def generatePostContents(contents):
     # Post contents, intro, body and conclusion
     postContents = {
@@ -110,8 +133,8 @@ def parse_lesson():
         else:
             postContents = {}
             # get its full path in os
-            #filePath = lesson_folder_path + f"/{file}"
-            filePath = "/Users/weijiang/Desktop/lessons/Copy of 3D Printing 2 for app (done).docx"
+            filePath = lesson_folder_path + f"/{file}"
+            #filePath = "/Users/weijiang/Desktop/lessons/Copy of 3D Printing 2 for app (done).docx"
             print(filePath)
             # Open the document
             document = docx.Document(filePath)
@@ -163,8 +186,15 @@ def connectToApp():
     credential_location = os.path.dirname(os.path.realpath(__file__)) + "/credentials.json"
     lesson_folder_path = os.path.expanduser("~/Desktop/lessons")
     cred = credentials.Certificate(credential_location)
-    firebase_admin.initialize_app(cred)
+
+    # Initalize it and the storage bucket called lessons
+    firebase_admin.initialize_app(cred, {
+        'storageBucket': "lessons"
+    })
     db = firestore.client()
+    bucket = storage.bucket()
+
+    # Set in Firestore
     db.collection(u'Test').document().set({
         u'Hello': u'There'
     })
