@@ -20,7 +20,7 @@ import imageParser
 def getCreatorUid(name):
     contentCreators = {
         "Joseph McPhail": "a0BTYBqCE9gnMK8j60dRicNArkI2",
-        "Sumay McPhail": "MONREpX4RQQj5iwVZLyhWtugsXP2",
+        "Sumay McPhail": "wQGkBorxtMghEg37GLl1BZMf8j32",
         "Aila McPhail": "MdxiRsClquMrlMc9nZxotZNwjI72",
         "Seth Peleg": "1qJlCn0U4HVJS2urQPoAYsO3KD63",
         "William Denherder": "gS7CD2VeXfV8KcjdM1sBxz0oT992",
@@ -37,9 +37,10 @@ def getCreatorEmail(name):
         "Aila McPhail": "aila.mcphail@gmail.com ",
         "Seth Peleg": "sethvpeleg13@gmail.com",
         "William Denherder": "william.parker.denherder@gmail.com",
-        "James McCoy": "jamesphilipnccoy@yahoo.com",
+        "James McCoy": "jamesphilipmccoy@yahoo.com",
         "Lihong McPhail": "lihong.l.mcphail@gmail.com"
     }
+    return emails[name]
 
 
 # Gets rid of the tag <> and left with only the value inside
@@ -49,7 +50,7 @@ def getTagType(string):
 
 # Gets the string that is in-between the start and end HTML style tags
 def removeTagFromString(string, startTag, endTag):
-    return string.replace(startTag, "").replace(endTag, "")
+    return string.replace(startTag, "").replace(endTag, "").strip()
 
 
 # Generate a question object for a single question
@@ -80,7 +81,6 @@ def generateQuestion(contents):
     return questionJson
 
 
-
 # Retrieves data that is ONLY the post: intro, body, conclusion
 def generatePostContents(contents):
     # Post contents, intro, body and conclusion
@@ -93,7 +93,6 @@ def generatePostContents(contents):
     for content in contents:
         matches = regEx_matchHTML.match(content)
         startTag = matches.group()
-        print(startTag)
         endTag = startTag[0] + "/" + startTag[1:]
         tagRemovedStr = removeTagFromString(content, startTag, endTag)
         paragraphType = getTagType(startTag)
@@ -108,22 +107,15 @@ def generatePostContents(contents):
     return postContents
 
 
-# Connects to Firestore and adds the lessons
-def addToDatabase(data):
-    credential_location = os.path.dirname(os.path.realpath(__file__)) + "/credentials.json"
-    lesson_folder_path = os.path.expanduser("~/Desktop/lessons")
-    cred = credentials.Certificate(credential_location)
-    firebase_admin.initialize_app(cred)
-    db = firestore.client()
-    db.collection(u'Test').document().set(data)
-
-
-def parse_lesson():
+def parse_lesson(storage, database):
     # Desktop/lessons folder
-    lesson_folder_path = os.path.expanduser("~/Desktop/lessons")
+    lesson_folder_path = os.path.expanduser("~/Desktop/Lessons with tags")
 
     # all lesson doc names in the directory
     dir_files = os.listdir(lesson_folder_path)
+
+    # Get the image names and their location on Desktop
+    imageLocations = imageParser.generateMapWithLessonNameAndImageLocation()
 
     # For each of the file names
     for file in dir_files:
@@ -134,8 +126,7 @@ def parse_lesson():
             postContents = {}
             # get its full path in os
             filePath = lesson_folder_path + f"/{file}"
-            #filePath = "/Users/weijiang/Desktop/lessons/Copy of 3D Printing 2 for app (done).docx"
-            print(filePath)
+            fileName = file[:file.index(".")].lower()
             # Open the document
             document = docx.Document(filePath)
             # Content to be added
@@ -145,59 +136,67 @@ def parse_lesson():
                 if paragraph.text != "":
                     contents.append(paragraph.text)
 
-            print(contents)
+
+            postTitle = removeTagFromString(contents[0], "<title>", "</title>")
+            postOwner = removeTagFromString(contents[1], "<ownerName>", "</ownerName>")
+            postAge = removeTagFromString(contents[2], "<age>", "</age>")
+            # index 2-6 are post contents: intro, body, conclusion
+            postContents = generatePostContents(contents[3:8])
+            # index 7-11 are questions on intro
+            introQuestion = generateQuestion(contents[8:13])
+            # index 12-16
+            bodyQuestion = generateQuestion(contents[13:18])
+            # index 17-end
+            conclusionQuestion = generateQuestion(contents[18:])
+
+            # Firestore Document Reference and generated post id
+            documentRef = database.collection(u"lessons").document();
+            # upload the image and get the long lived url
+            url = imageParser.uploadImageAndReturnUrl(storage, documentRef.id, imageLocations[fileName])
 
 
-
-            # index 2-6 are post contents
-            postContents = generatePostContents(contents[2:7])
-            introQuestion = generateQuestion(contents[7:12])
-            bodyQuestion = generateQuestion(contents[12:17])
-            conclusionQuestion = generateQuestion(contents[17:])
-
-            setDataFormat = {
-                "age": "8",
-                "approvals": 0,
-                "createdOn": "2020-09-19 13:15:47.623439",
-                "imageUrl": "d",
-                "lessonId": "testingID",
+            # Format of the data. Url is placeholder should there be no corresponding image
+            # Lesson id is blank because we need to make a document ref in Firestore first
+            data = {
+                "age": postAge,
+                "approvals": 2,
+                "createdOn": "2020-09-24 10:15:47.623439",
+                "imageUrl": url,
+                "lessonId": documentRef.id,
                 "likes": 0,
-                "ownerEmail": "roxas",
-                "ownerUid": "testing",
+                "ownerName": postOwner,
+                "ownerEmail": getCreatorEmail(postOwner),
+                "ownerUid": getCreatorUid(postOwner),
                 "postContents": postContents,
                 "quiz": {
                     "body": bodyQuestion,
                     "conclusion": conclusionQuestion,
                     "intro": introQuestion
-                }
+                },
+                "raters": 1,
+                "rating": 5.0,
+                "title": postTitle,
+                "views": 0
             }
 
-            addToDatabase(setDataFormat)
+            documentRef.set(data)
 
-            print("\n\n\n")
-            break
-
-
+            print("\n")
+            print(f"{fileName} added...")
 
 
-
-# Connects to Firestore and adds the lessons
-def connectToApp():
+# Sets a connection to the Cloud project
+def main():
     credential_location = os.path.dirname(os.path.realpath(__file__)) + "/credentials.json"
     lesson_folder_path = os.path.expanduser("~/Desktop/lessons")
     cred = credentials.Certificate(credential_location)
 
     # Initalize it and the storage bucket called lessons
-    firebase_admin.initialize_app(cred, {
-        'storageBucket': "lessons"
-    })
+    firebase_admin.initialize_app(cred)
     db = firestore.client()
-    bucket = storage.bucket()
-
-    # Set in Firestore
-    db.collection(u'Test').document().set({
-        u'Hello': u'There'
-    })
+    # pass in firebase storage and database
+    parse_lesson(storage, db)
 
 
-parse_lesson()
+main()
+
