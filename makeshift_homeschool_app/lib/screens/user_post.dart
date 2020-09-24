@@ -61,7 +61,8 @@ class _UserPostsState extends State<UserPosts> {
                                   child: PostThumbnail(viewType: PostExpandedViewType.owner,),
                                 ), 
                 separatorBuilder: (context, int index) =>
-                                const Divider(), 
+                                const SizedBox(
+                        width: 5,), 
                 itemCount: postFeedProvider.getUserPosts.length
               ),
             ),
