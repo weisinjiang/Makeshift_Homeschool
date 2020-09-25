@@ -127,6 +127,7 @@ def parse_lesson(storage, database):
             # get its full path in os
             filePath = lesson_folder_path + f"/{file}"
             fileName = file[:file.index(".")].lower()
+            print(f"Processing: {fileName}")
             # Open the document
             document = docx.Document(filePath)
             # Content to be added
