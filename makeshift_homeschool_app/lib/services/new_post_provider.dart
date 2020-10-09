@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -262,9 +261,14 @@ class NewPostProvider {
   */
 
   Future<void> post(
-      {String uid, String name, int lessonCreated, String userLevel, String email}) async {
+      {String uid,
+      String name,
+      int lessonCreated,
+      String userLevel,
+      String email}) async {
     lessonCreated++; // increment # of lessons user created, cant do it when adding to database
-    DocumentReference databaseRef; // refernece to document the post will go into
+    DocumentReference
+        databaseRef; // refernece to document the post will go into
 
     // if user is a Tutor, add it to approval collection
     if (userLevel == "Tutor") {
@@ -315,8 +319,6 @@ class NewPostProvider {
     // Add the data into the refernece document made earlier
     await databaseRef.setData(newLesson);
 
-
-
     // update user's lessons created if they are not a tutor
     // Tutors will have this incremented after review
     if (userLevel != "Tutor") {
@@ -326,8 +328,63 @@ class NewPostProvider {
           .document(uid)
           .updateData({"lesson_created": lessonCreated});
     }
+  }
 
-    //resetFields();
+ /*
+
+  This saves the user's drafts to their profile
+
+ */
+  Future<void> saveDraft(
+      {String uid,
+      String name,
+      String userLevel,
+      String email}) async {
+
+    DocumentReference databaseRef; // refernece to document 
+    // save to the user's collection
+    databaseRef = _database.collection("users").document(uid).collection("drafts").document();
+   
+
+    // Contruct all the data from the text controllers
+    var postContentsList = getControllerTextDataAsList();
+    var quiz = constructQuizDataForDatabase();
+    var newPostTitle = postContentsList[0]; // index0 = title controller
+
+    // Post contents
+    var contentsAsMap = {
+      "introduction": postContentsList[1],
+      "body 1": postContentsList[2],
+      "body 2": postContentsList[3],
+      "body 3": postContentsList[4],
+      "conclusion": postContentsList[5],
+    };
+
+    // upload the image and get the url so it can be referenced
+    var imageUrl = await uploadImageAndGetDownloadUrl(
+        getNewPostImageFile, databaseRef.documentID);
+
+    // all data needed for a new post
+    var newLesson = {
+      "age": postContentsList[6],
+      "views": 0,
+      "lessonId": databaseRef.documentID,
+      "ownerUid": uid,
+      "ownerName": name,
+      "createdOn": DateTime.now().toString(),
+      "likes": 0,
+      "imageUrl": imageUrl,
+      "title": newPostTitle,
+      "postContents": contentsAsMap,
+      "quiz": quiz,
+      "rating": 5.0,
+      "raters": 1,
+      "ownerEmail": email,
+      "approvals": 0
+    };
+
+    // Add the data into the refernece document made earlier
+    await databaseRef.setData(newLesson);
   }
 
   /*

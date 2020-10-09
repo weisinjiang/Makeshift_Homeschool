@@ -63,12 +63,12 @@ class NewPostScreen extends StatelessWidget {
                       onPressed: () {
                         // check if the user can post
                         bool canPost = newPostProvider.canPost(isEdit: false);
-                        // Not editing 
+                        // Not editing
                         if (canPost && !isEditing) {
                           newPostProvider.post(
                               uid: userInfo.getUserID,
                               name: userInfo.getUserName,
-                              userLevel: userInfo.getUserLevel, 
+                              userLevel: userInfo.getUserLevel,
                               email: userInfo.getEmail,
                               lessonCreated: userInfo.getLessonCreatedAsInt);
 
@@ -118,13 +118,48 @@ class NewPostScreen extends StatelessWidget {
                   // Users can tap anywhere on the screen to exit keyboard
                   child: GestureDetector(
                     onTap: () => FocusScope.of(context).unfocus(),
-                                      child: Container(
+                    child: Container(
                       height: screenSize.height * 0.85,
                       width: screenSize.width * 0.96,
                       child: SingleChildScrollView(
                         child: Column(
-                          /// Get the initial widgetlist
-                          children: newPostProvider.getNewPostWidgetList,
+                          children: [
+                            Column(
+                              /// Get the initial widgetlist
+                              children: newPostProvider.getNewPostWidgetList,
+                            ),
+
+                            // Raised Button to save as Draft
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: RaisedButton(
+                                // Make sure the image is loaded
+
+                                onPressed: () {
+                                  if (newPostProvider.getNewPostImageFile !=
+                                      null) {
+                                    newPostProvider.saveDraft(
+                                        uid: userInfo.getUserID,
+                                        name: userInfo.getUserName,
+                                        userLevel: userInfo.getUserLevel,
+                                        email: userInfo.getEmail);
+                                  } else {
+                                    showAlertDialog(
+                                        "Upload an image before saving draft",
+                                        "Missing Image",
+                                        context);
+                                  }
+                                  Navigator.of(context).pop();
+                                },
+
+                                child: Text("Save Draft"),
+                              ),
+                            ),
+
+                            const SizedBox(
+                              height: 30,
+                            )
+                          ],
                         ),
                       ),
                     ),

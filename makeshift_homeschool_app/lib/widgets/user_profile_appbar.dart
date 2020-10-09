@@ -4,6 +4,10 @@ import 'package:makeshift_homeschool_app/screens/user_post.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:provider/provider.dart';
 
+/*
+  Generates the appbar for the Profile screen and list of actions that
+  users can perform.
+*/
 class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   const UserProfileAppBar({
     Key key,
@@ -68,7 +72,7 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                             child: RaisedButton(
                               color: Colors.transparent,
                               child: Text(
-                                "See My Posts",
+                                "My Posts",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -82,6 +86,27 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                               },
                             ),
                           ),
+                          Container(
+                            height: screenSize.height * 0.06,
+                            width: screenSize.width * 0.85,
+                            child: RaisedButton(
+                              color: Colors.transparent,
+                              child: Text(
+                                "My Drafts",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserPosts()));
+                              },
+                            ),
+                          ),
+
                           Container(
                             height: screenSize.height * 0.06,
                             width: screenSize.width * 0.85,
