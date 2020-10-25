@@ -90,22 +90,38 @@ class _RootScreenState extends State<RootScreen> {
                       style: kBoldTextStyle,
                     ),
 
-                  // Boot camp
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ActivityButton(
-                      color: kGreenPrimary,
-                      borderColor: Colors.green[300],
-                      height: screenSize.height * 0.20,
-                      width: screenSize.width,
-                      function: () => Navigator.push(
-                          context, SlideLeftRoute(screen: BootCampScreen())),
+                  // //Boot camp
+                  // Padding(
+                  //     padding: const EdgeInsets.all(10.0),
+                  //     child: ActivityButton(
+                  //       color: kGreenPrimary,
+                  //       borderColor: Colors.green[300],
+                  //       height: screenSize.height * 0.20,
+                  //       width: screenSize.width,
+                  //       function: () => Navigator.push(
+                  //           context, SlideLeftRoute(screen: BootCampScreen())),
 
-                      // function: () => Navigator.push(context,
-                      //           SlideLeftRoute(screen: BootCampScreen())),
-                      canUseButton: true,
-                      name: "Bootcamp",
-                      imageLocation: "asset/images/campFire.png",
+                  //       // function: () => Navigator.push(context,
+                  //       //           SlideLeftRoute(screen: BootCampScreen())),
+                  //       canUseButton: true,
+                  //       name: "Bootcamp",
+                  //       imageLocation: "asset/images/campFire.png",
+                  //     ),
+                  //   ),
+                  Container(
+                    height: screenSize.height * 0.15,
+                    width: screenSize.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GhostButton(
+                        borderRadius: 20.0,
+                        buttonBorderColor: kRedOrange,
+                        buttonFillColor: kRedOrange,
+                        buttonName: "Boot Camp",
+                        buttonTextColor: Colors.black,
+                        function: () => Navigator.push(
+                            context, SlideLeftRoute(screen: BootCampScreen())),
+                      ),
                     ),
                   ),
 
@@ -115,47 +131,85 @@ class _RootScreenState extends State<RootScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        // Study
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ActivityButton(
-                            color: kGreenPrimary,
-                            borderColor: Colors.green[300],
-                            height: screenSize.height * 0.20,
-                            width: screenSize.width / 2,
-                            canUseButton: true,
-                            function: () => Navigator.push(
-                                context, SlideLeftRoute(screen: StudyScreen())),
-                            name: "Learn",
-                            imageLocation: "asset/images/books.png",
+                        // Learn Button
+                        // Padding(
+                        //     padding: const EdgeInsets.all(8.0),
+                        //     child: ActivityButton(
+                        //       color: kGreenPrimary,
+                        //       borderColor: Colors.green[300],
+                        //       height: screenSize.height * 0.20,
+                        //       width: screenSize.width / 2,
+                        //       canUseButton: true,
+                        //       function: () => Navigator.push(
+                        //           context, SlideLeftRoute(screen: StudyScreen())),
+                        //       name: "Learn",
+                        //       imageLocation: "asset/images/books.png",
+                        //     ),
+                        //   ),
+
+                        Container(
+                          height: screenSize.height * 0.15,
+                          width: screenSize.width,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GhostButton(
+                              borderRadius: 20.0,
+                              buttonBorderColor: kRedOrange,
+                              buttonFillColor: kRedOrange,
+                              buttonName: "Learn",
+                              buttonTextColor: Colors.black,
+                              function: () => Navigator.push(context,
+                                  SlideLeftRoute(screen: StudyScreen())),
+                            ),
                           ),
                         ),
 
                         // Teach
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ActivityButton(
-                            color: kGreenPrimary,
-                            borderColor: Colors.green[300],
-                            height: screenSize.height * 0.20,
-                            width: screenSize.width / 2,
-                            canUseButton:
-                                (userData["level"] == "Student") ? false : true,
-                            function: () => Navigator.push(
-                                context,
-                                SlideLeftRoute(
-                                    screen: NewPostScreen(
-                                  isEditing: false,
-                                  postData: null,
-                                ))),
-                            name: "Teach",
-                            imageLocation: "asset/images/teach.png",
+                        // Padding(
+                        //     padding: const EdgeInsets.all(8.0),
+                        //     child: ActivityButton(
+                        //       color: kGreenPrimary,
+                        //       borderColor: Colors.green[300],
+                        //       height: screenSize.height * 0.20,
+                        //       width: screenSize.width / 2,
+                        //       canUseButton:
+                        //           (userData["level"] == "Student") ? false : true,
+                        //       function: () => Navigator.push(
+                        //           context,
+                        //           SlideLeftRoute(
+                        //               screen: NewPostScreen(
+                        //             isEditing: false,
+                        //             postData: null,
+                        //           ))),
+                        //       name: "Teach",
+                        //       imageLocation: "asset/images/teach.png",
+                        //     ),
+                        //   ),
+
+                        Container(
+                          height: screenSize.height * 0.15,
+                          width: screenSize.width,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GhostButton(
+                              borderRadius: 20.0,
+                              buttonBorderColor: kRedOrange,
+                              buttonFillColor: kRedOrange,
+                              buttonName: "Teach",
+                              buttonTextColor: Colors.black,
+                              function: () => Navigator.push(
+                                  context,
+                                  SlideLeftRoute(
+                                      screen: NewPostScreen(
+                                    isEditing: false,
+                                    postData: null,
+                                  ))),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-
 
                   // only professor/principles can approve lessons
                   if (userData["level"] == "Professor")

@@ -59,76 +59,79 @@ class _StudyScreenState extends State<StudyScreen> {
           ),
           body: _isLoading
               ? LoadingScreen()
-              : Container(
-                  // entire screen color
-                  height: screenSize.height,
-                  width: screenSize.width,
-                  color: kPaleBlue,
-                  // decoration: linearGradientSecondaryGreenAnalogous,
-                  child: RefreshIndicator(
-                    onRefresh: () async {
-                      var postFeedProvider =
-                          Provider.of<PostFeedProvider>(context, listen: false);
-                      postFeedProvider.fetchPostsFromDatabase(query: "all");
-                    },
-                    child: SingleChildScrollView(
-                      // scroll up/down
+              : AspectRatio(
+                aspectRatio: 4/3 ,
+                              child: Container(
+                    // entire screen color
+                    height: screenSize.height,
+                    width: screenSize.width,
+                    color: kPaleBlue,
+                    // decoration: linearGradientSecondaryGreenAnalogous,
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        var postFeedProvider =
+                            Provider.of<PostFeedProvider>(context, listen: false);
+                        postFeedProvider.fetchPostsFromDatabase(query: "all");
+                      },
+                      child: SingleChildScrollView(
+                        // scroll up/down
 
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
 
-                          StudyCategoryListTile(
-                              categoryTitle: "New Posts",
-                              postList: null
-                          ),
+                            StudyCategoryListTile(
+                                categoryTitle: "New Posts",
+                                postList: null
+                            ),
 
-                          StudyCategoryListTile(
-                              categoryTitle: "Most Bookmarked",
-                              postList: feedProvider.getMostBookmarkedPost(5)
-                          ),
+                            StudyCategoryListTile(
+                                categoryTitle: "Most Bookmarked",
+                                postList: feedProvider.getMostBookmarkedPost(5)
+                            ),
 
-                          StudyCategoryListTile(
-                              categoryTitle: "Most Viewed",
-                              postList: feedProvider.getMostViewedPost(5)
-                          ),
-                          // under 8
-                          StudyCategoryListTile(
-                              categoryTitle: "Under 8",
-                              postList: feedProvider.filterPostAgeFrom(
-                                greaterThanAge: false,
-                                targetAge: 8 
-                              )
-                          ),
-                          // age 8-9
-                          StudyCategoryListTile(
-                              categoryTitle: "Age 8 & 9",
-                              postList: feedProvider.filterPostAgeBetween(
-                                lowerInclusive: 8,
-                                upperInclusive: 9 
-                              )
-                          ),
-                          StudyCategoryListTile(
-                              categoryTitle: "Age 10 & 11",
-                              postList: feedProvider.filterPostAgeBetween(
-                                lowerInclusive: 10,
-                                upperInclusive: 11 
-                              )
-                          ),
-                          // 12 and Above
-                          StudyCategoryListTile(
-                              categoryTitle: "Ages 12+",
-                              postList: feedProvider.filterPostAgeBetween(
-                                lowerInclusive: 12,
-                                upperInclusive: 100
-                              )
-                          ),
-                          
-                         
-                        ],
+                            StudyCategoryListTile(
+                                categoryTitle: "Most Viewed",
+                                postList: feedProvider.getMostViewedPost(5)
+                            ),
+                            // under 8
+                            StudyCategoryListTile(
+                                categoryTitle: "Under 8",
+                                postList: feedProvider.filterPostAgeFrom(
+                                  greaterThanAge: false,
+                                  targetAge: 8 
+                                )
+                            ),
+                            // age 8-9
+                            StudyCategoryListTile(
+                                categoryTitle: "Age 8 & 9",
+                                postList: feedProvider.filterPostAgeBetween(
+                                  lowerInclusive: 8,
+                                  upperInclusive: 9 
+                                )
+                            ),
+                            StudyCategoryListTile(
+                                categoryTitle: "Age 10 & 11",
+                                postList: feedProvider.filterPostAgeBetween(
+                                  lowerInclusive: 10,
+                                  upperInclusive: 11 
+                                )
+                            ),
+                            // 12 and Above
+                            StudyCategoryListTile(
+                                categoryTitle: "Ages 12+",
+                                postList: feedProvider.filterPostAgeBetween(
+                                  lowerInclusive: 12,
+                                  upperInclusive: 100
+                                )
+                            ),
+                            
+                           
+                          ],
+                        ),
                       ),
-                    ),
-                  )));
+                    )),
+              ));
     } else {
       LoadingScreen();
     }
