@@ -130,16 +130,19 @@ class _RootScreenState extends State<RootScreen> {
                           ),
                         );
                       } else {
-                        return ActivityButton(
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ActivityButton(
                           color: kGreenPrimary,
                           borderColor: Colors.green[300],
                           height: screenSize.height * 0.20,
-                          width: screenSize.width / 2,
+                          width: screenSize.width,
                           canUseButton: true,
                           function: () => Navigator.push(
-                              context, SlideLeftRoute(screen: StudyScreen())),
-                          name: "Learn",
-                          imageLocation: "asset/images/books.png",
+                              context, SlideLeftRoute(screen: BootCampScreen())),
+                          name: "Bootcamp",
+                          imageLocation: "asset/images/campFire.png",
+                        )
                         );
                       }
                     },
