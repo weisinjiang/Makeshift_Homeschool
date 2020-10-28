@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/screens/bootcamp_screen.dart';
@@ -108,21 +109,45 @@ class _RootScreenState extends State<RootScreen> {
                   //       imageLocation: "asset/images/campFire.png",
                   //     ),
                   //   ),
-                  Container(
-                    height: screenSize.height * 0.15,
-                    width: screenSize.width,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GhostButton(
-                        borderRadius: 20.0,
-                        buttonBorderColor: kRedOrange,
-                        buttonFillColor: kRedOrange,
-                        buttonName: "Boot Camp",
-                        buttonTextColor: Colors.black,
-                        function: () => Navigator.push(
-                            context, SlideLeftRoute(screen: BootCampScreen())),
-                      ),
-                    ),
+
+                  Builder(
+                    builder: (context) {
+                      if (kIsWeb) {
+                        return Container(
+                          height: screenSize.height * 0.15,
+                          width: screenSize.width,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GhostButton(
+                              borderRadius: 20.0,
+                              buttonBorderColor: kRedOrange,
+                              buttonFillColor: kRedOrange,
+                              buttonName: "Boot Camp",
+                              buttonTextColor: Colors.black,
+                              function: () => Navigator.push(context,
+                                  SlideLeftRoute(screen: BootCampScreen())),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Container(
+                          height: screenSize.height * 0.15,
+                          width: screenSize.width,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GhostButton(
+                              borderRadius: 20.0,
+                              buttonBorderColor: kRedOrange,
+                              buttonFillColor: kRedOrange,
+                              buttonName: "Boot Camp",
+                              buttonTextColor: Colors.black,
+                              function: () => Navigator.push(context,
+                                  SlideLeftRoute(screen: BootCampScreen())),
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
 
                   /// Study and Teach Button
