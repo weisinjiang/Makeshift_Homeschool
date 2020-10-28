@@ -130,21 +130,16 @@ class _RootScreenState extends State<RootScreen> {
                           ),
                         );
                       } else {
-                        return Container(
-                          height: screenSize.height * 0.15,
-                          width: screenSize.width,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GhostButton(
-                              borderRadius: 20.0,
-                              buttonBorderColor: kRedOrange,
-                              buttonFillColor: kRedOrange,
-                              buttonName: "Boot Camp",
-                              buttonTextColor: Colors.black,
-                              function: () => Navigator.push(context,
-                                  SlideLeftRoute(screen: BootCampScreen())),
-                            ),
-                          ),
+                        return ActivityButton(
+                          color: kGreenPrimary,
+                          borderColor: Colors.green[300],
+                          height: screenSize.height * 0.20,
+                          width: screenSize.width / 2,
+                          canUseButton: true,
+                          function: () => Navigator.push(
+                              context, SlideLeftRoute(screen: StudyScreen())),
+                          name: "Learn",
+                          imageLocation: "asset/images/books.png",
                         );
                       }
                     },
