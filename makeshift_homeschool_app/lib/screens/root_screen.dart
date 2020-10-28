@@ -131,19 +131,18 @@ class _RootScreenState extends State<RootScreen> {
                         );
                       } else {
                         return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ActivityButton(
-                          color: kGreenPrimary,
-                          borderColor: Colors.green[300],
-                          height: screenSize.height * 0.20,
-                          width: screenSize.width,
-                          canUseButton: true,
-                          function: () => Navigator.push(
-                              context, SlideLeftRoute(screen: BootCampScreen())),
-                          name: "Bootcamp",
-                          imageLocation: "asset/images/campFire.png",
-                        )
-                        );
+                            padding: const EdgeInsets.all(8.0),
+                            child: ActivityButton(
+                              color: kGreenPrimary,
+                              borderColor: Colors.green[300],
+                              height: screenSize.height * 0.20,
+                              width: screenSize.width,
+                              canUseButton: true,
+                              function: () => Navigator.push(context,
+                                  SlideLeftRoute(screen: BootCampScreen())),
+                              name: "Bootcamp",
+                              imageLocation: "asset/images/campFire.png",
+                            ));
                       }
                     },
                   ),
@@ -170,21 +169,41 @@ class _RootScreenState extends State<RootScreen> {
                         //     ),
                         //   ),
 
-                        Container(
-                          height: screenSize.height * 0.15,
-                          width: screenSize.width,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GhostButton(
-                              borderRadius: 20.0,
-                              buttonBorderColor: kRedOrange,
-                              buttonFillColor: kRedOrange,
-                              buttonName: "Learn",
-                              buttonTextColor: Colors.black,
-                              function: () => Navigator.push(context,
-                                  SlideLeftRoute(screen: StudyScreen())),
-                            ),
-                          ),
+                        Builder(
+                          builder: (context) {
+                            if (kIsWeb) {
+                              return Container(
+                                height: screenSize.height * 0.15,
+                                width: screenSize.width / 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GhostButton(
+                                    borderRadius: 20.0,
+                                    buttonBorderColor: kRedOrange,
+                                    buttonFillColor: kRedOrange,
+                                    buttonName: "Learn",
+                                    buttonTextColor: Colors.black,
+                                    function: () => Navigator.push(context,
+                                        SlideLeftRoute(screen: StudyScreen())),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ActivityButton(
+                                    color: kGreenPrimary,
+                                    borderColor: Colors.green[300],
+                                    height: screenSize.height * 0.20,
+                                    width: screenSize.width / 2,
+                                    canUseButton: true,
+                                    function: () => Navigator.push(context,
+                                        SlideLeftRoute(screen: StudyScreen())),
+                                    name: "Learn",
+                                    imageLocation: "asset/images/books.png",
+                                  ));
+                            }
+                          },
                         ),
 
                         // Teach
@@ -209,26 +228,46 @@ class _RootScreenState extends State<RootScreen> {
                         //     ),
                         //   ),
 
-                        Container(
-                          height: screenSize.height * 0.15,
-                          width: screenSize.width,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GhostButton(
-                              borderRadius: 20.0,
-                              buttonBorderColor: kRedOrange,
-                              buttonFillColor: kRedOrange,
-                              buttonName: "Teach",
-                              buttonTextColor: Colors.black,
-                              function: () => Navigator.push(
-                                  context,
-                                  SlideLeftRoute(
-                                      screen: NewPostScreen(
-                                    isEditing: false,
-                                    postData: null,
-                                  ))),
-                            ),
-                          ),
+                        Builder(
+                          builder: (context) {
+                            if (kIsWeb) {
+                              return Container(
+                                height: screenSize.height * 0.15,
+                                width: screenSize.width / 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GhostButton(
+                                    borderRadius: 20.0,
+                                    buttonBorderColor: kRedOrange,
+                                    buttonFillColor: kRedOrange,
+                                    buttonName: "Teach",
+                                    buttonTextColor: Colors.black,
+                                    function: () => Navigator.push(
+                                        context,
+                                        SlideLeftRoute(
+                                            screen: NewPostScreen(
+                                          isEditing: false,
+                                          postData: null,
+                                        ))),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ActivityButton(
+                                    color: kGreenPrimary,
+                                    borderColor: Colors.green[300],
+                                    height: screenSize.height * 0.20,
+                                    width: screenSize.width / 2,
+                                    canUseButton: true,
+                                    function: () => Navigator.push(context,
+                                        SlideLeftRoute(screen: NewPostScreen())),
+                                    name: "Teach",
+                                    imageLocation: "asset/images/teach.png",
+                                  ));
+                            }
+                          },
                         ),
                       ],
                     ),

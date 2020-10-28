@@ -59,8 +59,7 @@ class _StudyScreenState extends State<StudyScreen> {
           ),
           body: _isLoading
               ? LoadingScreen()
-              : AspectRatio(
-                aspectRatio: 4/3 ,
+              : Container(
                               child: Container(
                     // entire screen color
                     height: screenSize.height,
