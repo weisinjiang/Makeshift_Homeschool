@@ -26,6 +26,7 @@ double getLevelAsPercentage(String level) {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     var screenSize = MediaQuery.of(context).size;
@@ -91,7 +92,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
                                     "${auth.getUser["username"]}",
-                                    style: TextStyle(color: Colors.white, fontSize: 20),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
                                     textAlign: TextAlign.start,
                                   ),
                                 ),
@@ -130,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   color: Colors.white),
                                             ),
                                           )),
-                                        ]))
+                                        ])),
                               ],
                             ),
                           )
@@ -186,14 +188,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       //   ),
                       // ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12,),
-                        child: Text("Level", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                        ),
+                        child: Text(
+                          "Level",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                      
-                      SizedBox(height: 10,),
+
+                      SizedBox(
+                        height: 10,
+                      ),
 
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: EdgeInsets.symmetric(horizontal: 10),
                           width: screenWidth,
                           child: Stack(
                             alignment: Alignment.center,
