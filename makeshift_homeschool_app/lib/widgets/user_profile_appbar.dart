@@ -28,6 +28,7 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
     Map<String, String> userData = authProvider.getUser;
 
     return AppBar(
+      backgroundColor: Colors.cyan,
       elevation: 0.0,
       title: Text("Profile"),
       actions: <Widget>[

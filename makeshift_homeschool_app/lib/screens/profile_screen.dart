@@ -37,24 +37,106 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (auth.getUser != null) {
         /// if auth provider has user data
         return Scaffold(
-            appBar: UserProfileAppBar(screenSize: screenSize,appBar: AppBar(),),
+            appBar: UserProfileAppBar(
+              screenSize: screenSize,
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+              ),
+            ),
             body: Container(
+              color: Colors.white,
               // Main box for the entire profile screen
               height: screenHeight,
               width: screenWidth,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [kGreenSecondary, kGreenSecondary_shade1],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter),
-              ),
+              // decoration: BoxDecoration(
+              //   gradient: LinearGradient(
+              //       colors: [kGreenSecondary, kGreenSecondary_shade1],
+              //       begin: Alignment.topCenter,
+              //       end: Alignment.bottomCenter),
+              // ),
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Stack(
+                        children: [
+                          Image.asset(
+                              "asset/images/profile_screen_picture.png"),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      // Avatar
+                                      Flexible(
+                                        child: CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: NetworkImage(
+                                              auth.getUser["photoURL"]),
+                                          backgroundColor: Colors.greenAccent,
+                                          // child: Text("${userData["username"][0]}"),
+                                        ),
+                                      ),
+                                    ]),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "${auth.getUser["username"]}",
+                                    style: TextStyle(color: Colors.white, fontSize: 20),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                                Container(
+                                    width: screenWidth,
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: 80,
+                                          ),
+                                          Flexible(
+                                              child: ListTile(
+                                            title: Text(
+                                              auth.getUser["lesson_created"],
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            subtitle: Text(
+                                              "Lessons\nCreated",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          )),
+                                          Flexible(
+                                              child: ListTile(
+                                            title: Text(
+                                              auth.getUser["lesson_completed"],
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            subtitle: Text(
+                                              "Lessons\nCompleted",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          )),
+                                        ]))
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+
                       // Contains: Avatar, Name, Level, Bio
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -65,48 +147,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               // Avatar
-                              Flexible(
-                                child: CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage:
-                                      NetworkImage(auth.getUser["photoURL"]),
-                                  backgroundColor: Colors.greenAccent,
-                                  // child: Text("${userData["username"][0]}"),
-                                ),
-                              ),
-                              Flexible(
-                                  child: ListTile(
-                                title: Text(
-                                  auth.getUser["lesson_created"],
-                                  style: kBoldTextStyle,
-                                ),
-                                subtitle: Text("Lessons\nCreated"),
-                              )),
+                              // Flexible(
+                              //   child: CircleAvatar(
+                              //     radius: 50,
+                              //     backgroundImage:
+                              //         NetworkImage(auth.getUser["photoURL"]),
+                              //     backgroundColor: Colors.greenAccent,
+                              //     // child: Text("${userData["username"][0]}"),
+                              //   ),
+                              // ),
+                              // Flexible(
+                              //     child: ListTile(
+                              //   title: Text(
+                              //     auth.getUser["lesson_created"],
+                              //     style: kBoldTextStyle,
+                              //   ),
+                              //   subtitle: Text("Lessons\nCreated"),
+                              // )),
 
-                              Flexible(
-                                  child: ListTile(
-                                title: Text(
-                                  auth.getUser["lesson_completed"],
-                                  style: kBoldTextStyle,
-                                ),
-                                subtitle: Text("Lessons\nCompleted"),
-                              )),
+                              // Flexible(
+                              //     child: ListTile(
+                              //   title: Text(
+                              //     auth.getUser["lesson_completed"],
+                              //     style: kBoldTextStyle,
+                              //   ),
+                              //   subtitle: Text("Lessons\nCompleted"),
+                              // )),
                             ],
                           ),
                         ),
                       ),
+                      // Padding(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child: Text(
+                      //     "${auth.getUser["username"]}",
+                      //     style: kTitleTextStyle,
+                      //     textAlign: TextAlign.start,
+                      //   ),
+                      // ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "${auth.getUser["username"]}",
-                          style: kTitleTextStyle,
-                          textAlign: TextAlign.start,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 12,),
+                        child: Text("Level", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      
+                      SizedBox(height: 10,),
+
                       Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
                           width: screenWidth,
                           child: Stack(
                             alignment: Alignment.center,
@@ -137,6 +224,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 30,
                       ),
                       Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
                         height: screenHeight * 0.10,
                         width: screenWidth * 0.95,
                         child: Text(
@@ -145,7 +233,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           style: kParagraphTextStyle,
                         ),
                       ),
-    
                     ],
                   ),
                 ),
