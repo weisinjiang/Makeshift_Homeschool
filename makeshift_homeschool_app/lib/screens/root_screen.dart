@@ -179,7 +179,7 @@ class _RootScreenState extends State<RootScreen> {
                           if (userData["level"] == "Professor")
                             Container(
                               height: screenSize.height * 0.15,
-                              width: screenSize.width/2,
+                              width: screenSize.width / 2,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: GhostButton(
@@ -202,7 +202,7 @@ class _RootScreenState extends State<RootScreen> {
                               userData["level"] == "Teacher")
                             Container(
                               height: screenSize.height * 0.15,
-                              width: screenSize.width/2,
+                              width: screenSize.width / 2,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: GhostButton(
