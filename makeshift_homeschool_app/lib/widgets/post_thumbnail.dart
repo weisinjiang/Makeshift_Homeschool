@@ -71,7 +71,7 @@ class PostThumbnail extends StatelessWidget {
         }
       },
       child: Container(
-          //height: screenSize.height * 0.20,
+          height: screenSize.height * 0.20,
           width: screenSize.width * 0.40,
 
           /// Box decoration for the shape of the container and the image that

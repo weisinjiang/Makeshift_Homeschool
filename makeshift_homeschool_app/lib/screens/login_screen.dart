@@ -265,12 +265,6 @@ class _LoginScreenState extends State<LoginScreen> {
       Size screenSize, AuthProvider auth) {
     return Column(
       children: [
-        //Logo
-        Padding(
-          padding: const EdgeInsets.all(40.0),
-          child: Image.asset('asset/images/logo.png'),
-        ),
-
         Form(
           key: _formKey, // key to track the forms input
           child: Column(
