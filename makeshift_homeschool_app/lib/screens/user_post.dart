@@ -42,30 +42,32 @@ class _UserPostsState extends State<UserPosts> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-
     return Scaffold(
         appBar: AppBar(
           title: Text("Your Posts"),
         ),
-        body: _isLoading ? LoadingScreen() : Container(
-          height: screenSize.height,
-          width: screenSize.width,
-          decoration: linearGradientSecondaryGreenAnalogous,
-          child: Consumer<PostFeedProvider>(
-            /// Consumer for the list because when it is deleted, this widget needs to rebuild
-            builder: (context, postFeedProvider, child) => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.separated(
-                itemBuilder: (_, index) => ChangeNotifierProvider.value(
-                                  value: postFeedProvider.getUserPosts[index],
-                                  child: PostThumbnail(viewType: PostExpandedViewType.owner,),
-                                ), 
-                separatorBuilder: (context, int index) =>
-                                const Divider(), 
-                itemCount: postFeedProvider.getUserPosts.length
-              ),
-            ),
-          ),
-        ));
+        body: _isLoading
+            ? LoadingScreen()
+            : Container(
+                height: screenSize.height,
+                width: screenSize.width,
+                decoration: linearGradientSecondaryGreenAnalogous,
+                child: Consumer<PostFeedProvider>(
+                  /// Consumer for the list because when it is deleted, this widget needs to rebuild
+                  builder: (context, postFeedProvider, child) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView.separated(
+                        itemBuilder: (_, index) => ChangeNotifierProvider.value(
+                              value: postFeedProvider.getUserPosts[index],
+                              child: PostThumbnail(
+                                viewType: PostExpandedViewType.owner,
+                              ),
+                            ),
+                        separatorBuilder: (context, int index) =>
+                            const Divider(),
+                        itemCount: postFeedProvider.getUserPosts.length),
+                  ),
+                ),
+              ));
   }
 }
