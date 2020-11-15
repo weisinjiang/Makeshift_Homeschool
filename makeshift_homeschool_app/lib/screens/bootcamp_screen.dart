@@ -89,7 +89,7 @@ class BootCampScreen extends StatelessWidget {
                 width: screenSize.width,
                 child: ListView.builder(
                   padding: const EdgeInsets.all(10.0),
-                  itemCount: 11,
+                  itemCount: bootcampNav.length,
                   itemBuilder: (context, index) => BootCampListTile(
                     title: bootCampActivityNames[index],
                     navigationFunction: bootcampNav[index], /// Make list of nagivation function that matches activity list
