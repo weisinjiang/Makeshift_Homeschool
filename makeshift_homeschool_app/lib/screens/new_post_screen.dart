@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
@@ -115,16 +116,23 @@ class NewPostScreen extends StatelessWidget {
                   color: kPaleBlue,
                   height: screenSize.height,
                   width: screenSize.width,
+                  alignment: Alignment.topCenter,
                   // Users can tap anywhere on the screen to exit keyboard
-                  child: GestureDetector(
-                    onTap: () => FocusScope.of(context).unfocus(),
-                                      child: Container(
-                      height: screenSize.height * 0.85,
-                      width: screenSize.width * 0.96,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          /// Get the initial widgetlist
-                          children: newPostProvider.getNewPostWidgetList,
+                  child: Container(
+                    width: kIsWeb
+                      ? screenSize.width * 0.50
+                      : screenSize.width,
+                      alignment: Alignment.topCenter,
+                    child: GestureDetector(
+                      onTap: () => FocusScope.of(context).unfocus(),
+                                        child: Container(
+                        height: screenSize.height * 0.85,
+                        width: screenSize.width * 0.96,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            /// Get the initial widgetlist
+                            children: newPostProvider.getNewPostWidgetList,
+                          ),
                         ),
                       ),
                     ),
