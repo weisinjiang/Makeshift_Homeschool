@@ -7,6 +7,7 @@ import 'package:makeshift_homeschool_app/bootcamp_templates/GetwhatIwantfrommypa
 import 'package:makeshift_homeschool_app/bootcamp_templates/Interviewyourparents.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Makeyourfavoritegameevenbetter.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Practicewinningfriends.dart';
+import 'package:makeshift_homeschool_app/bootcamp_templates/TenMostUsedWords.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Writeaboutafamilyvacation.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Yourfavoritefictionalcharacter.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
@@ -36,7 +37,8 @@ class BootCampScreen extends StatelessWidget {
       "Practice winning friends",
       "Write about a family vacation",
       "Different ways to move",
-      "Interview your parents"
+      "Interview your parents",
+      "Ten Most Used Words"
     ];
 
     ///
@@ -53,6 +55,7 @@ class BootCampScreen extends StatelessWidget {
       () => Navigator.push(context,SlideLeftRoute(screen: WriteAboutAFamilyVacation())),
       () => Navigator.push(context,SlideLeftRoute(screen: DifferentWaysToMove())),
       () => Navigator.push(context,SlideLeftRoute(screen: Interviewyourparents())),
+      () => Navigator.push(context,SlideLeftRoute(screen: TenMostUsedWords())),
     ];
     
 
