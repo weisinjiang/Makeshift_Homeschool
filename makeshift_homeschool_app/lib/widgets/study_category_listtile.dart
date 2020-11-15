@@ -4,6 +4,7 @@ import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart';
 
 class StudyCategoryListTile extends StatelessWidget {
   final String categoryTitle;
@@ -40,9 +41,8 @@ class StudyCategoryListTile extends StatelessWidget {
           postList == null || postList.length == 0
           ? Container(height: screenSize.height * 0.20,child: Center(child: Text("Nothing, yet..."),),)
           : Container(
-            
             alignment: Alignment.topCenter,
-            height: screenSize.height * 0.30,
+            height: kIsWeb ? screenSize.height * 0.20 : screenSize.height * 0.30,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView.separated(
