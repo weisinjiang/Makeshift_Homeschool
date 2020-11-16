@@ -90,6 +90,7 @@ class PostFeedProvider with ChangeNotifier {
 
       // serialize all documents and make them into Post objects
       allDocuments.forEach((doc) {
+        print(doc);
         Post post = Post();
         post.setLikes = doc["likes"];
         post.setViews = doc["views"];
@@ -113,7 +114,7 @@ class PostFeedProvider with ChangeNotifier {
       this._approvalNeeded = serializedPosts;
       notifyListeners();
     } catch (error) {
-      throw error;
+      print("something went wrong");
     }
   }
 
@@ -127,6 +128,7 @@ class PostFeedProvider with ChangeNotifier {
   */
   Future<void> fetchPostsFromDatabase({String query}) async {
     QuerySnapshot result; // result of query
+    QuerySnapshot inReviewPosts; // users posts that is in review
 
     try {
       if (query == "all") {
@@ -138,10 +140,24 @@ class PostFeedProvider with ChangeNotifier {
             .collection("lessons")
             .where("ownerUid", isEqualTo: uid)
             .getDocuments();
+
+        // Fetch documents that is currently in review
+        inReviewPosts = await _database
+            .collection("review")
+            .where("ownerUid", isEqualTo: uid)
+            .getDocuments();
       }
 
       // get all the documents from the query
       List<DocumentSnapshot> allPostDocuments = result.documents;
+
+      // If there are any in review posts, add them to the collection
+      if (inReviewPosts != null) {
+        inReviewPosts.documents.forEach((doc) {
+          allPostDocuments.add(doc);
+        });
+      }
+
       // get user's favorite list so isLiked can be set to true
       List<String> favoritesList = await fetchUsersFavoritesList(this.uid);
       List<String> completedLessons =

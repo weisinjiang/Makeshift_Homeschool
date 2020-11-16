@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/shared/widget_constants.dart';
@@ -51,21 +52,24 @@ class _UserPostsState extends State<UserPosts> {
             : Container(
                 height: screenSize.height,
                 width: screenSize.width,
-                decoration: linearGradientSecondaryGreenAnalogous,
+                color: kPaleBlue,
+                //decoration: linearGradientSecondaryGreenAnalogous,
                 child: Consumer<PostFeedProvider>(
                   /// Consumer for the list because when it is deleted, this widget needs to rebuild
                   builder: (context, postFeedProvider, child) => Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ListView.separated(
-                        itemBuilder: (_, index) => ChangeNotifierProvider.value(
-                              value: postFeedProvider.getUserPosts[index],
-                              child: PostThumbnail(
-                                viewType: PostExpandedViewType.owner,
+                    child: Container(
+                      child: ListView.separated(
+                          itemBuilder: (_, index) => ChangeNotifierProvider.value(
+                                value: postFeedProvider.getUserPosts[index],
+                                child: PostThumbnail(
+                                  viewType: PostExpandedViewType.owner,
+                                ),
                               ),
-                            ),
-                        separatorBuilder: (context, int index) =>
-                            const Divider(),
-                        itemCount: postFeedProvider.getUserPosts.length),
+                          separatorBuilder: (context, int index) =>
+                              const Divider(),
+                          itemCount: postFeedProvider.getUserPosts.length == null ? 0: postFeedProvider.getUserPosts.length),
+                    ),
                   ),
                 ),
               ));

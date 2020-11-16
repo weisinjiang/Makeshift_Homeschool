@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Alternativemovieendings.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Differentwaystomove.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Discoveryourfamilieslovelanguages.dart';
@@ -39,62 +40,121 @@ class BootCampScreen extends StatelessWidget {
 
     ///
     final List<Function> bootcampNav = [
-      () => Navigator.push(context,SlideLeftRoute(screen: CompletedLetters())),
-      () => Navigator.push(context,SlideLeftRoute(screen: MakeYourFavoriteGameEvenBetter())),
-      () => Navigator.push(context,SlideLeftRoute(screen: WriteAboutYourFavoriteMemory())),
-      () => Navigator.push(context,SlideLeftRoute(screen: GetToKnowANeighbor())),
-      () => Navigator.push(context,SlideLeftRoute(screen: Yourfavoritefictionalcharacter())),
-      () => Navigator.push(context,SlideLeftRoute(screen: DiscoverYourFamiliesLoveLanguages())),
-      () => Navigator.push(context,SlideLeftRoute(screen: AlternativeMovieEndings())),
-      () => Navigator.push(context,SlideLeftRoute(screen: GetWhatIWantFromMyParents())),
-      () => Navigator.push(context,SlideLeftRoute(screen: PracticeWinningFriends())),
-      () => Navigator.push(context,SlideLeftRoute(screen: WriteAboutAFamilyVacation())),
-      () => Navigator.push(context,SlideLeftRoute(screen: DifferentWaysToMove())),
+      () => Navigator.push(context, SlideLeftRoute(screen: CompletedLetters())),
+      () => Navigator.push(context, SlideLeftRoute(screen: MakeYourFavoriteGameEvenBetter())),
+      () => Navigator.push(context, SlideLeftRoute(screen: WriteAboutYourFavoriteMemory())),
+      () => Navigator.push(context, SlideLeftRoute(screen: GetToKnowANeighbor())),
+      () => Navigator.push(context, SlideLeftRoute(screen: Yourfavoritefictionalcharacter())),
+      () => Navigator.push(context, SlideLeftRoute(screen: DiscoverYourFamiliesLoveLanguages())),
+      () => Navigator.push(context, SlideLeftRoute(screen: AlternativeMovieEndings())),
+      () => Navigator.push(context, SlideLeftRoute(screen: GetWhatIWantFromMyParents())),
+      () => Navigator.push(context, SlideLeftRoute(screen: PracticeWinningFriends())),
+      () => Navigator.push(context, SlideLeftRoute(screen: WriteAboutAFamilyVacation())),
+      () => Navigator.push(context, SlideLeftRoute(screen: DifferentWaysToMove())),
     ];
-    
 
     return Scaffold(
         appBar: AppBar(
           title: Text("Boot Camp"),
           backgroundColor: kPaleBlue,
         ),
-        body: Container(
-          height: screenSize.height,
-          width: screenSize.width,
-          color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                  height: screenSize.height * 0.30,
-                  width: screenSize.width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("asset/gif/camping.gif"),
-                        fit: BoxFit.cover),
-                  ),
-                  child: Center(
-                      child: StrokeText(
-                    fontSize: 50,
-                    strokeColor: Colors.black,
-                    strokeWidth: 6.0,
-                    text: "Pick an Activity",
-                    textColor: Colors.white,
-                  ))),
-              Container(
-                height: screenSize.height * 0.55,
-                width: screenSize.width,
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(10.0),
-                  itemCount: 11,
-                  itemBuilder: (context, index) => BootCampListTile(
-                    title: bootCampActivityNames[index],
-                    navigationFunction: bootcampNav[index], /// Make list of nagivation function that matches activity list
-                  ),
+        // Depending on if it is web, return different sets of widgets for bootcamp
+        body: kIsWeb
+            ? buildWeb(screenSize, bootCampActivityNames, bootcampNav)
+            : buildMobile(screenSize, bootCampActivityNames, bootcampNav));
+  }
+
+  Container buildWeb(Size screenSize, List<String> bootCampActivityNames,
+      List<Function> bootcampNav) {
+    return Container(
+      alignment: Alignment.center,
+      height: screenSize.height,
+      width: screenSize.width,
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Flexible(
+            child: Container(
+                alignment: Alignment.center,
+                height: screenSize.height * 0.40,
+                width: screenSize.width * 0.50,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("asset/gif/camping.gif"),
+                      fit: BoxFit.cover),
+                ),
+                child: Center(
+                    child: StrokeText(
+                  fontSize: 50,
+                  strokeColor: Colors.black,
+                  strokeWidth: 6.0,
+                  text: "Pick an Activity",
+                  textColor: Colors.white,
+                ))),
+          ),
+          Flexible(
+            child: Container(
+              height: screenSize.height * 0.55,
+              width: screenSize.width * 0.50,
+              child: ListView.builder(
+                padding: const EdgeInsets.all(10.0),
+                itemCount: 11,
+                itemBuilder: (context, index) => BootCampListTile(
+                  title: bootCampActivityNames[index],
+                  navigationFunction: bootcampNav[index],
+
+                  /// Make list of nagivation function that matches activity list
                 ),
               ),
-            ],
+            ),
           ),
-        ));
+        ],
+      ),
+    );
+  }
+
+  Container buildMobile(Size screenSize, List<String> bootCampActivityNames,
+      List<Function> bootcampNav) {
+    return Container(
+      height: screenSize.height,
+      width: screenSize.width,
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+              height: screenSize.height * 0.30,
+              width: screenSize.width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("asset/gif/camping.gif"),
+                    fit: BoxFit.cover),
+              ),
+              child: Center(
+                  child: StrokeText(
+                fontSize: 50,
+                strokeColor: Colors.black,
+                strokeWidth: 6.0,
+                text: "Pick an Activity",
+                textColor: Colors.white,
+              ))),
+          Container(
+            height: screenSize.height * 0.55,
+            width: screenSize.width,
+            child: ListView.builder(
+              padding: const EdgeInsets.all(10.0),
+              itemCount: 11,
+              itemBuilder: (context, index) => BootCampListTile(
+                title: bootCampActivityNames[index],
+                navigationFunction: bootcampNav[index],
+
+                /// Make list of nagivation function that matches activity list
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
