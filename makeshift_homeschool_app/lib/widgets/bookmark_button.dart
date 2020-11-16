@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart';
 
 class BookmarkButton extends StatelessWidget {
   const BookmarkButton({
@@ -22,12 +23,16 @@ class BookmarkButton extends StatelessWidget {
             ? Icon(
                 Icons.bookmark,
                 color: Colors.black,
-                size: screenSize.height * 0.05,
+                size: kIsWeb
+                  ? screenSize.height * 0.03 
+                  :screenSize.height * 0.03,
               )
             : Icon(
                 Icons.bookmark_border,
                 color: Colors.black,
-                size: screenSize.height * 0.05,
+                size: kIsWeb
+                  ? screenSize.height * 0.03 
+                  : screenSize.height * 0.03,
               ),
         onPressed: () async {
           await post.toggleBookmarkButton(user["uid"]);

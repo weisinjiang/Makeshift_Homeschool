@@ -8,7 +8,12 @@ class StrokeText extends StatelessWidget {
   final String text;
 
   const StrokeText(
-      {Key key, this.textColor, this.strokeColor, this.fontSize, this.text, this.strokeWidth})
+      {Key key,
+      this.textColor,
+      this.strokeColor,
+      this.fontSize,
+      this.text,
+      this.strokeWidth})
       : super(key: key);
 
   @override
@@ -26,14 +31,14 @@ class StrokeText extends StatelessWidget {
         //         ..strokeWidth = strokeWidth
         //         ..color = strokeColor),
         // ),
-        
+
         //Solid text as fill.
         Text(
           text,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: fontSize,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
             color: textColor,
           ),
         ),
