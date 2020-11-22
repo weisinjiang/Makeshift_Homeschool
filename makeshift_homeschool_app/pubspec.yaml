@@ -40,6 +40,7 @@ dependencies:
 
   # Image Selection Package
   image_picker: ^0.6.7+4
+  file_picker: ^2.1.0
   image_cropper: ^1.2.3
 
   # Styling 

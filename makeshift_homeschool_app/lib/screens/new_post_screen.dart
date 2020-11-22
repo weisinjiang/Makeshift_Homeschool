@@ -64,7 +64,8 @@ class NewPostScreen extends StatelessWidget {
                       onPressed: () {
                         // check if the user can post
                         bool canPost = newPostProvider.canPost(isEdit: false);
-                        // Not editing 
+
+                        // Not editing and can post
                         if (canPost && !isEditing) {
                           newPostProvider.post(
                               uid: userInfo.getUserID,
@@ -76,7 +77,7 @@ class NewPostScreen extends StatelessWidget {
                           Navigator.of(context).pop();
                         }
 
-                        /// Editing
+                        /// Editing and can post
                         else if (isEditing &&
                             newPostProvider.canPost(isEdit: true)) {
                           PostFeedProvider provider =
@@ -87,9 +88,10 @@ class NewPostScreen extends StatelessWidget {
                           newPostProvider.update(postData, provider);
                           // pop the update screen
                           Navigator.of(context).pop();
+
                         } else {
                           showAlertDialog(
-                              "One or more of your fields are empty. Please fill them in, or remove paragraphs/subtitles that you are not using.",
+                              "One or more of your fields are empty.",
                               "ERROR",
                               context);
                         }

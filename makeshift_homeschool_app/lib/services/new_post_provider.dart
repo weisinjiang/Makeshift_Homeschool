@@ -22,6 +22,7 @@ class NewPostProvider {
   /// One list for widgets and one for text controllers
   List<Widget> _newPostForms;
   List<TextEditingController> _newPostFormControllers;
+  
   // Each post requires 5 question and this list contains a controller for them
   List<TextEditingController> _newPostQuestionsControllers;
   int currentWidgetListSize; // used to add and delete textforms

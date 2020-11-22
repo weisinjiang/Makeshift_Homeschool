@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,27 +46,42 @@ class _ImageFieldState extends State<ImageField> {
             child: Wrap(
               spacing: 5.0,
               children: <Widget>[
-                /// Choose from Camera Roll
-                ListTile(
-                  leading: Icon(Icons.photo),
-                  title: Text("Choose from Library"),
-                  onTap: () {
-                    _chooseImageFromSource(
-                        ImageSource.gallery, height, width, newPostProvider);
-                    Navigator.of(context).pop();
-                  },
-                ),
+                // Web Version
+                if (kIsWeb) ...[
+                  ListTile(
+                    leading: Icon(Icons.upload_file),
+                    title: Text("Upload an Image"),
+                    onTap: () {
+                      _chooseImageWeb(height, width, newPostProvider);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
 
-                /// Take a picture
-                ListTile(
-                  leading: Icon(Icons.camera_alt),
-                  title: Text("Take a Photo"),
-                  onTap: () {
-                    _chooseImageFromSource(
-                        ImageSource.camera, height, width, newPostProvider);
-                    Navigator.of(context).pop();
-                  },
-                ),
+                // Mobile Version
+                if (!kIsWeb) ...[
+                  /// Choose from Camera Roll
+                  ListTile(
+                    leading: Icon(Icons.photo),
+                    title: Text("Choose from Library"),
+                    onTap: () {
+                      _chooseImageFromSource(
+                          ImageSource.gallery, height, width, newPostProvider);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+
+                  /// Take a picture
+                  ListTile(
+                    leading: Icon(Icons.camera_alt),
+                    title: Text("Take a Photo"),
+                    onTap: () {
+                      _chooseImageFromSource(
+                          ImageSource.camera, height, width, newPostProvider);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ]
               ],
             ),
           );
@@ -80,9 +97,8 @@ class _ImageFieldState extends State<ImageField> {
   Future<void> _chooseImageFromSource(ImageSource source, double height,
       double width, NewPostProvider newPostProvider) async {
     ImagePicker imagePicker = ImagePicker();
-    final pickedImage = await imagePicker.getImage(
-        // ask for permission
-        source: source);
+    final pickedImage =
+        await imagePicker.getImage(source: source); // ask for permission
 
     /// Crop the image
     if (pickedImage != null) {
@@ -102,6 +118,27 @@ class _ImageFieldState extends State<ImageField> {
     newPostProvider.setNewPostImageFile = _userSelectedImage;
     //return File(pickedImage.path);
     //await auth.uploadProfileImage(_imageFile); // upload to Firestore
+  }
+
+  Future<void> _chooseImageWeb(
+      double height, double width, NewPostProvider newPostProvider) async {
+    FilePickerResult pickedImage = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.image, withData: true);
+  
+
+    if (pickedImage != null) {
+      PlatformFile file = pickedImage.files.first;
+      File croppedImage = await ImageCropper.cropImage(
+          sourcePath: file.path,
+          maxWidth: 400,
+          maxHeight: 200,
+          aspectRatio: CropAspectRatio(ratioX: 16.0, ratioY: 9.0));
+      if (croppedImage != null) {
+        setState(() {
+          _userSelectedImage = File(croppedImage.path);
+        });
+      }
+    }
+    newPostProvider.setNewPostImageFile = _userSelectedImage;
   }
 
   @override
