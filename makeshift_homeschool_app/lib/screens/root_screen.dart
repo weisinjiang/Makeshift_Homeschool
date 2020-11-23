@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/screens/activities.dart';
 import 'package:makeshift_homeschool_app/screens/bootcamp_screen.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/lesson_approval.dart';
@@ -157,6 +158,20 @@ class _RootScreenState extends State<RootScreen> {
                 )),
           ])),
 
+          Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ActivityButton(
+            color: kGreenPrimary,
+            borderColor: Colors.green[300],
+            height: screenSize.height * 0.20,
+            width: screenSize.width,
+            canUseButton: true,
+            function: () => Navigator.push(
+                context, SlideLeftRoute(screen: Activities())),
+            name: "Activities",
+            imageLocation: "asset/images/boardgame.png",
+          )),
+
       if (userData["level"] == "Professor")
         Container(
           height: screenSize.height * 0.15,
@@ -263,6 +278,7 @@ class _RootScreenState extends State<RootScreen> {
                 ),
               ),
             ),
+            
           ])),
       if (userData["level"] == "Professor")
         Container(
