@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/Activities/drawpicture.dart';
 import 'package:makeshift_homeschool_app/Activities/paperhat.dart';
 import 'package:makeshift_homeschool_app/Activities/tictactoe.dart';
 
@@ -49,6 +50,22 @@ class _ActivitiesState extends State<Activities> {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => PaperHat()));
+              },
+            ),
+          )),Container(
+          padding: EdgeInsets.all(10),
+          child: Card(
+            color: Colors.grey[300],
+            child: InkWell(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  child: Text("How to draw a picture", style: TextStyle(fontSize: 25)),
+                ),
+              ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => DrawPicture()));
               },
             ),
           ))
