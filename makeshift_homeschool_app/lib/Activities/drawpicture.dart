@@ -23,7 +23,7 @@ class DrawPicture extends StatelessWidget {
               Image.asset("asset/activities/picture2.jpg"),
               Text(
                   " \nNext, draw another triagle and then dram a hump. After that draw the outline of the cloud.\n "),
-              Image.asset("asset/activities/picture3.png"),
+              Image.asset("asset/activities/picture3.jpg"),
               Image.asset("asset/activities/picture4.jpg"),
               Text(" \nThen draw the sun you can use yellow our orange.\n "),
               Image.asset("asset/activities/picture5.jpg"),
@@ -33,10 +33,10 @@ class DrawPicture extends StatelessWidget {
               Text(
                   " \nAnd then color the river in with the same shade of blue.\n "),
               Image.asset("asset/activities/picture7.jpg"),
-              Text(" \nfor!\n "),
+              Text(" \nfor the tree draw two brown lines that extend outward at the ends.\n "),
               Image.asset("asset/activities/picture8.jpg"),
               Text(
-                  " \nAnd lastly, turn it and fold the other flap up the other direction.\n "),
+                  " \nAnd make three branches coming out of the trunk of the tree.\n "),
               Image.asset("asset/activities/picture9.jpg"),
               Text(" \nNow you are done with your paper hat!\n "),
               Image.asset("asset/activities/picture10.jpg"),
@@ -54,7 +54,7 @@ class DrawPicture extends StatelessWidget {
                   " \nAnd lastly, turn it and fold the other flap up the other direction.\n "),
               Image.asset("asset/activities/picture15.png"),
               Text(" \nNow you are done with your paper hat!\n "),
-              Image.asset("asset/activities/picture16.jpg"),
+              Image.asset("asset/activities/picture16.png"),
               Text(
                   " \nAnd lastly, turn it and fold the other flap up the other direction.\n "),
               Image.asset("asset/activities/picture17.png"),
@@ -64,7 +64,6 @@ class DrawPicture extends StatelessWidget {
                   " \nAnd lastly, turn it and fold the other flap up the other direction.\n "),
               Image.asset("asset/activities/picture19.png"),
               Text(" \nNow you are done with your paper hat!\n "),
-              Image.asset("asset/activities/picture.png"),
             ],
           ),
         ));
