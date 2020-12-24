@@ -43,31 +43,41 @@ class BootCampScreen extends StatelessWidget {
 
     ///
     final List<Function> bootcampNav = [
-      () => Navigator.push(context,SlideLeftRoute(screen: CompletedLetters())),
-      () => Navigator.push(context,SlideLeftRoute(screen: MakeYourFavoriteGameEvenBetter())),
-      () => Navigator.push(context,SlideLeftRoute(screen: WriteAboutYourFavoriteMemory())),
-      () => Navigator.push(context,SlideLeftRoute(screen: GetToKnowANeighbor())),
-      () => Navigator.push(context,SlideLeftRoute(screen: Yourfavoritefictionalcharacter())),
-      () => Navigator.push(context,SlideLeftRoute(screen: DiscoverYourFamiliesLoveLanguages())),
-      () => Navigator.push(context,SlideLeftRoute(screen: AlternativeMovieEndings())),
-      () => Navigator.push(context,SlideLeftRoute(screen: GetWhatIWantFromMyParents())),
-      () => Navigator.push(context,SlideLeftRoute(screen: PracticeWinningFriends())),
-      () => Navigator.push(context,SlideLeftRoute(screen: WriteAboutAFamilyVacation())),
-      () => Navigator.push(context,SlideLeftRoute(screen: DifferentWaysToMove())),
-      () => Navigator.push(context,SlideLeftRoute(screen: Interviewyourparents())),
-      () => Navigator.push(context,SlideLeftRoute(screen: TenMostUsedWords())),
+      () => Navigator.push(context, SlideLeftRoute(screen: CompletedLetters())),
+      () => Navigator.push(
+          context, SlideLeftRoute(screen: MakeYourFavoriteGameEvenBetter())),
+      () => Navigator.push(
+          context, SlideLeftRoute(screen: WriteAboutYourFavoriteMemory())),
+      () =>
+          Navigator.push(context, SlideLeftRoute(screen: GetToKnowANeighbor())),
+      () => Navigator.push(
+          context, SlideLeftRoute(screen: Yourfavoritefictionalcharacter())),
+      () => Navigator.push(
+          context, SlideLeftRoute(screen: DiscoverYourFamiliesLoveLanguages())),
+      () => Navigator.push(
+          context, SlideLeftRoute(screen: AlternativeMovieEndings())),
+      () => Navigator.push(
+          context, SlideLeftRoute(screen: GetWhatIWantFromMyParents())),
+      () => Navigator.push(
+          context, SlideLeftRoute(screen: PracticeWinningFriends())),
+      () => Navigator.push(
+          context, SlideLeftRoute(screen: WriteAboutAFamilyVacation())),
+      () => Navigator.push(
+          context, SlideLeftRoute(screen: DifferentWaysToMove())),
+      () => Navigator.push(
+          context, SlideLeftRoute(screen: Interviewyourparents())),
+      () => Navigator.push(context, SlideLeftRoute(screen: TenMostUsedWords())),
     ];
-    
 
     return Scaffold(
         appBar: AppBar(
           title: Text("Boot Camp"),
-          backgroundColor: kPaleBlue,
+          //backgroundColor: kPaleBlue,
         ),
         body: Container(
           height: screenSize.height,
           width: screenSize.width,
-          color: Colors.white,
+          //color: Colors.white,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -95,7 +105,9 @@ class BootCampScreen extends StatelessWidget {
                   itemCount: bootcampNav.length,
                   itemBuilder: (context, index) => BootCampListTile(
                     title: bootCampActivityNames[index],
-                    navigationFunction: bootcampNav[index], /// Make list of nagivation function that matches activity list
+                    navigationFunction: bootcampNav[index],
+
+                    /// Make list of nagivation function that matches activity list
                   ),
                 ),
               ),

@@ -50,7 +50,7 @@ class _RootScreenState extends State<RootScreen> {
       return Scaffold(
           appBar: AppBar(
             elevation: 0.0,
-            backgroundColor: kPaleBlue,
+            //backgroundColor: kPaleBlue,
             title: Text("Hi, ${userData["username"]}!"),
             actions: <Widget>[
               IconButton(
@@ -65,7 +65,7 @@ class _RootScreenState extends State<RootScreen> {
           //   userData: userData,
           // ),
           body: Container(
-            color: kPaleBlue,
+            //color: kPaleBlue,
             height: screenSize.height,
             width: screenSize.width,
             child: SingleChildScrollView(

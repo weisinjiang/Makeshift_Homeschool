@@ -41,7 +41,8 @@ class MyApp extends StatelessWidget {
         builder: (context, auth, _) =>
       MaterialApp(
         theme: ThemeData(
-            primaryColor: kGreenSecondary,
+          brightness: Brightness.dark,
+            // primaryColor: kGreenSecondary,
             textTheme:
                 GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
         home: auth.isAuthenticated ? RootScreen()

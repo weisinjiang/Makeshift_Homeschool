@@ -53,8 +53,8 @@ class NewPostScreen extends StatelessWidget {
                           style: TextStyle(color: Colors.black),
                         )
                       : Text("New Lesson",
-                          style: TextStyle(color: Colors.black)),
-                  backgroundColor: kPaleBlue,
+                          style: TextStyle(color: Colors.white)),
+                  //backgroundColor: kPaleBlue,
                   elevation: 0.0,
 
                   /// Add to the database
@@ -112,7 +112,7 @@ class NewPostScreen extends StatelessWidget {
                 /// Scaffold of above is not reachable without the Builder widget.
                 body: Container(
                   /// Color of the entire background of this page
-                  color: kPaleBlue,
+                  //color: kPaleBlue,
                   height: screenSize.height,
                   width: screenSize.width,
                   // Users can tap anywhere on the screen to exit keyboard

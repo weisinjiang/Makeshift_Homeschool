@@ -41,11 +41,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             appBar: UserProfileAppBar(
               screenSize: screenSize,
               appBar: AppBar(
-                backgroundColor: Colors.white,
+                //backgroundColor: Colors.white,
               ),
             ),
             body: Container(
-              color: Colors.white,
+              //color: Colors.white,
               // Main box for the entire profile screen
               height: screenHeight,
               width: screenWidth,

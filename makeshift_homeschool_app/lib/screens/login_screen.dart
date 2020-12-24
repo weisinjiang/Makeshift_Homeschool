@@ -182,13 +182,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       //Initial container that fills the entire screen
       body: Container(
-        color: Colors.white,
+        // color: Colors.white,
         width: screenSize.width,
         height: screenSize.height,
         alignment: Alignment.center, // center
         child: Container(
           // goes insude if the outter container for safe area
-          color: Colors.white,
+          // color: Colors.white,
           height: screenSize.height * 0.95,
           width: screenSize.width,
           child: SingleChildScrollView(

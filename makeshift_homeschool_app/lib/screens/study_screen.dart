@@ -54,7 +54,7 @@ class _StudyScreenState extends State<StudyScreen> {
       return Scaffold(
           appBar: AppBar(
             title: Text("Let's Read! 📖"),
-            backgroundColor: kPaleBlue,
+            //backgroundColor: kPaleBlue,
             elevation: 0.0,
           ),
           body: _isLoading
@@ -63,7 +63,7 @@ class _StudyScreenState extends State<StudyScreen> {
                   // entire screen color
                   height: screenSize.height,
                   width: screenSize.width,
-                  color: kPaleBlue,
+                  //color: kPaleBlue,
                   // decoration: linearGradientSecondaryGreenAnalogous,
                   child: RefreshIndicator(
                     onRefresh: () async {
