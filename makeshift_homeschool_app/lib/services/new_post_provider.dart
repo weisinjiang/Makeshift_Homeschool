@@ -1,12 +1,17 @@
-
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/widgets/image_field.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 /*
 Handles new paragraph and subtitle widgets being added to a new post
 and saving its contents
@@ -22,11 +27,12 @@ class NewPostProvider {
   /// One list for widgets and one for text controllers
   List<Widget> _newPostForms;
   List<TextEditingController> _newPostFormControllers;
-  
+
   // Each post requires 5 question and this list contains a controller for them
   List<TextEditingController> _newPostQuestionsControllers;
   int currentWidgetListSize; // used to add and delete textforms
   File _newPostImagePath;
+  Uint8List imagebyteData;
   Map<String, List<TextEditingController>> _quizControllers;
 
   /// Initialize it. If postData is given, set the data onto the textfields
@@ -111,6 +117,10 @@ class NewPostProvider {
   set setNewPostImageFile(File imageFile) => this._newPostImagePath = imageFile;
   File get getNewPostImageFile => this._newPostImagePath;
 
+  // Setter and getting for PickedImage
+  set setByteData(Uint8List bytes) => this.imagebyteData = bytes;
+  Uint8List getByteData() => this.imagebyteData;
+
   /// Go though the TextEditingController and get the text data on it
   List<String> getControllerTextDataAsList() {
     List<String> controllerTextData = []; // text data to return
@@ -168,17 +178,38 @@ class NewPostProvider {
     return quiz;
   }
 
+  /*
+   * Create a temp file so that it can be used by WebApp for uploading images
+   */
+  Future<File> createTempFile(String lessonID, Uint8List byteData) async {
+    final dir = await getTemporaryDirectory();
+    String tempPath = dir.path + "/$lessonID";
+    final buffer = byteData.buffer;
+    return File(tempPath).writeAsBytes(
+        buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+  }
+
   /// Upload the image for the lesson using the lessons uid as its name and return
   /// the download url
   Future<dynamic> uploadImageAndGetDownloadUrl(
-      File image, String lessonID) async {
+      File image, String lessonID, Uint8List byteData) async {
     var storageRef = _storage
         .ref()
         .child("lessons")
         .child(lessonID); // storage to put the file
-    await storageRef
-        .putFile(image)
-        .onComplete; // wait for it to finish uploading the file
+
+    // Web
+    if (kIsWeb) {
+      await storageRef.putFile(image).onComplete;
+      print("Done putData");
+    }
+    // Not Web
+    else {
+      await storageRef
+          .putFile(image)
+          .onComplete; // wait for it to finish uploading the file
+    }
+
     return storageRef.getDownloadURL();
 
     /// Return the download url
@@ -263,9 +294,14 @@ class NewPostProvider {
   */
 
   Future<void> post(
-      {String uid, String name, int lessonCreated, String userLevel, String email}) async {
+      {String uid,
+      String name,
+      int lessonCreated,
+      String userLevel,
+      String email}) async {
     lessonCreated++; // increment # of lessons user created, cant do it when adding to database
-    DocumentReference databaseRef; // refernece to document the post will go into
+    DocumentReference
+        databaseRef; // refernece to document the post will go into
 
     // if user is a Tutor, add it to approval collection
     if (userLevel == "Tutor") {
@@ -290,9 +326,20 @@ class NewPostProvider {
       "conclusion": postContentsList[5],
     };
 
-    // upload the image and get the url so it can be referenced
-    var imageUrl = await uploadImageAndGetDownloadUrl(
-        getNewPostImageFile, databaseRef.documentID);
+    // Depending on if it is web or not, image url will be handled differently
+    var imageUrl = null;
+
+    if (kIsWeb) {
+      File tempFile = await createTempFile(databaseRef.documentID, getByteData());
+
+      imageUrl = await uploadImageAndGetDownloadUrl(
+          tempFile, databaseRef.documentID, getByteData());
+      print("Done imageUrl");
+    } else {
+      imageUrl = await uploadImageAndGetDownloadUrl(
+          getNewPostImageFile, databaseRef.documentID, null);
+    }
+    print("Document ID: " + databaseRef.documentID); //! Print for testing
 
     // all data needed for a new post
     var newLesson = {
@@ -315,8 +362,6 @@ class NewPostProvider {
 
     // Add the data into the refernece document made earlier
     await databaseRef.setData(newLesson);
-
-
 
     // update user's lessons created if they are not a tutor
     // Tutors will have this incremented after review

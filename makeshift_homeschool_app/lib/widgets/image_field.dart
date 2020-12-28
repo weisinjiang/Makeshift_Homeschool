@@ -1,5 +1,6 @@
+import 'dart:async';
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
+import 'dart:html' as html;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -7,6 +8,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker_for_web/image_picker_for_web.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 /// First provides an empty image and on tap, let's the user pick an image
 
@@ -52,8 +56,9 @@ class _ImageFieldState extends State<ImageField> {
                     leading: Icon(Icons.upload_file),
                     title: Text("Upload an Image"),
                     onTap: () {
-                      _chooseImageWeb(height, width, newPostProvider);
+                      //webFileUpload();
                       Navigator.of(context).pop();
+                      _chooseImageWeb(height, width, newPostProvider);
                     },
                   ),
                 ],
@@ -120,25 +125,31 @@ class _ImageFieldState extends State<ImageField> {
     //await auth.uploadProfileImage(_imageFile); // upload to Firestore
   }
 
+  /*
+   * Method is for uploading images for the Web App version.
+   * Mobile method does not work
+   */
+
   Future<void> _chooseImageWeb(
       double height, double width, NewPostProvider newPostProvider) async {
-    FilePickerResult pickedImage = await FilePicker.platform.pickFiles(allowMultiple: false, type: FileType.image, withData: true);
-  
+    ImagePickerPlugin imagePicker = ImagePickerPlugin();
+    final pickedImage = await imagePicker.pickImage(
+        maxHeight: height,
+        maxWidth: width,
+        source: ImageSource.gallery); // ask for permission
+    final byteData = await pickedImage
+        .readAsBytes(); // Web needs byte data bc image file path is not absolute
 
+
+    /// Crop the image
     if (pickedImage != null) {
-      PlatformFile file = pickedImage.files.first;
-      File croppedImage = await ImageCropper.cropImage(
-          sourcePath: file.path,
-          maxWidth: 400,
-          maxHeight: 200,
-          aspectRatio: CropAspectRatio(ratioX: 16.0, ratioY: 9.0));
-      if (croppedImage != null) {
-        setState(() {
-          _userSelectedImage = File(croppedImage.path);
-        });
-      }
+      setState(() {
+        _userSelectedImage = File(pickedImage.path); // set the image path
+      });
     }
+
     newPostProvider.setNewPostImageFile = _userSelectedImage;
+    newPostProvider.setByteData = byteData;
   }
 
   @override
@@ -155,13 +166,20 @@ class _ImageFieldState extends State<ImageField> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          if (widget.editImageUrl.isEmpty) ...[
+          if (widget.editImageUrl.isEmpty && !kIsWeb) ...[
             Container(
                 height: 200,
                 width: 400,
                 child: _userSelectedImage == null
                     ? _onScreenImage
                     : Image.file(_userSelectedImage)),
+          ] else if (widget.editImageUrl.isEmpty && kIsWeb) ...[
+            Container(
+                height: 200,
+                width: 400,
+                child: _userSelectedImage == null
+                    ? _onScreenImage
+                    : Image.network(_userSelectedImage.path)),
           ] else ...[
             Container(
               decoration:
