@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:html' as html;
+import 'dart:typed_data';
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -9,8 +10,6 @@ import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
 
 /// First provides an empty image and on tap, let's the user pick an image
 
@@ -56,7 +55,6 @@ class _ImageFieldState extends State<ImageField> {
                     leading: Icon(Icons.upload_file),
                     title: Text("Upload an Image"),
                     onTap: () {
-                      //webFileUpload();
                       Navigator.of(context).pop();
                       _chooseImageWeb(height, width, newPostProvider);
                     },
@@ -99,8 +97,8 @@ class _ImageFieldState extends State<ImageField> {
   ///   @param - source is where the user wants to pick their profile image
   ///*************************************************************************
 
-  Future<void> _chooseImageFromSource(ImageSource source, double height,
-      double width, NewPostProvider newPostProvider) async {
+  Future<void> _chooseImageFromSource(ImageSource source, double height, double width, NewPostProvider newPostProvider) async {
+
     ImagePicker imagePicker = ImagePicker();
     final pickedImage =
         await imagePicker.getImage(source: source); // ask for permission
@@ -127,30 +125,47 @@ class _ImageFieldState extends State<ImageField> {
 
   /*
    * Method is for uploading images for the Web App version.
-   * Mobile method does not work
+   * The Webapp loads image data as a blob for the website, so it is a network object
+   * and not an image. So the original method .path will not work.
+   * 
+   * Original path = user/image.png
+   * Webapp Path = http://website.com/imageData <- This is not an actual path to the image location where it can be extracted
    */
 
-  Future<void> _chooseImageWeb(
-      double height, double width, NewPostProvider newPostProvider) async {
+  Future<void> _chooseImageWeb(double height, double width, NewPostProvider newPostProvider) async {
+
     ImagePickerPlugin imagePicker = ImagePickerPlugin();
     final pickedImage = await imagePicker.pickImage(
         maxHeight: height,
         maxWidth: width,
         source: ImageSource.gallery); // ask for permission
-    final byteData = await pickedImage
-        .readAsBytes(); // Web needs byte data bc image file path is not absolute
-
-
-    /// Crop the image
+  
     if (pickedImage != null) {
+      Uint8List imageBytes = await pickedImage.readAsBytes();
       setState(() {
         _userSelectedImage = File(pickedImage.path); // set the image path
       });
+      newPostProvider.setNewPostImageFile = _userSelectedImage;
+      newPostProvider.setByteData = imageBytes;
     }
 
-    newPostProvider.setNewPostImageFile = _userSelectedImage;
-    newPostProvider.setByteData = byteData;
+    
   }
+  // Future<void> _chooseImageWeb(double height, double width, NewPostProvider newPostProvider) async {
+
+  //   FilePickerResult pickedImage = await FilePicker.platform.pickFiles();
+  
+  //   if (pickedImage != null) {
+  //     setState(() {
+  //       _userSelectedImage = File(pickedImage.files.single.path); // set the image path
+  //     });
+  //     newPostProvider.setNewPostImageFile = _userSelectedImage;
+
+  //   }
+  //   else {
+  //     print("Errir loading image");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -158,29 +173,39 @@ class _ImageFieldState extends State<ImageField> {
     var newPostProvider = Provider.of<NewPostProvider>(context);
 
     return GestureDetector(
+
       // Tap the container with the image, bring up an option to get an image from gallery
       onTap: () {
-        _buildImagePickerPopUpMenu(
-            context, screenSize.height, screenSize.width, newPostProvider);
+        _buildImagePickerPopUpMenu(context, screenSize.height, screenSize.width, newPostProvider);
       },
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
+
+          // Not editing and is in mobile mode
           if (widget.editImageUrl.isEmpty && !kIsWeb) ...[
             Container(
                 height: 200,
                 width: 400,
                 child: _userSelectedImage == null
                     ? _onScreenImage
-                    : Image.file(_userSelectedImage)),
-          ] else if (widget.editImageUrl.isEmpty && kIsWeb) ...[
+                    // Mobile has abs path to the image location so ref it locally using file
+                    : Image.file(_userSelectedImage)),  
+          ] 
+          // Not editing and is on browser mode
+          else if (widget.editImageUrl.isEmpty && kIsWeb) ...[
             Container(
                 height: 200,
                 width: 400,
                 child: _userSelectedImage == null
                     ? _onScreenImage
+                    // Browser's image path is stored in the network and not from abs path
                     : Image.network(_userSelectedImage.path)),
-          ] else ...[
+          ] 
+          // Is editing on mobile
+          // To-do: Test if this works for browser mode
+          else ...[
             Container(
               decoration:
                   BoxDecoration(border: Border.all(color: Colors.black)),

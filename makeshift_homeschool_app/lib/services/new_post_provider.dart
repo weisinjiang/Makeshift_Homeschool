@@ -1,17 +1,16 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/widgets/image_field.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
+import '';
+
 /*
 Handles new paragraph and subtitle widgets being added to a new post
 and saving its contents
@@ -178,39 +177,32 @@ class NewPostProvider {
     return quiz;
   }
 
-  /*
-   * Create a temp file so that it can be used by WebApp for uploading images
-   */
-  Future<File> createTempFile(String lessonID, Uint8List byteData) async {
-    final dir = await getTemporaryDirectory();
-    String tempPath = dir.path + "/$lessonID";
-    final buffer = byteData.buffer;
-    return File(tempPath).writeAsBytes(
-        buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-  }
-
   /// Upload the image for the lesson using the lessons uid as its name and return
   /// the download url
-  Future<dynamic> uploadImageAndGetDownloadUrl(
-      File image, String lessonID, Uint8List byteData) async {
-    var storageRef = _storage
-        .ref()
-        .child("lessons")
-        .child(lessonID); // storage to put the file
+  Future<dynamic> uploadImageAndGetDownloadUrl(File image, String lessonID, Uint8List byteData) async {
 
+    
     // Web
     if (kIsWeb) {
-      await storageRef.putFile(image).onComplete;
-      print("Done putData");
+      try {
+        StorageReference storage = 
+       
+      }
+      catch (error) {
+        print("Error putting Data for kIsWeb");
+      }
     }
     // Not Web
     else {
-      await storageRef
-          .putFile(image)
-          .onComplete; // wait for it to finish uploading the file
+      try {
+        var storageRef = _storage.ref().child("lessons").child(lessonID); // storage to put the file
+        await storageRef.putFile(image).onComplete; // wait for it to finish uploading the file
+        return storageRef.getDownloadURL();
+      }
+      catch (error) {
+        print("Error putting File for Mobile");
+      }
     }
-
-    return storageRef.getDownloadURL();
 
     /// Return the download url
   }
@@ -282,6 +274,20 @@ class NewPostProvider {
     return false;
   }
 
+  /*
+   * Create a temp file so that it can be used by WebApp for uploading images
+   */
+  Future<File> createTempFile(String lessonID, Uint8List byteData) async {
+    try {
+      final dir = await getTemporaryDirectory();
+      final file = await new File("${dir.path}/lessonID.png").create();
+      file.writeAsBytesSync(byteData);
+      return file;
+    } catch (error) {
+      print("Error creating temp file: ${error.toString}");
+    }
+  }
+
   /* 
     Post Method to be added into the database
     If the userLevel is a tutor, then the post will be added to the review
@@ -293,15 +299,11 @@ class NewPostProvider {
     @collection - "lesson" or "review"
   */
 
-  Future<void> post(
-      {String uid,
-      String name,
-      int lessonCreated,
-      String userLevel,
-      String email}) async {
-    lessonCreated++; // increment # of lessons user created, cant do it when adding to database
-    DocumentReference
-        databaseRef; // refernece to document the post will go into
+  Future<void> post({String uid, String name, int lessonCreated, String userLevel, String email}) async {
+    // increment # of lessons user created, cant do it when adding to database
+    lessonCreated++;
+    // refernece to document the post will go into
+    DocumentReference databaseRef;
 
     // if user is a Tutor, add it to approval collection
     if (userLevel == "Tutor") {
@@ -327,19 +329,18 @@ class NewPostProvider {
     };
 
     // Depending on if it is web or not, image url will be handled differently
-    var imageUrl = null;
+    var imageUrl;
 
+    // Upload the image and get download url
     if (kIsWeb) {
-      File tempFile = await createTempFile(databaseRef.documentID, getByteData());
-
-      imageUrl = await uploadImageAndGetDownloadUrl(
-          tempFile, databaseRef.documentID, getByteData());
+      print("inside post method");
+      imageUrl = await uploadImageAndGetDownloadUrl(null, databaseRef.documentID, getByteData());
       print("Done imageUrl");
     } else {
-      imageUrl = await uploadImageAndGetDownloadUrl(
-          getNewPostImageFile, databaseRef.documentID, null);
+      imageUrl = await uploadImageAndGetDownloadUrl(getNewPostImageFile, databaseRef.documentID, null);
     }
     print("Document ID: " + databaseRef.documentID); //! Print for testing
+    
 
     // all data needed for a new post
     var newLesson = {
