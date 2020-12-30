@@ -11,6 +11,7 @@ import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 
+
 /// First provides an empty image and on tap, let's the user pick an image
 
 class ImageField extends StatefulWidget {
