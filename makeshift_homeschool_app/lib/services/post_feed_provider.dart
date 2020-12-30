@@ -5,7 +5,7 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 
 class PostFeedProvider with ChangeNotifier {
-  final Firestore _database = Firestore.instance; // connect to firestore
+  final FirebaseFirestore _database = FirebaseFirestore.instance; // connect to firestore
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   List<Post> _posts = []; //post list to be shown on the feed
@@ -23,7 +23,7 @@ class PostFeedProvider with ChangeNotifier {
 
   Future<void> deletePost(String postId) async {
     /// First remove it from the database and the image from storage
-    await _database.collection("lessons").document(postId).delete();
+    await _database.collection("lessons").doc(postId).delete();
     await _storage.ref().child("lessons").child(postId).delete();
 
     /// then delete it from the user's page
@@ -80,12 +80,12 @@ class PostFeedProvider with ChangeNotifier {
       QuerySnapshot fetchedData;
       if (reviewer == Reviewer.principle) {
         fetchedData =
-            await _database.collection("approval required").getDocuments();
+            await _database.collection("approval required").get();
       } else if (reviewer == Reviewer.teacher) {
-        fetchedData = await _database.collection("review").getDocuments();
+        fetchedData = await _database.collection("review").get();
       }
 
-      List<DocumentSnapshot> allDocuments = fetchedData.documents;
+      List<DocumentSnapshot> allDocuments = fetchedData.docs;
       List<Post> serializedPosts = [];
 
       // serialize all documents and make them into Post objects
@@ -104,7 +104,7 @@ class PostFeedProvider with ChangeNotifier {
         post.setOwnerName = doc["ownerName"];
         post.setOwnerUid = doc["ownerUid"];
         post.setPostContents = doc["postContents"];
-        post.setPostId = doc.documentID;
+        post.setPostId = doc.id;
         post.setQuiz = doc["quiz"];
         post.setOwnerEmail = doc["ownerEmail"];
         post.setNumApprovals = doc["approvals"];
@@ -133,19 +133,19 @@ class PostFeedProvider with ChangeNotifier {
     try {
       if (query == "all") {
         // gets all the posts from lessons
-        result = await _database.collection("lessons").getDocuments();
+        result = await _database.collection("lessons").get();
       } else {
         // otherwise get the users posts only from lessons
         result = await _database
             .collection("lessons")
             .where("ownerUid", isEqualTo: uid)
-            .getDocuments();
+            .get();
 
         // Fetch documents that is currently in review
         inReviewPosts = await _database
             .collection("review")
             .where("ownerUid", isEqualTo: uid)
-            .getDocuments();
+            .get();
       }
 
       // get all the documents from the query
@@ -179,15 +179,15 @@ class PostFeedProvider with ChangeNotifier {
         post.setOwnerName = doc["ownerName"];
         post.setOwnerUid = doc["ownerUid"];
         post.setPostContents = doc["postContents"];
-        post.setPostId = doc.documentID;
+        post.setPostId = doc.id;
         post.setQuiz = doc["quiz"];
         post.setOwnerEmail = doc["ownerEmail"];
         // post does not need approval if it is in Lessons collection
         // if the post is a favorite
-        if (favoritesList.contains(doc.documentID)) {
+        if (favoritesList.contains(doc.id)) {
           post.setIsLiked = true;
         }
-        if (completedLessons.contains(doc.documentID)) {
+        if (completedLessons.contains(doc.id)) {
           post.setHasCompleted = true;
         }
         data.add(post);
@@ -296,13 +296,14 @@ class PostFeedProvider with ChangeNotifier {
 
     QuerySnapshot snapshot = await _database
         .collection("users")
-        .document(uid)
+        .doc(uid)
         .collection("favorites")
-        .getDocuments();
+        .get();
 
-    List<DocumentSnapshot> allDocuments = snapshot.documents;
+    // docs is of type QueryDocumentSnapshot
+    List<DocumentSnapshot> allDocuments = snapshot.docs;
     allDocuments.forEach((document) {
-      favoritesList.add(document.documentID);
+      favoritesList.add(document.id);
     });
     return favoritesList;
   }
@@ -314,13 +315,13 @@ class PostFeedProvider with ChangeNotifier {
   Future<List<String>> fetchUsersCompletedLessonsList(String uid) async {
     QuerySnapshot snapshot = await _database
         .collection("users")
-        .document(uid)
+        .doc(uid)
         .collection("completed lessons")
-        .getDocuments();
+        .get();
 
-    List<DocumentSnapshot> allDocuments = snapshot.documents;
+    List<DocumentSnapshot> allDocuments = snapshot.docs;
 
     // for each document, convert it to a id and return the list
-    return allDocuments.map((document) => document.documentID).toList();
+    return allDocuments.map((document) => document.id).toList();
   }
 }

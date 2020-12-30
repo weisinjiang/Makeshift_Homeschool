@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
-  final Firestore _database = Firestore.instance; // Connect to Firestore
+  final FirebaseFirestore _database = FirebaseFirestore.instance; // Connect to Firestore
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   //Firebase User Information
@@ -17,7 +17,7 @@ class AuthProvider with ChangeNotifier {
   bool _emailVerified;
   bool _authenticated;
   Map<String, String> _userInformation;
-  IdTokenResult _token;
+  String _token;
 
   AuthProvider() {
     this._userId = null;
@@ -45,13 +45,13 @@ class AuthProvider with ChangeNotifier {
 
   Future<bool> signIn(String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(
+      UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       result.user.getIdToken();
       this._userId = result.user.uid;
       this._token = await result.user.getIdToken();
       this._authenticated = true;
-      this._emailVerified = result.user.isEmailVerified;
+      this._emailVerified = result.user.emailVerified;
       await fetchUserInfoFromDatabase()
           .then((value) => this._userInformation = value);
       notifyListeners();
@@ -119,12 +119,12 @@ class AuthProvider with ChangeNotifier {
     try {
       var blankPhotoURL =
           "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/profile%2FblankProfile.png?alt=media&token=a547754d-551e-4e18-a5ce-680d41bd1226";
-      AuthResult result = await _auth.createUserWithEmailAndPassword(
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       this._userId = result.user.uid;
       this._authenticated = true;
 
-      _database.collection("users").document(result.user.uid).setData({
+      _database.collection("users").doc(result.user.uid).set({
         // add new database for the user
         "username": userName,
         "photoURL": blankPhotoURL,
@@ -143,14 +143,14 @@ class AuthProvider with ChangeNotifier {
       // Add referral to the database
       _database
           .collection("referral") // referral database
-          .document(monthYear) // Today's month + year collection
-          .setData({
+          .doc(monthYear) // Today's month + year collection
+          .set({
         _userId: {
           "first name": userName,
           "referral": referral,
           "day": todaysDate.day
         }
-      }, merge: true);
+      }, SetOptions(merge: true));
       await fetchUserInfoFromDatabase()
           .then((value) => _userInformation = value);
       // save a copy of the users information on their disk
@@ -194,7 +194,8 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> sendEmailVerification() async {
-    FirebaseUser user = await _auth.currentUser();
+    // User class from firebase_auth package
+    User user = _auth.currentUser;
     user.sendEmailVerification();
   }
 
@@ -214,21 +215,29 @@ class AuthProvider with ChangeNotifier {
 
   // Updates users profile image and change photoURL link
   Future<void> uploadProfileImage(File image) async {
-    StorageReference storageRef = // Reference to the target storage
-        _storage.ref().child("profile").child(_userId);
-    StorageUploadTask uploadTask = storageRef.putFile(image); // Load image
-    await uploadTask.onComplete; // Wait till complete
 
-    //Upatde download URL
-    await storageRef.getDownloadURL().then((newURL) {
+    // Users profile information in database
+    Reference storageRef = _storage.ref().child("profile").child(_userId);
+    UploadTask uploadTask = storageRef.putFile(image); // Load image
+    
+    await (await uploadTask).ref.getDownloadURL().then((newURL) {
       this._userInformation["photoURL"] = newURL;
-
-      /// update url in session
-      _database.collection("users").document(_userId).setData(
-          {"photoURL": newURL.toString()},
-          merge: true // Update the photoURL field
-          );
+      _database.collection("users").doc(_userId).set(
+        {"photoURL": newURL.toString()},
+        SetOptions(merge: true)
+      );
     });
+
+    // //Upatde download URL
+    // await storageRef.getDownloadURL().then((newURL) {
+    //   this._userInformation["photoURL"] = newURL;
+
+    //   /// update url in session
+    //   _database.collection("users").document(_userId).setData(
+    //       {"photoURL": newURL.toString()},
+    //       merge: true // Update the photoURL field
+    //       );
+    // });
 
     notifyListeners();
   }
@@ -238,9 +247,9 @@ class AuthProvider with ChangeNotifier {
       Map<String, String> newInformation) async {
     this._userInformation["username"] = newInformation["username"];
     this._userInformation["bio"] = newInformation["bio"];
-    await _database.collection("users").document(_userId).setData(
+    await _database.collection("users").doc(_userId).set(
         {"username": newInformation["username"], "bio": newInformation["bio"]},
-        merge: true);
+        SetOptions(merge: true));
     notifyListeners();
   }
 
@@ -248,7 +257,7 @@ class AuthProvider with ChangeNotifier {
     Map<String, String> userData = {};
     await _database
         .collection("users")
-        .document(_userId)
+        .doc(_userId)
         .get()
         .then((firestoreData) {
       userData["email"] = firestoreData["email"];

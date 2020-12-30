@@ -9,7 +9,6 @@ import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/widgets/image_field.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
 import 'package:path_provider/path_provider.dart';
-import '';
 
 /*
 Handles new paragraph and subtitle widgets being added to a new post
@@ -20,7 +19,7 @@ Use a list for the widgets and another list for textcontrollers
 class NewPostProvider {
   /// References to the database and storage so we can upload the new post info
   /// into Firestore and the image to FirebaseStorage
-  final Firestore _database = Firestore.instance;
+  final FirebaseFirestore _database = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   /// One list for widgets and one for text controllers
@@ -177,6 +176,20 @@ class NewPostProvider {
     return quiz;
   }
 
+  // /*
+  //  * Convert a Uint8List data of an image to a type File
+  //  */
+  // Future<File> convertUint8ToFile(String lessonID, Uint8List byteData) async {
+  //   try {
+  //     html.File byteAsFile = html.File(byteData, "$lessonID.png");
+  //     return byteAsFile;
+
+  //   } catch (error) {
+  //     print("Error creating html File from ByteData: ${error.toString}");
+  //     throw error;
+  //   }
+  // }
+
   /// Upload the image for the lesson using the lessons uid as its name and return
   /// the download url
   Future<dynamic> uploadImageAndGetDownloadUrl(File image, String lessonID, Uint8List byteData) async {
@@ -185,19 +198,25 @@ class NewPostProvider {
     // Web
     if (kIsWeb) {
       try {
-        StorageReference storage = 
-       
+        final tempDir = Directory.systemTemp;
+        File imageFile = await new File("${tempDir.path}/temp.png").create();
+        imageFile.writeAsBytesSync(byteData);
+        Reference storageRef = _storage.ref().child("lessons").child(lessonID);
+        UploadTask uploadImageTask = storageRef.putFile(imageFile);
+        return await (await uploadImageTask).ref.getDownloadURL();
+
       }
       catch (error) {
         print("Error putting Data for kIsWeb");
+        print(error.toString);
       }
     }
     // Not Web
     else {
       try {
-        var storageRef = _storage.ref().child("lessons").child(lessonID); // storage to put the file
-        await storageRef.putFile(image).onComplete; // wait for it to finish uploading the file
-        return storageRef.getDownloadURL();
+        Reference storageRef = _storage.ref().child("lessons").child(lessonID); // storage to put the file
+        UploadTask uploadImageTask = storageRef.putFile(image);
+        return await (await uploadImageTask).ref.getDownloadURL();
       }
       catch (error) {
         print("Error putting File for Mobile");
@@ -274,19 +293,7 @@ class NewPostProvider {
     return false;
   }
 
-  /*
-   * Create a temp file so that it can be used by WebApp for uploading images
-   */
-  Future<File> createTempFile(String lessonID, Uint8List byteData) async {
-    try {
-      final dir = await getTemporaryDirectory();
-      final file = await new File("${dir.path}/lessonID.png").create();
-      file.writeAsBytesSync(byteData);
-      return file;
-    } catch (error) {
-      print("Error creating temp file: ${error.toString}");
-    }
-  }
+  
 
   /* 
     Post Method to be added into the database
@@ -406,7 +413,7 @@ class NewPostProvider {
     };
 
     /// Add the data into the refernece document made earlier
-    await databaseRef.setData(newLesson, merge: true);
+    await databaseRef.set(newLesson, SetOptions(merge: true));
 
     // update the post feed with the new data so it does not need to fetch again
     provider.updateUserPost(

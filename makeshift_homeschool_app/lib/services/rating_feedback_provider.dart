@@ -10,7 +10,7 @@ import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 
 class Rating_FeedbackProvider with ChangeNotifier {
-  final Firestore _database = Firestore.instance;
+  final FirebaseFirestore _database = FirebaseFirestore.instance;
   double _userRating;
   bool promoted;
   double _allTimeRating;
