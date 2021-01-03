@@ -8,7 +8,7 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/widgets/image_field.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
-import 'package:path_provider/path_provider.dart';
+import 'dart:ui' as ui;
 
 /*
 Handles new paragraph and subtitle widgets being added to a new post
@@ -198,11 +198,9 @@ class NewPostProvider {
     // Web
     if (kIsWeb) {
       try {
-        final tempDir = Directory.systemTemp;
-        File imageFile = await new File("${tempDir.path}/temp.png").create();
-        imageFile.writeAsBytesSync(byteData);
+        SettableMetadata metaData = SettableMetadata(contentType:'image/png');
         Reference storageRef = _storage.ref().child("lessons").child(lessonID);
-        UploadTask uploadImageTask = storageRef.putFile(imageFile);
+        UploadTask uploadImageTask = storageRef.putData(byteData,metaData);
         return await (await uploadImageTask).ref.getDownloadURL();
 
       }
