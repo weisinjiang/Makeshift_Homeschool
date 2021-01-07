@@ -8,6 +8,7 @@ import 'package:makeshift_homeschool_app/services/rating_feedback_provider.dart'
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class QuizScreen extends StatelessWidget {
@@ -24,7 +25,8 @@ class QuizScreen extends StatelessWidget {
       create: (context) => QuizProvider(quiz: quiz),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(postData.getTitle),
+          backgroundColor: Colors.black54,
+          title: Text(postData.getTitle, style: simpleTextStyle(),),
         ),
         body: Container(
             height: screenSize.height,
@@ -77,7 +79,7 @@ class QuizScreen extends StatelessWidget {
                               Center(
                                 child: Text(
                                   "You scored: ${quizProvider.getScore.toString()}/3",
-                                  style: kTitleTextStyle,
+                                  style: mediumTextStyle(),
                                 ),
                               ),
                               const SizedBox(
@@ -86,7 +88,7 @@ class QuizScreen extends StatelessWidget {
                               Center(
                                 child: Text(
                                   "You need to get all 3 questions correct to continue.",
-                                  style: kTitleTextStyle,
+                                  style: simpleTextStyle(),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -133,7 +135,7 @@ class QuizScreen extends StatelessWidget {
                                     fontSize: 30,
                                     text:
                                         "🎉 Hurray! You got ${quizProvider.getScore.toString()}/3! 🎉",
-                                    strokeColor: Colors.black,
+                                    strokeColor: Colors.white,
                                     textColor: Colors.white,
                                     strokeWidth: 2.0,
                                   ),

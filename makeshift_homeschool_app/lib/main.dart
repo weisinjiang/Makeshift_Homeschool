@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         builder: (context, auth, _) =>
       MaterialApp(
         theme: ThemeData(
-          brightness: Brightness.dark,
+          scaffoldBackgroundColor: Colors.black54,
             // primaryColor: kGreenSecondary,
             textTheme:
                 GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),

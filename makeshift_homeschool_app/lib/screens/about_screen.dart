@@ -13,7 +13,6 @@ class AboutScreen extends StatelessWidget {
         margin: EdgeInsets.all(10.0),
         height: screenHeigh,
         width: screenWidth,
-        color: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -21,13 +20,14 @@ class AboutScreen extends StatelessWidget {
             
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-              child: Image.asset('asset/images/logo.png'),
+              child: Image.asset('asset/images/logo2.png'),
             ),
             SizedBox(height: 20.0,),
 
             Text(
               "What if kids could teach each other?", 
               style: TextStyle( 
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
                 decoration: TextDecoration.underline,
@@ -37,10 +37,11 @@ class AboutScreen extends StatelessWidget {
             SizedBox(height: 10.0,),
 
             Text(
-              "The Makeshift Homeschool app will allow kids to teach, and learn with"
-               "each other. To grow as a team, to get stronger as a team, and to"
+              "The Makeshift Homeschool app will allow kids to teach, and learn with "
+               "each other. To grow as a team, to get stronger as a team, and to "
                "inspire as a team.",
                style: TextStyle(
+                 color: Colors.white,
                  height: 1.5,
                ),
                textAlign: TextAlign.center,

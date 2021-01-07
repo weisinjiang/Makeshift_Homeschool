@@ -56,14 +56,14 @@ class _LessonApprovalScreenState extends State<LessonApprovalScreen> {
       return Scaffold(
           appBar: AppBar(
             title: Text("Review Tutor Lessons"),
-            backgroundColor: kPaleBlue,
+            backgroundColor: Colors.black54,
           ),
           body: _isLoading
               ? LoadingScreen()
               : Container(
                   height: screenSize.height,
                   width: screenSize.width,
-                  color: kPaleBlue,
+                  color: Colors.black54,
                   child: RefreshIndicator(
                     onRefresh: () async {
                       await Provider.of<PostFeedProvider>(context, listen: false)

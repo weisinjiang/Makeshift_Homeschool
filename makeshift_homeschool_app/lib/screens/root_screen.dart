@@ -49,6 +49,7 @@ class _RootScreenState extends State<RootScreen> {
     if (userData != null) {
       return Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.black54,
             elevation: 0.0,
             //backgroundColor: kPaleBlue,
             title: Text("Hi, ${userData["username"]}!"),
@@ -73,15 +74,22 @@ class _RootScreenState extends State<RootScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
+                  SizedBox(
+                    height: screenSize.height/35,
+                  ),
                   /// What do you want to do today? Greet image
                   Container(
                     height: screenSize.height * 0.20,
                     width: screenSize.width,
                     child: Center(
                         child: Image.asset(
-                      'asset/images/greetJoseph1.png',
+                      'asset/images/logo2.png',
                       fit: BoxFit.contain,
                     )),
+                  ),
+
+                  SizedBox(
+                    height: screenSize.height/50,
                   ),
 
                   if (!isEmailVerified)
@@ -166,8 +174,8 @@ class _RootScreenState extends State<RootScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: GhostButton(
                           borderRadius: 20.0,
-                          buttonBorderColor: kRedOrange,
-                          buttonFillColor: kRedOrange,
+                          buttonBorderColor: Color(0xff48CEC8),
+                          buttonFillColor: Color(0xff48CEC8),
                           buttonName: "Approve Lessons",
                           buttonTextColor: Colors.black,
                           function: () => Navigator.push(
@@ -189,8 +197,8 @@ class _RootScreenState extends State<RootScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: GhostButton(
                           borderRadius: 20.0,
-                          buttonBorderColor: kRedOrange,
-                          buttonFillColor: kRedOrange,
+                          buttonBorderColor: Color(0xff48CEC8),
+                          buttonFillColor: Color(0xff48CEC8),
                           buttonName: "Review Tutor Lessons",
                           buttonTextColor: Colors.black,
                           function: () => Navigator.push(

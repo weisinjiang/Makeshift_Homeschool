@@ -25,7 +25,7 @@ class ImageField extends StatefulWidget {
 
 class _ImageFieldState extends State<ImageField> {
   /// Default to be shown before a user selects an image
-  Image _onScreenImage = Image.asset("asset/images/imagePlaceHolder.png");
+  Image _onScreenImage = Image.asset("asset/images/imagePlaceHolder2.png");
   File _userSelectedImage;
 
   /// ************************************************************************

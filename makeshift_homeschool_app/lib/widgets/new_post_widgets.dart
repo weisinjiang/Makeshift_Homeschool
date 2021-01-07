@@ -4,13 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 
 Widget recommendedAge(TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(25, 5, 20, 20),
     child: TextFormField(
       controller: controller,
-      style: kParagraphTextStyle,
+      style: simpleTextStyle(),
       keyboardType: TextInputType.text,
       // only digits
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
@@ -18,13 +19,14 @@ Widget recommendedAge(TextEditingController controller) {
       maxLines: 1,
       decoration: InputDecoration(
         hintText: "Recommended Reader Age",
+        hintStyle: TextStyle(color: Colors.white),
         hoverColor: Colors.black,
         suffix: Text("+"),
         //Outline the border at start as black and turns red when pressed
         enabledBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         focusedBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
       ),
       validator: null,
       onSaved: null,
@@ -38,18 +40,19 @@ Widget lessonTitle(TextEditingController controller) {
     padding: const EdgeInsets.all(30.0),
     child: TextFormField(
       controller: controller,
-      style: kHeadingTextStyle,
+      style: mediumTextStyle(),
       keyboardType: TextInputType.text,
       textAlign: TextAlign.center,
       maxLines: null,
       maxLength: 30,
       decoration: InputDecoration(
         hintText: "What is your lesson's name?",
+        hintStyle: TextStyle(color: Colors.white),
         //normal black underline and then when pressed, turns red
         enabledBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         focusedBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
       ),
       validator: null,
       onSaved: null,
@@ -63,16 +66,17 @@ Widget subTitle(TextEditingController controller) {
     padding: const EdgeInsets.all(20),
     child: TextFormField(
       controller: controller,
-      style: kTitleTextStyle,
+      style: simpleTextStyle(),
       keyboardType: TextInputType.text,
       maxLines: null,
       decoration: InputDecoration(
         hintText: "Add a Subtitle",
+        hintStyle: TextStyle(color: Colors.white),
         //normal black underline and then when pressed, turns red
         enabledBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         focusedBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
       ),
       validator: null,
       onSaved: null,
@@ -85,17 +89,18 @@ Widget paragraph({TextEditingController controller, final String hint}) {
     padding: const EdgeInsets.fromLTRB(25, 5, 20, 20),
     child: TextFormField(
       controller: controller,
-      style: kParagraphTextStyle,
+      style: simpleTextStyle(),
       keyboardType: TextInputType.text,
       maxLines: null,
       decoration: InputDecoration(
         hintText: hint,
+        hintStyle: TextStyle(color: Colors.white),
         hoverColor: Colors.black,
         //Outline the border at start as black and turns red when pressed
         enabledBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         focusedBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
       ),
       validator: null,
       onSaved: (newString) => controller.text = newString ,
@@ -108,19 +113,21 @@ Widget questionField({TextEditingController controller, final String hint}) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(25, 5, 20, 20),
     child: TextFormField(
+      style: simpleTextStyle(),
       controller: controller,
       maxLength: 40,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
           prefixIcon: Icon(
             FontAwesomeIcons.solidQuestionCircle,
-            color: Colors.black,
+            color: Colors.white,
           ),
           hintText: hint,
+          hintStyle: TextStyle(color: Colors.white),
           enabledBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+              UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           focusedBorder:
-              UnderlineInputBorder(borderSide: BorderSide(color: Colors.red))),
+              UnderlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent))),
     ),
   );
 }
@@ -130,6 +137,7 @@ Widget answerField({TextEditingController controller, bool isCorrect}) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(25, 5, 20, 20),
     child: TextFormField(
+      style: simpleTextStyle(),
       keyboardType: TextInputType.text,
       controller: controller,
       decoration: InputDecoration(
@@ -140,8 +148,11 @@ Widget answerField({TextEditingController controller, bool isCorrect}) {
               )
             : Icon(FontAwesomeIcons.solidTimesCircle, color: Colors.red),
         hintText: isCorrect ? "Correct Answer" : "Wrong Answer",
+        hintStyle: TextStyle(color: Colors.white),
+        enabledBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         focusedBorder:
-            OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
         border: OutlineInputBorder(borderRadius: BorderRadius.vertical()),
       ),
       // When user's press "Done" on keyboard
@@ -171,12 +182,12 @@ Widget quizQuestionField(
           children: [
             Text(
               "Make a quiz question for the $part",
-              style: kBoldParagraphTextStyle,
+              style: mediumTextStyle(),
             ),
             questionField(
                 controller: controllers[0], hint: "Question about the $part"),
             answerField(controller: controllers[1], isCorrect: true),
-            Text("Trick your readers by putting 3 wrong answers "),
+            Text("Trick your readers by putting 3 wrong answers ", style: simpleTextStyle(),),
             answerField(controller: controllers[2], isCorrect: false),
             answerField(controller: controllers[3], isCorrect: false),
             answerField(controller: controllers[4], isCorrect: false),

@@ -8,6 +8,7 @@ import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 
 class Rating_FeedbackProvider with ChangeNotifier {
   final Firestore _database = Firestore.instance;
@@ -50,11 +51,11 @@ class Rating_FeedbackProvider with ChangeNotifier {
       children: [
         Text(
           "How did you like this lesson?",
-          style: kBoldTextStyle,
+          style: simpleTextStyle(),
         ),
         Text(
           "Tap or drag your finger across the ⭐️'s",
-          style: kBoldTextStyle,
+          style: simpleTextStyle(),
         ),
         const SizedBox(
           height: 40,

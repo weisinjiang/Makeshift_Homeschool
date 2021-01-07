@@ -4,6 +4,7 @@ import 'package:makeshift_homeschool_app/screens/reset_password.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/auth.dart';
@@ -213,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   //Logo
                   Padding(
                     padding: const EdgeInsets.all(40.0),
-                    child: Image.asset('asset/images/logo.png'),
+                    child: Image.asset('asset/images/logo2.png'),
                   ),
 
                   Form(
@@ -225,10 +226,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
+                              style: simpleTextStyle(),
                               maxLength: 300,
                               decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.person),
+                                prefixIcon: Icon(Icons.person, color: Colors.white,),
                                 hintText: "Username",
+                                hintStyle: TextStyle(  
+                                  color: Colors.white
+                                ),
+                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.vertical()),
                               ),
@@ -241,10 +248,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
+                            style: simpleTextStyle(),
                             keyboardType: TextInputType.emailAddress,
                             decoration: const InputDecoration(
-                              prefixIcon: Icon(Icons.email),
+                              prefixIcon: Icon(Icons.email, color: Colors.white,),
                               hintText: "Email",
+                              hintStyle: TextStyle(color: Colors.white),
+                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.vertical()),
                             ),
@@ -259,11 +270,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
                           child: TextFormField(
+                            style: simpleTextStyle(),
                             obscureText: true,
                             controller: _passwordController,
                             decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.lock),
+                              prefixIcon: Icon(Icons.lock, color: Colors.white,),
                               hintText: "Password",
+                              hintStyle: TextStyle(color: Colors.white),
+                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.vertical()),
                             ),
@@ -285,10 +300,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
+                              style: simpleTextStyle(),
                               obscureText: true,
                               decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.lock_outline),
+                                prefixIcon: Icon(Icons.lock_outline, color: Colors.white,),
                                 hintText: "Confirm Password",
+                                hintStyle: TextStyle(color: Colors.white),
+                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.vertical()),
                               ),
@@ -298,52 +317,54 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
 
                           // Referral
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: DropdownButtonFormField<String>(
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.search),
-                                  hintText: "How did you find us?",
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.vertical()),
-                                ),
-                                items: _referalList
-                                    .map((listItem) => DropdownMenuItem<String>(
-                                          child: Text(listItem),
-                                          value: listItem,
-                                        ))
-                                    .toList(),
-                                hint: Text(
-                                    _referalSelected), // shows selected ref
-                                onChanged: (changedDropdownItem) {
-                                  // ref changed, save the value
-                                  setState(() {
-                                    _referalSelected = changedDropdownItem;
-                                    if (changedDropdownItem != "Other") {
-                                      // Set the ref if it is not "Other"
-                                      _userInput.setReferal =
-                                          changedDropdownItem;
-                                    }
-                                  });
-                                }),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.all(8.0),
+                          //   child: DropdownButtonFormField<String>(
+                          //       decoration: InputDecoration(
+                          //         prefixIcon: Icon(Icons.search, color: Colors.white,),
+                          //         hintText: "How did you find us?",
+                          //         hintStyle: TextStyle(color: Colors.white),
+                          //         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                          //         border: OutlineInputBorder(
+                          //             borderRadius: BorderRadius.vertical()),
+                          //       ),
+                          //       items: _referalList
+                          //           .map((listItem) => DropdownMenuItem<String>(
+                          //                 child: Text(listItem),
+                          //                 value: listItem,
+                          //               ))
+                          //           .toList(),
+                          //       hint: Text(
+                          //           _referalSelected), // shows selected ref
+                          //       onChanged: (changedDropdownItem) {
+                          //         // ref changed, save the value
+                          //         setState(() {
+                          //           _referalSelected = changedDropdownItem;
+                          //           if (changedDropdownItem != "Other") {
+                          //             // Set the ref if it is not "Other"
+                          //             _userInput.setReferal =
+                          //                 changedDropdownItem;
+                          //           }
+                          //         });
+                          //       }),
+                          // ),
 
-                          // If referral is Other, have the user give us where they found us and save it
-                          if (_referalSelected == "Other")
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: "Please tell us where",
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.vertical()),
-                                ),
-                                validator: (userRefInput) =>
-                                    _userInput.validateReferral(userRefInput),
-                                onSaved: (userRefInput) =>
-                                    _userInput.setReferal = userRefInput,
-                              ),
-                            ),
+                          // // If referral is Other, have the user give us where they found us and save it
+                          // if (_referalSelected == "Other")
+                          //   Padding(
+                          //     padding: const EdgeInsets.all(8.0),
+                          //     child: TextFormField(
+                          //       decoration: InputDecoration(
+                          //         hintText: "Please tell us where",
+                          //         border: OutlineInputBorder(
+                          //             borderRadius: BorderRadius.vertical()),
+                          //       ),
+                          //       validator: (userRefInput) =>
+                          //           _userInput.validateReferral(userRefInput),
+                          //       onSaved: (userRefInput) =>
+                          //           _userInput.setReferal = userRefInput,
+                          //     ),
+                          //   ),
                         ],
                         Align(
                           alignment: Alignment.centerRight,
@@ -388,7 +409,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               _authMode == AuthMode.Login
                                   ? "Don't have an account?"
                                   : "Have an account?",
-                              style: TextStyle(fontStyle: FontStyle.italic),
+                              style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
                             ),
                             FlatButton(
                               splashColor: Colors

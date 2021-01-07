@@ -11,6 +11,7 @@ import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 
 /*
   This class handles post reviews from Tutors.
@@ -227,12 +228,14 @@ class PostReviewProvider {
   // Feedback Widget for each of the fields
   Widget feedbackForm(TextEditingController controller, String hint) {
     return TextFormField(
+      style: TextStyle(color: Colors.white),
       controller: controller,
       maxLength: 400,
       maxLines: null,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
           hintText: hint,
+          hintStyle: TextStyle(color: Colors.white),
           prefixIcon: Icon(
             FontAwesomeIcons.solidCommentAlt,
             color: kRedOrange,
@@ -262,14 +265,14 @@ class PostReviewProvider {
             ),
             Text(
               "A.  ${question.getOption1.getValue}",
-              style: kParagraphTextStyle,
+              style: simpleTextStyle(),
             ),
             Text("B.  ${question.getOption2.getValue}",
-                style: kParagraphTextStyle),
+                style: simpleTextStyle()),
             Text("C.  ${question.getOption3.getValue}",
-                style: kParagraphTextStyle),
+                style: simpleTextStyle()),
             Text("D.  ${question.getOption4.getValue}",
-                style: kParagraphTextStyle),
+                style: simpleTextStyle()),
             SizedBox(
               height: 50,
             )

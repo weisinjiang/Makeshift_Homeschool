@@ -72,6 +72,7 @@ class BootCampScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text("Boot Camp"),
+          backgroundColor: Colors.black54,
           //backgroundColor: kPaleBlue,
         ),
         body: Container(

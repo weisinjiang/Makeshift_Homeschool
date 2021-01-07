@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import '../services/auth.dart';
 import 'package:image_picker/image_picker.dart'; // load images
@@ -56,11 +57,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             maxWidth: 120,
             maxHeight: 120,
             aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0));
-         setState(() {
-        _imageFile = File(croppedImage.path); // set the image path
-      });
+        setState(() {
+          _imageFile = File(croppedImage.path); // set the image path
+        });
       }
-    
+
       await auth.uploadProfileImage(_imageFile); // upload to Firestore
     }
 
@@ -155,12 +156,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
+                            style: simpleTextStyle(),
                             initialValue: currentUserData["username"],
                             enabled: false,
                             maxLength: 300,
                             decoration: InputDecoration(
                               labelText: "Username",
+                              labelStyle: simpleTextStyle(),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.greenAccent)),
                               border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
                                   borderRadius: BorderRadius.vertical()),
                             ),
                             onChanged: (_) => updateProfileInfo = true,
@@ -173,10 +182,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
+                            style: simpleTextStyle(),
                             initialValue: currentUserData["bio"],
                             maxLength: 250,
                             decoration: InputDecoration(
                               labelText: "Bio",
+                              labelStyle: simpleTextStyle(),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.greenAccent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white)),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.vertical()),
                             ),

@@ -29,7 +29,7 @@ class PostExpanded extends StatelessWidget {
     return Scaffold(
       appBar: PopupMenuAppBar(
         postData: postData,
-        backgroundColor: kPeachRed,
+        backgroundColor: Colors.black54,
         screenSize: screenSize,
         appBar: AppBar(),
         canDelete: viewType == PostExpandedViewType.owner ? true : false,

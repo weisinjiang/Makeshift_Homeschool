@@ -3,6 +3,7 @@ import 'package:makeshift_homeschool_app/models/quiz_model.dart';
 import 'package:makeshift_homeschool_app/promo/tutor_tutorial.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 
 /*
   Quiz Provider that tracks the users quiz progress when they attempt to 
@@ -69,7 +70,7 @@ class QuizProvider with ChangeNotifier {
     Question currentQuestion = getCurrentQuestion;
     return Text(
       currentQuestion.getQuestion,
-      style: kBoldParagraphTextStyle,
+      style: mediumTextStyle(),
     );
   }
 
@@ -228,7 +229,7 @@ class QuizProvider with ChangeNotifier {
                     }
                   },
                   color: correct ? Colors.greenAccent : Colors.redAccent,
-                  child: Text(correct ? "Contine" : "Try Again"),
+                  child: Text(correct ? "Continue" : "Try Again"),
                 ),
               ],
             ),

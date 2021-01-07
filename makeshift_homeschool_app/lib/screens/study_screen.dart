@@ -5,6 +5,7 @@ import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/widgets/study_category_listtile.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 /// Study screen where lessons are retrieved from the database and posted
@@ -53,7 +54,8 @@ class _StudyScreenState extends State<StudyScreen> {
     if (user != null) {
       return Scaffold(
           appBar: AppBar(
-            title: Text("Let's Read! 📖"),
+            backgroundColor: Colors.black54,
+            title: Text("Let's Read! 📖", style: simpleTextStyle(),),
             //backgroundColor: kPaleBlue,
             elevation: 0.0,
           ),
@@ -78,10 +80,10 @@ class _StudyScreenState extends State<StudyScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
 
-                          StudyCategoryListTile(
-                              categoryTitle: "New Posts",
-                              postList: null
-                          ),
+                          // StudyCategoryListTile(
+                          //     categoryTitle: "New Posts",
+                          //     postList: null
+                          // ),
 
                           StudyCategoryListTile(
                               categoryTitle: "Most Bookmarked",

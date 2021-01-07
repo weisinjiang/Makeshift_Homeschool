@@ -7,6 +7,7 @@ import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 /*
@@ -30,8 +31,8 @@ class PostReview extends StatelessWidget {
       child: Consumer<PostReviewProvider>(
         builder: (context, postReviewProvider, _) => Scaffold(
           appBar: AppBar(
-            title: Text(postData.getTitle),
-            backgroundColor: kPaleBlue,
+            title: Text(postData.getTitle, style: simpleTextStyle(),),
+            backgroundColor: Colors.black54,
             elevation: 0.0,
             actions: [
               if (reviewer == Reviewer.principle) ...[

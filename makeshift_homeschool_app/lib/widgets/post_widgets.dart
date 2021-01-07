@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 
 /// Styled Widgets for a post,
 /// subtitle and paragraphs
@@ -33,7 +34,7 @@ Widget buildParagraph(String text, double width) {
         children: <Widget>[
           Text(
             text,
-            style: kParagraphTextStyle,
+            style: simpleTextStyle(),
           ),
         ],
       ),

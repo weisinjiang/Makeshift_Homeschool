@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/edit_profile_screen.dart';
 import 'package:makeshift_homeschool_app/screens/user_post.dart';
 import 'package:makeshift_homeschool_app/widgets/user_profile_appbar.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 import '../shared/constants.dart';
 import '../shared/exportShared.dart';
 import 'package:provider/provider.dart';
@@ -194,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Text(
                           "Level",
                           style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                              fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ),
 
@@ -240,7 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Text(
                           "${auth.getUser["bio"]}",
                           textAlign: TextAlign.start,
-                          style: kParagraphTextStyle,
+                          style: simpleTextStyle(),
                         ),
                       ),
                     ],

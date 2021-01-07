@@ -13,9 +13,11 @@ class BootCampListTile extends StatelessWidget {
   const BootCampListTile({Key key, this.title, this.navigationFunction}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: Colors.transparent,
       padding: const EdgeInsets.all(8.0),
       child: Material(
+        color: Colors.transparent,
         child: Ink(
           decoration: BoxDecoration(
               color: kPaleBlue,
