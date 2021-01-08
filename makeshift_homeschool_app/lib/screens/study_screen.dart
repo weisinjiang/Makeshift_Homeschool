@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/screens/searchScreen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
@@ -55,10 +58,25 @@ class _StudyScreenState extends State<StudyScreen> {
       return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.black54,
-            title: Text("Let's Read! 📖", style: simpleTextStyle(),),
+            title: Text(
+              "Let's Read! 📖",
+              style: simpleTextStyle(),
+            ),
             //backgroundColor: kPaleBlue,
             elevation: 0.0,
           ),
+          floatingActionButton: FloatingActionButton(
+              child: CircleAvatar(
+            radius: 30,
+            backgroundColor: Colors.white,
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen(),));
+              },
+              icon: Icon(Icons.search),
+              color: Colors.black,
+            ),
+          )),
           body: _isLoading
               ? LoadingScreen()
               : Container(
@@ -79,7 +97,6 @@ class _StudyScreenState extends State<StudyScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-
                           // StudyCategoryListTile(
                           //     categoryTitle: "New Posts",
                           //     postList: null
@@ -87,46 +104,30 @@ class _StudyScreenState extends State<StudyScreen> {
 
                           StudyCategoryListTile(
                               categoryTitle: "Most Bookmarked",
-                              postList: feedProvider.getMostBookmarkedPost(5)
-                          ),
+                              postList: feedProvider.getMostBookmarkedPost(5)),
 
                           StudyCategoryListTile(
                               categoryTitle: "Most Viewed",
-                              postList: feedProvider.getMostViewedPost(5)
-                          ),
+                              postList: feedProvider.getMostViewedPost(5)),
                           // under 8
                           StudyCategoryListTile(
                               categoryTitle: "Under 8",
                               postList: feedProvider.filterPostAgeFrom(
-                                greaterThanAge: false,
-                                targetAge: 8 
-                              )
-                          ),
+                                  greaterThanAge: false, targetAge: 8)),
                           // age 8-9
                           StudyCategoryListTile(
                               categoryTitle: "Age 8 & 9",
                               postList: feedProvider.filterPostAgeBetween(
-                                lowerInclusive: 8,
-                                upperInclusive: 9 
-                              )
-                          ),
+                                  lowerInclusive: 8, upperInclusive: 9)),
                           StudyCategoryListTile(
                               categoryTitle: "Age 10 & 11",
                               postList: feedProvider.filterPostAgeBetween(
-                                lowerInclusive: 10,
-                                upperInclusive: 11 
-                              )
-                          ),
+                                  lowerInclusive: 10, upperInclusive: 11)),
                           // 12 and Above
                           StudyCategoryListTile(
                               categoryTitle: "Ages 12+",
                               postList: feedProvider.filterPostAgeBetween(
-                                lowerInclusive: 12,
-                                upperInclusive: 100
-                              )
-                          ),
-                          
-                         
+                                  lowerInclusive: 12, upperInclusive: 100)),
                         ],
                       ),
                     ),
