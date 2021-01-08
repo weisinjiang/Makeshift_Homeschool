@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 
 class AboutScreen extends StatelessWidget {
   @override
@@ -6,57 +7,86 @@ class AboutScreen extends StatelessWidget {
     double screenHeigh = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("About"),
-      ),
       body: Container(
-        margin: EdgeInsets.all(10.0),
-        height: screenHeigh,
-        width: screenWidth,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-           
+        padding: EdgeInsets.all(20),
+        child: ListView(
+          children: [
+            Text(
+              "Makeshift Homeschool",
+              style: titleTextStyle(),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              "What is Makeshift Homeschool?",
+              style: subtitleTextStyle(),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Text(
+                "Our goal is to teach kids to love learning. We do this by implementing a Creative Learning Process.", style: TextStyle(color: Colors.lightBlue, fontSize: 15, fontWeight: FontWeight.bold),),
             
+            SizedBox(height: 20,),
+            Text(
+                "We Offer:", style: mediumTextStyle()),
+            SizedBox(height: 20,),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-              child: Image.asset('asset/images/logo2.png'),
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    minRadius: 55,
+                    maxRadius: 55,
+                    backgroundImage: AssetImage("images/image1.png"),
+                  ),
+                  Spacer(),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    color: Colors.greenAccent,
+                    child: Text("Virtual Leadership\nTraining", style: TextStyle(fontSize: 20),),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 20.0,),
-
-            Text(
-              "What if kids could teach each other?", 
-              style: TextStyle( 
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                decoration: TextDecoration.underline,
-                )
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    color: Colors.lightBlueAccent,
+                    child: Text("Tailored to Each\nChild's Strengths", style: TextStyle(fontSize: 20),),
+                  ),
+                  Spacer(),
+                  CircleAvatar(
+                    minRadius: 55,
+                    maxRadius: 55,
+                    backgroundImage: AssetImage("images/image2.png"),
+                  ),
+                ],
+              ),
             ),
-
-            SizedBox(height: 10.0,),
-
-            Text(
-              "The Makeshift Homeschool app will allow kids to teach, and learn with "
-               "each other. To grow as a team, to get stronger as a team, and to "
-               "inspire as a team.",
-               style: TextStyle(
-                 color: Colors.white,
-                 height: 1.5,
-               ),
-               textAlign: TextAlign.center,
-               
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    minRadius: 55,
+                    maxRadius: 55,
+                    backgroundImage: AssetImage("images/image3.png"),
+                  ),
+                  Spacer(),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    color: Colors.green[300],
+                    child: Text("Flexable Schedule\nSet By You", style: TextStyle(fontSize: 20),),
+                  ),
+                ],
+              ),
             ),
-
-            SizedBox(height: 30.0,),
-
-            Text("Thank you for helping grow our community!"),
-
-
-
-
           ],
-
         ),
       ),
     );

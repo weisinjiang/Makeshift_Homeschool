@@ -12,3 +12,18 @@ TextStyle mediumTextStyle() {
     fontSize: 20
   );
 }
+
+TextStyle titleTextStyle() {
+  return TextStyle(
+    color: Colors.white,
+    fontSize: 35,
+    fontWeight: FontWeight.bold
+  );
+}
+
+TextStyle subtitleTextStyle() {
+  return TextStyle(
+    color: Colors.grey[300],
+    fontSize: 20,
+  );
+}
