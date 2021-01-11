@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
 
 Widget recommendedAge(TextEditingController controller) {
@@ -13,7 +12,7 @@ Widget recommendedAge(TextEditingController controller) {
       style: kParagraphTextStyle,
       keyboardType: TextInputType.text,
       // only digits
-      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       maxLength: 2,
       maxLines: 1,
       decoration: InputDecoration(

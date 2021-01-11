@@ -10,7 +10,7 @@ import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 
 class Rating_FeedbackProvider with ChangeNotifier {
-  final Firestore _database = Firestore.instance;
+  final FirebaseFirestore _database = FirebaseFirestore.instance;
   double _userRating;
   bool promoted;
   double _allTimeRating;
@@ -59,7 +59,7 @@ class Rating_FeedbackProvider with ChangeNotifier {
         const SizedBox(
           height: 40,
         ),
-        RatingBar(
+        RatingBar.builder(
             allowHalfRating: true,
             direction: Axis.horizontal,
             initialRating: getUserRating,
@@ -68,6 +68,7 @@ class Rating_FeedbackProvider with ChangeNotifier {
             unratedColor: Colors.grey[300],
             glow: true,
             glowColor: Colors.green,
+
             itemBuilder: (context, _) {
               return Icon(
                 Icons.star,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
-import 'package:provider/provider.dart';
 
 /*
   Builds 3 questions field for a new post
@@ -16,8 +14,7 @@ class NewPostQuestions extends StatefulWidget {
 class _NewPostQuestionsState extends State<NewPostQuestions> {
   @override
   Widget build(BuildContext context) {
-    // provider to set data into the questions field in new post
-    var newPostProvider = Provider.of<NewPostProvider>(context);
+ 
 
     final _formKey = GlobalKey<FormState>();
 

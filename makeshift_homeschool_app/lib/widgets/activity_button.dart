@@ -1,6 +1,5 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 
 class ActivityButton extends StatelessWidget {
   final Color color;

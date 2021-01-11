@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
@@ -20,7 +19,7 @@ import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
 */
 
 class PostReviewProvider {
-  final Firestore _database = Firestore.instance;
+  final FirebaseFirestore _database = FirebaseFirestore.instance;
   Post postData;
   Quiz quizData;
   Reviewer reviewer;
@@ -49,14 +48,13 @@ class PostReviewProvider {
   // approved post makes it 5.
   Future<void> incrementUserLessonCreated() async {
     try {
-      DocumentReference doc =
-          Firestore.instance.collection("users").document(postData.getOwnerUid);
+      DocumentReference doc = _database.collection("users").doc(postData.getOwnerUid);
       DocumentSnapshot docData = await doc.get();
 
       if (docData["lesson_created"] + 1 == 5) {
-        doc.updateData({"level": "Teacher", "lesson_created": 5});
+        doc.update({"level": "Teacher", "lesson_created": 5});
       } else {
-        doc.updateData({"lesson_created": FieldValue.increment(1)});
+        doc.update({"lesson_created": FieldValue.increment(1)});
       }
     } catch (error) {
       print("Errror with incrementing lesson created $error");
@@ -69,8 +67,7 @@ class PostReviewProvider {
   // Also increment the user's "Lesson Created by 1"
   Future<void> teacherApprove() async {
     try {
-      DocumentReference doc =
-          Firestore.instance.collection("review").document(postData.getPostId);
+      DocumentReference doc = _database.collection("review").doc(postData.getPostId);
       DocumentSnapshot docData = await doc.get();
       // if this approval makes the approval 2, then add it to lessons
       if (docData["approvals"] + 1 == 2) {
@@ -93,23 +90,17 @@ class PostReviewProvider {
         };
 
         // Write the data into review collection
-        await _database
-            .collection("lessons")
-            .document(postData.getPostId)
-            .setData(data);
+        await _database.collection("lessons").doc(postData.getPostId).set(data);
 
         // Delete from Review collection
-        await _database
-            .collection("review")
-            .document(postData.getPostId)
-            .delete();
+        await _database.collection("review").doc(postData.getPostId).delete();
 
         // increment the lesson created by 1 and promote if it becomes 5
         await incrementUserLessonCreated();
       
       // if approve is not 2 yet
       } else {
-        doc.updateData({"approvals": FieldValue.increment(1)});
+        doc.update({"approvals": FieldValue.increment(1)});
       }
     } catch (error) {
       // !if the post is no longer in th
@@ -136,25 +127,24 @@ class PostReviewProvider {
     this.feedback.forEach((key, controller) {
       feedbacks[key] = controller.text;
     });
-    // add it to the
+    // add it to the feedback section of the document
     try {
-      await Firestore.instance
+      await _database
           .collection("review")
-          .document(postData.getPostId)
+          .doc(postData.getPostId)
           .collection("feedback")
-          .document()
-          .setData(feedbacks);
+          .doc()
+          .set(feedbacks);
     } catch (error) {
       // !if the post is no longer in th
-      print(
-          "Teacher sending feedback to a post that doesnt exists in Review Collection$error");
+      print("Teacher sending feedback to a post that doesnt exists in Review Collection$error");
       throw error;
     }
   }
 
   // When Principle denies the lesson, email is send to the owner informing them
   Future<void> deny(Post postData, String email) async {
-    // REST API link
+    // REST API link TODO: Add link to Database and get the link from there so that it is safer\
     String url =
         "https://us-east4-makeshift-homeschool-281816.cloudfunctions.net/send_lesson_denied_email";
 
@@ -208,13 +198,13 @@ class PostReviewProvider {
       // Write the data into review collection
       await _database
           .collection("review")
-          .document(postData.getPostId)
-          .setData(data);
+          .doc(postData.getPostId)
+          .set(data);
 
       // Delete the old data
       await _database
           .collection("approval required")
-          .document(postData.getPostId)
+          .doc(postData.getPostId)
           .delete();
     } catch (error) {
       throw error;

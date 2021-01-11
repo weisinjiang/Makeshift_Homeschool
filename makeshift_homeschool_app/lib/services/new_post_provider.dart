@@ -8,8 +8,6 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/widgets/image_field.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
-import 'package:path_provider/path_provider.dart';
-import '';
 
 /*
 Handles new paragraph and subtitle widgets being added to a new post
@@ -20,7 +18,7 @@ Use a list for the widgets and another list for textcontrollers
 class NewPostProvider {
   /// References to the database and storage so we can upload the new post info
   /// into Firestore and the image to FirebaseStorage
-  final Firestore _database = Firestore.instance;
+  final FirebaseFirestore _database = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   /// One list for widgets and one for text controllers
@@ -177,6 +175,20 @@ class NewPostProvider {
     return quiz;
   }
 
+  // /*
+  //  * Convert a Uint8List data of an image to a type File
+  //  */
+  // Future<File> convertUint8ToFile(String lessonID, Uint8List byteData) async {
+  //   try {
+  //     html.File byteAsFile = html.File(byteData, "$lessonID.png");
+  //     return byteAsFile;
+
+  //   } catch (error) {
+  //     print("Error creating html File from ByteData: ${error.toString}");
+  //     throw error;
+  //   }
+  // }
+
   /// Upload the image for the lesson using the lessons uid as its name and return
   /// the download url
   Future<dynamic> uploadImageAndGetDownloadUrl(File image, String lessonID, Uint8List byteData) async {
@@ -185,19 +197,23 @@ class NewPostProvider {
     // Web
     if (kIsWeb) {
       try {
-        StorageReference storage = 
-       
+        SettableMetadata metaData = SettableMetadata(contentType:'image/png');
+        Reference storageRef = _storage.ref().child("lessons").child(lessonID);
+        UploadTask uploadImageTask = storageRef.putData(byteData,metaData);
+        return await (await uploadImageTask).ref.getDownloadURL();
+
       }
       catch (error) {
         print("Error putting Data for kIsWeb");
+        print(error.toString);
       }
     }
     // Not Web
     else {
       try {
-        var storageRef = _storage.ref().child("lessons").child(lessonID); // storage to put the file
-        await storageRef.putFile(image).onComplete; // wait for it to finish uploading the file
-        return storageRef.getDownloadURL();
+        Reference storageRef = _storage.ref().child("lessons").child(lessonID); // storage to put the file
+        UploadTask uploadImageTask = storageRef.putFile(image);
+        return await (await uploadImageTask).ref.getDownloadURL();
       }
       catch (error) {
         print("Error putting File for Mobile");
@@ -274,19 +290,7 @@ class NewPostProvider {
     return false;
   }
 
-  /*
-   * Create a temp file so that it can be used by WebApp for uploading images
-   */
-  Future<File> createTempFile(String lessonID, Uint8List byteData) async {
-    try {
-      final dir = await getTemporaryDirectory();
-      final file = await new File("${dir.path}/lessonID.png").create();
-      file.writeAsBytesSync(byteData);
-      return file;
-    } catch (error) {
-      print("Error creating temp file: ${error.toString}");
-    }
-  }
+  
 
   /* 
     Post Method to be added into the database
@@ -307,11 +311,11 @@ class NewPostProvider {
 
     // if user is a Tutor, add it to approval collection
     if (userLevel == "Tutor") {
-      databaseRef = _database.collection("approval required").document();
+      databaseRef = _database.collection("approval required").doc();
     }
     // teachers and above gets their post added to lessons directly
     else {
-      databaseRef = _database.collection("lessons").document();
+      databaseRef = _database.collection("lessons").doc();
     }
 
     // Contruct all the data from the text controllers
@@ -334,19 +338,19 @@ class NewPostProvider {
     // Upload the image and get download url
     if (kIsWeb) {
       print("inside post method");
-      imageUrl = await uploadImageAndGetDownloadUrl(null, databaseRef.documentID, getByteData());
+      imageUrl = await uploadImageAndGetDownloadUrl(null, databaseRef.id, getByteData());
       print("Done imageUrl");
     } else {
-      imageUrl = await uploadImageAndGetDownloadUrl(getNewPostImageFile, databaseRef.documentID, null);
+      imageUrl = await uploadImageAndGetDownloadUrl(getNewPostImageFile, databaseRef.id, null);
     }
-    print("Document ID: " + databaseRef.documentID); //! Print for testing
+    print("Document ID: " + databaseRef.id); //! Print for testing
     
 
     // all data needed for a new post
     var newLesson = {
       "age": postContentsList[6],
       "views": 0,
-      "lessonId": databaseRef.documentID,
+      "lessonId": databaseRef.id,
       "ownerUid": uid,
       "ownerName": name,
       "createdOn": DateTime.now().toString(),
@@ -362,7 +366,7 @@ class NewPostProvider {
     };
 
     // Add the data into the refernece document made earlier
-    await databaseRef.setData(newLesson);
+    await databaseRef.set(newLesson);
 
     // update user's lessons created if they are not a tutor
     // Tutors will have this incremented after review
@@ -370,8 +374,8 @@ class NewPostProvider {
       lessonCreated++; // increment by 1
       await _database
           .collection("users")
-          .document(uid)
-          .updateData({"lesson_created": lessonCreated});
+          .doc(uid)
+          .update({"lesson_created": lessonCreated});
     }
 
     //resetFields();
@@ -385,7 +389,7 @@ class NewPostProvider {
     /// Reference the document where the data will be placed
     /// Leaving document empty generates a random id
     var databaseRef =
-        _database.collection("lessons").document(postData.getPostId);
+        _database.collection("lessons").doc(postData.getPostId);
     var postContentsList = getControllerTextDataAsList();
     var quiz = constructQuizDataForDatabase(); // updated quiz data
     var newPostTitle = postContentsList[0]; // index0 = title controller
@@ -406,7 +410,7 @@ class NewPostProvider {
     };
 
     /// Add the data into the refernece document made earlier
-    await databaseRef.setData(newLesson, merge: true);
+    await databaseRef.set(newLesson, SetOptions(merge: true));
 
     // update the post feed with the new data so it does not need to fetch again
     provider.updateUserPost(

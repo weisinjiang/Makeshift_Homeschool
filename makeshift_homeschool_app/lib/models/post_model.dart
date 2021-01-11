@@ -110,10 +110,10 @@ class Post with ChangeNotifier {
   // Increment the view count on a post everytime someone clicks on a post
   Future<void> incrementPostViewCount() async {
     try {
-      await Firestore.instance
+      await FirebaseFirestore.instance
           .collection("lessons")
-          .document(getPostId)
-          .updateData({"views": FieldValue.increment(1)});
+          .doc(getPostId)
+          .update({"views": FieldValue.increment(1)});
     } catch (error) {
       print("InrementPostViewCount error");
     }
@@ -138,7 +138,7 @@ class Post with ChangeNotifier {
   // Update the posts rating when a user completes it
   Future<void> updatePostRating({double userRating, String uid}) async {
     DocumentReference documentRef =
-        Firestore.instance.collection("lessons").document(getPostId);
+        FirebaseFirestore.instance.collection("lessons").doc(getPostId);
 
     // calculating new average
     double currentRating = getRating;
@@ -150,7 +150,7 @@ class Post with ChangeNotifier {
     try {
       // update the data
       await documentRef
-          .updateData({"rating": newAverage, "raters": currentRaters});
+          .update({"rating": newAverage, "raters": currentRaters});
     } catch (error) {
       print("Update Post Rating Error ${error.toString()}");
       throw error;
@@ -166,37 +166,37 @@ class Post with ChangeNotifier {
     try {
       if (this.isLiked) {
         /// if liked, then add the post id into users favorites
-        await Firestore.instance
+        await FirebaseFirestore.instance
             .collection("users")
-            .document(uid)
+            .doc(uid)
             .collection("favorites")
-            .document(getPostId)
-            .setData({});
+            .doc(getPostId)
+            .set({});
 
         // update the bookmark icon's fill color
         notifyListeners();
 
         // Increment the likes count on the post
-        await Firestore.instance
+        await FirebaseFirestore.instance
             .collection("lessons")
-            .document(getPostId)
-            .updateData({"likes": FieldValue.increment(1)});
+            .doc(getPostId)
+            .update({"likes": FieldValue.increment(1)});
       } else {
         // if unlike, remove the post from user favorites
-        await Firestore.instance
+        await FirebaseFirestore.instance
             .collection("users")
-            .document(uid)
+            .doc(uid)
             .collection("favorites")
-            .document(getPostId)
+            .doc(getPostId)
             .delete();
 
         notifyListeners();
 
         // Decrement the likes count on the post
-        await Firestore.instance
+        await FirebaseFirestore.instance
             .collection("lessons")
-            .document(getPostId)
-            .updateData({"likes": FieldValue.increment(-1)});
+            .doc(getPostId)
+            .update({"likes": FieldValue.increment(-1)});
       }
     } catch (error) {
       /// if there was an error, change the value back

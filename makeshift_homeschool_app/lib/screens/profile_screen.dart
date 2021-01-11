@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/screens/edit_profile_screen.dart';
-import 'package:makeshift_homeschool_app/screens/user_post.dart';
 import 'package:makeshift_homeschool_app/widgets/user_profile_appbar.dart';
 import '../shared/constants.dart';
 import '../shared/exportShared.dart';
 import 'package:provider/provider.dart';
 import '../services/auth.dart';
-import 'package:flutter/foundation.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override

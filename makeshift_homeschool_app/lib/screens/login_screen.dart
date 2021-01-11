@@ -10,11 +10,9 @@ import 'package:url_launcher/url_launcher.dart';
 import '../services/auth.dart';
 import '../shared/constants.dart';
 import '../models/user_auth_model.dart';
-/**
- * Builds the Login Screen
- * Enum Authmode determines which Firebase method to use: login or signup
- * It will also determine how the screen will look.
- */
+/// Builds the Login Screen
+/// Enum Authmode determines which Firebase method to use: login or signup
+/// It will also determine how the screen will look.
 
 //Page will change if user is logging in or signing up
 enum AuthMode { Signup, Login }
@@ -92,18 +90,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _submit(AuthProvider auth, UserAuth _userInput) async {
     //! Uncomment This was taken out for easier login and testing 
-    // if (!_formKey.currentState.validate()) {
-    //   // Validation failed
-    //   return;
-    // }
-    // // Validation success
-    // _formKey.currentState.save();
+    if (!_formKey.currentState.validate()) {
+      // Validation failed
+      return;
+    }
+    // Validation success
+    _formKey.currentState.save();
 
     try {
       // Attempt to log user in
       if (_authMode == AuthMode.Login) {
-        //var isSignedIn = await auth.signIn(_userInput.getEmail, _userInput.getPassword); //! Change this back
-        var isSignedIn = await auth.signIn("roxas600@gmail.com", "Checkmate1@");
+        var isSignedIn = await auth.signIn(_userInput.getEmail, _userInput.getPassword); //! Change this back
+        //var isSignedIn = await auth.signIn("roxas600@gmail.com", "Checkmate1@");
         if (!isSignedIn) {
           _showErrorMessage("Email or Password is incorrect or does not exist");
         }
@@ -248,17 +246,15 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-/**
- * The mobile widget of the loginscreen
- * Builds the textfields, buttons and widgetst that switches between
- * Authmodes.
- * 
- * @param passed into this method
- * @ _userInput - this is an object containing information the user inputted
- * @ context - the current widget tree's location
- * @ screenSize 
- * @ auth - auth object to call signin or signout
- */
+/// The mobile widget of the loginscreen
+/// Builds the textfields, buttons and widgetst that switches between
+/// Authmodes.
+/// 
+/// @param passed into this method
+/// @ _userInput - this is an object containing information the user inputted
+/// @ context - the current widget tree's location
+/// @ screenSize 
+/// @ auth - auth object to call signin or signout
   Column buildMobileForm(UserAuth _userInput, BuildContext context,
       Size screenSize, AuthProvider auth) {
     return Column(
@@ -493,17 +489,15 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-/**
- * The WEB widget of the loginscreen
- * Builds the textfields, buttons and widgetst that switches between
- * Authmodes.
- * 
- * @param passed into this method
- * @ _userInput - this is an object containing information the user inputted
- * @ context - the current widget tree's location
- * @ screenSize 
- * @ auth - auth object to call signin or signout
- */
+/// The WEB widget of the loginscreen
+/// Builds the textfields, buttons and widgetst that switches between
+/// Authmodes.
+/// 
+/// @param passed into this method
+/// @ _userInput - this is an object containing information the user inputted
+/// @ context - the current widget tree's location
+/// @ screenSize 
+/// @ auth - auth object to call signin or signout
   Column buildWebForm(Size screenSize, UserAuth _userInput,
       BuildContext context, AuthProvider auth) {
     return Column(
