@@ -3,7 +3,6 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
-import 'package:makeshift_homeschool_app/widgets/bookmark_button.dart';
 import 'package:provider/provider.dart';
 
 /*

@@ -210,7 +210,7 @@ class AuthProvider with ChangeNotifier {
 
   // Connects to the users data document in Firebase. Updates if anything in it changes
   Stream<DocumentSnapshot> userDataStream() {
-    return _database.collection("users").document(_userId).snapshots();
+    return _database.collection("users").doc(_userId).snapshots();
   }
 
   // Updates users profile image and change photoURL link
@@ -278,7 +278,7 @@ class AuthProvider with ChangeNotifier {
     Map<String, String> userData = {};
     await _database
         .collection("users")
-        .document(uid)
+        .doc(uid)
         .get()
         .then((firestoreData) {
       userData["email"] = firestoreData["email"];
@@ -302,14 +302,14 @@ class AuthProvider with ChangeNotifier {
   Future<bool> incrementUserCompletedLessons(String postId) async {
     // users data document in Firestore
     DocumentReference userDocument =
-        _database.collection("users").document(getUserID);
+        _database.collection("users").doc(getUserID);
     try {
       await addPostIdToCompletedCollection(postId); // add completed lesson
       // Add the post to the user's completed lessons collection
       await userDocument
           .collection("completed lessons")
-          .document(postId)
-          .setData({});
+          .doc(postId)
+          .set({});
 
       // update the map data with the new lesson completed
       int lessonCompleted =
@@ -318,13 +318,13 @@ class AuthProvider with ChangeNotifier {
 
       if (lessonCompleted == 5) {
         // increase lesson completed by 1 and update level
-        await userDocument.updateData(
+        await userDocument.update(
             {"lesson_completed": FieldValue.increment(1), "level": "Tutor"});
         this._userInformation["level"] = "Tutor";
       } else {
         // increase lesson completed by 1
         await userDocument
-            .updateData({"lesson_completed": FieldValue.increment(1)});
+            .update({"lesson_completed": FieldValue.increment(1)});
       }
       this._userInformation["lesson_completed"] = lessonCompleted.toString();
       notifyListeners();
@@ -337,10 +337,10 @@ class AuthProvider with ChangeNotifier {
   Future<void> addPostIdToCompletedCollection(String postId) async {
     _database
         .collection("users")
-        .document(getUserID)
+        .doc(getUserID)
         .collection("completed lessons")
-        .document(postId)
-        .setData({});
+        .doc(postId)
+        .set({});
   }
 
   // Future<dynamic> userDataFuture() async {

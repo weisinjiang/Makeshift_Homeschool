@@ -8,7 +8,6 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/widgets/image_field.dart';
 import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
-import 'dart:ui' as ui;
 
 /*
 Handles new paragraph and subtitle widgets being added to a new post
@@ -312,11 +311,11 @@ class NewPostProvider {
 
     // if user is a Tutor, add it to approval collection
     if (userLevel == "Tutor") {
-      databaseRef = _database.collection("approval required").document();
+      databaseRef = _database.collection("approval required").doc();
     }
     // teachers and above gets their post added to lessons directly
     else {
-      databaseRef = _database.collection("lessons").document();
+      databaseRef = _database.collection("lessons").doc();
     }
 
     // Contruct all the data from the text controllers
@@ -339,19 +338,19 @@ class NewPostProvider {
     // Upload the image and get download url
     if (kIsWeb) {
       print("inside post method");
-      imageUrl = await uploadImageAndGetDownloadUrl(null, databaseRef.documentID, getByteData());
+      imageUrl = await uploadImageAndGetDownloadUrl(null, databaseRef.id, getByteData());
       print("Done imageUrl");
     } else {
-      imageUrl = await uploadImageAndGetDownloadUrl(getNewPostImageFile, databaseRef.documentID, null);
+      imageUrl = await uploadImageAndGetDownloadUrl(getNewPostImageFile, databaseRef.id, null);
     }
-    print("Document ID: " + databaseRef.documentID); //! Print for testing
+    print("Document ID: " + databaseRef.id); //! Print for testing
     
 
     // all data needed for a new post
     var newLesson = {
       "age": postContentsList[6],
       "views": 0,
-      "lessonId": databaseRef.documentID,
+      "lessonId": databaseRef.id,
       "ownerUid": uid,
       "ownerName": name,
       "createdOn": DateTime.now().toString(),
@@ -367,7 +366,7 @@ class NewPostProvider {
     };
 
     // Add the data into the refernece document made earlier
-    await databaseRef.setData(newLesson);
+    await databaseRef.set(newLesson);
 
     // update user's lessons created if they are not a tutor
     // Tutors will have this incremented after review
@@ -375,8 +374,8 @@ class NewPostProvider {
       lessonCreated++; // increment by 1
       await _database
           .collection("users")
-          .document(uid)
-          .updateData({"lesson_created": lessonCreated});
+          .doc(uid)
+          .update({"lesson_created": lessonCreated});
     }
 
     //resetFields();
@@ -390,7 +389,7 @@ class NewPostProvider {
     /// Reference the document where the data will be placed
     /// Leaving document empty generates a random id
     var databaseRef =
-        _database.collection("lessons").document(postData.getPostId);
+        _database.collection("lessons").doc(postData.getPostId);
     var postContentsList = getControllerTextDataAsList();
     var quiz = constructQuizDataForDatabase(); // updated quiz data
     var newPostTitle = postContentsList[0]; // index0 = title controller

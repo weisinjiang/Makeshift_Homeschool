@@ -149,11 +149,11 @@ class PostFeedProvider with ChangeNotifier {
       }
 
       // get all the documents from the query
-      List<DocumentSnapshot> allPostDocuments = result.documents;
+      List<DocumentSnapshot> allPostDocuments = result.docs;
 
       // If there are any in review posts, add them to the collection
       if (inReviewPosts != null) {
-        inReviewPosts.documents.forEach((doc) {
+        inReviewPosts.docs.forEach((doc) {
           allPostDocuments.add(doc);
         });
       }

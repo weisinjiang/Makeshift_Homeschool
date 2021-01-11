@@ -6,7 +6,6 @@ import 'package:makeshift_homeschool_app/screens/quiz.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
-import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:makeshift_homeschool_app/widgets/popup_appbar.dart';
 import 'package:flutter/foundation.dart';
 
