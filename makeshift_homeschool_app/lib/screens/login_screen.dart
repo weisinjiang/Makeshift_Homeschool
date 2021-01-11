@@ -90,18 +90,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _submit(AuthProvider auth, UserAuth _userInput) async {
     //! Uncomment This was taken out for easier login and testing 
-    // if (!_formKey.currentState.validate()) {
-    //   // Validation failed
-    //   return;
-    // }
-    // // Validation success
-    // _formKey.currentState.save();
+    if (!_formKey.currentState.validate()) {
+      // Validation failed
+      return;
+    }
+    // Validation success
+    _formKey.currentState.save();
 
     try {
       // Attempt to log user in
       if (_authMode == AuthMode.Login) {
-        //var isSignedIn = await auth.signIn(_userInput.getEmail, _userInput.getPassword); //! Change this back
-        var isSignedIn = await auth.signIn("roxas600@gmail.com", "Checkmate1@");
+        var isSignedIn = await auth.signIn(_userInput.getEmail, _userInput.getPassword); //! Change this back
+        //var isSignedIn = await auth.signIn("roxas600@gmail.com", "Checkmate1@");
         if (!isSignedIn) {
           _showErrorMessage("Email or Password is incorrect or does not exist");
         }
