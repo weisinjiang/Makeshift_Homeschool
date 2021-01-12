@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-/***
- * Screen that tells the user about Makeshift Homeschool
- */
 
-
+///Screen that tells the user about Makeshift Homeschool
 class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

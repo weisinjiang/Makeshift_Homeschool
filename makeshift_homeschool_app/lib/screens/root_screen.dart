@@ -23,8 +23,6 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  var _isInit = true;
-  var _isLoading = false;
   Map<String, String> userData;
   bool isEmailVerified;
   Size screenSize;

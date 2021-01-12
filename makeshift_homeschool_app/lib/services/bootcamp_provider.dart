@@ -45,8 +45,6 @@ class BootCampProvider with ChangeNotifier {
         /// map
         var documentId = document.id;
         var userResponse = document["userResponse"];
-        var asMap = {documentId: userResponse};
-
         BootCampLesson lesson = BootCampLesson(id: documentId, content: userResponse);
 
         documentData.add(lesson);

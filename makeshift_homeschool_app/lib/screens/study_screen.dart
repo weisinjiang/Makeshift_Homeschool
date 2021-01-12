@@ -17,7 +17,7 @@ class StudyScreen extends StatefulWidget {
 }
 
 class _StudyScreenState extends State<StudyScreen> {
-  var _showOnlyFavorites = false;
+  //var _showOnlyFavorites = false;
   var _isInit = true;
   var _isLoading = false;
 
@@ -131,7 +131,7 @@ class _StudyScreenState extends State<StudyScreen> {
                     )),
               ));
     } else {
-      LoadingScreen();
+      return LoadingScreen();
     }
   }
 }

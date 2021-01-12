@@ -265,8 +265,6 @@ class TutorBootcamp2 extends StatelessWidget {
 //!//!//!//!//!//!//!//!
 
 class TutorBootcampQuestion2 extends StatelessWidget {
-  @override
-
   //! Alert Dialog to tell you if you were correct
   
   showAlertDialog1(BuildContext context) {
@@ -483,8 +481,6 @@ class TutorBootcamp3 extends StatelessWidget {
 //!//!//!//!//!//!//!//!//!
 
 class TutorBootcampQuestion3 extends StatelessWidget {
-  @override
-
   //! Alert Dialog to tell you if you were correct
   
   showAlertDialog1(BuildContext context) {
@@ -702,8 +698,6 @@ class TutorBootcamp4 extends StatelessWidget {
 //!//!//!//!//!//!//!//!//!
 
 class TutorBootcampQuestion4 extends StatelessWidget {
-  @override
-
   //! Alert Dialog to tell you if you were correct
   
   showAlertDialog1(BuildContext context) {

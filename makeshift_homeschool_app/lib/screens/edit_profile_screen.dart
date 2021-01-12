@@ -91,11 +91,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           });
     }
 
-    @override
-    void dispose() {
-      _formKey.currentState.dispose();
-      super.dispose();
-    }
 
     /// ************************************************************************
     ///   Widget

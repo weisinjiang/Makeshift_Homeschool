@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
@@ -10,7 +9,6 @@ import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 
 class Rating_FeedbackProvider with ChangeNotifier {
-  final FirebaseFirestore _database = FirebaseFirestore.instance;
   double _userRating;
   bool promoted;
   double _allTimeRating;

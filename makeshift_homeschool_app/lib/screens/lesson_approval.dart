@@ -87,5 +87,6 @@ class _LessonApprovalScreenState extends State<LessonApprovalScreen> {
                   ),
                 ));
     }
+    return LoadingScreen();
   }
 }
