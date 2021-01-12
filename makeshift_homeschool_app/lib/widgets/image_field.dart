@@ -11,37 +11,44 @@ import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 
-
-/// First provides an empty image and on tap, let's the user pick an image
+/// Builds the Image Widget that lets users pick images from their mobile phones
+/// or their Desktop depending on if it's being used on Desktop Browser, iOS, Android
+/// 
+/// First provides a default image and on tap, let's the user pick an image.
+/// The displayed image will change based on what the user picks.
 
 class ImageField extends StatefulWidget {
-  /// This widgrt takes in the desired height and width of the image by %
-  /// For example, image's height can be 50% of the screens height and width can
-  /// be 70% of the screens width
+  /*
+    This widgrt takes in the desired height and width of the image by %
+    For example, image's height can be 50% of the screens height and width can
+    be 70% of the screens width 
+  */
   final imageHeight;
   final imageWidth;
+
+  // If Post is being edited, show the photo url from Firebase that is attached to the post 
   final String editImageUrl;
 
-  const ImageField(
-      {Key key, this.imageHeight, this.imageWidth, this.editImageUrl})
-      : super(key: key);
+  // Constructor. Need height, width and image url
+  // editImageUrl = null if not editing a post
+  const ImageField({Key key, this.imageHeight, this.imageWidth, this.editImageUrl}):super(key: key);
+
   @override
   _ImageFieldState createState() => _ImageFieldState();
 }
 
 class _ImageFieldState extends State<ImageField> {
-  /// Default to be shown before a user selects an image
+  // Default to be shown before a user selects an image
   Image _onScreenImage = Image.asset("asset/images/imagePlaceHolder.png");
+  // File to be uploaded after user selects their target file
   File _userSelectedImage;
 
-  /// ************************************************************************
-  ///   Widget
-  ///   Prompts the user if they want to get their profie image from their
-  ///   camera or library
-  ///   @param - current widget tree context so it can show on top of it
-  ///*************************************************************************
-  void _buildImagePickerPopUpMenu(
-      context, double height, double width, NewPostProvider newPostProvider) {
+  /// Widget
+  /// Prompts the user if they want to get their profie image from their
+  /// camera or library
+  ///  @param - current widget tree context so it can show on top of it
+  /// NOTE: Different popups depending on if it is Web Browser or mobile
+  void _buildImagePickerPopUpMenu(context, double height, double width, NewPostProvider newPostProvider) {
     showModalBottomSheet(
         context: context, // context of the widget this prompt is showing on
         builder: (BuildContext contx) {
@@ -50,7 +57,8 @@ class _ImageFieldState extends State<ImageField> {
             child: Wrap(
               spacing: 5.0,
               children: <Widget>[
-                // Web Version
+
+                // WEB CODE
                 if (kIsWeb) ...[
                   ListTile(
                     leading: Icon(Icons.upload_file),
@@ -62,7 +70,7 @@ class _ImageFieldState extends State<ImageField> {
                   ),
                 ],
 
-                // Mobile Version
+                // MOBILE CODE
                 if (!kIsWeb) ...[
                   /// Choose from Camera Roll
                   ListTile(
@@ -92,12 +100,9 @@ class _ImageFieldState extends State<ImageField> {
         });
   }
 
-  /// ************************************************************************
-  ///   Method
-  ///   User picks an image from their library or camra
-  ///   @param - source is where the user wants to pick their profile image
-  ///*************************************************************************
-
+  /// IMAGE PICKER FOR MOBILE
+  /// User picks an image from their library or camera
+  /// @param - source is where the user wants to pick their profile image
   Future<void> _chooseImageFromSource(ImageSource source, double height, double width, NewPostProvider newPostProvider) async {
 
     ImagePicker imagePicker = ImagePicker();
@@ -119,55 +124,50 @@ class _ImageFieldState extends State<ImageField> {
       }
     }
 
+    // Pass the file to the NewPostProvider. It will take care of uploading images
     newPostProvider.setNewPostImageFile = _userSelectedImage;
-    //return File(pickedImage.path);
-    //await auth.uploadProfileImage(_imageFile); // upload to Firestore
   }
 
-  /*
-   * Method is for uploading images for the Web App version.
-   * The Webapp loads image data as a blob for the website, so it is a network object
-   * and not an image. So the original method .path will not work.
-   * 
-   * Original path = user/image.png
-   * Webapp Path = http://website.com/imageData <- This is not an actual path to the image location where it can be extracted
-   */
-
+  
+  /// IMAGE PICKER FOR WEB 
+  /// The Webapp loads image data as a blob for the website, so it is a network object
+  /// and not an image. So the original method .path will not work.
+  ///
+  /// Original path = user/image.png
+  /// Webapp Path = http://website.com/imageData <- This is not an actual path to the image location where it can be extracted
   Future<void> _chooseImageWeb(double height, double width, NewPostProvider newPostProvider) async {
+    
+    // Instaniate the image picker 
+    ImagePickerPlugin imagePicker = ImagePickerPlugin(); 
 
-    ImagePickerPlugin imagePicker = ImagePickerPlugin();
+    // Pick the image
     final pickedImage = await imagePicker.pickImage(
         maxHeight: height,
         maxWidth: width,
         source: ImageSource.gallery); // ask for permission
-  
+
+    // Valid image file
     if (pickedImage != null) {
+      // Convert it to bytes because Web does not have access to the physical copy of the image on 
+      // the users computer
       Uint8List imageBytes = await pickedImage.readAsBytes();
+
+      // Mobile version used _userSelectedImage to upload and show the image
+      // Web version, the File is a network image and can be used to display it
+      // Not not upload bc it does not have access to the file itself
       setState(() {
         _userSelectedImage = File(pickedImage.path); // set the image path
       });
+
+      // Like Mobile, but additional imageBytes for image upload to Firestore
       newPostProvider.setNewPostImageFile = _userSelectedImage;
       newPostProvider.setByteData = imageBytes;
     }
 
     
   }
-  // Future<void> _chooseImageWeb(double height, double width, NewPostProvider newPostProvider) async {
 
-  //   FilePickerResult pickedImage = await FilePicker.platform.pickFiles();
-  
-  //   if (pickedImage != null) {
-  //     setState(() {
-  //       _userSelectedImage = File(pickedImage.files.single.path); // set the image path
-  //     });
-  //     newPostProvider.setNewPostImageFile = _userSelectedImage;
-
-  //   }
-  //   else {
-  //     print("Errir loading image");
-  //   }
-  // }
-
+  /// Builds the widget for users to see
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -204,7 +204,8 @@ class _ImageFieldState extends State<ImageField> {
                     // Browser's image path is stored in the network and not from abs path
                     : Image.network(_userSelectedImage.path)),
           ] 
-          // Is editing on mobile
+
+          // Is editing, show the image in the image box instead of the placeholder
           // To-do: Test if this works for browser mode
           else ...[
             Container(
@@ -213,6 +214,7 @@ class _ImageFieldState extends State<ImageField> {
               child: Image.network(widget.editImageUrl),
             )
           ],
+          // Does not allow to clear the image because we cant change images as of now
           SizedBox(
             height: 10,
           ),
