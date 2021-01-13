@@ -9,7 +9,7 @@ import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 class TutorBootcamp1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size; // size of the screen
+ 
     return Scaffold(
       body: PageView(  
         scrollDirection: Axis.horizontal,
@@ -53,8 +53,6 @@ class TutorBootcamp1 extends StatelessWidget {
 
 
 class TutorBootcampQuestion1 extends StatelessWidget {
-  @override
-
   //! Alert Dialog to tell you if you were correct
   
   showAlertDialog1(BuildContext context) {
@@ -267,8 +265,6 @@ class TutorBootcamp2 extends StatelessWidget {
 //!//!//!//!//!//!//!//!
 
 class TutorBootcampQuestion2 extends StatelessWidget {
-  @override
-
   //! Alert Dialog to tell you if you were correct
   
   showAlertDialog1(BuildContext context) {
@@ -485,8 +481,6 @@ class TutorBootcamp3 extends StatelessWidget {
 //!//!//!//!//!//!//!//!//!
 
 class TutorBootcampQuestion3 extends StatelessWidget {
-  @override
-
   //! Alert Dialog to tell you if you were correct
   
   showAlertDialog1(BuildContext context) {
@@ -704,8 +698,6 @@ class TutorBootcamp4 extends StatelessWidget {
 //!//!//!//!//!//!//!//!//!
 
 class TutorBootcampQuestion4 extends StatelessWidget {
-  @override
-
   //! Alert Dialog to tell you if you were correct
   
   showAlertDialog1(BuildContext context) {

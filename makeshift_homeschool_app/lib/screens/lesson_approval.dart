@@ -69,12 +69,11 @@ class _LessonApprovalScreenState extends State<LessonApprovalScreen> {
                       await Provider.of<PostFeedProvider>(context, listen: false)
                           .fetchInReviewPosts(widget.reviewer);
                     },
-                    child: ListView.separated(
+                    child: postList.length == 0 ? Center(child: Text("No Lessons to review...")):
+                    ListView.separated(
                       scrollDirection: Axis.vertical,
                       padding: EdgeInsets.fromLTRB(4, 10, 4, 10),
-                      separatorBuilder: (context, int index) => const SizedBox(
-                        width: 5,
-                      ),
+                      separatorBuilder: (context, int index) => const Divider(),
                       itemCount: postList.length,
                       itemBuilder: (_, index) => ChangeNotifierProvider.value(
                         value: postList[index],
@@ -88,5 +87,6 @@ class _LessonApprovalScreenState extends State<LessonApprovalScreen> {
                   ),
                 ));
     }
+    return LoadingScreen();
   }
 }

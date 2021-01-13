@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
-import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/post_expanded.dart';
 import 'package:makeshift_homeschool_app/widgets/post_review.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter/foundation.dart';
 import 'bookmark_button.dart';
 
 /// Clickable thumbnail before going into the actual post
@@ -71,8 +70,12 @@ class PostThumbnail extends StatelessWidget {
         }
       },
       child: Container(
-          height: screenSize.height * 0.20,
-          width: screenSize.width * 0.40,
+          height: kIsWeb
+            ? screenSize.height * 0.20
+            :screenSize.height * 0.20,
+          width: kIsWeb
+            ? screenSize.width * 0.20
+            :screenSize.width * 0.40,
 
           /// Box decoration for the shape of the container and the image that
           /// goes inside of it
@@ -95,11 +98,14 @@ class PostThumbnail extends StatelessWidget {
                 if (viewType == PostExpandedViewType.global)
                   Align(
                     alignment: Alignment.topRight,
-                    child: Container(
-                      child: BookmarkButton(
-                          postData: postData,
-                          screenSize: screenSize,
-                          user: user),
+                    child: FittedBox(
+                      fit: BoxFit.fill,                    
+                      child: Container(
+                        child: BookmarkButton(
+                            postData: postData,
+                            screenSize: screenSize,
+                            user: user),
+                      ),
                     ),
                   ),
 
@@ -118,20 +124,22 @@ class PostThumbnail extends StatelessWidget {
                 Flexible(
                   fit: FlexFit.tight,
                   child: StrokeText(
-                      fontSize: 15,
+                      fontSize: 14,
                       strokeColor: Colors.black,
                       strokeWidth: 4.0,
                       text: postData.getTitle.toUpperCase(),
-                      textColor: Colors.white),
+                      textColor: Colors.red),
                 ),
+                
+               
                
 
                 // Principles do not need to see the rating
-                if (viewType != PostExpandedViewType.principle)
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Text(postData.ratingsEmojiString(), style: TextStyle(fontSize: 20),)
-                  ),
+                // if (viewType != PostExpandedViewType.principle)
+                //   Flexible(
+                //     fit: FlexFit.tight,
+                //     child: Text(postData.ratingsEmojiString(), style: TextStyle(fontSize: 20),)
+                //   ),
 
                 if (viewType == PostExpandedViewType.principle)
                   Flexible(
@@ -141,7 +149,7 @@ class PostThumbnail extends StatelessWidget {
                         strokeColor: Colors.black,
                         strokeWidth: 4.0,
                         text: "By: ${postData.getOwnerName}",
-                        textColor: Colors.white,
+                        textColor: Colors.red,
                       )),
 
                 
@@ -153,7 +161,7 @@ class PostThumbnail extends StatelessWidget {
                         strokeColor: Colors.black,
                         strokeWidth: 4.0,
                         text: "Age: ${postData.getAge}+",
-                        textColor: Colors.white),
+                        textColor: Colors.red),
                   ),
                 ),
                 if (postData.isCompleted)

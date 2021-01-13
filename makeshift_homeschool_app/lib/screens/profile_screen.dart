@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/screens/edit_profile_screen.dart';
-import 'package:makeshift_homeschool_app/screens/user_post.dart';
 import 'package:makeshift_homeschool_app/widgets/user_profile_appbar.dart';
 import '../shared/constants.dart';
 import '../shared/exportShared.dart';
@@ -37,7 +35,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (auth.getUser != null) {
         /// if auth provider has user data
         return Scaffold(
-            appBar: UserProfileAppBar(screenSize: screenSize,appBar: AppBar(),),
+            appBar: UserProfileAppBar(
+              screenSize: screenSize,
+              appBar: AppBar(),
+            ),
             body: Container(
               // Main box for the entire profile screen
               height: screenHeight,
@@ -145,7 +146,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           style: kParagraphTextStyle,
                         ),
                       ),
-    
                     ],
                   ),
                 ),
@@ -155,46 +155,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return LoadingScreen();
       }
     });
-
-    // return Container(
-    //   child: Column(
-    //     children: <Widget>[
-    //       Container(
-    //         height: screenHeight * 0.30,
-    //         width: screenWidth,
-    //         child: Row(
-    //           children: <Widget>[
-    //             Flexible(
-    //               child: Padding(
-    //                   padding: const EdgeInsets.all(20.0),
-    //                   child: CircleAvatar(
-    //                     radius: 50,
-    //                     // backgroundImage: NetworkImage(user.photoUrl),
-    //                     backgroundColor: Colors.green,
-    //                   )),
-    //             ),
-    //             Flexible(
-    //               child: Padding(
-    //                 padding: const EdgeInsets.symmetric(
-    //                     vertical: 40.0, horizontal: 5),
-    //                 child: Column(
-    //                   crossAxisAlignment: CrossAxisAlignment.center,
-    //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //                   children: <Widget>[
-    //                     Text("Wei Jiang", style: kTitleTextStyle, textAlign: TextAlign.center,),
-    //                     Text("Tutor Level", style: kTitleTextStyle, textAlign: TextAlign.center,),
-    //                     Text("Bio")
-    //                   ],
-    //                 ),
-    //               ),
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //       Divider(thickness: 3,),
-    //     ],
-    //   ),
-    // );
   }
 }
 

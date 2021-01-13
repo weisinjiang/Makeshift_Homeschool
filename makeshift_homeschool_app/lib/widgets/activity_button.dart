@@ -1,5 +1,5 @@
+import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 
 class ActivityButton extends StatelessWidget {
   final Color color;
@@ -65,22 +65,13 @@ class ActivityButton extends StatelessWidget {
                   child: FittedBox(
                     // Prevents the text from leaving the box due to expanded
                     fit: BoxFit.contain,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: StrokeText(
-                        text: name,
-                        fontSize: 60,
-                        strokeColor: Colors.white,
-                        strokeWidth: 5,
-                        textColor: Colors.black,
-                      ),
-                      // child: Text(name,
-                      //     textAlign: TextAlign.center,
-                      //     style: TextStyle(
-                      //       fontSize: 50,
-                      //       fontWeight: FontWeight.bold,
-                      //       color: Colors.black,
-                      //     )),
+                    child: BorderedText(
+                      strokeWidth: 2.0,
+                      strokeColor: Colors.white,
+                      child: Text(
+                        name,
+                        
+                      )
                     ),
                   ),
                 ),

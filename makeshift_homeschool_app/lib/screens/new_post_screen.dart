@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
@@ -63,19 +64,20 @@ class NewPostScreen extends StatelessWidget {
                       onPressed: () {
                         // check if the user can post
                         bool canPost = newPostProvider.canPost(isEdit: false);
-                        // Not editing
+
+                        // Not editing and can post
                         if (canPost && !isEditing) {
                           newPostProvider.post(
                               uid: userInfo.getUserID,
                               name: userInfo.getUserName,
-                              userLevel: userInfo.getUserLevel,
+                              userLevel: userInfo.getUserLevel, 
                               email: userInfo.getEmail,
                               lessonCreated: userInfo.getLessonCreatedAsInt);
 
                           Navigator.of(context).pop();
                         }
 
-                        /// Editing
+                        /// Editing and can post
                         else if (isEditing &&
                             newPostProvider.canPost(isEdit: true)) {
                           PostFeedProvider provider =
@@ -86,9 +88,10 @@ class NewPostScreen extends StatelessWidget {
                           newPostProvider.update(postData, provider);
                           // pop the update screen
                           Navigator.of(context).pop();
+
                         } else {
                           showAlertDialog(
-                              "One or more of your fields are empty. Please fill them in, or remove paragraphs/subtitles that you are not using.",
+                              "One or more of your fields are empty.",
                               "ERROR",
                               context);
                         }
@@ -115,51 +118,23 @@ class NewPostScreen extends StatelessWidget {
                   color: kPaleBlue,
                   height: screenSize.height,
                   width: screenSize.width,
+                  alignment: Alignment.topCenter,
                   // Users can tap anywhere on the screen to exit keyboard
-                  child: GestureDetector(
-                    onTap: () => FocusScope.of(context).unfocus(),
-                    child: Container(
-                      height: screenSize.height * 0.85,
-                      width: screenSize.width * 0.96,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Column(
-                              /// Get the initial widgetlist
-                              children: newPostProvider.getNewPostWidgetList,
-                            ),
-
-                            // Raised Button to save as Draft
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: RaisedButton(
-                                // Make sure the image is loaded
-
-                                onPressed: () {
-                                  if (newPostProvider.getNewPostImageFile !=
-                                      null) {
-                                    newPostProvider.saveDraft(
-                                        uid: userInfo.getUserID,
-                                        name: userInfo.getUserName,
-                                        userLevel: userInfo.getUserLevel,
-                                        email: userInfo.getEmail);
-                                  } else {
-                                    showAlertDialog(
-                                        "Upload an image before saving draft",
-                                        "Missing Image",
-                                        context);
-                                  }
-                                  Navigator.of(context).pop();
-                                },
-
-                                child: Text("Save Draft"),
-                              ),
-                            ),
-
-                            const SizedBox(
-                              height: 30,
-                            )
-                          ],
+                  child: Container(
+                    width: kIsWeb
+                      ? screenSize.width * 0.50
+                      : screenSize.width,
+                      alignment: Alignment.topCenter,
+                    child: GestureDetector(
+                      onTap: () => FocusScope.of(context).unfocus(),
+                                        child: Container(
+                        height: screenSize.height * 0.85,
+                        width: screenSize.width * 0.96,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            /// Get the initial widgetlist
+                            children: newPostProvider.getNewPostWidgetList,
+                          ),
                         ),
                       ),
                     ),

@@ -13,14 +13,14 @@ class BootCampProvider with ChangeNotifier {
   final uid;
 
   /// Firestore Instances
-  final Firestore _database = Firestore.instance;
+  final FirebaseFirestore _database = FirebaseFirestore.instance;
   CollectionReference _userBootCampDatabaseRef;
   List<BootCampLesson> userLessons;
 
   /// On create, the database reference will be bootcamp
   BootCampProvider(this.uid, this.userLessons) {
     this._userBootCampDatabaseRef =
-        _database.collection("users").document(uid).collection("bootcamp");
+        _database.collection("users").doc(uid).collection("bootcamp");
   }
 
   List<BootCampLesson> get getUserLessons => [...this.userLessons];
@@ -38,17 +38,14 @@ class BootCampProvider with ChangeNotifier {
   Future<void> fetchUserBootCampLessons() async {
     List<BootCampLesson> documentData = [];
 
-    await this._userBootCampDatabaseRef.getDocuments().then((result) {
-      var documentList = result.documents;
+    await this._userBootCampDatabaseRef.get().then((result) {
+      var documentList = result.docs;
       documentList.forEach((document) {
         /// Get the document's id and the users response and add it to the
         /// map
-        var documentId = document.documentID;
+        var documentId = document.id;
         var userResponse = document["userResponse"];
-        var asMap = {documentId: userResponse};
-
-        BootCampLesson lesson =
-            BootCampLesson(id: documentId, content: userResponse);
+        BootCampLesson lesson = BootCampLesson(id: documentId, content: userResponse);
 
         documentData.add(lesson);
       });
@@ -63,10 +60,10 @@ class BootCampProvider with ChangeNotifier {
       Map<String, dynamic> user, String activityID, String userResponse) async {
     await _database
         .collection("users")
-        .document(uid)
+        .doc(uid)
         .collection("bootcamp")
-        .document(activityID)
-        .setData({"userResponse": userResponse});
+        .doc(activityID)
+        .set({"userResponse": userResponse});
 
     // send an email to user's email
     await sendBootcampCompleteEmail(
