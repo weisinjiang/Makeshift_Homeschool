@@ -10,6 +10,7 @@ import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
 import 'shared/constants.dart';
+import 'package:firebase_core/firebase_core.dart'; // Initialize FirebaseApp
 
 void main() {
   runApp(MyApp());
@@ -18,48 +19,70 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AuthProvider>(
-          // auth service
-          create: (context) => AuthProvider(),
-        ),
-        ChangeNotifierProxyProvider<AuthProvider, PostFeedProvider>(
-          // reteieves user posts in Study
-          update: (context, auth, previousPosts) => PostFeedProvider(
-              auth.getUserID,
-              previousPosts == null ? [] : previousPosts.getPosts),
-          create: (_) => PostFeedProvider(null, []),
-        ),
-        ChangeNotifierProxyProvider<AuthProvider, BootCampProvider>(
-            create: (_) => BootCampProvider(null, []),
-            update: (context, auth, previousLessons) => BootCampProvider(
-                auth.getUserID,
-                previousLessons == null ? [] : previousLessons.getUserLessons))
-      ],
-      child: Consumer<AuthProvider>(
-        builder: (context, auth, _) =>
-      MaterialApp(
-        theme: ThemeData(
-            primaryColor: kGreenSecondary,
-            textTheme:
-                GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
-        home: auth.isAuthenticated ? RootScreen()
-                : FutureBuilder( 
-                  future: auth.tryAutoLogin(),
-                  builder: (context, authResultSnapshot) =>
-                  authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : LoginScreen(),
-                ),
+
+    return FutureBuilder(
+
+      future: Firebase.initializeApp(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return MaterialApp(home: LoadingScreen()); //! FUTURE: add error message to the loading screen
+        }
+        
+        else if (snapshot.connectionState == ConnectionState.done) {
+          return startApp();
+        }
+        return MaterialApp(home: LoadingScreen());
+      },
       
-                
-        routes: {
-          '/login': (context) => LoginScreen(),
-          '/root': (context) => RootScreen(),
-          '/about': (context) => AboutScreen(),
-          '/study': (context) => StudyScreen(),
-          '/profile': (context) => ProfileScreen(),
-        },
-     
-    )));
+    );
+
+
+   
+  }
+
+  MultiProvider startApp() {
+    return MultiProvider(
+    providers: [
+      ChangeNotifierProvider<AuthProvider>(
+        // auth service
+        create: (context) => AuthProvider(),
+      ),
+      ChangeNotifierProxyProvider<AuthProvider, PostFeedProvider>(
+        // reteieves user posts in Study
+        update: (context, auth, previousPosts) => PostFeedProvider(
+            auth.getUserID,
+            previousPosts == null ? [] : previousPosts.getPosts),
+        create: (_) => PostFeedProvider(null, []),
+      ),
+      ChangeNotifierProxyProvider<AuthProvider, BootCampProvider>(
+          create: (_) => BootCampProvider(null, []),
+          update: (context, auth, previousLessons) => BootCampProvider(
+              auth.getUserID,
+              previousLessons == null ? [] : previousLessons.getUserLessons))
+    ],
+    child: Consumer<AuthProvider>(
+      builder: (context, auth, _) =>
+    MaterialApp(
+      theme: ThemeData(
+          primaryColor: kGreenSecondary,
+          textTheme:
+              GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
+      home: auth.isAuthenticated ? RootScreen()
+              : FutureBuilder( 
+                future: auth.tryAutoLogin(),
+                builder: (context, authResultSnapshot) =>
+                authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : LoginScreen(),
+              ),
+    
+              
+      routes: {
+        '/login': (context) => LoginScreen(),
+        '/root': (context) => RootScreen(),
+        '/about': (context) => AboutScreen(),
+        '/study': (context) => StudyScreen(),
+        '/profile': (context) => ProfileScreen(),
+      },
+   
+  )));
   }
 }

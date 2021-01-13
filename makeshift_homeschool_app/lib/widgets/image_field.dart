@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
+//import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:provider/provider.dart';
-import 'package:image_picker_for_web/image_picker_for_web.dart';
+//import 'package:image_picker_for_web/image_picker_for_web.dart';
 
 /// Builds the Image Widget that lets users pick images from their mobile phones
 /// or their Desktop depending on if it's being used on Desktop Browser, iOS, Android
@@ -65,7 +65,7 @@ class _ImageFieldState extends State<ImageField> {
                     title: Text("Upload an Image"),
                     onTap: () {
                       Navigator.of(context).pop();
-                      _chooseImageWeb(height, width, newPostProvider);
+                      //_chooseImageWeb(height, width, newPostProvider);
                     },
                   ),
                 ],
@@ -135,37 +135,37 @@ class _ImageFieldState extends State<ImageField> {
   ///
   /// Original path = user/image.png
   /// Webapp Path = http://website.com/imageData <- This is not an actual path to the image location where it can be extracted
-  Future<void> _chooseImageWeb(double height, double width, NewPostProvider newPostProvider) async {
+  // Future<void> _chooseImageWeb(double height, double width, NewPostProvider newPostProvider) async {
     
-    // Instaniate the image picker 
-    ImagePickerPlugin imagePicker = ImagePickerPlugin(); 
+  //   // Instaniate the image picker 
+  //   ImagePickerPlugin imagePicker = ImagePickerPlugin(); 
 
-    // Pick the image
-    final pickedImage = await imagePicker.pickImage(
-        maxHeight: height,
-        maxWidth: width,
-        source: ImageSource.gallery); // ask for permission
+  //   // Pick the image
+  //   final pickedImage = await imagePicker.pickImage(
+  //       maxHeight: height,
+  //       maxWidth: width,
+  //       source: ImageSource.gallery); // ask for permission
 
-    // Valid image file
-    if (pickedImage != null) {
-      // Convert it to bytes because Web does not have access to the physical copy of the image on 
-      // the users computer
-      Uint8List imageBytes = await pickedImage.readAsBytes();
+  //   // Valid image file
+  //   if (pickedImage != null) {
+  //     // Convert it to bytes because Web does not have access to the physical copy of the image on 
+  //     // the users computer
+  //     Uint8List imageBytes = await pickedImage.readAsBytes();
 
-      // Mobile version used _userSelectedImage to upload and show the image
-      // Web version, the File is a network image and can be used to display it
-      // Not not upload bc it does not have access to the file itself
-      setState(() {
-        _userSelectedImage = File(pickedImage.path); // set the image path
-      });
+  //     // Mobile version used _userSelectedImage to upload and show the image
+  //     // Web version, the File is a network image and can be used to display it
+  //     // Not not upload bc it does not have access to the file itself
+  //     setState(() {
+  //       _userSelectedImage = File(pickedImage.path); // set the image path
+  //     });
 
-      // Like Mobile, but additional imageBytes for image upload to Firestore
-      newPostProvider.setNewPostImageFile = _userSelectedImage;
-      newPostProvider.setByteData = imageBytes;
-    }
+  //     // Like Mobile, but additional imageBytes for image upload to Firestore
+  //     newPostProvider.setNewPostImageFile = _userSelectedImage;
+  //     newPostProvider.setByteData = imageBytes;
+  //   }
 
     
-  }
+  // }
 
   /// Builds the widget for users to see
   @override

@@ -19,7 +19,8 @@ class AuthProvider with ChangeNotifier {
   Map<String, String> _userInformation;
   String _token;
 
-  AuthProvider() {
+
+  AuthProvider(){
     this._userId = null;
     this._emailVerified = false;
     this._authenticated = false;
