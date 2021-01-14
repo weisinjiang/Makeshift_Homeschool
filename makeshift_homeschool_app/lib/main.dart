@@ -12,6 +12,9 @@ import 'screens/login_screen.dart';
 import 'shared/constants.dart';
 import 'package:firebase_core/firebase_core.dart'; // Initialize FirebaseApp
 
+/// Main file where Flutter runs the app
+/// Goes through initialization of Firebase first then it runs the app.
+
 void main() {
   runApp(MyApp());
 }
@@ -20,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // First initialize Firebase before entering the app
     return FutureBuilder(
 
       future: Firebase.initializeApp(),
@@ -35,11 +39,9 @@ class MyApp extends StatelessWidget {
       },
       
     );
-
-
-   
   }
 
+  // Entry to the app
   MultiProvider startApp() {
     return MultiProvider(
     providers: [
