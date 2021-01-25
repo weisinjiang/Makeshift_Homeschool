@@ -15,6 +15,7 @@ import 'package:makeshift_homeschool_app/shared/stroke_text.dart';
 import 'package:makeshift_homeschool_app/widgets/activity_button.dart';
 import 'package:makeshift_homeschool_app/widgets/ghostButton.dart';
 import 'package:makeshift_homeschool_app/widgets/icon_lead_button.dart';
+import 'package:makeshift_homeschool_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the main screen where the user can pick what activities they want to
@@ -213,7 +214,9 @@ class _RootScreenState extends State<RootScreen> {
                 ],
               ),
             ),
-          ));
+          ),
+          drawer: mainDrawer(context)
+          );
     } else {
       return LoadingScreen();
     }
