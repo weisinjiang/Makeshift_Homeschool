@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/projectIdeas.dart';
+import 'package:makeshift_homeschool_app/screens/templates.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,16 @@ TextStyle subtitleTextStyle() {
   return TextStyle(
     color: Colors.grey[300],
     fontSize: 20,
+  );
+}
+
+AppBar mainAppBar() {
+  return AppBar(
+    backgroundColor: Colors.black,
+    title: Text(
+      "Makeshift Homeschool",
+      style: mediumTextStyle(),
+    ),
   );
 }
 
@@ -104,6 +115,19 @@ Drawer mainDrawer(BuildContext context) {
                           builder: (context) => ProjectIdeas(),
                         ));
                   },
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Templates(),));
+                  },
+                  title: Text(
+                    "Templates",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  leading: Icon(
+                    Icons.edit_attributes,
+                    color: Colors.white,
+                  ),
                 ),
                 Divider(
                   color: Colors.white,
