@@ -88,6 +88,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - asset/
     - asset/images/
     - asset/profile_images/
     - asset/gif/
