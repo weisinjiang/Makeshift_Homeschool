@@ -10,6 +10,8 @@ class NewVideoPostProvider {
   // Connection to Firestore
   final FirebaseFirestore _database = FirebaseFirestore.instance;
 
+  
+
   // Holds widgets that builds the video screen 
   List<Widget> _newVideoForms;
 
@@ -19,6 +21,7 @@ class NewVideoPostProvider {
   // Constructor
   NewVideoPostProvider({VideoPost postData}) {
     // Add controllers and widgets and assign them into variables here.
+    
   }
 
   // check that the controllers are filled and we can post it
