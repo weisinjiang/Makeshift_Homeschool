@@ -4,6 +4,7 @@ import 'package:makeshift_homeschool_app/screens/bootcamp_screen.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/lesson_approval.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
+import 'package:makeshift_homeschool_app/screens/new_video.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/screens/video_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
@@ -164,7 +165,7 @@ class _RootScreenState extends State<RootScreen> {
       FlatButton(
         child: Text("Videos"),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => VideoScreen(),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => NewVideo(),));
         },
       ),
 
