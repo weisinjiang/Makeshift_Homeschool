@@ -5,6 +5,7 @@ import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/lesson_approval.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
+import 'package:makeshift_homeschool_app/screens/video_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
@@ -149,11 +150,23 @@ class _RootScreenState extends State<RootScreen> {
                   width: screenSize.width / 2,
                   canUseButton: true,
                   function: () => Navigator.push(
-                      context, SlideLeftRoute(screen: NewPostScreen(isEditing: false, postData: null,))),
+                      context,
+                      SlideLeftRoute(
+                          screen: NewPostScreen(
+                        isEditing: false,
+                        postData: null,
+                      ))),
                   name: "Teach",
                   imageLocation: "asset/images/teach.png",
                 )),
           ])),
+
+      FlatButton(
+        child: Text("Videos"),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => VideoScreen(),));
+        },
+      ),
 
       if (userData["level"] == "Professor")
         Container(
