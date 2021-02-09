@@ -10,7 +10,7 @@ class VideoPost with ChangeNotifier {
   String owner;
   String ownerEmail;
   String postID;
-  bool isLiked;
+  bool isLiked; // Not this one
 
 
   VideoPost({

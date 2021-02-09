@@ -367,7 +367,7 @@ class NewPostProvider {
 
     // Add the data into the refernece document made earlier
     await databaseRef.set(newLesson);
-
+  
     // update user's lessons created if they are not a tutor
     // Tutors will have this incremented after review
     if (userLevel != "Tutor") {
