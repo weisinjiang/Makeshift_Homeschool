@@ -40,32 +40,6 @@ class _NewVideoState extends State<NewVideo> {
         padding: EdgeInsets.all(10),
         child: ListView(
           children: [
-            TextFormField(
-              style: simpleTextStyle(),
-              decoration: textFieldInput("Title"),
-              controller: titleTextEditingController,
-            ),
-            Divider(
-              height: 35,
-              color: Colors.white70,
-            ),
-            TextFormField(
-              style: simpleTextStyle(),
-              decoration: textFieldInput("Youtube Link"),
-              controller: youtubeLinkTextEditingController,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              maxLines: 5,
-              style: simpleTextStyle(),
-              decoration: textFieldInput("Discription"),
-              controller: discriptionTextEditingController,
-            ),
-            SizedBox(
-              height: 10,
-            ),
             Text(
               "Preview:",
               style: simpleTextStyle(),

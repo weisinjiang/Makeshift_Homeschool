@@ -9,6 +9,7 @@ import 'package:makeshift_homeschool_app/models/videopost_model.dart';
 class VideoFeedProvider with ChangeNotifier {
   // Referenve to data
   final FirebaseFirestore _database = FirebaseFirestore.instance;
+  
 
   // Holds all video posts
   List<VideoPost> videos = [];
