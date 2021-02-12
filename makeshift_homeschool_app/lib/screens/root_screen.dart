@@ -165,7 +165,7 @@ class _RootScreenState extends State<RootScreen> {
       FlatButton(
         child: Text("Videos"),
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => NewVideo(),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => NewVideo(isEditing: false,),));
         },
       ),
 

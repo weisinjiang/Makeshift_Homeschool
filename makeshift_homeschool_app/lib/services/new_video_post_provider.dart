@@ -24,7 +24,6 @@ class NewVideoPostProvider {
       TextEditingController(), // title
       TextEditingController(), // videoURL
       TextEditingController(), // discription
-      TextEditingController(), // imageURL
     ];
 
     //^ Widget TextFields to display when uploading new video ~('u')~
@@ -32,7 +31,6 @@ class NewVideoPostProvider {
       videoTitle(_newVideoFormControllers[0]),
       videoURL(_newVideoFormControllers[1]),
       description(_newVideoFormControllers[2]),
-      //! To-do... Add place to add the video thumbnail (possibly find a way to get YouTube video thumbnail)
     ];
   }
 
@@ -59,7 +57,6 @@ class NewVideoPostProvider {
     var canPost = true;
 
     //^ If TextFields are empty, you cannot post
-    //! To-do... When finished implamenting image, add if statement to make sure you cannot post if you haven't provided image
 
     this._newVideoFormControllers.forEach((controller) {
       if (controller.text.isEmpty) {
@@ -100,11 +97,8 @@ class NewVideoPostProvider {
     var videoContentsList = getVideoControllerTextDataAsList();
     var newPostTitle = videoContentsList[0];
 
-    //! To-do...add field to store image in the database
-
     //^ data needed to make new video
     var newVideo = {
-      "imageURL": null, //! To-do...add image functionality
       "ownerEmail": email,
       "ownerName": name,
       "ownerUid": uid,

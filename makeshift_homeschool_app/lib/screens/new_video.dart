@@ -1,30 +1,24 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/models/videopost_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
-import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/services/new_video_post_provider.dart';
-import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
-import 'package:makeshift_homeschool_app/services/video_feed_provider.dart';
+import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class NewVideo extends StatefulWidget {
+class NewVideo extends StatelessWidget {
   final bool isEditing;
-  final Post postData;
+  final VideoPost postData;
 
   const NewVideo({Key key, this.isEditing, this.postData}) : super(key: key);
 
   @override
-  _NewVideoState createState() => _NewVideoState();
-}
-
-class _NewVideoState extends State<NewVideo> {
-  @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     final userInfo = Provider.of<AuthProvider>(context);
 
     return Provider<NewVideoPostProvider>(
-      create: (context) => NewVideoPostProvider(postData: null),
+      create: (context) => NewVideoPostProvider(postData: postData),
       child: Consumer<NewVideoPostProvider>(
         builder: (context, newVideoPostProvider, _) => Scaffold(
           appBar: AppBar(
@@ -54,7 +48,6 @@ class _NewVideoState extends State<NewVideo> {
                     Navigator.of(context).pop();
                   }
 
-
                   //! To-do...make VideoFeedProvider
                   // //^ Editing and can post
                   // else if (isEditing &&
@@ -62,9 +55,38 @@ class _NewVideoState extends State<NewVideo> {
                   //   PostFeedProvider provider =
                   //       Provider.of<VideoFeedProvider>(context, listen: false);
                   // }
+
+                  else {
+                    showAlertDialog("One or more of your fields are empty",
+                        "ERROR", context);
+                  }
                 },
-              )
+                child: Text(isEditing ? "Update" : "Post", style: TextStyle(color: Colors.blue, fontSize: 20, fontWeight: FontWeight.bold),),
+                highlightColor: Colors.transparent,
+                color: Colors.transparent,
+                splashColor: Colors.transparent,
+              ),
             ],
+          ),
+          body: Container(  
+            color: Colors.black,
+            alignment: Alignment.topCenter,
+            child: Container(  
+              width: kIsWeb ? screenSize.width * 0.50 : screenSize.width,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(  
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Container(  
+                  height: screenSize.height,
+                  width: screenSize.width,
+                  child: SingleChildScrollView(  
+                    child: Column(  
+                      children: newVideoPostProvider.getNewVideoWidgetList,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),
