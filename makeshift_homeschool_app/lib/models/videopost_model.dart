@@ -10,11 +10,12 @@ class VideoPost with ChangeNotifier {
   String owner;
   String ownerEmail;
   String postID;
+  String description;
   bool isLiked; // Not this one
 
 
   VideoPost({
-    this.views, this.createdOn, this.link, this.owner, this.ownerEmail, this.title, this.isLiked = false, this.postID}
+    this.views, this.createdOn, this.link, this.owner, this.ownerEmail, this.title, this.isLiked = false, this.postID, this.description}
   );
 
   // Getters
@@ -25,6 +26,7 @@ class VideoPost with ChangeNotifier {
   String get getOwnerEmail => this.ownerEmail;
   String get getOwner => this.owner;
   String get getPostID => this.postID;
+  String get getDescription => this.description;
 
   // Increment view count
   Future<void> incrementPostViewCount() async {

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/models/videopost_model.dart';
 import 'package:makeshift_homeschool_app/services/video_feed_provider.dart';
 import 'package:makeshift_homeschool_app/widgets/new_video_widgets.dart';
@@ -96,15 +97,8 @@ class NewVideoPostProvider {
     // }
 
     //^ Construct all the data from the TextEditingControllers
-    var postContentsList = getVideoControllerTextDataAsList();
-    var newPostTitle = postContentsList[0];
-
-    //^ Post content (organized)
-    var videoContentAsMap = {
-      "title": postContentsList[0],
-      "videoURL": postContentsList[1],
-      "description": postContentsList[2],
-    };
+    var videoContentsList = getVideoControllerTextDataAsList();
+    var newPostTitle = videoContentsList[0];
 
     //! To-do...add field to store image in the database
 
@@ -114,7 +108,9 @@ class NewVideoPostProvider {
       "ownerEmail": email,
       "ownerName": name,
       "ownerUid": uid,
-      "videoContent": videoContentAsMap,
+      "title": videoContentsList[0],
+      "videoURL": videoContentsList[1],
+      "description": videoContentsList[2],
       "videoId": databaseRef.id,
       "approvals": 0,
     };
@@ -139,7 +135,50 @@ class NewVideoPostProvider {
 
   // Update the post. We need access the video feed provider bc we need to update the user's local copy of their
   // post by calling provider.updateUserPost()
-  Future<void> update({VideoPost postData, VideoFeedProvider provider}) {
-    throw UnimplementedError();
+  Future<void> update({VideoPost postData, VideoFeedProvider provider}) async {
+    //^ Variables to help reference the database
+    var databaseRef = _database.collection("videos").doc(postData.getPostID);
+    var videoContentsList = getVideoControllerTextDataAsList();
+    var newPostTitle = videoContentsList[0];
+
+    //^ Post content (organized)
+    var videoContentAsMap = {
+      "title": videoContentsList[0],
+      "videoURL": videoContentsList[1],
+      "description": videoContentsList[2],
+    };
+
+    //^ Fields to be available for editing
+    var newVideo = {
+      "title": videoContentsList[0],
+      "videoURL": videoContentsList[1],
+      "description": videoContentsList[2],
+    };
+
+    //^ Add data to document
+    await databaseRef.set(newVideo, SetOptions(merge: true));
+
+    //^ Update the video feed with the new data so it doesn't need to fetch again
+    provider.updateUserPost(
+      postID: postData.getPostID,
+      postContents: videoContentAsMap,
+      title: newPostTitle,
+    );
+    resetVideoFields();
+  }
+
+  //^ Set TextEditingControllers to values in database to edit
+  void setVideoEditingData(VideoPost postData) {
+    //^ Set data of video
+    this._newVideoFormControllers[0].text = postData.getTitle;
+    this._newVideoFormControllers[1].text = postData.getLink;
+    this._newVideoFormControllers[2].text = postData.getDescription;
+  }
+
+  void resetVideoFields() {
+    //^ Clear text in controllers
+    this._newVideoFormControllers.forEach((controller) {
+      controller.clear();
+    });
   }
 }
