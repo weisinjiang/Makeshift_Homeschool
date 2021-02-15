@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
+import 'package:makeshift_homeschool_app/widgets/youtube_player.dart';
 
 class Post with ChangeNotifier {
   int _likes;
@@ -16,6 +17,7 @@ class Post with ChangeNotifier {
   String _title;
   String _postId;
   String _ownerEmail;
+  String _videoURL;
   bool isLiked;
   bool hasCompleted;
 
@@ -39,6 +41,7 @@ class Post with ChangeNotifier {
     this._age = "0";
     this.isLiked = false;
     this._ownerEmail = null;
+    this._videoURL = "null";
     this._approval = 0;
     this.hasCompleted = false;
 
@@ -57,8 +60,16 @@ class Post with ChangeNotifier {
   String get getPostId => this._postId;
   String get getAge => this._age;
   String get getOwnerEmail => this._ownerEmail;
+  String get getVideoURL => this._videoURL;
   int get getNumApprovals => this._approval;
   bool get isCompleted => this.hasCompleted;
+
+  String getYoutubeVideoId() {
+    // Get the first index of "watch?v=" + 8 will give us the first index of the video id
+    int indexOfVideoId = this._videoURL.indexOf("watch?v=") + 8;
+    return this._videoURL.substring(indexOfVideoId).trim(); // Cut the entire link and give only the id
+  }
+
 
   // gets the date posted. Format it into month/day/year
   String getCreatedOn() {
@@ -106,6 +117,7 @@ class Post with ChangeNotifier {
       this._postContents = contents;
   set setQuiz(Map<String, dynamic> quiz) => this._quiz = quiz;
   set setNumApprovals(int approvals) => this._approval = approvals;
+  set setVideoUrl(String url) => this._videoURL = url;
 
   // Increment the view count on a post everytime someone clicks on a post
   Future<void> incrementPostViewCount() async {
@@ -207,6 +219,7 @@ class Post with ChangeNotifier {
   }
 
   /// Convert the contents into a Widget List that can be displayed on the screen
+  /// Used in the Post_Expanded.dart file
   List<Widget> constructPostWidgetList(Size screenSize) {
     List<Widget> contentToShowOnScreen = [];
     var postFieldType = [
@@ -219,11 +232,15 @@ class Post with ChangeNotifier {
 
     /// Map<String, Map<String, String>> from database
     var postContentList = this._postContents;
-    contentToShowOnScreen.add(buildImage(this._imageUrl, this._title.toUpperCase(),
-        screenSize.height, this._ownerName, screenSize.width));
-    contentToShowOnScreen.add(SizedBox(
-      height: 30,
-    ));
+    contentToShowOnScreen.add(buildImage(this._imageUrl, this._title.toUpperCase(),screenSize.height, this._ownerName, screenSize.width));
+    contentToShowOnScreen.add(SizedBox(height: 30,));
+
+    // If there is a video, build the video player
+    if (this._videoURL != "null") {
+      String videoID = getYoutubeVideoId();
+      contentToShowOnScreen.add(YoutubePlayer(youtubeLink: this._videoURL, videoID: videoID,));
+      contentToShowOnScreen.add(SizedBox(height: 30,));
+    }
 
     /// For each value in the list, build the paragraph
     for (var type in postFieldType) {

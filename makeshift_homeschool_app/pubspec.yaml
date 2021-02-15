@@ -15,6 +15,9 @@ dependencies:
   flutter:
     sdk: flutter
   
+  # Youtube Player
+  youtube_player_flutter: ^7.0.0+7
+
 
   #Firebase Dependencies
   # firebase_core: ^0.4.5

@@ -42,6 +42,7 @@ class NewPostProvider {
       TextEditingController(), // body 3
       TextEditingController(), // conclusion
       TextEditingController(), // age recommendation
+      TextEditingController(), // Youtube URL
     ];
 
     this._newPostQuestionsControllers = [
@@ -84,6 +85,7 @@ class NewPostProvider {
         editImageUrl: "", // if not eidting, this is left empty
       ),
       paragraph(controller: _newPostFormControllers[1], hint: "Introduction"),
+      paragraph(controller: _newPostFormControllers[7], hint: "Youtube Link (Optional)"),
       paragraph(controller: _newPostFormControllers[2], hint: "Body 1"),
       paragraph(controller: _newPostFormControllers[3], hint: "Body 2"),
       paragraph(controller: _newPostFormControllers[4], hint: "Body 3"),
@@ -118,17 +120,28 @@ class NewPostProvider {
   set setByteData(Uint8List bytes) => this.imagebyteData = bytes;
   Uint8List getByteData() => this.imagebyteData;
 
+
+
   /// Go though the TextEditingController and get the text data on it
   List<String> getControllerTextDataAsList() {
     List<String> controllerTextData = []; // text data to return
 
-    this._newPostFormControllers.forEach((controller) {
-      // go through each
-      controllerTextData.add(controller.text);
-    });
+    for (int i = 0; i < this._newPostFormControllers.length; i++) {
+      TextEditingController controller = this._newPostFormControllers[i];
+
+      // Youtube Link is Empty
+      if (i == 7 && controller.text.isEmpty) {
+        controllerTextData.add("null");
+      }
+      else {
+        controllerTextData.add(controller.text);
+      }
+    }
+
 
     return controllerTextData;
   }
+
 
   /*
     This method constructs the quiz question field for a post
@@ -175,19 +188,6 @@ class NewPostProvider {
     return quiz;
   }
 
-  // /*
-  //  * Convert a Uint8List data of an image to a type File
-  //  */
-  // Future<File> convertUint8ToFile(String lessonID, Uint8List byteData) async {
-  //   try {
-  //     html.File byteAsFile = html.File(byteData, "$lessonID.png");
-  //     return byteAsFile;
-
-  //   } catch (error) {
-  //     print("Error creating html File from ByteData: ${error.toString}");
-  //     throw error;
-  //   }
-  // }
 
   /// Upload the image for the lesson using the lessons uid as its name and return
   /// the download url
@@ -237,12 +237,15 @@ class NewPostProvider {
       canPost = false;
     }
 
-    this._newPostFormControllers.forEach((controller) {
+    // -1 because we want to skip the optional youtube link
+    for (int i = 0; i < _newPostFormControllers.length-1; i++) {
+      TextEditingController controller = _newPostFormControllers[i];
       if (controller.text.isEmpty) {
-        /// if controller is empty, cant post
         canPost = false;
+        break;
       }
-    });
+    }
+
     // Check if the quiz fields are all filled out
     this._quizControllers["intro"].forEach((controller) {
       if (controller.text.isEmpty) {
@@ -260,15 +263,9 @@ class NewPostProvider {
       }
     });
 
-    // // check for matching answers/options
-    // for (String part in ["intro", "body", "conclusion"]) {
-    //   print(part);
-    //   if (matchingOptions(this._quizControllers[part])) {
-    //     canPost = false;
-    //   }
-    // }
     return canPost;
   }
+
 
   //! TEST AGIAN
   // Checks if response are matching. Wrong answer cannot match correct answer
@@ -362,7 +359,8 @@ class NewPostProvider {
       "rating": 5.0,
       "raters": 1,
       "ownerEmail": email,
-      "approvals": 0
+      "approvals": 0,
+      "videoURL": postContentsList[7] 
     };
 
     // Add the data into the refernece document made earlier
@@ -403,10 +401,12 @@ class NewPostProvider {
     };
 
     var newLesson = {
+
       "age": postContentsList[6],
       "title": newPostTitle,
       "postContents": contentsAsMap,
-      "quiz": quiz
+      "quiz": quiz,
+      "videoURL": postContentsList[7]
     };
 
     /// Add the data into the refernece document made earlier
