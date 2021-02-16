@@ -81,17 +81,17 @@ class NewVideoPostProvider {
 
     //! To-do...create new collection for video approvals
 
-    // //^ Referce to document the post will go into
+    //^ Refernce to document the post will go into
     DocumentReference databaseRef;
 
-    // //^ If the user is a Tutor, needs approval
-    // if (userLevel == "Tutor") {
-    //   databaseRef = _database.collection("approval required").doc();
-    // }
-    // //^ If user is teach or above, add to lessons (no approval required)
-    // else {
-    //   databaseRef = _database.collection("lessons").doc();
-    // }
+    //^ If the user is a Tutor, needs approval
+    if (userLevel == "Tutor") {
+      databaseRef = _database.collection("approval required").doc();
+    }
+    //^ If user is teach or above, add to lessons (no approval required)
+    else {
+      databaseRef = _database.collection("videos").doc();
+    }
 
     //^ Construct all the data from the TextEditingControllers
     var videoContentsList = getVideoControllerTextDataAsList();

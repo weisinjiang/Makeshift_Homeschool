@@ -36,6 +36,8 @@ class NewVideo extends StatelessWidget {
                 onPressed: () {
                   bool canPost = newVideoPostProvider.canPost(isEdit: false);
 
+                  print(canPost);
+
                   //^ Not editing and can post
                   if (canPost && !isEditing) {
                     newVideoPostProvider.post(
@@ -61,26 +63,32 @@ class NewVideo extends StatelessWidget {
                         "ERROR", context);
                   }
                 },
-                child: Text(isEditing ? "Update" : "Post", style: TextStyle(color: Colors.blue, fontSize: 20, fontWeight: FontWeight.bold),),
+                child: Text(
+                  isEditing ? "Update" : "Post",
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
                 highlightColor: Colors.transparent,
                 color: Colors.transparent,
                 splashColor: Colors.transparent,
               ),
             ],
           ),
-          body: Container(  
+          body: Container(
             color: Colors.black,
             alignment: Alignment.topCenter,
-            child: Container(  
+            child: Container(
               width: kIsWeb ? screenSize.width * 0.50 : screenSize.width,
               alignment: Alignment.topCenter,
-              child: GestureDetector(  
+              child: GestureDetector(
                 onTap: () => FocusScope.of(context).unfocus(),
-                child: Container(  
+                child: Container(
                   height: screenSize.height,
                   width: screenSize.width,
-                  child: SingleChildScrollView(  
-                    child: Column(  
+                  child: SingleChildScrollView(
+                    child: Column(
                       children: newVideoPostProvider.getNewVideoWidgetList,
                     ),
                   ),
