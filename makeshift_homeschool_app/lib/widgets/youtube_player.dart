@@ -1,8 +1,7 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart' as youtube;
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -22,69 +21,62 @@ class YoutubePlayer extends StatefulWidget {
 }
 
 class _YoutubePlayerState extends State<YoutubePlayer> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  youtube.YoutubePlayerController _controller;
-  TextEditingController _idController;
-  TextEditingController _seekToController;
+  YoutubePlayerController _controller;
 
-  youtube.PlayerState _playerState;
-  youtube.YoutubeMetaData _videoMetaData;
-  double _volume = 100;
-  bool _muted = false;
-  bool _isPlayerReady = false;
+
+  
   
 
-  void listener() {
-    if (_isPlayerReady && mounted && !_controller.value.isFullScreen) {
-      setState(() {
-        _playerState = _controller.value.playerState;
-        _videoMetaData = _controller.metadata;
-      });
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    _controller = youtube.YoutubePlayerController(
-      initialVideoId: widget.videoID,
-      flags: const youtube.YoutubePlayerFlags(  
-        mute: false,
-        autoPlay: false,
-        disableDragSeek: false,
-        loop: false,
-      )
-  
-    )..addListener(listener);
-    _idController = TextEditingController();
-    _seekToController = TextEditingController();
-    _videoMetaData = const youtube.YoutubeMetaData();
-    _playerState = youtube.PlayerState.unknown;
 
+    // Initialize the the youtube controller before the widget is build.
+    this._controller = YoutubePlayerController(
+      initialVideoId: widget.videoID,
+      params: const YoutubePlayerParams(  
+        autoPlay: false,
+        playsInline: true,
+        desktopMode: true,
+        showFullscreenButton: true,
+        showControls: true,
+
+      )
+    );
+    _controller.onEnterFullscreen = () {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    log('Entered Fullscreen');
+  };
+  _controller.onExitFullscreen = () {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    Future.delayed(const Duration(seconds: 1), () {
+      _controller.play();
+    });
+    Future.delayed(const Duration(seconds: 5), () {
+      SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+    });
+    log('Exited Fullscreen');
+  };
+    
   }
 
    @override
   Widget build(BuildContext context) {
-
-    return youtube.YoutubePlayerBuilder(  
-      onExitFullScreen: () {
-        SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-      },
-
-      player: youtube.YoutubePlayer(
-        controller: _controller,
-        showVideoProgressIndicator: true,
-        progressIndicatorColor: Colors.blueAccent,
-        onReady: () => _isPlayerReady = true,
+    YoutubePlayerIFrame player = YoutubePlayerIFrame(controller: _controller);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          YoutubePlayerControllerProvider(
+            controller: _controller,
+            child: Expanded(child: player,),
+          ),
+        ],
       ),
-      builder: (contex, player) {
-        return Expanded(
-          child: player,
-        );
-      },
-
- 
-
     );
   }
 
@@ -97,9 +89,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
 
   @override
   void dispose() {
-    _controller.dispose();
-    _idController.dispose();
-    _seekToController.dispose();
+    _controller.close();
     super.dispose();
   }
 }
