@@ -1,97 +1,75 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 
-/// This class used the Youtube Player API in pubspec.yaml
-/// Pass in the required information so that this player can be used 
-/// anywhere in the app
-class YoutubePlayer extends StatefulWidget {
+/// This class creates a way for the app to connect to a Youtube Video.
+/// MOBILE: Uses Flutter's InAppView Widget that directly links to a webpage.
+///         The youtube link is formatted to be in embed mode, meaning the webpage that pops
+///         up is only the video. The comments, playlists, etc are removed.
+/// WEB: Uses Youtube's API widget to get the video and display it.
+/// 
+/// WHY?: Youtube's API only brings up a safari on the mobile version. The video cant be
+/// put into a widget. It always pops up a webpage and on exit, you cannot enter it again.
+class YoutubePlayerWidget extends StatefulWidget {
 
   // Need a youtube link everytime
   final String youtubeLink;
   final String videoID;
+  final double height;
+  final double width;
 
-  const YoutubePlayer({Key key, this.youtubeLink, this.videoID}) : super(key: key);
+  const YoutubePlayerWidget({Key key, this.youtubeLink, this.videoID, this.height, this.width}) : super(key: key);
 
   @override 
-  _YoutubePlayerState createState() => _YoutubePlayerState();
+  _YoutubePlayerWidgetState createState() => _YoutubePlayerWidgetState();
 }
 
-class _YoutubePlayerState extends State<YoutubePlayer> {
-  YoutubePlayerController _controller;
-
-
-  
-  
-
+class _YoutubePlayerWidgetState extends State<YoutubePlayerWidget> {
+  YoutubePlayerController _controller; // Used for Web version of the player
 
   @override
   void initState() {
     super.initState();
 
-    // Initialize the the youtube controller before the widget is build.
-    this._controller = YoutubePlayerController(
-      initialVideoId: widget.videoID,
-      params: const YoutubePlayerParams(  
-        autoPlay: false,
-        playsInline: true,
-        desktopMode: true,
-        showFullscreenButton: true,
-        showControls: true,
+    // Web version will use the Youtube Player dependency
+    // Mobile uses Flutter's inwebapp view because using the player in ObjectiveC does not work and
+    // it just brings up a safari.
+    if (kIsWeb) {
+      // Initialize the the youtube controller before the widget is build.
+      this._controller = YoutubePlayerController(
+        initialVideoId: widget.videoID,
+        params: const YoutubePlayerParams(  
+          autoPlay: false,
+          playsInline: true,
+          desktopMode: true,
+          showFullscreenButton: true,
+          showControls: true,
 
-      )
-    );
-    _controller.onEnterFullscreen = () {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
-    log('Entered Fullscreen');
-  };
-  _controller.onExitFullscreen = () {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    Future.delayed(const Duration(seconds: 1), () {
-      _controller.play();
-    });
-    Future.delayed(const Duration(seconds: 5), () {
-      SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-    });
-    log('Exited Fullscreen');
-  };
+        )
+      );
+     
+    }
     
   }
 
    @override
   Widget build(BuildContext context) {
-    YoutubePlayerIFrame player = YoutubePlayerIFrame(controller: _controller);
+   
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          YoutubePlayerControllerProvider(
-            controller: _controller,
-            child: Expanded(child: player,),
-          ),
-        ],
+      child: Container(  
+        width: widget.width * 0.90,
+        height: widget.height * 0.30,
+        child: kIsWeb 
+          ? YoutubePlayerIFrame(controller: _controller,)
+          :InAppWebView(initialUrl: widget.youtubeLink,),
       ),
     );
   }
 
- @override
-  void deactivate() {
-    // Pauses video while navigating to next page.
-    _controller.pause();
-    super.deactivate();
-  }
 
-  @override
-  void dispose() {
-    _controller.close();
-    super.dispose();
-  }
 }
 
 

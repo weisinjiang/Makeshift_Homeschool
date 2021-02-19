@@ -16,6 +16,7 @@ import 'package:firebase_core/firebase_core.dart'; // Initialize FirebaseApp
 /// Goes through initialization of Firebase first then it runs the app.
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 

@@ -161,8 +161,7 @@ class Post with ChangeNotifier {
     double newAverage = ratingTotal / currentRaters;
     try {
       // update the data
-      await documentRef
-          .update({"rating": newAverage, "raters": currentRaters});
+      await documentRef.update({"rating": newAverage, "raters": currentRaters});
     } catch (error) {
       print("Update Post Rating Error ${error.toString()}");
       throw error;
@@ -221,7 +220,16 @@ class Post with ChangeNotifier {
   /// Convert the contents into a Widget List that can be displayed on the screen
   /// Used in the Post_Expanded.dart file
   List<Widget> constructPostWidgetList(Size screenSize) {
-    List<Widget> contentToShowOnScreen = [];
+
+    // Widgets will be added on here and returned to a column that will display all of these widgets.
+    List<Widget> contentToShowOnScreen = [
+
+      // Image not stored in a  JSON, so add it to the list first
+      buildImage(this._imageUrl, this._title.toUpperCase(),screenSize.height, this._ownerName, screenSize.width),
+      SizedBox(height: 30,) // Add some space between image and the article intro
+    ];
+
+    // Using these as keys for postContents JSON to retieve their values
     var postFieldType = [
       "introduction",
       "body 1",
@@ -230,25 +238,20 @@ class Post with ChangeNotifier {
       "conclusion"
     ];
 
-    /// Map<String, Map<String, String>> from database
+    /// Data from the data base formatted in a MAP
     var postContentList = this._postContents;
-    contentToShowOnScreen.add(buildImage(this._imageUrl, this._title.toUpperCase(),screenSize.height, this._ownerName, screenSize.width));
-    contentToShowOnScreen.add(SizedBox(height: 30,));
 
-    // If there is a video, build the video player
+    // If there is a video, add a  video player widget to the list of widgets
     if (this._videoURL != "null") {
       String videoID = getYoutubeVideoId();
-      contentToShowOnScreen.add(YoutubePlayer(youtubeLink: this._videoURL, videoID: videoID,));
-      contentToShowOnScreen.add(SizedBox(height: 30,));
+      contentToShowOnScreen.add(YoutubePlayerWidget(youtubeLink: this._videoURL, videoID: videoID, height: screenSize.height, width: screenSize.width,));
+      contentToShowOnScreen.add(SizedBox(height: 10,));
     }
 
-    /// For each value in the list, build the paragraph
+    /// For each value in the list, build the paragraph: intro, body1,..., conclusion
     for (var type in postFieldType) {
-      contentToShowOnScreen
-          .add(buildParagraph(postContentList[type], screenSize.width));
-      contentToShowOnScreen.add(SizedBox(
-        height: 20,
-      ));
+      contentToShowOnScreen.add(buildParagraph(postContentList[type], screenSize.width));
+      contentToShowOnScreen.add(SizedBox(height: 20,));
     }
 
     return contentToShowOnScreen;
