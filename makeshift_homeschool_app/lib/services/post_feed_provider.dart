@@ -12,7 +12,7 @@ class PostFeedProvider with ChangeNotifier {
   List<Post> _userPosts = [];
   List<Post> _approvalNeeded = [];
   final String uid;
-
+  
   PostFeedProvider(this.uid, this._posts);
 
   // Get the posts, not a ref to _post but a deep copy of it

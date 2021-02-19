@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// Video Object for video posts
 
 class VideoPost with ChangeNotifier {
-  int views; 
+  int views;
   String link;
   String createdOn;
   String title;
@@ -13,10 +13,16 @@ class VideoPost with ChangeNotifier {
   String description;
   bool isLiked; // Not this one
 
-
-  VideoPost({
-    this.views, this.createdOn, this.link, this.owner, this.ownerEmail, this.title, this.isLiked = false, this.postID, this.description}
-  );
+  VideoPost(
+      {this.views,
+      this.createdOn,
+      this.link,
+      this.owner,
+      this.ownerEmail,
+      this.title,
+      this.isLiked = false,
+      this.postID,
+      this.description});
 
   // Getters
   int get getViews => this.views;
@@ -38,6 +44,4 @@ class VideoPost with ChangeNotifier {
   Future<void> toggleBookmarkButton(String uid) async {
     throw UnimplementedError();
   }
-
-
 }
