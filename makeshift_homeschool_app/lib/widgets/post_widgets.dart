@@ -41,6 +41,7 @@ Widget buildParagraph(String text, double width) {
   );
 }
 
+
 Widget buildImage(String url, String title, double height, String username, double width) {
   return Container(
       height: height * 0.25,

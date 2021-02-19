@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
+import 'package:makeshift_homeschool_app/widgets/youtube_player.dart';
 
 class Post with ChangeNotifier {
   int _likes;
@@ -16,6 +17,7 @@ class Post with ChangeNotifier {
   String _title;
   String _postId;
   String _ownerEmail;
+  String _videoID;
   bool isLiked;
   bool hasCompleted;
 
@@ -39,6 +41,7 @@ class Post with ChangeNotifier {
     this._age = "0";
     this.isLiked = false;
     this._ownerEmail = null;
+    this._videoID = "null";
     this._approval = 0;
     this.hasCompleted = false;
 
@@ -57,8 +60,16 @@ class Post with ChangeNotifier {
   String get getPostId => this._postId;
   String get getAge => this._age;
   String get getOwnerEmail => this._ownerEmail;
+  String get getVideoID => this._videoID;
   int get getNumApprovals => this._approval;
   bool get isCompleted => this.hasCompleted;
+
+  // String getYoutubeVideoId() {
+  //   // Get the first index of "watch?v=" + 8 will give us the first index of the video id
+  //   int indexOfVideoId = this._videoID.indexOf("watch?v=") + 8;
+  //   return this._videoURL.substring(indexOfVideoId).trim(); // Cut the entire link and give only the id
+  // }
+
 
   // gets the date posted. Format it into month/day/year
   String getCreatedOn() {
@@ -106,6 +117,7 @@ class Post with ChangeNotifier {
       this._postContents = contents;
   set setQuiz(Map<String, dynamic> quiz) => this._quiz = quiz;
   set setNumApprovals(int approvals) => this._approval = approvals;
+  set setVideoID(String id) => this._videoID = id;
 
   // Increment the view count on a post everytime someone clicks on a post
   Future<void> incrementPostViewCount() async {
@@ -149,8 +161,7 @@ class Post with ChangeNotifier {
     double newAverage = ratingTotal / currentRaters;
     try {
       // update the data
-      await documentRef
-          .update({"rating": newAverage, "raters": currentRaters});
+      await documentRef.update({"rating": newAverage, "raters": currentRaters});
     } catch (error) {
       print("Update Post Rating Error ${error.toString()}");
       throw error;
@@ -207,8 +218,18 @@ class Post with ChangeNotifier {
   }
 
   /// Convert the contents into a Widget List that can be displayed on the screen
+  /// Used in the Post_Expanded.dart file
   List<Widget> constructPostWidgetList(Size screenSize) {
-    List<Widget> contentToShowOnScreen = [];
+
+    // Widgets will be added on here and returned to a column that will display all of these widgets.
+    List<Widget> contentToShowOnScreen = [
+
+      // Image not stored in a  JSON, so add it to the list first
+      buildImage(this._imageUrl, this._title.toUpperCase(),screenSize.height, this._ownerName, screenSize.width),
+      SizedBox(height: 30,) // Add some space between image and the article intro
+    ];
+
+    // Using these as keys for postContents JSON to retieve their values
     var postFieldType = [
       "introduction",
       "body 1",
@@ -217,21 +238,19 @@ class Post with ChangeNotifier {
       "conclusion"
     ];
 
-    /// Map<String, Map<String, String>> from database
+    /// Data from the data base formatted in a MAP
     var postContentList = this._postContents;
-    contentToShowOnScreen.add(buildImage(this._imageUrl, this._title.toUpperCase(),
-        screenSize.height, this._ownerName, screenSize.width));
-    contentToShowOnScreen.add(SizedBox(
-      height: 30,
-    ));
 
-    /// For each value in the list, build the paragraph
+    // If there is a video, add a  video player widget to the list of widgets
+    if (this._videoID != "null") {
+      contentToShowOnScreen.add(YoutubePlayerWidget(videoID: this._videoID, height: screenSize.height, width: screenSize.width,));
+      contentToShowOnScreen.add(SizedBox(height: 10,));
+    }
+
+    /// For each value in the list, build the paragraph: intro, body1,..., conclusion
     for (var type in postFieldType) {
-      contentToShowOnScreen
-          .add(buildParagraph(postContentList[type], screenSize.width));
-      contentToShowOnScreen.add(SizedBox(
-        height: 20,
-      ));
+      contentToShowOnScreen.add(buildParagraph(postContentList[type], screenSize.width));
+      contentToShowOnScreen.add(SizedBox(height: 20,));
     }
 
     return contentToShowOnScreen;

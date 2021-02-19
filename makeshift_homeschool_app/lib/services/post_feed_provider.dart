@@ -190,6 +190,16 @@ class PostFeedProvider with ChangeNotifier {
         if (completedLessons.contains(doc.id)) {
           post.setHasCompleted = true;
         }
+
+        // Some post may not have videos because it is an earlier post, before we had videos
+        try {
+          String videoID = doc["videoID"];
+          debugPrint("Video Link Found");
+          post.setVideoID = videoID;
+        } catch(error) {
+          //post.setVideoUrl = "null";
+          debugPrint("No video");
+        }
         data.add(post);
       });
 
