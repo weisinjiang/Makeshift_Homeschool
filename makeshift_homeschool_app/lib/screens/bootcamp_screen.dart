@@ -6,6 +6,7 @@ import 'package:makeshift_homeschool_app/bootcamp_templates/Discoveryourfamilies
 import 'package:makeshift_homeschool_app/bootcamp_templates/Gettoknowaneighbor.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/GetwhatIwantfrommyparents.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Makeyourfavoritegameevenbetter.dart';
+import 'package:makeshift_homeschool_app/bootcamp_templates/Personality.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Practicewinningfriends.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Writeaboutafamilyvacation.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Yourfavoritefictionalcharacter.dart';
@@ -36,6 +37,7 @@ class BootCampScreen extends StatelessWidget {
       "Practice winning friends",
       "Write about a family vacation",
       "Different ways to move",
+      "Personality"
     ];
 
     ///
@@ -51,6 +53,7 @@ class BootCampScreen extends StatelessWidget {
       () => Navigator.push(context, SlideLeftRoute(screen: PracticeWinningFriends())),
       () => Navigator.push(context, SlideLeftRoute(screen: WriteAboutAFamilyVacation())),
       () => Navigator.push(context, SlideLeftRoute(screen: DifferentWaysToMove())),
+      () => Navigator.push(context, SlideLeftRoute(screen: Personality())),
     ];
 
     return Scaffold(
@@ -144,7 +147,7 @@ class BootCampScreen extends StatelessWidget {
             width: screenSize.width,
             child: ListView.builder(
               padding: const EdgeInsets.all(10.0),
-              itemCount: 11,
+              itemCount: 12,
               itemBuilder: (context, index) => BootCampListTile(
                 title: bootCampActivityNames[index],
                 navigationFunction: bootcampNav[index],

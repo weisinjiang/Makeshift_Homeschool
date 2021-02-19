@@ -7,14 +7,14 @@ import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
 
-class MakeYourFavoriteGameEvenBetter extends StatefulWidget {
+class Personality extends StatefulWidget {
   @override
-  _MakeYourFavoriteGameEvenBetterState createState() =>
-      _MakeYourFavoriteGameEvenBetterState();
+  _PersonalityState createState() =>
+      _PersonalityState();
 }
 
-class _MakeYourFavoriteGameEvenBetterState
-    extends State<MakeYourFavoriteGameEvenBetter> {
+class _PersonalityState
+    extends State<Personality> {
   List<TextEditingController> textController = [
     TextEditingController(),
 
@@ -42,7 +42,7 @@ class _MakeYourFavoriteGameEvenBetterState
   Future<void> save(BootCampProvider database, Map<String, dynamic> userData,
       String activityID, BuildContext context) async {
     String userResponse = """
-    Dear creator of ${textController[0].text},\n
+    What is your personality ${textController[0].text},\n
     I really enjoy playing ${textController[1].text}.\n
     And I have some ideas on how to make it even better!\n
     1. ${textController[2].text}\n
@@ -75,7 +75,7 @@ class _MakeYourFavoriteGameEvenBetterState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Make your favorite game even better"),
+        title: Text("Write About Your Persanality"),
       ),
       body: Container(
         color: Colors.white,
@@ -90,12 +90,12 @@ class _MakeYourFavoriteGameEvenBetterState
               /// Image on top
 
               Image.asset(
-                "asset/bootcamp/videogame.gif",
+                "asset/bootcamp/? Head.png",
                 height: screenSize.height * 0.3,
                 width: screenSize.width,
               ),
 
-              Text("Dear creator of "),
+              Text("My personality is... "),
 
               Row(
                 children: [
@@ -106,7 +106,7 @@ class _MakeYourFavoriteGameEvenBetterState
                       // keyboardType: TextInputType.multiline,
                       //     maxLines: null,
                       controller: textController[0],
-                      decoration: InputDecoration(hintText: "video game"),
+                      decoration: InputDecoration(hintText: "Your personality"),
                     ),
                   ),
                   Text(","),
@@ -138,7 +138,7 @@ class _MakeYourFavoriteGameEvenBetterState
                 height: screenSize.height * 0.03,
               ),
 
-              Text("And I have some ideas on how to make it even better!"),
+              Text("Here are some thing's about my Personality!"),
 
               SizedBox(
                 height: screenSize.height * 0.03,
@@ -152,7 +152,7 @@ class _MakeYourFavoriteGameEvenBetterState
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: textController[2],
-                  decoration: InputDecoration(hintText: "Suggestion One"),
+                  decoration: InputDecoration(hintText: "Talk about if you are introverted or extroverted"),
                 ),
                 width: screenSize.width,
               ),
