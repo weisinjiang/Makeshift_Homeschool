@@ -15,12 +15,11 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 class YoutubePlayerWidget extends StatefulWidget {
 
   // Need a youtube link everytime
-  final String youtubeLink;
   final String videoID;
   final double height;
   final double width;
 
-  const YoutubePlayerWidget({Key key, this.youtubeLink, this.videoID, this.height, this.width}) : super(key: key);
+  const YoutubePlayerWidget({Key key, this.videoID, this.height, this.width}) : super(key: key);
 
   @override 
   _YoutubePlayerWidgetState createState() => _YoutubePlayerWidgetState();
@@ -64,7 +63,7 @@ class _YoutubePlayerWidgetState extends State<YoutubePlayerWidget> {
         height: widget.height * 0.30,
         child: kIsWeb 
           ? YoutubePlayerIFrame(controller: _controller,)
-          :InAppWebView(initialUrl: widget.youtubeLink,),
+          :InAppWebView(initialUrl: "https://www.youtube.com/embed/${widget.videoID}",),
       ),
     );
   }

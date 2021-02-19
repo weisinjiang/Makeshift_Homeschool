@@ -287,6 +287,12 @@ class NewPostProvider {
     return false;
   }
 
+  // Takes a normal Youtube Link and extract the video id from it
+  String getYoutubeVideoId(String url) {
+    // Get the first index of "watch?v=" + 8 will give us the first index of the video id
+    int indexOfVideoId = url.indexOf("watch?v=") + 8;
+    return url.substring(indexOfVideoId).trim(); // Cut the entire link and give only the id
+  }
   
 
   /* 
@@ -342,7 +348,8 @@ class NewPostProvider {
     }
     print("Document ID: " + databaseRef.id); //! Print for testing
     
-
+    // Get the Youtube video id
+    String videoID = getYoutubeVideoId(postContentsList[7]);
     // all data needed for a new post
     var newLesson = {
       "age": postContentsList[6],
@@ -360,7 +367,7 @@ class NewPostProvider {
       "raters": 1,
       "ownerEmail": email,
       "approvals": 0,
-      "videoURL": postContentsList[7] 
+      "videoID": videoID
     };
 
     // Add the data into the refernece document made earlier
@@ -400,13 +407,14 @@ class NewPostProvider {
       "conclusion": postContentsList[5],
     };
 
+    String videoID = getYoutubeVideoId(postContentsList[7]);
     var newLesson = {
 
       "age": postContentsList[6],
       "title": newPostTitle,
       "postContents": contentsAsMap,
       "quiz": quiz,
-      "videoURL": postContentsList[7]
+      "videoID": videoID
     };
 
     /// Add the data into the refernece document made earlier
@@ -442,6 +450,7 @@ class NewPostProvider {
     this._newPostFormControllers[4].text = postData.getBody3;
     this._newPostFormControllers[5].text = postData.getConclusion;
     this._newPostFormControllers[6].text = postData.getAge;
+    this._newPostFormControllers[7].text = "https://www.youtube.com/watch?v=${postData.getVideoID}";
 
     // Set data on Questions
     for (String part in ["intro", "body", "conclusion"]) {

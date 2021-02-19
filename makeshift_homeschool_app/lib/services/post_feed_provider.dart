@@ -193,14 +193,13 @@ class PostFeedProvider with ChangeNotifier {
 
         // Some post may not have videos because it is an earlier post, before we had videos
         try {
-          String videoUrl = doc["videoURL"];
+          String videoID = doc["videoID"];
           debugPrint("Video Link Found");
-          post.setVideoUrl = videoUrl;
+          post.setVideoID = videoID;
         } catch(error) {
-          post.setVideoUrl = "null";
+          //post.setVideoUrl = "null";
           debugPrint("No video");
         }
-
         data.add(post);
       });
 

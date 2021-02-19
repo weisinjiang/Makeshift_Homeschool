@@ -17,7 +17,7 @@ class Post with ChangeNotifier {
   String _title;
   String _postId;
   String _ownerEmail;
-  String _videoURL;
+  String _videoID;
   bool isLiked;
   bool hasCompleted;
 
@@ -41,7 +41,7 @@ class Post with ChangeNotifier {
     this._age = "0";
     this.isLiked = false;
     this._ownerEmail = null;
-    this._videoURL = "null";
+    this._videoID = "null";
     this._approval = 0;
     this.hasCompleted = false;
 
@@ -60,15 +60,15 @@ class Post with ChangeNotifier {
   String get getPostId => this._postId;
   String get getAge => this._age;
   String get getOwnerEmail => this._ownerEmail;
-  String get getVideoURL => this._videoURL;
+  String get getVideoID => this._videoID;
   int get getNumApprovals => this._approval;
   bool get isCompleted => this.hasCompleted;
 
-  String getYoutubeVideoId() {
-    // Get the first index of "watch?v=" + 8 will give us the first index of the video id
-    int indexOfVideoId = this._videoURL.indexOf("watch?v=") + 8;
-    return this._videoURL.substring(indexOfVideoId).trim(); // Cut the entire link and give only the id
-  }
+  // String getYoutubeVideoId() {
+  //   // Get the first index of "watch?v=" + 8 will give us the first index of the video id
+  //   int indexOfVideoId = this._videoID.indexOf("watch?v=") + 8;
+  //   return this._videoURL.substring(indexOfVideoId).trim(); // Cut the entire link and give only the id
+  // }
 
 
   // gets the date posted. Format it into month/day/year
@@ -117,7 +117,7 @@ class Post with ChangeNotifier {
       this._postContents = contents;
   set setQuiz(Map<String, dynamic> quiz) => this._quiz = quiz;
   set setNumApprovals(int approvals) => this._approval = approvals;
-  set setVideoUrl(String url) => this._videoURL = url;
+  set setVideoID(String id) => this._videoID = id;
 
   // Increment the view count on a post everytime someone clicks on a post
   Future<void> incrementPostViewCount() async {
@@ -242,9 +242,8 @@ class Post with ChangeNotifier {
     var postContentList = this._postContents;
 
     // If there is a video, add a  video player widget to the list of widgets
-    if (this._videoURL != "null") {
-      String videoID = getYoutubeVideoId();
-      contentToShowOnScreen.add(YoutubePlayerWidget(youtubeLink: this._videoURL, videoID: videoID, height: screenSize.height, width: screenSize.width,));
+    if (this._videoID != "null") {
+      contentToShowOnScreen.add(YoutubePlayerWidget(videoID: this._videoID, height: screenSize.height, width: screenSize.width,));
       contentToShowOnScreen.add(SizedBox(height: 10,));
     }
 
