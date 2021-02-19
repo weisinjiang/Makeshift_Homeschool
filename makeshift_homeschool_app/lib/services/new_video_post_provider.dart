@@ -107,6 +107,8 @@ class NewVideoPostProvider {
       "description": videoContentsList[2],
       "videoId": databaseRef.id,
       "approvals": 0,
+      "views": 0,
+      "likes": 0,
     };
 
     //^ Add data to empty document
