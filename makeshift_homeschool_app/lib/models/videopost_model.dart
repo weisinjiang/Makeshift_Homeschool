@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
 
 /// Video Object for video posts
 
@@ -12,6 +14,8 @@ class VideoPost with ChangeNotifier {
   String postID;
   String description;
   bool isLiked;
+
+  Map<String, dynamic> _videoContent;
 
   VideoPost(
       {this.views,
@@ -37,7 +41,6 @@ class VideoPost with ChangeNotifier {
   set setLink(String link) => this.link = link;
   set setTitle(String title) => this.title = title;
   set setDescription(String description) => this.description = description;
-  
 
   // Increment view count
   Future<void> incrementPostViewCount() async {
@@ -99,5 +102,20 @@ class VideoPost with ChangeNotifier {
       notifyListeners();
       throw error;
     }
+  }
+
+  List<Widget> constructVideoWidgetList(Size screenSize) {
+    List<Widget> contentToShowOnScreen = [];
+    var videoFieldType = [
+      "title",
+      "videoURL",
+      "description",
+    ];
+
+    var videoContentList = this._videoContent;
+    contentToShowOnScreen
+        .add(buildParagraph(videoContentList[description], screenSize.width));
+
+    return contentToShowOnScreen;
   }
 }
