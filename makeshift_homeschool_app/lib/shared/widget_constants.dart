@@ -5,11 +5,11 @@ import 'package:makeshift_homeschool_app/shared/constants.dart';
 /// For example, a BoxDecoration
 
 
-const linearGradientSecondaryGreenAnalogous = BoxDecoration(
-    gradient: LinearGradient(
-        colors: [kGreenSecondary_analogous2, kGreenSecondary_analogous1],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter));
+// const linearGradientSecondaryGreenAnalogous = BoxDecoration(
+//     gradient: LinearGradient(
+//         colors: [kGreenSecondary_analogous2, kGreenSecondary_analogous1],
+//         begin: Alignment.topCenter,
+//         end: Alignment.bottomCenter));
 
 
  

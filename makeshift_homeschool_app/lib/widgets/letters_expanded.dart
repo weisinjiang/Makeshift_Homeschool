@@ -17,12 +17,12 @@ class LetterExpanded extends StatelessWidget {
       body: Container(
         width: screenSize.width,
         height: screenSize.height,
-        decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [kGreenSecondary, kGreenSecondary_analogous1],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter),
-            ),
+        // decoration: const BoxDecoration(
+        //       gradient: LinearGradient(
+        //           colors: [kGreenSecondary, kGreenSecondary_analogous1],
+        //           begin: Alignment.topCenter,
+        //           end: Alignment.bottomCenter),
+        //     ),
         child: ListView(children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(20.0),

@@ -30,12 +30,12 @@ class AppDrawer extends StatelessWidget {
               backgroundColor: kGreenSecondary,
               child: Text(userData["username"][0]),
             ),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [kGreenSecondary, kGreenSecondary_analogous1],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter),
-            ),
+            // decoration: BoxDecoration(
+            //   gradient: LinearGradient(
+            //       colors: [kGreenSecondary, kGreenSecondary_analogous1],
+            //       begin: Alignment.topCenter,
+            //       end: Alignment.bottomCenter),
+            // ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

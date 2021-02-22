@@ -43,12 +43,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // Main box for the entire profile screen
               height: screenHeight,
               width: screenWidth,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [kGreenSecondary, kGreenSecondary_shade1],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter),
-              ),
+              // decoration: BoxDecoration(
+              //   gradient: LinearGradient(
+              //       colors: [kGreenSecondary, kGreenSecondary_shade1],
+              //       begin: Alignment.topCenter,
+              //       end: Alignment.bottomCenter),
+              // ),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),

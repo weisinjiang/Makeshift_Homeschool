@@ -55,12 +55,12 @@ class _CompletedLettersState extends State<CompletedLetters> {
             title: Text("Your Lessons"),
           ),
           body: _isLoading ? LoadingScreen() :Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [kGreenSecondary, kGreenSecondary_analogous1],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter),
-            ),
+            // decoration: const BoxDecoration(
+            //   gradient: LinearGradient(
+            //       colors: [kGreenSecondary, kGreenSecondary_analogous1],
+            //       begin: Alignment.topCenter,
+            //       end: Alignment.bottomCenter),
+            // ),
             height: screenSize.height,
             width: screenSize.width,
             child: ListView.separated(
