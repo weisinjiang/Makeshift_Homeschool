@@ -39,7 +39,7 @@ class _VideoScreenState extends State<VideoScreen> {
       body: Container(
       child: ListView(  
         children: [
-          videoThumbnail("title", "images/logo.png")
+          // videoThumbnail("title", "images/logo.png")
         ],
       ),
     ),

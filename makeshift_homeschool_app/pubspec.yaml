@@ -19,6 +19,7 @@ dependencies:
   youtube_player_iframe: ^1.2.0+2
   webview_flutter: ^1.0.7
 
+
   # # Newer Version Dependencies for Firebase
   firebase_core: ^0.5.3
   cloud_firestore: ^0.14.4
