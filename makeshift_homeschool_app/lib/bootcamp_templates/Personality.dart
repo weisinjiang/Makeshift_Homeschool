@@ -9,12 +9,10 @@ import 'package:provider/provider.dart';
 
 class Personality extends StatefulWidget {
   @override
-  _PersonalityState createState() =>
-      _PersonalityState();
+  _PersonalityState createState() => _PersonalityState();
 }
 
-class _PersonalityState
-    extends State<Personality> {
+class _PersonalityState extends State<Personality> {
   List<TextEditingController> textController = [
     TextEditingController(),
 
@@ -75,7 +73,7 @@ class _PersonalityState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Write About Your Persanality"),
+        title: Text("What is your persanality"),
       ),
       body: Container(
         color: Colors.white,
@@ -112,28 +110,6 @@ class _PersonalityState
                   Text(","),
                 ],
               ),
-
-              SizedBox(
-                height: screenSize.height * 0.03,
-              ),
-
-              Row(
-                children: [
-                  Text("I really enjoy playing  "),
-                  SizedBox(
-                    width: 120,
-                    child: TextFormField(
-                      /// add a controller and attach it to this field
-                      // keyboardType: TextInputType.multiline,
-                      //     maxLines: null,
-                      controller: textController[1],
-                      decoration: InputDecoration(hintText: "video game"),
-                    ),
-                  ),
-                  Text("."),
-                ],
-              ),
-
               SizedBox(
                 height: screenSize.height * 0.03,
               ),
@@ -152,7 +128,9 @@ class _PersonalityState
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: textController[2],
-                  decoration: InputDecoration(hintText: "Talk about if you are introverted or extroverted"),
+                  decoration: InputDecoration(
+                      hintText:
+                          "Talk about if you are introverted or extroverted"),
                 ),
                 width: screenSize.width,
               ),
@@ -169,7 +147,8 @@ class _PersonalityState
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: textController[3],
-                  decoration: InputDecoration(hintText: "Suggestion Two"),
+                  decoration:
+                      InputDecoration(hintText: "Are you Sensing or intuitive"),
                 ),
                 width: screenSize.width,
               ),
@@ -186,7 +165,8 @@ class _PersonalityState
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: textController[4],
-                  decoration: InputDecoration(hintText: "Suggestion Three"),
+                  decoration:
+                      InputDecoration(hintText: "Are you thinking or feeling?"),
                 ),
                 width: screenSize.width,
               ),
@@ -207,7 +187,8 @@ class _PersonalityState
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: textController[5],
-                  decoration: InputDecoration(hintText: "Suggestion Four"),
+                  decoration: InputDecoration(
+                      hintText: "Are you judging or perceiving"),
                 ),
                 width: screenSize.width,
               ),
@@ -215,8 +196,6 @@ class _PersonalityState
               SizedBox(
                 height: screenSize.height * 0.03,
               ),
-
-              Text("5. "),
 
               SizedBox(
                 width: 300,
@@ -228,7 +207,9 @@ class _PersonalityState
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: textController[6],
-                  decoration: InputDecoration(hintText: "Suggestion Five"),
+                  decoration: InputDecoration(
+                      hintText:
+                          "What are some things you like about your persanality?"),
                 ),
                 width: screenSize.width,
               ),
@@ -237,7 +218,7 @@ class _PersonalityState
                 height: screenSize.height * 0.03,
               ),
 
-              Text("Thank you for considering my ideas!"),
+              Text("Thank you for your time!"),
 
               SizedBox(
                 height: screenSize.height * 0.03,
