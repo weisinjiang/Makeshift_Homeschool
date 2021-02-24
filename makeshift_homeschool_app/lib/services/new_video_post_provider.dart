@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/models/videopost_model.dart';
 import 'package:makeshift_homeschool_app/services/video_feed_provider.dart';
+import 'package:makeshift_homeschool_app/widgets/new_post_widgets.dart';
 import 'package:makeshift_homeschool_app/widgets/new_video_widgets.dart';
 
 class NewVideoPostProvider {
@@ -24,20 +25,21 @@ class NewVideoPostProvider {
       TextEditingController(), // title
       TextEditingController(), // videoURL
       TextEditingController(), // discription
+      TextEditingController() // Age
     ];
 
     //^ Widget TextFields to display when uploading new video ~('u')~
     this._newVideoForms = [
-      videoTitle(_newVideoFormControllers[0]),
-      videoURL(_newVideoFormControllers[1]),
-      description(_newVideoFormControllers[2]),
+      lessonTitle(_newVideoFormControllers[0]),
+      paragraph(controller: _newVideoFormControllers[1], hint:"Paste your Youtube video link here"),
+      paragraph(controller: _newVideoFormControllers[2], hint: "Description"),
+      recommendedAge(_newVideoFormControllers[3])
     ];
   }
 
   //^ Getters for variables
   List<Widget> get getNewVideoWidgetList => this._newVideoForms;
-  List<TextEditingController> get getNewVideoFormControllers =>
-      this._newVideoFormControllers;
+  List<TextEditingController> get getNewVideoFormControllers => this._newVideoFormControllers;
 
   //^ Get data from TextEditingControllers
   List<String> getVideoControllerTextDataAsList() {
@@ -56,16 +58,27 @@ class NewVideoPostProvider {
   bool canPost({bool isEdit}) {
     var canPost = true;
 
-    //^ If TextFields are empty, you cannot post
-
-    this._newVideoFormControllers.forEach((controller) {
+    for (TextEditingController controller in _newVideoFormControllers) {
       if (controller.text.isEmpty) {
-        /// if controller is empty, cant post
         canPost = false;
+        break;
       }
-    });
+    }
+    // this._newVideoFormControllers.forEach((controller) {
+    //   if (controller.text.isEmpty) {
+    //     /// if controller is empty, cant post
+    //     canPost = false;
+    //   }
+    // });
 
     return canPost;
+  }
+
+  // Takes a normal Youtube Link and extract the video id from it
+  String getYoutubeVideoId(String url) {
+    // Get the first index of "watch?v=" + 8 will give us the first index of the video id
+    int indexOfVideoId = url.indexOf("watch?v=") + 8;
+    return url.substring(indexOfVideoId).trim(); // Cut the entire link and give only the id
   }
 
   // Method that posts the data. We need the users name, the number of lessons they created
@@ -95,20 +108,21 @@ class NewVideoPostProvider {
 
     //^ Construct all the data from the TextEditingControllers
     var videoContentsList = getVideoControllerTextDataAsList();
-    var newPostTitle = videoContentsList[0];
-
+  
     //^ data needed to make new video
     var newVideo = {
       "ownerEmail": email,
       "ownerName": name,
       "ownerUid": uid,
       "title": videoContentsList[0],
-      "videoURL": videoContentsList[1],
+      "lessonID": databaseRef.id,
+      "videoID": getYoutubeVideoId(videoContentsList[1]),
       "description": videoContentsList[2],
-      "videoId": databaseRef.id,
       "approvals": 0,
       "views": 0,
       "likes": 0,
+      "age": int.parse(videoContentsList[3]),
+      "createdOn": DateTime.now().toString()
     };
 
     //^ Add data to empty document
@@ -116,7 +130,7 @@ class NewVideoPostProvider {
 
     //^ Increment users lessonsCreated if they aren't a Tutor
     //^ If Tutors video is reviewed, increment lessonsCreated
-    if (userLevel != "Tutor") {
+    if (userLevel != "Tutor" && userLevel != "Student") {
       lessonCreated++;
       await _database
           .collection("users")
@@ -167,7 +181,7 @@ class NewVideoPostProvider {
   void setVideoEditingData(VideoPost postData) {
     //^ Set data of video
     this._newVideoFormControllers[0].text = postData.getTitle;
-    this._newVideoFormControllers[1].text = postData.getLink;
+    this._newVideoFormControllers[1].text = postData.getVideoID;
     this._newVideoFormControllers[2].text = postData.getDescription;
   }
 

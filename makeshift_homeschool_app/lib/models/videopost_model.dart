@@ -1,44 +1,61 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
 
 /// Video Object for video posts
 
 class VideoPost with ChangeNotifier {
   int views;
-  String link;
+  String videoID;
   String title;
+  String lessonID;
   String owner;
   String ownerEmail;
   String postID;
   String description;
+  String createdOn;
   bool isLiked;
+  int likes;
+  int age;
 
   Map<String, dynamic> _videoContent;
 
   VideoPost(
       {this.views,
-      this.link,
+      this.lessonID,
+      this.videoID,
+      this.age,
       this.owner,
       this.ownerEmail,
       this.title,
       this.isLiked = false,
       this.postID,
+      this.likes,
+      this.createdOn,
       this.description});
 
   //^ Getters
   int get getViews => this.views;
-  String get getLink => this.link;
+  String get getLessonID => this.lessonID;
+  String get getVideoID => this.videoID;
   String get getTitle => this.title;
   String get getOwnerEmail => this.ownerEmail;
   String get getOwner => this.owner;
   String get getPostID => this.postID;
   String get getDescription => this.description;
+  int get getAge => this.age;
+  int get getLikes => this.likes;
+  String get getRawCreatedOn => this.createdOn;
+
+  String getFormattedDateCreated() {
+    DateTime date = DateTime.parse(this.createdOn);
+    String formatted = "${date.month}-${date.day}-${date.year}";
+    return formatted;
+  }
 
   //^ Setters
   set setViews(int views) => this.views = views;
-  set setLink(String link) => this.link = link;
+  set setVideoID(String id) => this.videoID = id;
   set setTitle(String title) => this.title = title;
   set setDescription(String description) => this.description = description;
 
@@ -67,7 +84,7 @@ class VideoPost with ChangeNotifier {
         await FirebaseFirestore.instance
             .collection("users")
             .doc(uid)
-            .collection("favorites")
+            .collection("favorite videos")
             .doc(getPostID)
             .set({});
 
@@ -84,7 +101,7 @@ class VideoPost with ChangeNotifier {
         await FirebaseFirestore.instance
             .collection("users")
             .doc(uid)
-            .collection("favorites")
+            .collection("favorite videos")
             .doc(getPostID)
             .delete();
 

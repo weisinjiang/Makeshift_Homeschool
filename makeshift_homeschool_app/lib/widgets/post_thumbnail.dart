@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/models/videopost_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
@@ -15,7 +16,8 @@ import 'bookmark_button.dart';
 
 class PostThumbnail extends StatelessWidget {
   final PostExpandedViewType viewType;
-  const PostThumbnail({Key key, this.viewType}) : super(key: key);
+  final bool isVideo;
+  const PostThumbnail({Key key, this.viewType, this.isVideo}) : super(key: key);
 
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -23,8 +25,10 @@ class PostThumbnail extends StatelessWidget {
     /// get the user information
     final user = Provider.of<AuthProvider>(context, listen: false).getUser;
 
-    /// get the post data from provider in Study screen
-    final postData = Provider.of<Post>(context, listen: false);
+    /// get the post data from provider, switch types depending on isVideo
+    var postData = isVideo 
+      ? Provider.of<VideoPost>(context, listen: false)
+      : Provider.of<Post>(context, listen: false);
 
     // makes the entire thumbnail widget to be clickable
     return InkWell(
@@ -59,7 +63,12 @@ class PostThumbnail extends StatelessWidget {
         // if not user's profile, user cant delete posts
         else {
           // view count goes up whenever the post is accessed
-          postData.incrementPostViewCount();
+          if (isVideo) {
+            Provider.of<VideoPost>(context, listen: false).incrementPostViewCount();
+          }
+          else { 
+            Provider.of<Post>(context, listen: false).incrementPostViewCount();      
+          }
           Navigator.push(
               context,
               SlideLeftRoute(
@@ -85,7 +94,9 @@ class PostThumbnail extends StatelessWidget {
               image: DecorationImage(
                   colorFilter: ColorFilter.mode(
                       Colors.grey.withOpacity(0.80), BlendMode.dstATop),
-                  image: NetworkImage(postData.getImageUrl),
+                  image: isVideo
+                  ? NetworkImage("https://img.youtube.com/vi/${Provider.of<VideoPost>(context, listen: false).getVideoID}/0.jpg")
+                  : NetworkImage(Provider.of<Post>(context, listen: false).getImageUrl),
                   fit: BoxFit.cover)),
 
           /// Title of the post
@@ -104,7 +115,9 @@ class PostThumbnail extends StatelessWidget {
                         child: BookmarkButton(
                             postData: postData,
                             screenSize: screenSize,
-                            user: user),
+                            user: user,
+                            isVideo: isVideo,
+                            ),
                       ),
                     ),
                   ),
@@ -117,7 +130,9 @@ class PostThumbnail extends StatelessWidget {
                         fontSize: 26,
                         strokeColor: Colors.black,
                         strokeWidth: 3.0,
-                        text: postData.getCreatedOn(),
+                        text: isVideo 
+                        ? Provider.of<VideoPost>(context, listen: false).getFormattedDateCreated()
+                        : Provider.of<Post>(context, listen: false).getCreatedOn(),
                         textColor: Colors.white,
                       )),
 
@@ -127,7 +142,9 @@ class PostThumbnail extends StatelessWidget {
                       fontSize: 14,
                       strokeColor: Colors.black,
                       strokeWidth: 4.0,
-                      text: postData.getTitle.toUpperCase(),
+                      text: isVideo 
+                        ? Provider.of<VideoPost>(context, listen: false).getTitle.toUpperCase()
+                        : Provider.of<Post>(context, listen: false).getTitle.toUpperCase(),
                       textColor: Colors.red),
                 ),
                 
@@ -148,7 +165,9 @@ class PostThumbnail extends StatelessWidget {
                         fontSize: 15,
                         strokeColor: Colors.black,
                         strokeWidth: 4.0,
-                        text: "By: ${postData.getOwnerName}",
+                        text: isVideo 
+                        ? "By: ${Provider.of<VideoPost>(context, listen: false).getOwner}"
+                        : "By: ${Provider.of<Post>(context, listen: false).getOwnerName}",
                         textColor: Colors.red,
                       )),
 
@@ -160,11 +179,15 @@ class PostThumbnail extends StatelessWidget {
                         fontSize: 16,
                         strokeColor: Colors.black,
                         strokeWidth: 4.0,
-                        text: "Age: ${postData.getAge}+",
+                        text: isVideo 
+                        ? "Age: ${Provider.of<VideoPost>(context, listen: false).getAge.toString()}+"
+                        : "Age: ${Provider.of<Post>(context, listen: false).getAge}+",
                         textColor: Colors.red),
                   ),
                 ),
-                if (postData.isCompleted)
+
+                // For Article Quizes only
+                if (!isVideo && Provider.of<Post>(context, listen: false).isCompleted) 
                 Flexible(
                   fit: FlexFit.tight,
                   child: Icon(FontAwesomeIcons.check, color: Colors.green[300],)

@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/videopost_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_video_post_provider.dart';
+import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
 
-class NewVideo extends StatelessWidget {
+class NewVideoPostScreen extends StatelessWidget {
   final bool isEditing;
   final VideoPost postData;
 
-  const NewVideo({Key key, this.isEditing, this.postData}) : super(key: key);
+  const NewVideoPostScreen({Key key, this.isEditing, this.postData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,6 @@ class NewVideo extends StatelessWidget {
               FlatButton(
                 onPressed: () {
                   bool canPost = newVideoPostProvider.canPost(isEdit: false);
-
                   print(canPost);
 
                   //^ Not editing and can post
@@ -50,8 +50,8 @@ class NewVideo extends StatelessWidget {
                     Navigator.of(context).pop();
                   }
 
-                  //! To-do...make VideoFeedProvider
-                  // //^ Editing and can post
+                 
+                  //^ Editing and can post
                   // else if (isEditing &&
                   //     newVideoPostProvider.canPost(isEdit: true)) {
                   //   PostFeedProvider provider =
@@ -77,7 +77,7 @@ class NewVideo extends StatelessWidget {
             ],
           ),
           body: Container(
-            color: Colors.black,
+            color: kPaleBlue,
             alignment: Alignment.topCenter,
             child: Container(
               width: kIsWeb ? screenSize.width * 0.50 : screenSize.width,
@@ -102,18 +102,4 @@ class NewVideo extends StatelessWidget {
   }
 }
 
-//! Widgets
 
-TextStyle simpleTextStyle() {
-  return TextStyle(color: Colors.white);
-}
-
-InputDecoration textFieldInput(String hint) {
-  return InputDecoration(
-      hintText: hint,
-      hintStyle: TextStyle(color: Colors.white60),
-      focusedBorder:
-          OutlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
-      enabledBorder:
-          OutlineInputBorder(borderSide: BorderSide(color: Colors.white60)));
-}

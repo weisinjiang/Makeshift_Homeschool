@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/screens/new_video.dart';
 
 Widget videoTitle(TextEditingController controller) {
   return Padding(
@@ -42,10 +41,23 @@ Widget videoURL(TextEditingController controller) {
       keyboardType: TextInputType.text,
       textAlign: TextAlign.left,
       maxLines: null,
-      maxLength: 30,
       decoration: textFieldInput("Video URL"),
       validator: null,
       onSaved: null,
     ),
   );
+}
+
+TextStyle simpleTextStyle() {
+  return TextStyle(color: Colors.black);
+}
+
+InputDecoration textFieldInput(String hint) {
+  return InputDecoration(
+      hintText: hint,
+      hintStyle: TextStyle(color: Colors.white60),
+      focusedBorder:
+          OutlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
+      enabledBorder:
+          OutlineInputBorder(borderSide: BorderSide(color: Colors.white60)));
 }

@@ -375,7 +375,7 @@ class NewPostProvider {
   
     // update user's lessons created if they are not a tutor
     // Tutors will have this incremented after review
-    if (userLevel != "Tutor") {
+    if (userLevel != "Tutor" && userLevel != "Student") {
       lessonCreated++; // increment by 1
       await _database
           .collection("users")
