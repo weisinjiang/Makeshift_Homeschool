@@ -29,7 +29,7 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.canDelete,
   }) : super(key: key);
 
-  final Post postData;
+  final postData;
   final Color backgroundColor;
   final bool canDelete;
   final AppBar appBar;

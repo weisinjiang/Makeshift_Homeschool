@@ -74,6 +74,7 @@ class PostThumbnail extends StatelessWidget {
               SlideLeftRoute(
                   screen: PostExpanded(
                 postData: postData,
+                isVideo: isVideo,
                 viewType: PostExpandedViewType.global,
               )));
         }

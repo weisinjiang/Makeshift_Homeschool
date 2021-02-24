@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/widgets/post_widgets.dart';
+import 'package:makeshift_homeschool_app/widgets/youtube_player.dart';
 
 /// Video Object for video posts
 
@@ -11,14 +12,11 @@ class VideoPost with ChangeNotifier {
   String lessonID;
   String owner;
   String ownerEmail;
-  String postID;
   String description;
   String createdOn;
   bool isLiked;
   int likes;
   int age;
-
-  Map<String, dynamic> _videoContent;
 
   VideoPost(
       {this.views,
@@ -29,7 +27,6 @@ class VideoPost with ChangeNotifier {
       this.ownerEmail,
       this.title,
       this.isLiked = false,
-      this.postID,
       this.likes,
       this.createdOn,
       this.description});
@@ -41,7 +38,7 @@ class VideoPost with ChangeNotifier {
   String get getTitle => this.title;
   String get getOwnerEmail => this.ownerEmail;
   String get getOwner => this.owner;
-  String get getPostID => this.postID;
+  String get getPostID => this.lessonID;
   String get getDescription => this.description;
   int get getAge => this.age;
   int get getLikes => this.likes;
@@ -121,17 +118,15 @@ class VideoPost with ChangeNotifier {
     }
   }
 
-  List<Widget> constructVideoWidgetList(Size screenSize) {
-    List<Widget> contentToShowOnScreen = [];
-    var videoFieldType = [
-      "title",
-      "videoURL",
-      "description",
+  List<Widget> constructPostWidgetList(Size screenSize) {
+    String youtubeImageURL = "https://img.youtube.com/vi/${this.videoID}/0.jpg";
+    List<Widget> contentToShowOnScreen = [
+      buildImage(youtubeImageURL, this.title.toUpperCase(), screenSize.height, this.owner, screenSize.width),
+      SizedBox(height: 30,),
+      YoutubePlayerWidget(videoID: this.videoID, height: screenSize.height, width: screenSize.width,),
+      SizedBox(height: 30,),
+      buildParagraph(this.description, screenSize.width),
     ];
-
-    var videoContentList = this._videoContent;
-    contentToShowOnScreen
-        .add(buildParagraph(videoContentList[description], screenSize.width));
 
     return contentToShowOnScreen;
   }
