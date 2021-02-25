@@ -51,12 +51,17 @@ class VideoPost with ChangeNotifier {
   }
 
   //^ Setters
-  set setAge(String age) => this.age = int.parse(age);
+  set setAge(int age) => this.age = age;
   set setViews(int views) => this.views = views;
   set setVideoID(String id) => this.videoID = id;
   set setTitle(String title) => this.title = title;
   set setDescription(String description) => this.description = description;
-
+  set setOwnerName(String name) => this.owner = name;
+  set setOwnerEmail(String email) => this.ownerEmail;
+  set setLikes(int likes) => this.likes = likes;
+  set setCreatedOn(String str) => this.createdOn = str;
+  set setLessonID(String id) => this.lessonID = id;
+  set setIsLike(bool boolean) => this.isLiked = boolean;
   // Increment view count
   Future<void> incrementPostViewCount() async {
     try {

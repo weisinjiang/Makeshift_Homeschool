@@ -172,7 +172,7 @@ class NewVideoPostProvider {
     //^ Update the video feed with the new data so it doesn't need to fetch again
     provider.updateUserPost(
       postID: postData.getPostID,
-      age: videoContentsList[3],
+      age: int.parse(videoContentsList[3]),
       description: videoContentsList[2],
       videoID: getYoutubeVideoId(videoContentsList[1]),
       title: videoContentsList[0],

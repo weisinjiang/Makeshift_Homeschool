@@ -45,7 +45,7 @@ class VideoFeedProvider with ChangeNotifier {
   // When a user updates their post, their local copy of the post
   // is not updated. this method will update the local copy when they send their
   // update to Firebase so that we dont waste money on retirveing it agaion and having to refetch everything
-  void updateUserPost({String postID, String videoID, String title, String description, String age}) {
+  void updateUserPost({String postID, String videoID, String title, String description, int age}) {
 
     for (var i = 0; i < _userPosts.length; i++) {
       if (_userPosts[i].getLessonID == postID) {
@@ -72,20 +72,45 @@ class VideoFeedProvider with ChangeNotifier {
       // For each of the documents, get the data and set them into a VideoPost object
       allVideoDocuments.forEach((doc) {
         print(doc.id);
-        VideoPost post = VideoPost(
-          description: doc["description"],
-          videoID: doc["videoID"],
-          owner: doc["ownerName"],
-          ownerEmail: doc["ownerEmail"],
-          title: doc["title"],
-          views: doc["views"],
-          likes: doc["likes"],
-          age: int.parse(doc["age"]),
-          createdOn: doc["createdOn"],
-          lessonID: doc["lessonID"],
-          isLiked: favoritesList.contains(doc["videoID"]) ? true : false
+        // VideoPost post = VideoPost(
+        //   description: doc["description"],
+        //   videoID: doc["videoID"],
+        //   owner: doc["ownerName"],
+        //   ownerEmail: doc["ownerEmail"],
+        //   title: doc["title"],
+        //   views: int.parse(doc["views"]),
+        //   likes: int.parse(doc["likes"]),
+        //   age: int.parse(doc["age"]),
+        //   createdOn: doc["createdOn"],
+        //   lessonID: doc["lessonID"],
+        //   isLiked: favoritesList.contains(doc["videoID"]) ? true : false
           
-        );
+        // );
+        VideoPost post = new VideoPost();
+        post.setDescription = doc["description"];
+        print("1");
+        post.setVideoID = doc["videoID"];
+        print("2");
+        post.setOwnerName = doc["ownerName"];
+        print("3");
+        post.setOwnerEmail = doc["ownerEmail"];
+        print("4");
+        post.setTitle = doc["title"];
+        print("5");
+        post.setViews = doc["views"];
+        print("6");
+        post.setLikes = doc["likes"];
+        print("7");
+        post.setAge = doc["age"];
+        print("8");
+        post.setCreatedOn = doc["createdOn"];
+        print("9");
+        post.setLessonID = doc["lessonID"];
+        print("10");
+        if (favoritesList.contains(doc["videoID"])) {
+          post.setIsLike = true;
+        }
+
         // Add to video post list
         videoPosts.add(post);
        
@@ -95,18 +120,6 @@ class VideoFeedProvider with ChangeNotifier {
     } catch (error) {
       print(error);
       print("Error fetching video Posts");
-      VideoPost post = VideoPost(
-          description: "Error Fetching",
-          videoID: "Error Fetching",
-          owner: "Error Fetching",
-          ownerEmail: "Error Fetching",
-          lessonID: "000",
-          title: "Error Fetching",
-          views: 0,
-          likes: 0,
-          age: 14
-        );
-        this.allVideoPosts.add(post);
       
     }
   }
