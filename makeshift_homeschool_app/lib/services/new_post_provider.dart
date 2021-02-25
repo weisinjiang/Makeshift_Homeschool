@@ -288,10 +288,22 @@ class NewPostProvider {
   }
 
   // Takes a normal Youtube Link and extract the video id from it
-  String getYoutubeVideoId(String url) {
-    // Get the first index of "watch?v=" + 8 will give us the first index of the video id
-    int indexOfVideoId = url.indexOf("watch?v=") + 8;
-    return url.substring(indexOfVideoId).trim(); // Cut the entire link and give only the id
+    String getYoutubeVideoId(String url) {
+    String videoID;
+
+    if (url.contains("youtube.com")) {
+      // normal youtube link: https://www.youtube.com/watch?=VIDEOID
+      // Find the last index of = + 1 gives you the video id
+      int indexOfVideoId = url.lastIndexOf("=") + 1;
+      videoID = url.substring(indexOfVideoId).trim();
+    }
+    else {
+      // Format for Youtube App: https://youtu.be/VIDEOID
+      // Find the last index of the "/" and the one after is the id
+      int indexOfVideoId = url.lastIndexOf("/")+1;
+      videoID = url.substring(indexOfVideoId).trim();
+    }
+    return videoID; // Cut the entire link and give only the id
   }
   
 
