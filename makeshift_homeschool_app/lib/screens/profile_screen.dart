@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/widgets/user_profile_appbar.dart';
 import '../shared/constants.dart';
@@ -28,6 +29,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var screenWidth = MediaQuery.of(context).size.width;
     var screenSize = MediaQuery.of(context).size;
 
+    var webWidth = MediaQuery.of(context).size.width / 0.5;
+
     /// Consumer of Authprovider because this entire widget depends on
     /// the user data that AuthProvider has. When an update is changed, Auth
     /// Provider will notify the widget to rebuild
@@ -42,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             body: Container(
               // Main box for the entire profile screen
               height: screenHeight,
-              width: screenWidth,
+              width: kIsWeb ? webWidth : screenWidth,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: [kGreenSecondary, kGreenSecondary_shade1],
@@ -61,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: Container(
                           //height: screenHeight * 0.30, // top 30% of the screen
-                          width: screenWidth,
+                          width: kIsWeb ? webWidth : screenWidth,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
@@ -97,6 +100,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text(
+                          "Score: ${((int.parse(auth.getUser["lesson_created"]) + int.parse(auth.getUser["lesson_completed"])) * 10).toString()}",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           "${auth.getUser["username"]}",
@@ -108,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 10,
                       ),
                       Container(
-                          width: screenWidth,
+                          width: kIsWeb ? webWidth : screenWidth,
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
@@ -139,7 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Container(
                         height: screenHeight * 0.10,
-                        width: screenWidth * 0.95,
+                        width: kIsWeb ? webWidth : screenWidth * 0.95,
                         child: Text(
                           "${auth.getUser["bio"]}",
                           textAlign: TextAlign.start,

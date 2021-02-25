@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/edit_profile_screen.dart';
 import 'package:makeshift_homeschool_app/screens/user_post.dart';
+import 'package:makeshift_homeschool_app/screens/user_video_posts.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -66,13 +67,14 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                               },
                             ),
                           ),
+
                           Container(
                             height: screenSize.height * 0.06,
                             width: screenSize.width * 0.85,
                             child: RaisedButton(
                               color: Colors.transparent,
                               child: Text(
-                                "My Posts",
+                                "My Article Posts",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -86,6 +88,28 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                               },
                             ),
                           ),
+
+                          Container(
+                            height: screenSize.height * 0.06,
+                            width: screenSize.width * 0.85,
+                            child: RaisedButton(
+                              color: Colors.transparent,
+                              child: Text(
+                                "My Video Posts",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserVideoPosts()));
+                              },
+                            ),
+                          ),
+
                           Container(
                             height: screenSize.height * 0.06,
                             width: screenSize.width * 0.85,

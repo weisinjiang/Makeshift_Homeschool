@@ -6,6 +6,7 @@ import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/services/video_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
@@ -50,6 +51,8 @@ class MyApp extends StatelessWidget {
         // auth service
         create: (context) => AuthProvider(),
       ),
+
+
       ChangeNotifierProxyProvider<AuthProvider, PostFeedProvider>(
         // reteieves user posts in Study
         update: (context, auth, previousPosts) => PostFeedProvider(
@@ -57,6 +60,17 @@ class MyApp extends StatelessWidget {
             previousPosts == null ? [] : previousPosts.getPosts),
         create: (_) => PostFeedProvider(null, []),
       ),
+
+
+      ChangeNotifierProxyProvider<AuthProvider, VideoFeedProvider> (  
+        update: (context, auth, prevVideoPosts) => VideoFeedProvider(  
+          uid: auth.getUserID,
+          allVideoPosts: prevVideoPosts == null ? []: prevVideoPosts.getVideoPosts
+        ),
+        create: (_) => VideoFeedProvider(uid: null, allVideoPosts: []),
+      ),
+
+
       ChangeNotifierProxyProvider<AuthProvider, BootCampProvider>(
           create: (_) => BootCampProvider(null, []),
           update: (context, auth, previousLessons) => BootCampProvider(

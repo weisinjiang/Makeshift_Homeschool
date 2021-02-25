@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+    import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/widgets/video_thumbnail.dart';
 
 /// Video screen where video lessons are retrieved from the database and shown.
@@ -39,7 +39,7 @@ class _VideoScreenState extends State<VideoScreen> {
       body: Container(
       child: ListView(  
         children: [
-          videoThumbnail("title", "images/logo.png")
+          // videoThumbnail("title", "images/logo.png")
         ],
       ),
     ),

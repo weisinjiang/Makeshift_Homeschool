@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/services/video_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/widgets/post_thumbnail.dart';
 import 'package:provider/provider.dart';
 
-class UserPosts extends StatefulWidget {
+class UserVideoPosts extends StatefulWidget {
   @override
-  _UserPostsState createState() => _UserPostsState();
+  _UserVideoPostsState createState() => _UserVideoPostsState();
 }
 
-class _UserPostsState extends State<UserPosts> {
+class _UserVideoPostsState extends State<UserVideoPosts> {
   var _isInit = true;
   var _isLoading = false;
 
@@ -27,8 +28,8 @@ class _UserPostsState extends State<UserPosts> {
       setState(() {
         _isLoading = true;
       });
-      var postFeedProvider = Provider.of<PostFeedProvider>(context);
-      postFeedProvider.fetchPostsFromDatabase(query: "user").then((_) {
+      var postFeedProvider = Provider.of<VideoFeedProvider>(context);
+      postFeedProvider.fetchUserVideoPostsFromDatabase().then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -44,7 +45,7 @@ class _UserPostsState extends State<UserPosts> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Your Articles"),
+          title: Text("Your Video Posts"),
         ),
         body: _isLoading
             ? LoadingScreen()
@@ -53,22 +54,23 @@ class _UserPostsState extends State<UserPosts> {
                 width: screenSize.width,
                 color: kPaleBlue,
                 //decoration: linearGradientSecondaryGreenAnalogous,
-                child: Consumer<PostFeedProvider>(
+                child: Consumer<VideoFeedProvider>(
                   /// Consumer for the list because when it is deleted, this widget needs to rebuild
                   builder: (context, postFeedProvider, child) => Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
                       child: ListView.separated(
                           itemBuilder: (_, index) => ChangeNotifierProvider.value(
-                                value: postFeedProvider.getUserPosts[index],
+                                value: postFeedProvider.getUsersVideoPosts[index],
                                 child: PostThumbnail(
                                   viewType: PostExpandedViewType.owner,
-                                  isVideo: false,
+                                  isVideo: true,
+                                
                                 ),
                               ),
                           separatorBuilder: (context, int index) =>
                               const Divider(),
-                          itemCount: postFeedProvider.getUserPosts.length == null ? 0: postFeedProvider.getUserPosts.length),
+                          itemCount: postFeedProvider.getUsersVideoPosts.length == null ? 0: postFeedProvider.getUsersVideoPosts.length),
                     ),
                   ),
                 ),

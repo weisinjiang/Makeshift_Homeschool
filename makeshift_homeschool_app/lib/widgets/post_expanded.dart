@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/models/quiz_model.dart';
+import 'package:makeshift_homeschool_app/models/videopost_model.dart';
 import 'package:makeshift_homeschool_app/screens/quiz.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
@@ -17,11 +18,12 @@ class PostExpanded extends StatelessWidget {
   final PostExpandedViewType viewType;
 
   /// if in user's profile, they can delete the post
-  final Post postData;
+  final postData;
+  final bool isVideo;
 
   /// post data passed from PostThumbnail
 
-  const PostExpanded({Key key, this.postData, this.viewType}) : super(key: key);
+  const PostExpanded({Key key, this.postData, this.viewType, this.isVideo}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -33,6 +35,7 @@ class PostExpanded extends StatelessWidget {
         screenSize: screenSize,
         appBar: AppBar(),
         canDelete: viewType == PostExpandedViewType.owner ? true : false,
+        isVideo: isVideo,
       ),
       body: Container(
         width: screenSize.width,
@@ -52,7 +55,8 @@ class PostExpanded extends StatelessWidget {
                 ),
 
                 // if in user profile, then dont show "Complete Lesson"
-                if (viewType == PostExpandedViewType.global)
+                // SHow only if it is not a video post
+                if (viewType == PostExpandedViewType.global && !isVideo)
                   Container(
                       width: screenSize.width * 0.80,
                       height: screenSize.height * 0.10,

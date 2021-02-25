@@ -80,17 +80,20 @@ class _StudyScreenState extends State<StudyScreen> {
 
                             StudyCategoryListTile(
                                 categoryTitle: "New Posts",
-                                postList: null
+                                postList: null,
+                                isVideo: false,
                             ),
 
                             StudyCategoryListTile(
                                 categoryTitle: "Most Bookmarked",
-                                postList: feedProvider.getMostBookmarkedPost(5)
+                                postList: feedProvider.getMostBookmarkedPost(5),
+                                isVideo: false,
                             ),
 
                             StudyCategoryListTile(
                                 categoryTitle: "Most Viewed",
-                                postList: feedProvider.getMostViewedPost(5)
+                                postList: feedProvider.getMostViewedPost(5),
+                                isVideo: false,
                             ),
                             // under 8
                             StudyCategoryListTile(
@@ -98,7 +101,8 @@ class _StudyScreenState extends State<StudyScreen> {
                                 postList: feedProvider.filterPostAgeFrom(
                                   greaterThanAge: false,
                                   targetAge: 8 
-                                )
+                                ),
+                                isVideo: false,
                             ),
                             // age 8-9
                             StudyCategoryListTile(
@@ -106,14 +110,16 @@ class _StudyScreenState extends State<StudyScreen> {
                                 postList: feedProvider.filterPostAgeBetween(
                                   lowerInclusive: 8,
                                   upperInclusive: 9 
-                                )
+                                ),
+                                isVideo: false,
                             ),
                             StudyCategoryListTile(
                                 categoryTitle: "Age 10 & 11",
                                 postList: feedProvider.filterPostAgeBetween(
                                   lowerInclusive: 10,
                                   upperInclusive: 11 
-                                )
+                                ),
+                                isVideo: false,
                             ),
                             // 12 and Above
                             StudyCategoryListTile(
@@ -121,7 +127,8 @@ class _StudyScreenState extends State<StudyScreen> {
                                 postList: feedProvider.filterPostAgeBetween(
                                   lowerInclusive: 12,
                                   upperInclusive: 100
-                                )
+                                ),
+                                isVideo: false,
                             ),
                             
                            
