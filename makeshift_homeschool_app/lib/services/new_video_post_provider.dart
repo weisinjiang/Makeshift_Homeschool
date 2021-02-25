@@ -35,6 +35,11 @@ class NewVideoPostProvider {
       paragraph(controller: _newVideoFormControllers[2], hint: "Description"),
       recommendedAge(_newVideoFormControllers[3])
     ];
+    
+    // If this new post provider does have data, set the data
+    if(postData != null) {
+      setVideoEditingData(postData);
+    }
   }
 
   //^ Getters for variables
@@ -97,14 +102,17 @@ class NewVideoPostProvider {
     //^ Refernce to document the post will go into
     DocumentReference databaseRef;
 
-    //^ If the user is a Tutor, needs approval
-    if (userLevel == "Tutor") {
-      databaseRef = _database.collection("approval required").doc();
-    }
-    //^ If user is teach or above, add to lessons (no approval required)
-    else {
-      databaseRef = _database.collection("videos").doc();
-    }
+    // !FIX Implement Approval tool for Video
+    // //^ If the user is a Tutor, needs approval
+    // if (userLevel == "Tutor") {
+    //   databaseRef = _database.collection("approval required").doc();
+    // }
+    // //^ If user is teach or above, add to lessons (no approval required)
+    // else {
+    //   databaseRef = _database.collection("videos").doc();
+    // }
+
+    databaseRef = _database.collection("videos").doc();
 
     //^ Construct all the data from the TextEditingControllers
     var videoContentsList = getVideoControllerTextDataAsList();
@@ -149,20 +157,13 @@ class NewVideoPostProvider {
     //^ Variables to help reference the database
     var databaseRef = _database.collection("videos").doc(postData.getPostID);
     var videoContentsList = getVideoControllerTextDataAsList();
-    var newPostTitle = videoContentsList[0];
 
-    //^ Post content (organized)
-    var videoContentAsMap = {
-      "title": videoContentsList[0],
-      "videoURL": videoContentsList[1],
-      "description": videoContentsList[2],
-    };
-
-    //^ Fields to be available for editing
+    // new data to be updated to Firebase
     var newVideo = {
       "title": videoContentsList[0],
-      "videoURL": videoContentsList[1],
+      "videoID": getYoutubeVideoId(videoContentsList[1]),
       "description": videoContentsList[2],
+      "age": videoContentsList[3]
     };
 
     //^ Add data to document
@@ -171,8 +172,10 @@ class NewVideoPostProvider {
     //^ Update the video feed with the new data so it doesn't need to fetch again
     provider.updateUserPost(
       postID: postData.getPostID,
-      postContents: videoContentAsMap,
-      title: newPostTitle,
+      age: videoContentsList[3],
+      description: videoContentsList[2],
+      videoID: getYoutubeVideoId(videoContentsList[1]),
+      title: videoContentsList[0],
     );
     resetVideoFields();
   }
@@ -181,8 +184,9 @@ class NewVideoPostProvider {
   void setVideoEditingData(VideoPost postData) {
     //^ Set data of video
     this._newVideoFormControllers[0].text = postData.getTitle;
-    this._newVideoFormControllers[1].text = postData.getVideoID;
+    this._newVideoFormControllers[1].text = "https://www.youtube.com/watch?v=${postData.getVideoID}";
     this._newVideoFormControllers[2].text = postData.getDescription;
+    this._newVideoFormControllers[3].text = postData.getAge.toString();
   }
 
   void resetVideoFields() {

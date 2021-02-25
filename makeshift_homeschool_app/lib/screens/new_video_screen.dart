@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/videopost_model.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/new_video_post_provider.dart';
+import 'package:makeshift_homeschool_app/services/video_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +37,7 @@ class NewVideoPostScreen extends StatelessWidget {
               FlatButton(
                 onPressed: () {
                   bool canPost = newVideoPostProvider.canPost(isEdit: false);
-                  print(canPost);
+              
 
                   //^ Not editing and can post
                   if (canPost && !isEditing) {
@@ -51,12 +52,16 @@ class NewVideoPostScreen extends StatelessWidget {
                   }
 
                  
-                  //^ Editing and can post
-                  // else if (isEditing &&
-                  //     newVideoPostProvider.canPost(isEdit: true)) {
-                  //   PostFeedProvider provider =
-                  //       Provider.of<VideoFeedProvider>(context, listen: false);
-                  // }
+                  /// Editing and can post
+                  else if (isEditing && newVideoPostProvider.canPost(isEdit: true)) {
+                    VideoFeedProvider provider = Provider.of<VideoFeedProvider>(context,listen: false);
+
+                    /// Pass in the post feed provider so the post can be updated
+                    newVideoPostProvider.update(postData: postData, provider:provider);
+                    // pop the update screen
+                    Navigator.of(context).pop();
+
+                  } 
 
                   else {
                     showAlertDialog("One or more of your fields are empty",

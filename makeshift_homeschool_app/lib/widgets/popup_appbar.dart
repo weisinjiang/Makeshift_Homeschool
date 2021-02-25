@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
+import 'package:makeshift_homeschool_app/models/videopost_model.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
+import 'package:makeshift_homeschool_app/screens/new_video_screen.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
+import 'package:makeshift_homeschool_app/services/video_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:provider/provider.dart';
 
@@ -26,10 +29,11 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
     @required final this.screenSize,
     this.backgroundColor,
     this.appBar,
-    this.canDelete,
+    this.canDelete, this.isVideo,
   }) : super(key: key);
 
   final postData;
+  final bool isVideo;
   final Color backgroundColor;
   final bool canDelete;
   final AppBar appBar;
@@ -71,11 +75,14 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () async {
-                                  await Provider.of<PostFeedProvider>(context,
-                                          listen: false)
-                                      .deletePost(postData.getPostId);
+                                  if (!isVideo) {
+                                    await Provider.of<PostFeedProvider>(context,listen: false).deletePost(postData.getPostId);
+                                  }
+                                  else {
+                                    VideoPost videoData = postData;
+                                    await Provider.of<VideoFeedProvider>(context,listen: false).deletePost(postID:videoData.getLessonID);
+                                  }
                                   Navigator.of(context).pop();
-
                                   /// pop
                                   Navigator.of(context).pop();
                                 },
@@ -95,13 +102,19 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
-                                  Navigator.push(
-                                      context,
-                                      SlideLeftRoute(
-                                          screen: NewPostScreen(
-                                        isEditing: true,
-                                        postData: postData,
-                                      )));
+                                  isVideo
+                                  ? Navigator.push(context,
+                                    SlideLeftRoute(
+                                      screen: NewVideoPostScreen(
+                                      isEditing: true,
+                                      postData: postData,
+                                    )))
+                                  :Navigator.push(context,
+                                    SlideLeftRoute(
+                                      screen: NewPostScreen(
+                                      isEditing: true,
+                                      postData: postData,
+                                    )));
                 
                                 },
                               ),

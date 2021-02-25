@@ -42,6 +42,7 @@ class PostThumbnail extends StatelessWidget {
                   screen: PostExpanded(
                 postData: postData,
                 viewType: PostExpandedViewType.owner,
+                isVideo: isVideo,
               )));
         } else if (viewType == PostExpandedViewType.principle) {
           Navigator.push(

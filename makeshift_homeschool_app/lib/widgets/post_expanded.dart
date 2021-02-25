@@ -35,6 +35,7 @@ class PostExpanded extends StatelessWidget {
         screenSize: screenSize,
         appBar: AppBar(),
         canDelete: viewType == PostExpandedViewType.owner ? true : false,
+        isVideo: isVideo,
       ),
       body: Container(
         width: screenSize.width,

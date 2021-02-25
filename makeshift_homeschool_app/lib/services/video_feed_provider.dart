@@ -15,7 +15,7 @@ class VideoFeedProvider with ChangeNotifier {
 
   // Holds all video posts
   List<VideoPost> allVideoPosts = [];
-  List<Post> _userPosts = [];
+  List<VideoPost> _userPosts = [];
   final String uid;
 
   // Constructor
@@ -24,26 +24,37 @@ class VideoFeedProvider with ChangeNotifier {
   // Getters of the video posts
   //^ Makes deep copy of posts (using ...)
   List<VideoPost> get getVideoPosts => [...this.allVideoPosts];
+  List<VideoPost> get getUsersVideoPosts => [...this._userPosts];
 
   // Delete a Video post (if this is called from user's profile)
   Future<void> deletePost({String postID}) async {
     //^ Remove video from database
     await _database.collection("videos").doc(postID).delete();
 
-    //^ Delete from users page
-    //! To-do ... display video in users posts and delete from users post when post is deleted
+    // Delete from user's page
+    for (var i = 0; i < _userPosts.length; i++) {
+      if (_userPosts[i].getLessonID == postID) {
+        _userPosts.removeAt(i);
+        notifyListeners();
+        break;
+      }
+    }
+
   }
 
   // When a user updates their post, their local copy of the post
   // is not updated. this method will update the local copy when they send their
   // update to Firebase so that we dont waste money on retirveing it agaion and having to refetch everything
-  void updateUserPost(
-      {String postID,
-      Map<String, String> postContents,
-      String title,
-      String age}) {
+  void updateUserPost({String postID, String videoID, String title, String description, String age}) {
+
     for (var i = 0; i < _userPosts.length; i++) {
-      // if (_userPosts[i].getPostId)
+      if (_userPosts[i].getLessonID == postID) {
+        _userPosts[i].setDescription = description;
+        _userPosts[i].setTitle = title;
+        _userPosts[i].setVideoID = videoID;
+        _userPosts[i].setAge = age;
+        break;
+      }
     }
   }
 
@@ -69,7 +80,7 @@ class VideoFeedProvider with ChangeNotifier {
           title: doc["title"],
           views: doc["views"],
           likes: doc["likes"],
-          age: doc["age"],
+          age: int.parse(doc["age"]),
           createdOn: doc["createdOn"],
           lessonID: doc["lessonID"],
           isLiked: favoritesList.contains(doc["videoID"]) ? true : false
@@ -100,6 +111,56 @@ class VideoFeedProvider with ChangeNotifier {
     }
   }
 
+  // Fetches the user's posts from the database
+  Future<void> fetchUserVideoPostsFromDatabase() async{
+    try {
+      QuerySnapshot fetchedDocuments = await _database.collection("videos").where("ownerUid", isEqualTo: uid).get();
+      List<DocumentSnapshot> allVideoDocuments = fetchedDocuments.docs;
+      List<String> favoritesList = await fetchUsersFavoritesList(this.uid);
+
+      List<VideoPost> videoPosts = [];
+
+      // For each of the documents, get the data and set them into a VideoPost object
+      allVideoDocuments.forEach((doc) {
+        print(doc.id);
+        VideoPost post = VideoPost(
+          description: doc["description"],
+          videoID: doc["videoID"],
+          owner: doc["ownerName"],
+          ownerEmail: doc["ownerEmail"],
+          title: doc["title"],
+          views: doc["views"],
+          likes: doc["likes"],
+          age: int.parse(doc["age"]),
+          createdOn: doc["createdOn"],
+          lessonID: doc["lessonID"],
+          isLiked: favoritesList.contains(doc["videoID"]) ? true : false
+          
+        );
+        // Add to video post list
+        videoPosts.add(post);
+       
+      });
+      this._userPosts = videoPosts;
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      print("Error fetching video Posts");
+      VideoPost post = VideoPost(
+          description: "Error Fetching",
+          videoID: "Error Fetching",
+          owner: "Error Fetching",
+          ownerEmail: "Error Fetching",
+          lessonID: "000",
+          title: "Error Fetching",
+          views: 0,
+          likes: 0,
+          age: 14
+        );
+        this._userPosts.add(post);
+      
+    }
+  }
  
   ///Gets the id of the user's favorite post
   Future<List<String>> fetchUsersFavoritesList(String uid) async {

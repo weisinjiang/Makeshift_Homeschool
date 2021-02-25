@@ -354,8 +354,65 @@ class _RootScreenState extends State<RootScreen> {
                   buttonFillColor: kRedOrange,
                   buttonName: "Learn",
                   buttonTextColor: Colors.black,
-                  function: () => Navigator.push(
-                      context, SlideLeftRoute(screen: StudyScreen())),
+                  function: () => showModalBottomSheet(  
+                    isDismissible: true,
+                    backgroundColor: Colors.grey[400],
+                    context: context,
+                    builder: (context) {
+                      return Container(
+                        height: screenSize.height * 0.40,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 20,),
+
+                            Container(  
+                              height: screenSize.height * 0.06,
+                              width: screenSize.width * 0.85,
+                              child: RaisedButton(  
+                                color: Colors.transparent,
+                                child: Text(
+                                  "Articles",
+                                  style: TextStyle(  
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Pop the buttons off the screen
+                                  Navigator.push(
+                                    context, 
+                                    SlideLeftRoute(screen: StudyScreen())
+                                  );
+
+                                }
+                              ),
+                            ),
+                            SizedBox(height: 30,),
+
+                            Container(  
+                              height: screenSize.height * 0.06,
+                              width: screenSize.width * 0.85,
+                              child: RaisedButton(  
+                                color: Colors.transparent,
+                                child: Text(
+                                  "Videos",
+                                  style: TextStyle(  
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.push(
+                                    context, 
+                                    SlideLeftRoute(screen: StudyVideoScreen())
+                                  );
+                                }
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  ),
                 ),
               ),
             ),

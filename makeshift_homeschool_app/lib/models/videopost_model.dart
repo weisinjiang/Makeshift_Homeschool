@@ -51,6 +51,7 @@ class VideoPost with ChangeNotifier {
   }
 
   //^ Setters
+  set setAge(String age) => this.age = int.parse(age);
   set setViews(int views) => this.views = views;
   set setVideoID(String id) => this.videoID = id;
   set setTitle(String title) => this.title = title;
@@ -121,7 +122,7 @@ class VideoPost with ChangeNotifier {
   List<Widget> constructPostWidgetList(Size screenSize) {
     String youtubeImageURL = "https://img.youtube.com/vi/${this.videoID}/0.jpg";
     List<Widget> contentToShowOnScreen = [
-      buildImage(youtubeImageURL, this.title.toUpperCase(), screenSize.height, this.owner, screenSize.width),
+      //buildImage(youtubeImageURL, this.title.toUpperCase(), screenSize.height, this.owner, screenSize.width),
       SizedBox(height: 30,),
       YoutubePlayerWidget(videoID: this.videoID, height: screenSize.height, width: screenSize.width,),
       SizedBox(height: 30,),
