@@ -1,5 +1,4 @@
-    import 'package:flutter/material.dart';
-import 'package:makeshift_homeschool_app/widgets/video_thumbnail.dart';
+import 'package:flutter/material.dart';
 
 /// Video screen where video lessons are retrieved from the database and shown.
 /// This class will draw the video lesson screen, similar to the learn page
@@ -33,16 +32,16 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(  
+      appBar: AppBar(
         title: Text("Videos"),
       ),
       body: Container(
-      child: ListView(  
-        children: [
-          // videoThumbnail("title", "images/logo.png")
-        ],
+        child: ListView(
+          children: [
+            // videoThumbnail("title", "images/logo.png")
+          ],
+        ),
       ),
-    ),
     );
   }
 }
