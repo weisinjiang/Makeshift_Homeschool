@@ -125,7 +125,7 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
 
               Row(
                 children: [
-                  Text("What is your favorite activity?  "),
+                  Text("My favorite activity is "),
                   SizedBox(
                     width: 120,
                     child: TextFormField(
@@ -143,16 +143,20 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                 height: screenSize.height * 0.03,
               ),
 
-              Text("What do you like about this activity?"),
-              SizedBox(
-                width: 120,
-                child: TextFormField(
-                  /// add a controller and attach it to this field
-                  // keyboardType: TextInputType.multiline,
-                  //     maxLines: null,
-                  controller: textController[1],
-                  decoration: InputDecoration(hintText: "What you like about it"),
-                ),
+              Row(
+                children: [
+                  Text("Some things I like about this activity are"),
+                  SizedBox(
+                    width: 120,
+                    child: TextFormField(
+                      /// add a controller and attach it to this field
+                      // keyboardType: TextInputType.multiline,
+                           maxLines: null,
+                      controller: textController[1],
+                      decoration: InputDecoration(hintText: "What you like\n about it"),
+                    ),
+                  ),
+                ],
               ),
 
               SizedBox(
@@ -163,7 +167,7 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                 height: screenSize.height * 0.03,
               ),
 
-              Text("2. What's your favorite relaxing activity?"),
+              Text("I recommend this activity because  "),
 
               SizedBox(
                 child: TextFormField(
@@ -171,7 +175,7 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: textController[2],
-                  decoration: InputDecoration(hintText: "Answer Two"),
+                  decoration: InputDecoration(hintText: "Why you would recommend it"),
                 ),
                 width: screenSize.width,
               ),
@@ -180,7 +184,15 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                 height: screenSize.height * 0.03,
               ),
 
-              Text("3. What would be your ideal vacation?"),
+              Text("Although I really like "), SizedBox(
+                    width: 120,
+                    child: TextFormField(
+                      /// add a controller and attach it to this field
+                      // keyboardType: TextInputType.multiline,
+                      //     maxLines: null,
+                      controller: textController[0],
+                      decoration: InputDecoration(hintText: "Activity"),
+                    ), ),
 
               SizedBox(
                 child: TextFormField(
