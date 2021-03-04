@@ -11,10 +11,12 @@ import 'package:provider/provider.dart';
 
 class Talkaboutyourfavoriteactivity extends StatefulWidget {
   @override
-  _TalkaboutyourfavoriteactivityState createState() => _TalkaboutyourfavoriteactivityState();
+  _TalkaboutyourfavoriteactivityState createState() =>
+      _TalkaboutyourfavoriteactivityState();
 }
 
-class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteactivity> {
+class _TalkaboutyourfavoriteactivityState
+    extends State<Talkaboutyourfavoriteactivity> {
   List<TextEditingController> textController = [
     TextEditingController(),
 
@@ -99,7 +101,7 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Talk about your favorite activity"), 
+        title: Text("Talk about your favorite activity"),
       ),
       body: Container(
         color: Colors.white,
@@ -140,11 +142,9 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                       ),
                     ],
                   ),
-
                   SizedBox(
                     height: screenSize.height * 0.03,
                   ),
-
                   Row(
                     children: [
                       Text("Some things I like about this activity are  "),
@@ -153,53 +153,59 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                         child: TextFormField(
                           /// add a controller and attach it to this field
                           // keyboardType: TextInputType.multiline,
-                               maxLines: null,
-                          controller: textController[1],
-                          decoration: InputDecoration(hintText: "What you like about it"),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: screenSize.height * 0.03,
-                      ),
-
-                      SizedBox(
-                        height: screenSize.height * 0.03,
-                      ),
-
-                      Text("I recommend this activity because  "),
-
-                      SizedBox(
-                        child: TextFormField(
-                          /// add a controller and attach it to this field
-                          keyboardType: TextInputType.multiline,
                           maxLines: null,
-                          controller: textController[2],
-                          decoration: InputDecoration(hintText: "Why you would recommend it"),
+                          controller: textController[1],
+                          decoration: InputDecoration(
+                              hintText: "What you like about it"),
                         ),
-                        width: screenSize.width,
                       ),
                     ],
                   ),
-
-                  SizedBox(
-                    height: screenSize.height * 0.03,
+                  Column(
+                    children: [
+                      Row(children: [
+                        SizedBox(
+                          height: screenSize.height * 0.03,
+                        ),
+                        SizedBox(
+                          height: screenSize.height * 0.03,
+                        ),
+                        Text("I recommend this activity because  "),
+                        SizedBox(
+                          child: Container(
+                            child: TextFormField(
+                              /// add a controller and attach it to this field
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              controller: textController[2],
+                              
+                            ),
+                            width: screenSize.width/4,
+                          ),
+                        ),
+                        SizedBox(
+                          height: screenSize.height * 0.03,
+                        ),
+                        ]),
+                        ],
                   ),
-
-                  Text("Although I really like "), SizedBox(
-                        width: 120,
-                        child: TextFormField(
-                          /// add a controller and attach it to this field
-                          // keyboardType: TextInputType.multiline,
-                          //     maxLines: null,
-                          controller: textController[0],
-                          decoration: InputDecoration(hintText: "Activity"),
-                        ), ),
-
+                        Row(
+                          children: [
+                            Text("Although I really like  "),
+                            SizedBox(
+                              width: 120,
+                              child: TextFormField(
+                                /// add a controller and attach it to this field
+                                // keyboardType: TextInputType.multiline,
+                                //     maxLines: null,
+                                controller: textController[0],
+                                decoration: InputDecoration(hintText: "Activity"),
+                              ),
+                            ),
+                          ],
+                        ),
+                      
+                    
                   SizedBox(
                     child: TextFormField(
                       /// add a controller and attach it to this field
@@ -210,14 +216,11 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                     ),
                     width: screenSize.width,
                   ),
-
                   SizedBox(
                     height: screenSize.height * 0.03,
                   ),
-
                   Text(
                       "4. If you could go back and tell your younger self something, what would you tell them?"),
-
                   SizedBox(
                     child: TextFormField(
                       /// add a controller and attach it to this field
@@ -228,17 +231,14 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                     ),
                     width: screenSize.width,
                   ),
-
                   SizedBox(
                     height: screenSize.height * 0.03,
                   ),
-
-                  Text("5. What's something about yourself you especially like?"),
-
+                  Text(
+                      "5. What's something about yourself you especially like?"),
                   SizedBox(
                     width: 300,
                   ),
-
                   SizedBox(
                     child: TextFormField(
                       /// add a controller and attach it to this field
@@ -249,18 +249,14 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                     ),
                     width: screenSize.width,
                   ),
-
                   SizedBox(
                     height: screenSize.height * 0.03,
                   ),
-
                   Text(
                       "6. How has your childhood shaped you, and you personality?"),
-
                   SizedBox(
                     width: 300,
                   ),
-
                   SizedBox(
                     child: TextFormField(
                       /// add a controller and attach it to this field
@@ -271,17 +267,14 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                     ),
                     width: screenSize.width,
                   ),
-
                   SizedBox(
                     height: screenSize.height * 0.03,
                   ),
-
-                  Text("7. What do your friends and family like best about you?"),
-
+                  Text(
+                      "7. What do your friends and family like best about you?"),
                   SizedBox(
                     width: 300,
                   ),
-
                   SizedBox(
                     child: TextFormField(
                       /// add a controller and attach it to this field
@@ -292,17 +285,13 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                     ),
                     width: screenSize.width,
                   ),
-
                   SizedBox(
                     height: screenSize.height * 0.03,
                   ),
-
                   Text("8. What's something you regret or a lesson learned?"),
-
                   SizedBox(
                     width: 300,
                   ),
-
                   SizedBox(
                     child: TextFormField(
                       /// add a controller and attach it to this field
@@ -313,18 +302,14 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                     ),
                     width: screenSize.width,
                   ),
-
                   SizedBox(
                     height: screenSize.height * 0.03,
                   ),
-
                   Text(
                       "9. What is a belief or a point of view that you hold that is not shared by most people?"),
-
                   SizedBox(
                     width: 300,
                   ),
-
                   SizedBox(
                     child: TextFormField(
                       /// add a controller and attach it to this field
@@ -335,18 +320,14 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
                     ),
                     width: screenSize.width,
                   ),
-
                   SizedBox(
                     height: screenSize.height * 0.03,
                   ),
-
                   Text(
                       "10. What is something you do to relax and recharge after a long day?"),
-
                   SizedBox(
                     width: 300,
                   ),
-
                   SizedBox(
                     child: TextFormField(
                       /// add a controller and attach it to this field
@@ -377,5 +358,3 @@ class _TalkaboutyourfavoriteactivityState extends State<Talkaboutyourfavoriteact
     );
   }
 }
-
-
