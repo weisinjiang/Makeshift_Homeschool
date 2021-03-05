@@ -7,7 +7,6 @@ import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/new_video_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_video_screen.dart';
-import 'package:makeshift_homeschool_app/screens/video_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
