@@ -73,7 +73,7 @@ class _PersonalityState extends State<Personality> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("What is your persanality"),
+        title: Text("What is Your Personality"),
       ),
       body: Container(
         color: Colors.white,
@@ -92,29 +92,11 @@ class _PersonalityState extends State<Personality> {
                 height: screenSize.height * 0.3,
                 width: screenSize.width,
               ),
-
-              Text("My personality is... "),
-
-              Row(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    child: TextFormField(
-                      /// add a controller and attach it to this field
-                      // keyboardType: TextInputType.multiline,
-                      //     maxLines: null,
-                      controller: textController[0],
-                      decoration: InputDecoration(hintText: "Your personality"),
-                    ),
-                  ),
-                  Text(","),
-                ],
-              ),
               SizedBox(
                 height: screenSize.height * 0.03,
               ),
 
-              Text("Here are some thing's about my Personality!"),
+              Text("introvert means: extrovert means:"),
 
               SizedBox(
                 height: screenSize.height * 0.03,
@@ -129,10 +111,19 @@ class _PersonalityState extends State<Personality> {
                   maxLines: null,
                   controller: textController[2],
                   decoration: InputDecoration(
-                      hintText:
-                          "Talk about if you are introverted or extroverted"),
+                      hintText: "Are introverted or extroverted?"),
                 ),
                 width: screenSize.width,
+              ),
+
+              SizedBox(
+                height: 40,
+              ),
+
+              Text("introvert means: extrovert means:"),
+
+              SizedBox(
+                height: screenSize.height * 0.01,
               ),
 
               SizedBox(
@@ -147,10 +138,20 @@ class _PersonalityState extends State<Personality> {
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: textController[3],
-                  decoration:
-                      InputDecoration(hintText: "Are you Sensing or intuitive"),
+                  decoration: InputDecoration(
+                      hintText: "Are you Sensing or intuitive?"),
                 ),
                 width: screenSize.width,
+              ),
+
+              SizedBox(
+                height: 40,
+              ),
+
+              Text("introvert means: extrovert means:"),
+
+              SizedBox(
+                height: screenSize.height * 0.01,
               ),
 
               SizedBox(
@@ -172,6 +173,16 @@ class _PersonalityState extends State<Personality> {
               ),
 
               SizedBox(
+                height: 40,
+              ),
+
+              Text("introvert means: extrovert means:"),
+
+              SizedBox(
+                height: screenSize.height * 0.01,
+              ),
+
+              SizedBox(
                 height: screenSize.height * 0.03,
               ),
 
@@ -188,7 +199,7 @@ class _PersonalityState extends State<Personality> {
                   maxLines: null,
                   controller: textController[5],
                   decoration: InputDecoration(
-                      hintText: "Are you judging or perceiving"),
+                      hintText: "Are you judging or perceiving?"),
                 ),
                 width: screenSize.width,
               ),
@@ -209,7 +220,7 @@ class _PersonalityState extends State<Personality> {
                   controller: textController[6],
                   decoration: InputDecoration(
                       hintText:
-                          "What are some things you like about your persanality?"),
+                          "What are some things you like about your personality?"),
                 ),
                 width: screenSize.width,
               ),
@@ -218,7 +229,7 @@ class _PersonalityState extends State<Personality> {
                 height: screenSize.height * 0.03,
               ),
 
-              Text("Thank you for your time!"),
+              Text("Thank you for learning about my personality!"),
 
               SizedBox(
                 height: screenSize.height * 0.03,
