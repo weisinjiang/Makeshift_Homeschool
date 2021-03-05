@@ -9,7 +9,7 @@ import 'package:makeshift_homeschool_app/bootcamp_templates/Makeyourfavoritegame
 import 'package:makeshift_homeschool_app/bootcamp_templates/Practicewinningfriends.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Writeaboutafamilyvacation.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Yourfavoritefictionalcharacter.dart';
-import 'package:makeshift_homeschool_app/bootcamp_templates/talkaboutyourfavoritegame.dart';
+import 'package:makeshift_homeschool_app/bootcamp_templates/TalkAboutYourFavoriteGame.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import '../bootcamp_templates/WriteAboutYourFavoriteMemory.dart';
 import 'package:makeshift_homeschool_app/shared/stroke_text.dart';

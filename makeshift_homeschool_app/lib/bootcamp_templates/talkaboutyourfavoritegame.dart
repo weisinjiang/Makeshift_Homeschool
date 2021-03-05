@@ -202,6 +202,13 @@ class _TalkaboutyourfavoriteactivityState
                                 decoration: InputDecoration(hintText: "Activity"),
                               ),
                             ),
+                            Text(", there are some things I dont like about it, including "),
+                          SizedBox(width:120,
+                         child: TextFormField(
+                           controller: textController[3],
+                           decoration: InputDecoration(hintText: "Things you don't like"),
+                         ), 
+                         ),
                           ],
                         ),
                       
