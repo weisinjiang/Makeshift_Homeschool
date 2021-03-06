@@ -202,7 +202,7 @@ class _TalkaboutyourfavoriteactivityState
                                 decoration: InputDecoration(hintText: "Activity"),
                               ),
                             ),
-                            Text(", there are some things I dont like about it, including "),
+                            Container(child: Text(", there are some \nthings I dont like about it, including ") ,),
                           SizedBox(width:120,
                          child: TextFormField(
                            controller: textController[3],
