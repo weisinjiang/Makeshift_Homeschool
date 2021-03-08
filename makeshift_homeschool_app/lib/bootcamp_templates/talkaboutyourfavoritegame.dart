@@ -178,41 +178,42 @@ class _TalkaboutyourfavoriteactivityState
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                               controller: textController[2],
-                              
                             ),
-                            width: screenSize.width/4,
+                            width: screenSize.width / 4,
                           ),
                         ),
                         SizedBox(
                           height: screenSize.height * 0.03,
                         ),
-                        ]),
-                        ],
+                      ]),
+                    ],
                   ),
-                        Row(
-                          children: [
-                            Text("Although I really like  "),
-                            SizedBox(
-                              width: 120,
-                              child: TextFormField(
-                                /// add a controller and attach it to this field
-                                // keyboardType: TextInputType.multiline,
-                                //     maxLines: null,
-                                controller: textController[0],
-                                decoration: InputDecoration(hintText: "Activity"),
-                              ),
-                            ),
-                            Container(child: Text(", there are some \nthings I dont like about it, including ") ,),
-                          SizedBox(width:120,
-                         child: TextFormField(
-                           controller: textController[3],
-                           decoration: InputDecoration(hintText: "Things you don't like"),
-                         ), 
-                         ),
-                          ],
+                  Row(
+                    children: [
+                      Text("Although I really like  "),
+                      SizedBox(
+                        width: 120,
+                        child: TextFormField(
+                          /// add a controller and attach it to this field
+                          // keyboardType: TextInputType.multiline,
+                          //     maxLines: null,
+                          controller: textController[0],
+                          decoration: InputDecoration(hintText: "Activity"),
                         ),
-                      
-                    
+                      ),
+                    ]
+                  ),
+                      Text(", there are some things I dont like about it, including "),
+                      SizedBox(
+                        width: 120,
+                        child: TextFormField(
+                          controller: textController[3],
+                          decoration: InputDecoration(
+                              hintText: "Things you don't like"),
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(
                     child: TextFormField(
                       /// add a controller and attach it to this field
@@ -345,8 +346,9 @@ class _TalkaboutyourfavoriteactivityState
                     ),
                     width: screenSize.width,
                   ),
-                ],
-              ),
+                
+              
+              
 
               SizedBox(
                 height: screenSize.height * 0.03,
@@ -358,8 +360,8 @@ class _TalkaboutyourfavoriteactivityState
                     await save(
                         database, user, "Get to know a neighbor", context);
                   })
-            ],
-          ),
+            
+            ]),
         ),
       ),
     );
