@@ -306,7 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _passwordController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
-                    hintText: "Password",
+                    hintText: "Password*",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.vertical()),
                   ),
@@ -330,12 +330,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     obscureText: true,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.lock_outline),
-                      hintText: "Confirm Password",
+                      hintText: "Confirm Password*",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.vertical()),
                     ),
                     validator: (userConfirmPasswordInput) =>
                         confirmPassword(userConfirmPasswordInput),
+                  ),
+                ),
+
+                // Password Requirements Explanation
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    children: <Widget>[
+                      Text(
+                          "*Password must be 8 or more characters with at least one each number, symbol, lowercase & uppercase letter used.",
+                          style: TextStyle(color: Colors.grey)),
+                    ],
                   ),
                 ),
 
