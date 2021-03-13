@@ -13,21 +13,24 @@ class _ActivitiesState extends State<Activities> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(  
-        backgroundColor: Colors.brown[400],
-        title: Text("Activities!"),
+        backgroundColor: Color(0xFF192A56),
+        title: Text(
+          "Activities!",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
         body: Container(
-          color: Colors.brown[200],
+          color: Colors.white,
           child: ListView(children: [
       Container(
           padding: EdgeInsets.all(10),
           child: Card(
-            color: Colors.grey[300],
+            color: Color(0xFF192A56),
             child: InkWell(
               child: Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 15),
-                  child: Text("Tic Tac Toe", style: TextStyle(fontSize: 25)),
+                  child: Text("Tic Tac Toe", style: TextStyle(fontSize: 25, color: Colors.white)),
                 ),
               ),
               onTap: () {
@@ -39,12 +42,12 @@ class _ActivitiesState extends State<Activities> {
           Container(
           padding: EdgeInsets.all(10),
           child: Card(
-            color: Colors.grey[300],
+            color: Color(0xFF192A56),
             child: InkWell(
               child: Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 15),
-                  child: Text("How to make a paper hat", style: TextStyle(fontSize: 25)),
+                  child: Text("How to make a paper hat", style: TextStyle(fontSize: 25, color: Colors.white)),
                 ),
               ),
               onTap: () {
@@ -55,12 +58,12 @@ class _ActivitiesState extends State<Activities> {
           )),Container(
           padding: EdgeInsets.all(10),
           child: Card(
-            color: Colors.grey[300],
+            color: Color(0xFF192A56),
             child: InkWell(
               child: Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 15),
-                  child: Text("How to draw a picture", style: TextStyle(fontSize: 25)),
+                  child: Text("How to draw a picture", style: TextStyle(fontSize: 25, color: Colors.white)),
                 ),
               ),
               onTap: () {
