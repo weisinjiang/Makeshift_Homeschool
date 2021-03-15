@@ -56,7 +56,7 @@ class _TalkaboutyourfavoriteactivityState
   Future<void> save(BootCampProvider database, Map<String, dynamic> userData,
       String activityID, BuildContext context) async {
     String userResponse = """
-    What is your favorite activity? ${textController[0].text}\n
+    My favorite activity is ${textController[0].text}\n
     1. What's something you wish you did?\n
     ${textController[1].text}\n
     2. What's your favorite relaxing activity?\n
@@ -113,13 +113,14 @@ class _TalkaboutyourfavoriteactivityState
           height: screenSize.height * 0.95,
           child: ListView(
             children: <Widget>[
+              Text("testing..."),
               /// Image on top
 
-              Image.asset(
-                "asset/bootcamp/interview.gif",
-                height: screenSize.height * 0.3,
-                width: screenSize.width,
-              ),
+              // Image.asset(
+              //   "asset/bootcamp/interview.gif",
+              //   height: screenSize.height * 0.3,
+              //   width: screenSize.width,
+              // ),
 
               SizedBox(
                 height: screenSize.height * 0.03,
