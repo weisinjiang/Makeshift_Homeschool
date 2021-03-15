@@ -200,30 +200,35 @@ class _TalkaboutyourfavoriteactivityState
                           controller: textController[0],
                           decoration: InputDecoration(hintText: "Activity"),
                         ),
+                        
                       ),
+                      Text(", there are some"),
                     ]
                   ),
-                      Text(", there are some things I dont like about it, including "),
-                      SizedBox(
-                        width: 120,
-                        child: TextFormField(
-                          controller: textController[3],
-                          decoration: InputDecoration(
-                              hintText: "Things you don't like"),
-                        ),
+                  
+                      Row(
+                        children: [
+                          Text(" things that I don't like, including "),
+                          SizedBox(
+                            width: 120,
+                            child:  Row(
+                              children: [
+                                TextFormField(
+                                  controller: textController[3],
+                                  decoration: InputDecoration(
+                                      hintText: "Things you don't like, 1"),
+
+                                ),
+                                TextFormField(controller: textController[4],),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
+                    
                     ],
                   ),
-                  SizedBox(
-                    child: TextFormField(
-                      /// add a controller and attach it to this field
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      controller: textController[3],
-                      decoration: InputDecoration(hintText: "Answer Three"),
-                    ),
-                    width: screenSize.width,
-                  ),
+                  
                   SizedBox(
                     height: screenSize.height * 0.03,
                   ),
@@ -234,7 +239,7 @@ class _TalkaboutyourfavoriteactivityState
                       /// add a controller and attach it to this field
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
-                      controller: textController[4],
+                      controller: textController[5],
                       decoration: InputDecoration(hintText: "Answer Four"),
                     ),
                     width: screenSize.width,
