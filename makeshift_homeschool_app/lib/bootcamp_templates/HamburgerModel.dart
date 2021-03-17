@@ -1,18 +1,15 @@
-// keyboardType: TextInputType.multiline,
-//   maxLines: null,
-
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
 
-class Personality extends StatefulWidget {
+class HamburgerModel extends StatefulWidget {
   @override
-  _PersonalityState createState() => _PersonalityState();
+  _HamburgerModelState createState() => _HamburgerModelState();
 }
 
-class _PersonalityState extends State<Personality> {
+class _HamburgerModelState extends State<HamburgerModel> {
   List<TextEditingController> textController = [
     TextEditingController(),
 
@@ -28,23 +25,27 @@ class _PersonalityState extends State<Personality> {
     /// controller for "What happened next?" index2
     TextEditingController(),
 
-  
+    /// controller for "How did it end?" index3
+    TextEditingController(),
+
+    /// controller for "Why?" index4
+    TextEditingController(),
+
+    /// controller for "Why?" index4
   ];
 
   Future<void> save(BootCampProvider database, Map<String, dynamic> userData,
       String activityID, BuildContext context) async {
     String userResponse = """
-    Are you introverted or extroverted?\n 
-    ${textController[0].text},\n
-    Are you sensing or intuitive?\n 
-    ${textController[1].text}.\n
-    Are you thinking or feeling?\n
+    Dear creator of ${textController[0].text},\n
+    I really enjoy playing ${textController[1].text}.\n
+    And I have some ideas on how to make it even better!\n
     1. ${textController[2].text}\n
-    Are you judging or perceiving?\n
-    2. ${textController[3].text}
-    What are some things you like about your personality?\n
+    2. ${textController[3].text}\n
     3. ${textController[4].text}\n
-    Thank you for lerning about my personality!
+    4. ${textController[5].text}\n
+    5. ${textController[6].text}\n
+    Thank you for considering my ideas!
     """;
     if (database.isBootcampComplete(this.textController)) {
       await database.saveToUserProfile(userData, activityID, userResponse);
@@ -69,7 +70,7 @@ class _PersonalityState extends State<Personality> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("What is Your Personality"),
+        title: Text("The Hambuger Model"),
       ),
       body: Container(
         color: Colors.white,
@@ -84,15 +85,55 @@ class _PersonalityState extends State<Personality> {
               /// Image on top
 
               Image.asset(
-                "asset/bootcamp/? Head.png",
+                "asset/bootcamp/videogame.gif",
                 height: screenSize.height * 0.3,
                 width: screenSize.width,
               ),
+
+              Text("Dear creator of "),
+
+              Row(
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: TextFormField(
+                      /// add a controller and attach it to this field
+                      // keyboardType: TextInputType.multiline,
+                      //     maxLines: null,
+                      controller: textController[0],
+                      decoration: InputDecoration(hintText: "video game"),
+                    ),
+                  ),
+                  Text(","),
+                ],
+              ),
+
               SizedBox(
                 height: screenSize.height * 0.03,
               ),
 
-              Text("introvert means: that you get your energy from being alone \ extrovert means: you get your energy from being with people"),
+              Row(
+                children: [
+                  Text("I really enjoy playing  "),
+                  SizedBox(
+                    width: 120,
+                    child: TextFormField(
+                      /// add a controller and attach it to this field
+                      // keyboardType: TextInputType.multiline,
+                      //     maxLines: null,
+                      controller: textController[1],
+                      decoration: InputDecoration(hintText: "video game"),
+                    ),
+                  ),
+                  Text("."),
+                ],
+              ),
+
+              SizedBox(
+                height: screenSize.height * 0.03,
+              ),
+
+              Text("And I have some ideas on how to make it even better!"),
 
               SizedBox(
                 height: screenSize.height * 0.03,
@@ -105,21 +146,10 @@ class _PersonalityState extends State<Personality> {
                   /// add a controller and attach it to this field
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  controller: textController[0],
-                  decoration: InputDecoration(
-                      hintText: "Are introverted or extroverted?"),
+                  controller: textController[2],
+                  decoration: InputDecoration(hintText: "Suggestion One"),
                 ),
                 width: screenSize.width,
-              ),
-
-              SizedBox(
-                height: 40,
-              ),
-
-              Text("sensing means: You remember concepts and ideas \ intuitive means: You remember individual facts and phrases"),
-
-              SizedBox(
-                height: screenSize.height * 0.01,
               ),
 
               SizedBox(
@@ -133,21 +163,10 @@ class _PersonalityState extends State<Personality> {
                   /// add a controller and attach it to this field
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  controller: textController[1],
-                  decoration: InputDecoration(
-                      hintText: "Are you Sensing or intuitive?"),
+                  controller: textController[3],
+                  decoration: InputDecoration(hintText: "Suggestion Two"),
                 ),
                 width: screenSize.width,
-              ),
-
-              SizedBox(
-                height: 40,
-              ),
-
-              Text("thinking means: You pay attention to the topic when talking to other people \ feeling means: You pay attention to how other people are feeling when talking to other people"),
-
-              SizedBox(
-                height: screenSize.height * 0.01,
               ),
 
               SizedBox(
@@ -161,21 +180,10 @@ class _PersonalityState extends State<Personality> {
                   /// add a controller and attach it to this field
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  controller: textController[2],
-                  decoration:
-                      InputDecoration(hintText: "Are you thinking or feeling?"),
+                  controller: textController[4],
+                  decoration: InputDecoration(hintText: "Suggestion Three"),
                 ),
                 width: screenSize.width,
-              ),
-
-              SizedBox(
-                height: 40,
-              ),
-
-              Text("judging means: You like things planned and use tools like to-do lists and schedules \ perceiving means: You like things planned and use tools like to-do lists and schedules"),
-
-              SizedBox(
-                height: screenSize.height * 0.01,
               ),
 
               SizedBox(
@@ -193,9 +201,8 @@ class _PersonalityState extends State<Personality> {
                   /// add a controller and attach it to this field
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  controller: textController[3],
-                  decoration: InputDecoration(
-                      hintText: "Are you judging or perceiving?"),
+                  controller: textController[5],
+                  decoration: InputDecoration(hintText: "Suggestion Four"),
                 ),
                 width: screenSize.width,
               ),
@@ -203,6 +210,8 @@ class _PersonalityState extends State<Personality> {
               SizedBox(
                 height: screenSize.height * 0.03,
               ),
+
+              Text("5. "),
 
               SizedBox(
                 width: 300,
@@ -213,10 +222,8 @@ class _PersonalityState extends State<Personality> {
                   /// add a controller and attach it to this field
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  controller: textController[4],
-                  decoration: InputDecoration(
-                      hintText:
-                          "What are some things you like about your personality?"),
+                  controller: textController[6],
+                  decoration: InputDecoration(hintText: "Suggestion Five"),
                 ),
                 width: screenSize.width,
               ),
@@ -225,7 +232,7 @@ class _PersonalityState extends State<Personality> {
                 height: screenSize.height * 0.03,
               ),
 
-              Text("Thank you for learning about my personality!"),
+              Text("Thank you for considering my ideas!"),
 
               SizedBox(
                 height: screenSize.height * 0.03,
@@ -235,7 +242,7 @@ class _PersonalityState extends State<Personality> {
                   child: Text("Save"),
                   onPressed: () async {
                     await save(database, user,
-                        "What is Your Personality", context);
+                        "Make your favorite game even better", context);
                   })
             ],
           ),
