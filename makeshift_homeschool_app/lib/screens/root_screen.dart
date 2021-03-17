@@ -33,7 +33,8 @@ class _RootScreenState extends State<RootScreen> {
   @override
   void initState() {
     userData = Provider.of<AuthProvider>(context, listen: false).getUser;
-    isEmailVerified =Provider.of<AuthProvider>(context, listen: false).isEmailVerified;
+    isEmailVerified =
+        Provider.of<AuthProvider>(context, listen: false).isEmailVerified;
     super.initState();
   }
 
@@ -46,65 +47,241 @@ class _RootScreenState extends State<RootScreen> {
 
     if (userData != null) {
       return Scaffold(
-          appBar: AppBar(
-            elevation: 0.0,
-            backgroundColor: kPaleBlue,
-            title: Text("Hi, ${userData["username"]}!"),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.person),
-                onPressed: () => Navigator.push(
-                    context, SlideLeftRoute(screen: ProfileScreen())),
-              )
+        appBar: AppBar(
+          elevation: 0.0,
+          backgroundColor: kPaleBlue,
+          title: Text("Hi, ${userData["username"]}!"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.person),
+              onPressed: () => Navigator.push(
+                  context, SlideLeftRoute(screen: ProfileScreen())),
+            )
+          ],
+        ),
+
+        // endDrawer: AppDrawer(
+        //   userData: userData,
+        // ),
+        body: Container(
+          color: kPaleBlue,
+          height: screenSize.height,
+          width: screenSize.width,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                /// What do you want to do today? Greet image
+                // Container(
+                //   height: screenSize.height * 0.20,
+                //   width: screenSize.width,
+                //   child: Center(
+                //       child: Image.asset(
+                //     'asset/images/greetJoseph1.png',
+                //     fit: BoxFit.contain,
+                //   )),
+                // ),
+
+                // Before build, user's email was checked to be not verified
+                if (!isEmailVerified)
+                  Text(
+                    "Please secure your account by verifying your email",
+                    style: kBoldTextStyle,
+                  ),
+
+                // Render the buttons depending on if it is web or mobile because
+                // Mobile app button design currently do not work on WebApp
+                Builder(
+                  builder: (context) {
+                    if (kIsWeb) {
+                      return buildWebButtons(screenSize, context);
+                    } else {
+                      return buildMobileButtons(screenSize, context);
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              UserAccountsDrawerHeader(
+                currentAccountPicture: CircleAvatar(
+                  radius: 60,
+                  backgroundImage: NetworkImage(userData["photoURL"]),
+                ),
+                accountName: Text("${userData["username"]}"),
+                accountEmail: Text("${userData["level"]}"),
+              ),
+              ListTile(
+                leading: Icon(Icons.fireplace),
+                title: Text("Bootcamp"),
+                onTap: () {
+                  Navigator.push(
+                      context, SlideLeftRoute(screen: BootCampScreen()));
+                },
+              ),
+              ListTile(
+                  leading: Icon(Icons.menu_book),
+                  title: Text("Learn"),
+                  onTap: () {
+                    showModalBottomSheet(
+                        isDismissible: true,
+                        backgroundColor: Colors.grey[400],
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                              height: screenSize.height * 0.40,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    height: screenSize.height * 0.06,
+                                    width: screenSize.width * 0.85,
+                                    child: RaisedButton(
+                                        color: Colors.transparent,
+                                        child: Text(
+                                          "Articles",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(); // Pop the buttons off the screen
+                                          Navigator.push(
+                                              context,
+                                              SlideLeftRoute(
+                                                  screen: StudyScreen()));
+                                        }),
+                                  ),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  Container(
+                                    height: screenSize.height * 0.06,
+                                    width: screenSize.width * 0.85,
+                                    child: RaisedButton(
+                                        color: Colors.transparent,
+                                        child: Text(
+                                          "Videos",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          Navigator.push(
+                                              context,
+                                              SlideLeftRoute(
+                                                  screen: StudyVideoScreen()));
+                                        }),
+                                  )
+                                ],
+                              ));
+                        });
+                  }),
+              ListTile(
+                  leading: Icon(Icons.edit),
+                  title: Text("Teach"),
+                  onTap: () {
+                    showModalBottomSheet(
+                        isDismissible: true,
+                        backgroundColor: Colors.grey[400],
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                            height: screenSize.height * 0.40,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  height: screenSize.height * 0.06,
+                                  width: screenSize.width * 0.85,
+                                  child: RaisedButton(
+                                      color: Colors.transparent,
+                                      child: Text(
+                                        "Article Post",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Pop the buttons off the screen
+                                        Navigator.push(
+                                            context,
+                                            SlideLeftRoute(
+                                                screen: NewPostScreen(
+                                              isEditing: false,
+                                              postData: null,
+                                            )));
+                                      }),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Container(
+                                  height: screenSize.height * 0.06,
+                                  width: screenSize.width * 0.85,
+                                  child: RaisedButton(
+                                      color: Colors.transparent,
+                                      child: Text(
+                                        "Video Post",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        Navigator.push(
+                                            context,
+                                            SlideLeftRoute(
+                                                screen: NewVideoPostScreen(
+                                              isEditing: false,
+                                              postData: null,
+                                            )));
+                                      }),
+                                )
+                              ],
+                            ),
+                          );
+                        });
+                  }),
+              if (userData["level"] == "Professor")
+                ListTile(
+                  leading: Icon(Icons.check_box),
+                  title: Text("Approve Lessons"),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        SlideLeftRoute(
+                            screen: LessonApprovalScreen(
+                          reviewer: Reviewer.principle,
+                        )));
+                  },
+                ),
+              if (userData["level"] == "Professor" ||
+                  userData["level"] == "Teacher")
+                ListTile(
+                  leading: Icon(Icons.edit_attributes_outlined),
+                  title: Text("Review Lessons"),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        SlideLeftRoute(
+                            screen: LessonApprovalScreen(
+                          reviewer: Reviewer.teacher,
+                        )));
+                  },
+                )
             ],
           ),
-
-          // endDrawer: AppDrawer(
-          //   userData: userData,
-          // ),
-          body: Container(
-            color: kPaleBlue,
-            height: screenSize.height,
-            width: screenSize.width,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  /// What do you want to do today? Greet image
-                  Container(
-                    height: screenSize.height * 0.20,
-                    width: screenSize.width,
-                    child: Center(
-                        child: Image.asset(
-                      'asset/images/greetJoseph1.png',
-                      fit: BoxFit.contain,
-                    )),
-                  ),
-                  
-                  // Before build, user's email was checked to be not verified
-                  if (!isEmailVerified)
-                    Text(
-                      "Please secure your account by verifying your email",
-                      style: kBoldTextStyle,
-                    ),
-
-                  // Render the buttons depending on if it is web or mobile because
-                  // Mobile app button design currently do not work on WebApp
-                  Builder(
-                    builder: (context) {
-                      if (kIsWeb) {
-                        return buildWebButtons(screenSize, context);
-                      } else {
-                        return buildMobileButtons(screenSize, context);
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ));
-    
+        ),
+      );
     } else {
       return LoadingScreen();
     }
@@ -138,65 +315,62 @@ class _RootScreenState extends State<RootScreen> {
                   height: screenSize.height * 0.20,
                   width: screenSize.width / 2,
                   canUseButton: true,
-                  function: () => showModalBottomSheet(  
-                    isDismissible: true,
-                    backgroundColor: Colors.grey[400],
-                    context: context,
-                    builder: (context) {
-                      return Container(
-                        height: screenSize.height * 0.40,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 20,),
-
-                            Container(  
-                              height: screenSize.height * 0.06,
-                              width: screenSize.width * 0.85,
-                              child: RaisedButton(  
-                                color: Colors.transparent,
-                                child: Text(
-                                  "Articles",
-                                  style: TextStyle(  
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop(); // Pop the buttons off the screen
-                                  Navigator.push(
-                                    context, 
-                                    SlideLeftRoute(screen: StudyScreen())
-                                  );
-
-                                }
+                  function: () => showModalBottomSheet(
+                      isDismissible: true,
+                      backgroundColor: Colors.grey[400],
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          height: screenSize.height * 0.40,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 20,
                               ),
-                            ),
-                            SizedBox(height: 30,),
-
-                            Container(  
-                              height: screenSize.height * 0.06,
-                              width: screenSize.width * 0.85,
-                              child: RaisedButton(  
-                                color: Colors.transparent,
-                                child: Text(
-                                  "Videos",
-                                  style: TextStyle(  
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.push(
-                                    context, 
-                                    SlideLeftRoute(screen: StudyVideoScreen())
-                                  );
-                                }
+                              Container(
+                                height: screenSize.height * 0.06,
+                                width: screenSize.width * 0.85,
+                                child: RaisedButton(
+                                    color: Colors.transparent,
+                                    child: Text(
+                                      "Articles",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Pop the buttons off the screen
+                                      Navigator.push(
+                                          context,
+                                          SlideLeftRoute(
+                                              screen: StudyScreen()));
+                                    }),
                               ),
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Container(
+                                height: screenSize.height * 0.06,
+                                width: screenSize.width * 0.85,
+                                child: RaisedButton(
+                                    color: Colors.transparent,
+                                    child: Text(
+                                      "Videos",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      Navigator.push(
+                                          context,
+                                          SlideLeftRoute(
+                                              screen: StudyVideoScreen()));
+                                    }),
+                              )
+                            ],
+                          ),
+                        );
+                      }),
                   name: "Learn",
                   imageLocation: "asset/images/books.png",
                 )),
@@ -208,70 +382,72 @@ class _RootScreenState extends State<RootScreen> {
                   height: screenSize.height * 0.20,
                   width: screenSize.width / 2,
                   canUseButton: true,
-                  function: () => showModalBottomSheet(  
-                    isDismissible: true,
-                    backgroundColor: Colors.grey[400],
-                    context: context,
-                    builder: (context) {
-                      return Container(
-                        height: screenSize.height * 0.40,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 20,),
-
-                            Container(  
-                              height: screenSize.height * 0.06,
-                              width: screenSize.width * 0.85,
-                              child: RaisedButton(  
-                                color: Colors.transparent,
-                                child: Text(
-                                  "Article Post",
-                                  style: TextStyle(  
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop(); // Pop the buttons off the screen
-                                  Navigator.push(
-                                    context, 
-                                    SlideLeftRoute(screen: NewPostScreen(isEditing: false, postData: null,))
-                                  );
-
-                                }
+                  function: () => showModalBottomSheet(
+                      isDismissible: true,
+                      backgroundColor: Colors.grey[400],
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          height: screenSize.height * 0.40,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 20,
                               ),
-                            ),
-                            SizedBox(height: 30,),
-
-                            Container(  
-                              height: screenSize.height * 0.06,
-                              width: screenSize.width * 0.85,
-                              child: RaisedButton(  
-                                color: Colors.transparent,
-                                child: Text(
-                                  "Video Post",
-                                  style: TextStyle(  
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.push(
-                                    context, 
-                                    SlideLeftRoute(screen: NewVideoPostScreen(isEditing: false, postData: null,))
-                                  );
-                                }
+                              Container(
+                                height: screenSize.height * 0.06,
+                                width: screenSize.width * 0.85,
+                                child: RaisedButton(
+                                    color: Colors.transparent,
+                                    child: Text(
+                                      "Article Post",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Pop the buttons off the screen
+                                      Navigator.push(
+                                          context,
+                                          SlideLeftRoute(
+                                              screen: NewPostScreen(
+                                            isEditing: false,
+                                            postData: null,
+                                          )));
+                                    }),
                               ),
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Container(
+                                height: screenSize.height * 0.06,
+                                width: screenSize.width * 0.85,
+                                child: RaisedButton(
+                                    color: Colors.transparent,
+                                    child: Text(
+                                      "Video Post",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      Navigator.push(
+                                          context,
+                                          SlideLeftRoute(
+                                              screen: NewVideoPostScreen(
+                                            isEditing: false,
+                                            postData: null,
+                                          )));
+                                    }),
+                              )
+                            ],
+                          ),
+                        );
+                      }),
                   name: "Teach",
                   imageLocation: "asset/images/teach.png",
                 )),
           ])),
-
 
       if (userData["level"] == "Professor")
         Container(
@@ -320,176 +496,8 @@ class _RootScreenState extends State<RootScreen> {
   }
 
   Column buildWebButtons(Size screenSize, BuildContext context) {
-    return Column(children: [
-      Container(
-        height: screenSize.height * 0.15,
-        width: screenSize.width / 2,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GhostButton(
-            borderRadius: 20.0,
-            buttonBorderColor: kRedOrange,
-            buttonFillColor: kRedOrange,
-            buttonName: "Boot Camp",
-            buttonTextColor: Colors.black,
-            function: () => Navigator.push(
-                context, SlideLeftRoute(screen: BootCampScreen())),
-          ),
-        ),
-      ),
-      FittedBox(
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-            Container(
-              height: screenSize.height * 0.15,
-              width: screenSize.width / 4,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GhostButton(
-                  borderRadius: 20.0,
-                  buttonBorderColor: kRedOrange,
-                  buttonFillColor: kRedOrange,
-                  buttonName: "Learn",
-                  buttonTextColor: Colors.black,
-                  function: () => showModalBottomSheet(  
-                    isDismissible: true,
-                    backgroundColor: Colors.grey[400],
-                    context: context,
-                    builder: (context) {
-                      return Container(
-                        height: screenSize.height * 0.40,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 20,),
-
-                            Container(  
-                              height: screenSize.height * 0.06,
-                              width: screenSize.width * 0.85,
-                              child: RaisedButton(  
-                                color: Colors.transparent,
-                                child: Text(
-                                  "Articles",
-                                  style: TextStyle(  
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop(); // Pop the buttons off the screen
-                                  Navigator.push(
-                                    context, 
-                                    SlideLeftRoute(screen: StudyScreen())
-                                  );
-
-                                }
-                              ),
-                            ),
-                            SizedBox(height: 30,),
-
-                            Container(  
-                              height: screenSize.height * 0.06,
-                              width: screenSize.width * 0.85,
-                              child: RaisedButton(  
-                                color: Colors.transparent,
-                                child: Text(
-                                  "Videos",
-                                  style: TextStyle(  
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.push(
-                                    context, 
-                                    SlideLeftRoute(screen: StudyVideoScreen())
-                                  );
-                                }
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              height: screenSize.height * 0.15,
-              width: screenSize.width / 4,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GhostButton(
-                  borderRadius: 20.0,
-                  buttonBorderColor: kRedOrange,
-                  buttonFillColor: kRedOrange,
-                  buttonName: "Teach",
-                  buttonTextColor: Colors.black,
-                  function: () => showModalBottomSheet(  
-                    isDismissible: true,
-                    backgroundColor: Colors.grey[400],
-                    context: context,
-                    builder: (context) {
-                      return Container(
-                        height: screenSize.height * 0.40,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 20,),
-
-                            Container(  
-                              height: screenSize.height * 0.06,
-                              width: screenSize.width * 0.85,
-                              child: RaisedButton(  
-                                color: Colors.transparent,
-                                child: Text(
-                                  "Article Post",
-                                  style: TextStyle(  
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop(); // Pop the buttons off the screen
-                                  Navigator.push(
-                                    context, 
-                                    SlideLeftRoute(screen: NewPostScreen(isEditing: false, postData: null,))
-                                  );
-
-                                }
-                              ),
-                            ),
-                            SizedBox(height: 30,),
-
-                            Container(  
-                              height: screenSize.height * 0.06,
-                              width: screenSize.width * 0.85,
-                              child: RaisedButton(  
-                                color: Colors.transparent,
-                                child: Text(
-                                  "Video Post",
-                                  style: TextStyle(  
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.push(
-                                    context, 
-                                    SlideLeftRoute(screen: NewVideoPostScreen(isEditing: false, postData: null,))
-                                  );
-                                }
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  ),
-                ),
-              ),
-            ),
-          ])),
-      if (userData["level"] == "Professor")
+    return Column(
+      children: [
         Container(
           height: screenSize.height * 0.15,
           width: screenSize.width / 2,
@@ -499,39 +507,209 @@ class _RootScreenState extends State<RootScreen> {
               borderRadius: 20.0,
               buttonBorderColor: kRedOrange,
               buttonFillColor: kRedOrange,
-              buttonName: "Approve Lessons",
+              buttonName: "Boot Camp",
               buttonTextColor: Colors.black,
               function: () => Navigator.push(
-                  context,
-                  SlideLeftRoute(
-                      screen: LessonApprovalScreen(
-                    reviewer: Reviewer.principle,
-                  ))),
+                  context, SlideLeftRoute(screen: BootCampScreen())),
             ),
           ),
         ),
-      // show this to teachers so they can review posts or Principle
-      if (userData["level"] == "Professor" || userData["level"] == "Teacher")
-        Container(
-          height: screenSize.height * 0.15,
-          width: screenSize.width / 2,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GhostButton(
-              borderRadius: 20.0,
-              buttonBorderColor: kRedOrange,
-              buttonFillColor: kRedOrange,
-              buttonName: "Review Tutor Lessons",
-              buttonTextColor: Colors.black,
-              function: () => Navigator.push(
-                  context,
-                  SlideLeftRoute(
-                      screen: LessonApprovalScreen(
-                    reviewer: Reviewer.teacher,
-                  ))),
+        FittedBox(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+              Container(
+                height: screenSize.height * 0.15,
+                width: screenSize.width / 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GhostButton(
+                    borderRadius: 20.0,
+                    buttonBorderColor: kRedOrange,
+                    buttonFillColor: kRedOrange,
+                    buttonName: "Learn",
+                    buttonTextColor: Colors.black,
+                    function: () => showModalBottomSheet(
+                        isDismissible: true,
+                        backgroundColor: Colors.grey[400],
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                            height: screenSize.height * 0.40,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  height: screenSize.height * 0.06,
+                                  width: screenSize.width * 0.85,
+                                  child: RaisedButton(
+                                      color: Colors.transparent,
+                                      child: Text(
+                                        "Articles",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Pop the buttons off the screen
+                                        Navigator.push(
+                                            context,
+                                            SlideLeftRoute(
+                                                screen: StudyScreen()));
+                                      }),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Container(
+                                  height: screenSize.height * 0.06,
+                                  width: screenSize.width * 0.85,
+                                  child: RaisedButton(
+                                      color: Colors.transparent,
+                                      child: Text(
+                                        "Videos",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        Navigator.push(
+                                            context,
+                                            SlideLeftRoute(
+                                                screen: StudyVideoScreen()));
+                                      }),
+                                )
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
+                ),
+              ),
+              Container(
+                height: screenSize.height * 0.15,
+                width: screenSize.width / 4,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GhostButton(
+                    borderRadius: 20.0,
+                    buttonBorderColor: kRedOrange,
+                    buttonFillColor: kRedOrange,
+                    buttonName: "Teach",
+                    buttonTextColor: Colors.black,
+                    function: () => showModalBottomSheet(
+                        isDismissible: true,
+                        backgroundColor: Colors.grey[400],
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                            height: screenSize.height * 0.40,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  height: screenSize.height * 0.06,
+                                  width: screenSize.width * 0.85,
+                                  child: RaisedButton(
+                                      color: Colors.transparent,
+                                      child: Text(
+                                        "Article Post",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Pop the buttons off the screen
+                                        Navigator.push(
+                                            context,
+                                            SlideLeftRoute(
+                                                screen: NewPostScreen(
+                                              isEditing: false,
+                                              postData: null,
+                                            )));
+                                      }),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Container(
+                                  height: screenSize.height * 0.06,
+                                  width: screenSize.width * 0.85,
+                                  child: RaisedButton(
+                                      color: Colors.transparent,
+                                      child: Text(
+                                        "Video Post",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        Navigator.push(
+                                            context,
+                                            SlideLeftRoute(
+                                                screen: NewVideoPostScreen(
+                                              isEditing: false,
+                                              postData: null,
+                                            )));
+                                      }),
+                                )
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
+                ),
+              ),
+            ])),
+        if (userData["level"] == "Professor")
+          Container(
+            height: screenSize.height * 0.15,
+            width: screenSize.width / 2,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GhostButton(
+                borderRadius: 20.0,
+                buttonBorderColor: kRedOrange,
+                buttonFillColor: kRedOrange,
+                buttonName: "Approve Lessons",
+                buttonTextColor: Colors.black,
+                function: () => Navigator.push(
+                    context,
+                    SlideLeftRoute(
+                        screen: LessonApprovalScreen(
+                      reviewer: Reviewer.principle,
+                    ))),
+              ),
             ),
           ),
-        ),
-    ]);
+        // show this to teachers so they can review posts or Principle
+        if (userData["level"] == "Professor" || userData["level"] == "Teacher")
+          Container(
+            height: screenSize.height * 0.15,
+            width: screenSize.width / 2,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GhostButton(
+                borderRadius: 20.0,
+                buttonBorderColor: kRedOrange,
+                buttonFillColor: kRedOrange,
+                buttonName: "Review Tutor Lessons",
+                buttonTextColor: Colors.black,
+                function: () => Navigator.push(
+                    context,
+                    SlideLeftRoute(
+                        screen: LessonApprovalScreen(
+                      reviewer: Reviewer.teacher,
+                    ))),
+              ),
+            ),
+          ),
+      ],
+    );
   }
 }
