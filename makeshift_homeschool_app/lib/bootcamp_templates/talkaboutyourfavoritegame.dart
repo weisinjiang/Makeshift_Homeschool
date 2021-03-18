@@ -113,14 +113,14 @@ class _TalkaboutyourfavoriteactivityState
           height: screenSize.height * 0.95,
           child: ListView(
             children: <Widget>[
-              Text("testing..."),
+              
               /// Image on top
 
-              // Image.asset(
-              //   "asset/bootcamp/interview.gif",
-              //   height: screenSize.height * 0.3,
-              //   width: screenSize.width,
-              // ),
+              //  Image.asset(
+              //    "asset/bootcamp/interview.gif",
+              //    height: screenSize.height * 0.3,
+              //    width: screenSize.width,
+              //  ),
 
               SizedBox(
                 height: screenSize.height * 0.03,
@@ -236,6 +236,7 @@ class _TalkaboutyourfavoriteactivityState
                   Text(
                       "4. If you could go back and tell your younger self something, what would you tell them?"),
                   SizedBox(
+                    width: 300,
                     child: TextFormField(
                       /// add a controller and attach it to this field
                       keyboardType: TextInputType.multiline,
@@ -243,7 +244,7 @@ class _TalkaboutyourfavoriteactivityState
                       controller: textController[5],
                       decoration: InputDecoration(hintText: "Answer Four"),
                     ),
-                    width: screenSize.width,
+                    
                   ),
                   SizedBox(
                     height: screenSize.height * 0.03,
@@ -254,6 +255,7 @@ class _TalkaboutyourfavoriteactivityState
                     width: 300,
                   ),
                   SizedBox(
+                    width: 300,
                     child: TextFormField(
                       /// add a controller and attach it to this field
                       keyboardType: TextInputType.multiline,
@@ -261,7 +263,7 @@ class _TalkaboutyourfavoriteactivityState
                       controller: textController[5],
                       decoration: InputDecoration(hintText: "Answer Five"),
                     ),
-                    width: screenSize.width,
+                    
                   ),
                   SizedBox(
                     height: screenSize.height * 0.03,
