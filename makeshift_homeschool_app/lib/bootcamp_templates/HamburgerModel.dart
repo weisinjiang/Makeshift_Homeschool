@@ -85,7 +85,7 @@ class _HamburgerModelState extends State<HamburgerModel> {
               /// Image on top
 
               Image.asset(
-                "asset/bootcamp/videogame.gif",
+                "asset/bootcamp/buger-gif.gif",
                 height: screenSize.height * 0.3,
                 width: screenSize.width,
               ),

@@ -5,6 +5,7 @@ import 'package:makeshift_homeschool_app/bootcamp_templates/Differentwaystomove.
 import 'package:makeshift_homeschool_app/bootcamp_templates/Discoveryourfamilieslovelanguages.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Gettoknowaneighbor.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/GetwhatIwantfrommyparents.dart';
+import 'package:makeshift_homeschool_app/bootcamp_templates/HamburgerModel.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Makeyourfavoritegameevenbetter.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Personality.dart';
 import 'package:makeshift_homeschool_app/bootcamp_templates/Practicewinningfriends.dart';
@@ -37,7 +38,8 @@ class BootCampScreen extends StatelessWidget {
       "Practice winning friends",
       "Write about a family vacation",
       "Different ways to move",
-      "Personality"
+      "Personality",
+      "Hambuger model"
     ];
 
     ///
@@ -54,6 +56,7 @@ class BootCampScreen extends StatelessWidget {
       () => Navigator.push(context, SlideLeftRoute(screen: WriteAboutAFamilyVacation())),
       () => Navigator.push(context, SlideLeftRoute(screen: DifferentWaysToMove())),
       () => Navigator.push(context, SlideLeftRoute(screen: Personality())),
+      () => Navigator.push(context, SlideLeftRoute(screen: HamburgerModel())),
     ];
 
     return Scaffold(
@@ -102,7 +105,7 @@ class BootCampScreen extends StatelessWidget {
               width: screenSize.width * 0.50,
               child: ListView.builder(
                 padding: const EdgeInsets.all(10.0),
-                itemCount: 11,
+                itemCount: 13,
                 itemBuilder: (context, index) => BootCampListTile(
                   title: bootCampActivityNames[index],
                   navigationFunction: bootcampNav[index],
@@ -147,7 +150,7 @@ class BootCampScreen extends StatelessWidget {
             width: screenSize.width,
             child: ListView.builder(
               padding: const EdgeInsets.all(10.0),
-              itemCount: 12,
+              itemCount: 13,
               itemBuilder: (context, index) => BootCampListTile(
                 title: bootCampActivityNames[index],
                 navigationFunction: bootcampNav[index],
