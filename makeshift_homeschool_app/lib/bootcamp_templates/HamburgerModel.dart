@@ -85,61 +85,34 @@ class _HamburgerModelState extends State<HamburgerModel> {
               /// Image on top
 
               Image.asset(
-                "asset/bootcamp/buger-gif.gif",
+                "asset/bootcamp/Burger-gif-2.gif",
                 height: screenSize.height * 0.3,
                 width: screenSize.width,
               ),
 
-              Text("Dear creator of "),
+              Text(
+                  "Before you do this Bootcamp learn more about the Hamburger philosophy at this link: PUT LINK HERE! "),
 
-              Row(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    child: TextFormField(
-                      /// add a controller and attach it to this field
-                      // keyboardType: TextInputType.multiline,
-                      //     maxLines: null,
-                      controller: textController[0],
-                      decoration: InputDecoration(hintText: "video game"),
-                    ),
-                  ),
-                  Text(","),
-                ],
+              Image.asset(
+                "asset/bootcamp/Hamburger-model-image.png",
+                height: screenSize.height * 0.3,
+                width: screenSize.width,
               ),
 
               SizedBox(
                 height: screenSize.height * 0.03,
               ),
 
-              Row(
-                children: [
-                  Text("I really enjoy playing  "),
-                  SizedBox(
-                    width: 120,
-                    child: TextFormField(
-                      /// add a controller and attach it to this field
-                      // keyboardType: TextInputType.multiline,
-                      //     maxLines: null,
-                      controller: textController[1],
-                      decoration: InputDecoration(hintText: "video game"),
-                    ),
-                  ),
-                  Text("."),
-                ],
-              ),
-
               SizedBox(
                 height: screenSize.height * 0.03,
               ),
 
-              Text("And I have some ideas on how to make it even better!"),
+              Text(
+                  "What is one example from your daily life based on the Rat Rase burger?"),
 
               SizedBox(
                 height: screenSize.height * 0.03,
               ),
-
-              Text("1."),
 
               SizedBox(
                 child: TextFormField(
@@ -147,7 +120,7 @@ class _HamburgerModelState extends State<HamburgerModel> {
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: textController[2],
-                  decoration: InputDecoration(hintText: "Suggestion One"),
+                  decoration: InputDecoration(hintText: "Example"),
                 ),
                 width: screenSize.width,
               ),
@@ -156,15 +129,13 @@ class _HamburgerModelState extends State<HamburgerModel> {
                 height: screenSize.height * 0.03,
               ),
 
-              Text("2."),
-
               SizedBox(
                 child: TextFormField(
                   /// add a controller and attach it to this field
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: textController[3],
-                  decoration: InputDecoration(hintText: "Suggestion Two"),
+                  decoration: InputDecoration(hintText: "Why?"),
                 ),
                 width: screenSize.width,
               ),

@@ -116,7 +116,7 @@ class _PersonalityState extends State<Personality> {
                 height: 40,
               ),
 
-              Text("sensing means: You remember concepts and ideas \ intuitive means: You remember individual facts and phrases"),
+              Text("sensing means: You remember individual facts and phrases \ intuitive means:  You remember concepts and ideas"),
 
               SizedBox(
                 height: screenSize.height * 0.01,
