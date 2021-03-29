@@ -81,7 +81,8 @@ class MyApp extends StatelessWidget {
       builder: (context, auth, _) =>
     MaterialApp(
       theme: ThemeData(
-          primaryColor: kGreenSecondary,
+          scaffoldBackgroundColor: Colors.black87,
+          // primaryColor: kGreenSecondary,
           textTheme:
               GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
       home: auth.isAuthenticated ? RootScreen()
@@ -100,6 +101,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfileScreen(),
       },
    
-  )));
+  )
+  ));
   }
 }
