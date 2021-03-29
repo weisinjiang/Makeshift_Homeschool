@@ -220,15 +220,26 @@ class _TalkaboutyourfavoriteactivityState
                                       hintText: "Things you don't like"),
 
                                 ),
-                                TextFormField(controller: textController[4],),
+                                
                               ],
                             ),
                           ),
                         ],
                       ),
-                    
-                    ],
-                  ),
+                    Row(
+                        children: [
+                          Text(" things that I don't like, including "),
+                          SizedBox(
+                            width: 120,
+                            child:  Row(
+                              children: [
+                                TextFormField(
+                                  controller: textController[3],
+                                  decoration: InputDecoration(
+                                      hintText: "Things you don't like"),
+
+                                
+                            ),]),)]),
                   
               //     SizedBox(
               //       height: screenSize.height * 0.03,
@@ -370,8 +381,12 @@ class _TalkaboutyourfavoriteactivityState
                   })
             
             ]),
-        ),
-      ),
-    );
+        
+      
+            ]
+            ),
+            ),
+            ),
+            );
   }
 }
