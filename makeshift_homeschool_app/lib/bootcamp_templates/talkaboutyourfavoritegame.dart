@@ -111,136 +111,127 @@ class _TalkaboutyourfavoriteactivityState
         child: Container(
           color: Colors.white,
           height: screenSize.height * 0.95,
-          child: ListView(
-            children: <Widget>[
-              
-              /// Image on top
+          child: ListView(children: <Widget>[
+            /// Image on top
 
-              //  Image.asset(
-              //    "asset/bootcamp/interview.gif",
-              //    height: screenSize.height * 0.3,
-              //    width: screenSize.width,
-              //  ),
+            //  Image.asset(
+            //    "asset/bootcamp/interview.gif",
+            //    height: screenSize.height * 0.3,
+            //    width: screenSize.width,
+            //  ),
 
+            SizedBox(
+              height: screenSize.height * 0.03,
+            ),
+
+            Column(children: [
+              Row(
+                children: [
+                  Text("My favorite activity is "),
+                  SizedBox(
+                    width: 120,
+                    child: TextFormField(
+                      /// add a controller and attach it to this field
+                      // keyboardType: TextInputType.multiline,
+                      //     maxLines: null,
+                      controller: textController[0],
+                      decoration: InputDecoration(hintText: "Activity"),
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(
                 height: screenSize.height * 0.03,
               ),
-
+              Row(
+                children: [
+                  Text("Some things I like about this activity are  "),
+                  SizedBox(
+                    width: 120,
+                    child: TextFormField(
+                      /// add a controller and attach it to this field
+                      // keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      controller: textController[1],
+                      decoration:
+                          InputDecoration(hintText: "What you like about it"),
+                    ),
+                  ),
+                ],
+              ),
               Column(
                 children: [
-                  Row(
-                    children: [
-                      Text("My favorite activity is "),
-                      SizedBox(
-                        width: 120,
+                  Row(children: [
+                    SizedBox(
+                      height: screenSize.height * 0.03,
+                    ),
+                    SizedBox(
+                      height: screenSize.height * 0.03,
+                    ),
+                    Text("I recommend this activity because  "),
+                    SizedBox(
+                      child: Container(
                         child: TextFormField(
                           /// add a controller and attach it to this field
-                          // keyboardType: TextInputType.multiline,
-                          //     maxLines: null,
-                          controller: textController[0],
-                          decoration: InputDecoration(hintText: "Activity"),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: screenSize.height * 0.03,
-                  ),
-                  Row(
-                    children: [
-                      Text("Some things I like about this activity are  "),
-                      SizedBox(
-                        width: 120,
-                        child: TextFormField(
-                          /// add a controller and attach it to this field
-                          // keyboardType: TextInputType.multiline,
+                          keyboardType: TextInputType.multiline,
                           maxLines: null,
-                          controller: textController[1],
+                          controller: textController[2],
+                        ),
+                        width: screenSize.width / 4,
+                      ),
+                    ),
+                    SizedBox(
+                      height: screenSize.height * 0.03,
+                    ),
+                  ]),
+                ],
+              ),
+              Row(children: [
+                Text("Although I really like  "),
+                SizedBox(
+                  width: 120,
+                  child: TextFormField(
+                    /// add a controller and attach it to this field
+                    // keyboardType: TextInputType.multiline,
+                    //     maxLines: null,
+                    controller: textController[0],
+                    decoration: InputDecoration(hintText: "Activity"),
+                  ),
+                ),
+                Text(", there are some"),
+              ]),
+
+              Row(
+                children: [
+                  Text(" things that I don't like, including "),
+                  SizedBox(
+                    width: 120,
+                    child: Row(
+                      children: [
+                        TextFormField(
+                          controller: textController[3],
                           decoration: InputDecoration(
-                              hintText: "What you like about it"),
+                              hintText: "Things you don't like"),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  Column(
-                    children: [
-                      Row(children: [
-                        SizedBox(
-                          height: screenSize.height * 0.03,
-                        ),
-                        SizedBox(
-                          height: screenSize.height * 0.03,
-                        ),
-                        Text("I recommend this activity because  "),
-                        SizedBox(
-                          child: Container(
-                            child: TextFormField(
-                              /// add a controller and attach it to this field
-                              keyboardType: TextInputType.multiline,
-                              maxLines: null,
-                              controller: textController[2],
-                            ),
-                            width: screenSize.width / 4,
-                          ),
-                        ),
-                        SizedBox(
-                          height: screenSize.height * 0.03,
-                        ),
-                      ]),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text("Although I really like  "),
-                      SizedBox(
-                        width: 120,
-                        child: TextFormField(
-                          /// add a controller and attach it to this field
-                          // keyboardType: TextInputType.multiline,
-                          //     maxLines: null,
-                          controller: textController[0],
-                          decoration: InputDecoration(hintText: "Activity"),
-                        ),
-                        
-                      ),
-                      Text(", there are some"),
-                    ]
-                  ),
-                  
-                      Row(
-                        children: [
-                          Text(" things that I don't like, including "),
-                          SizedBox(
-                            width: 120,
-                            child:  Row(
-                              children: [
-                                TextFormField(
-                                  controller: textController[3],
-                                  decoration: InputDecoration(
-                                      hintText: "Things you don't like"),
+                ],
+              ),
+              Row(children: [
+                Text(" things that I don't like, including "),
+                SizedBox(
+                  width: 120,
+                  child: Row(children: [
+                    TextFormField(
+                      controller: textController[3],
+                      decoration:
+                          InputDecoration(hintText: "Things you don't like"),
+                    ),
+                  ]),
+                )
+              ]),
 
-                                ),
-                                
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    Row(
-                        children: [
-                          Text(" things that I don't like, including "),
-                          SizedBox(
-                            width: 120,
-                            child:  Row(
-                              children: [
-                                TextFormField(
-                                  controller: textController[3],
-                                  decoration: InputDecoration(
-                                      hintText: "Things you don't like"),
-
-                                
-                            ),]),)]),
-                  
               //     SizedBox(
               //       height: screenSize.height * 0.03,
               //     ),
@@ -255,7 +246,7 @@ class _TalkaboutyourfavoriteactivityState
               //         controller: textController[5],
               //         decoration: InputDecoration(hintText: "Answer Four"),
               //       ),
-                    
+
               //     ),
               //     SizedBox(
               //       height: screenSize.height * 0.03,
@@ -274,7 +265,7 @@ class _TalkaboutyourfavoriteactivityState
               //         controller: textController[5],
               //         decoration: InputDecoration(hintText: "Answer Five"),
               //       ),
-                    
+
               //     ),
               //     SizedBox(
               //       height: screenSize.height * 0.03,
@@ -365,9 +356,6 @@ class _TalkaboutyourfavoriteactivityState
               //       ),
               //       width: screenSize.width,
               //     ),
-                
-              
-              
 
               // SizedBox(
               //   height: screenSize.height * 0.03,
@@ -379,14 +367,10 @@ class _TalkaboutyourfavoriteactivityState
                     await save(
                         database, user, "Get to know a neighbor", context);
                   })
-            
             ]),
-        
-      
-            ]
-            ),
-            ),
-            ),
-            );
+          ]),
+        ),
+      ),
+    );
   }
 }
