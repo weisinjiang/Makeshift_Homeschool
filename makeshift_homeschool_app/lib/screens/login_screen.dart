@@ -5,6 +5,7 @@ import 'package:makeshift_homeschool_app/screens/reset_password.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
+import 'package:makeshift_homeschool_app/widgets/new_video_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/auth.dart';
@@ -188,13 +189,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       //Initial container that fills the entire screen
       body: Container(
-        color: Colors.white,
+        color: Colors.black87,
         width: screenSize.width,
         height: screenSize.height,
         alignment: Alignment.center,
         // Smaller container that goes inside the inital container that fills the entire screen
         child: Container(
-          color: Colors.white,
+          color: Colors.black87,
           height: screenSize.height * 0.95,
           width: screenSize.width,
           // Scrollable to prevent pixle overflow
@@ -218,11 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
 
-                  // Logo
-                  Padding(
-                    padding: const EdgeInsets.all(40.0),
-                    child: Image.asset('asset/images/logo.png'),
-                  ),
+                  
 
                   // Builder will return differnt widgets depending on if it is 
                   // mobile or web
@@ -263,18 +260,20 @@ class _LoginScreenState extends State<LoginScreen> {
           key: _formKey, // key to track the forms input
           child: Column(
             children: <Widget>[
+              // Logo
+                  Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Image.asset('asset/images/logo2.png', width: 300,),
+                  ),
+
               // if signup, then have a username field
               if (_authMode == AuthMode.Signup)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     maxLength: 300,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      hintText: "Username",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.vertical()),
-                    ),
+                    style: TextStyle(color: Colors.white),
+                    decoration: textFieldInput("Username"),
                     onSaved: (userNameInput) =>
                         _userInput.setUsername = userNameInput,
                   ),
@@ -285,12 +284,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    hintText: "Email",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.vertical()),
-                  ),
+                  style: TextStyle(color: Colors.white),
+                    decoration: textFieldInput("Email"),
                   validator: (userEmailInput) =>
                       _userInput.validateEmail(userEmailInput),
                   onSaved: (userEmailInput) =>
@@ -304,12 +299,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: TextFormField(
                   obscureText: true,
                   controller: _passwordController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    hintText: "Password",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.vertical()),
-                  ),
+                  style: TextStyle(color: Colors.white),
+                    decoration: textFieldInput("Password"),
                   validator: (userPasswordInput) {
                     if (_authMode == AuthMode.Signup) {
                       return _userInput.validatePassword(userPasswordInput);
@@ -328,12 +319,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     obscureText: true,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock_outline),
-                      hintText: "Confirm Password",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.vertical()),
-                    ),
+                    style: TextStyle(color: Colors.white),
+                    decoration: textFieldInput("Confirm Password"),
                     validator: (userConfirmPasswordInput) =>
                         confirmPassword(userConfirmPasswordInput),
                   ),
@@ -344,8 +331,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: DropdownButtonFormField<String>(
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
+                        prefixIcon: Icon(Icons.search, color: Colors.white,),
                         hintText: "How did you find us?",
+                        hintStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.vertical()),
                       ),
@@ -373,11 +361,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "Please tell us where",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.vertical()),
-                      ),
+                      style: TextStyle(color: Colors.white),
+                    decoration: textFieldInput("Please tell us where"),
                       validator: (userRefInput) =>
                           _userInput.validateReferral(userRefInput),
                       onSaved: (userRefInput) =>
@@ -427,7 +412,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _authMode == AuthMode.Login
                         ? "Don't have an account?"
                         : "Have an account?",
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                    style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
                   ),
                   FlatButton(
                     splashColor:
@@ -502,12 +487,17 @@ class _LoginScreenState extends State<LoginScreen> {
       BuildContext context, AuthProvider auth) {
     return Column(
       children: [
+        // Logo
+                  Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Image.asset('asset/images/logo2.png', width: 600,),
+                  ),
         Form(
           key: _formKey, // key to track the forms input
           child: Container(
             // Screen larger than
             width: screenSize.width >= 500
-                ? screenSize.width * 0.40
+                ? screenSize.width * 0.3
                 : screenSize.width,
             child: Column(
               children: <Widget>[
@@ -517,12 +507,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       maxLength: 300,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person),
-                        hintText: "Username",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.vertical()),
-                      ),
+                      style: TextStyle(color: Colors.white),
+                    decoration: textFieldInput("Username"),
                       onSaved: (userNameInput) =>
                           _userInput.setUsername = userNameInput,
                     ),
@@ -533,12 +519,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      hintText: "Email",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.vertical()),
-                    ),
+                    style: TextStyle(color: Colors.white),
+                    decoration: textFieldInput("Email"),
                     validator: (userEmailInput) =>
                         _userInput.validateEmail(userEmailInput),
                     onSaved: (userEmailInput) =>
@@ -552,12 +534,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextFormField(
                     obscureText: true,
                     controller: _passwordController,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock),
-                      hintText: "Password",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.vertical()),
-                    ),
+                    style: TextStyle(color: Colors.white),
+                    decoration: textFieldInput("Password"),
                     validator: (userPasswordInput) {
                       if (_authMode == AuthMode.Signup) {
                         return _userInput.validatePassword(userPasswordInput);
@@ -576,12 +554,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       obscureText: true,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock_outline),
-                        hintText: "Confirm Password",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.vertical()),
-                      ),
+                      style: TextStyle(color: Colors.white),
+                    decoration: textFieldInput("Confirm Password"),
                       validator: (userConfirmPasswordInput) =>
                           confirmPassword(userConfirmPasswordInput),
                     ),
@@ -592,8 +566,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: DropdownButtonFormField<String>(
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search),
+                          prefixIcon: Icon(Icons.search, color: Colors.white,),
                           hintText: "How did you find us?",
+                          hintStyle: TextStyle(color: Colors.white),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.vertical()),
                         ),
@@ -621,11 +596,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: "Please tell us where",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.vertical()),
-                        ),
+                        style: TextStyle(color: Colors.white),
+                    decoration: textFieldInput("Please tell us where"),
                         validator: (userRefInput) =>
                             _userInput.validateReferral(userRefInput),
                         onSaved: (userRefInput) =>
@@ -654,15 +626,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
                   child: ButtonTheme(
-                    minWidth: screenSize.width * 0.90,
-                    height: screenSize.height * 0.07,
+                    minWidth: screenSize.width * 0.40,
+                    height: screenSize.height * 0.04,
                     child: RaisedButton(
-                      child: Text(
-                          _authMode == AuthMode.Login ? "Login" : "Sign up"),
-                      color: kGreenPrimary,
-                      onPressed: () async {
-                        _submit(auth, _userInput);
-                      },
+                    child: Text(
+                        _authMode == AuthMode.Login ? "Login" : "Sign up"),
+                    color: kGreenPrimary,
+                    onPressed: () async {
+                      _submit(auth, _userInput);
+                    },
                     ),
                   ),
                 ),
@@ -678,6 +650,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           : "Have an account?",
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
+                        color: Colors.white
                       ),
                     ),
                     FlatButton(
