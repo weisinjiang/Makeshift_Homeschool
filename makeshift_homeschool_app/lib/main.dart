@@ -13,6 +13,9 @@ import 'screens/login_screen.dart';
 import 'shared/constants.dart';
 import 'package:firebase_core/firebase_core.dart'; // Initialize FirebaseApp
 
+// Testing
+import 'screens/InterestPickerScreen.dart';
+
 /// Main file where Flutter runs the app
 /// Goes through initialization of Firebase first then it runs the app.
 
@@ -79,27 +82,28 @@ class MyApp extends StatelessWidget {
     ],
     child: Consumer<AuthProvider>(
       builder: (context, auth, _) =>
-    MaterialApp(
-      theme: ThemeData(
-          primaryColor: kGreenSecondary,
-          textTheme:
-              GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
-      home: auth.isAuthenticated ? RootScreen()
-              : FutureBuilder( 
-                future: auth.tryAutoLogin(),
-                builder: (context, authResultSnapshot) =>
-                authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : LoginScreen(),
-              ),
-    
-              
-      routes: {
-        '/login': (context) => LoginScreen(),
-        '/root': (context) => RootScreen(),
-        '/about': (context) => AboutScreen(),
-        '/study': (context) => StudyScreen(),
-        '/profile': (context) => ProfileScreen(),
-      },
-   
-  )));
+        MaterialApp(
+          theme: ThemeData(
+              primaryColor: kGreenSecondary,
+              textTheme:
+                  GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
+          // home: auth.isAuthenticated ? RootScreen()
+          //         : FutureBuilder( 
+          //           future: auth.tryAutoLogin(),
+          //           builder: (context, authResultSnapshot) =>
+          //           authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : LoginScreen(),
+          //         ),
+          home: InterestPickerScreen(),
+        
+                  
+          routes: {
+            '/login': (context) => LoginScreen(),
+            '/root': (context) => RootScreen(),
+            '/about': (context) => AboutScreen(),
+            '/study': (context) => StudyScreen(),
+            '/profile': (context) => ProfileScreen(),
+          },
+      
+      )));
   }
 }
