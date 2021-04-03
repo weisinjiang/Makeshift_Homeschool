@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/shared/RandomColorGen.dart';
 
 /*
   Handles list of interests and it is used as a manager for interests.
@@ -12,10 +13,13 @@ class InterestProvider {
 
   List<String> interestList;
   List<String> selectedList;
+  Map<String, Color> chipColorMapping;
+  RandomColorGen randomColorGen;
+
   InterestProvider() {
 
     // Change to getting from Firestore
-    interestList = ["Statistics", "Piano", "History", 
+    this.interestList = ["Statistics", "Piano", "History", 
                     "Economics", "Computer Science",
                     "Chemistry", "Geometry", "Biology",
                     "Algebra", "Engineering", "Art", "Gaming",
@@ -23,11 +27,21 @@ class InterestProvider {
     ];
     
     // user selected, should get user's list from Firestore. Otherwise blank
-    selectedList = [];
+    this.selectedList = [];
+    this.randomColorGen = new RandomColorGen();
+    this.chipColorMapping = new Map();
+    
+
+    this.interestList.forEach((chip) {
+      Color randomColor = this.randomColorGen.generateRandomColor();
+      this.chipColorMapping[chip] = randomColor;
+
+    });
 
   }
 
-  List<String> getInterests() => this.interestList;
+  List<String> get getInterests => this.interestList;
+  Map<String, Color> get getChipColorMap => this.chipColorMapping;
 
   void updateSelectedList(List<String> updateList) {
     selectedList = updateList;

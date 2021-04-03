@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/Interest_Provider.dart';
+import 'package:makeshift_homeschool_app/shared/RandomColorGen.dart';
 
 /*
   This class takes a Interest Provider and gets a list of interests from the provider.
@@ -21,24 +24,31 @@ class InterestChip extends StatefulWidget {
 
 }
 
-
-
 class _InterestChipState extends State<InterestChip> {
 
   List<String> selected = [];
 
+  // Random number generator to generate random ints from 0-255
+  // for each ticker so they have almost unquie colors
+  static RandomColorGen randomColor = new RandomColorGen();
+
+
+  /**
+   * For each interest string in the list, create a ChoiceChip with 
+   * code telling it what to do when we toggle the chips.
+   */
   List<Widget> _buildInterestChips() {
     List<Widget> chips = [];
-    List<String> interestList = widget.interestProvider.getInterests();
+    List<String> interestList = widget.interestProvider.getInterests;
+    Map<String, Color> chipColorMap = widget.interestProvider.getChipColorMap;
 
     interestList.forEach( (interest) {
-
       chips.add(
-
         Container(
           padding: EdgeInsets.all(2.0),
           child: ChoiceChip(  
-            label: Text(interest),
+            label: Text(interest,style: TextStyle(fontWeight: FontWeight.bold),),
+            backgroundColor: chipColorMap[interest],
             selected: selected.contains(interest),
             onSelected: (interestSelected) {
               setState(() {
@@ -47,7 +57,7 @@ class _InterestChipState extends State<InterestChip> {
                   ? selected.remove(interest)
                   : selected.add(interest);    
                 widget.interestProvider.updateSelectedList(selected);
-                widget.interestProvider.printTest();
+                widget.interestProvider.printTest(); //! Print to check the array
               });
             },
           ),
