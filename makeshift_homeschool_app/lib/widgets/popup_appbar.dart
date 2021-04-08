@@ -62,7 +62,7 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                             Container(
                               height: screenSize.height * 0.06,
                               width: screenSize.width * 0.85,
-                              child: ElevatedButton(
+                              child: RaisedButton(
                                 color: Colors.transparent,
                                 child: Text(
                                   "Delete",
@@ -112,7 +112,7 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                             Container(
                               height: screenSize.height * 0.06,
                               width: screenSize.width * 0.85,
-                              child: ElevatedButton(
+                              child: RaisedButton(
                                 color: Colors.transparent,
                                 child: Text(
                                   "Report",

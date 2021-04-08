@@ -103,121 +103,142 @@ class _TalkaboutyourfavoriteactivityState
       appBar: AppBar(
         title: Text("Talk about your favorite activity"),
       ),
-      body: ListView(children: <Widget>[
-        /// Image on top
-
-         Image.asset(
-            "asset/bootcamp/activity.gif",
-           width: screenSize.width,
-         ),
-
-        Row(
-          children: [
-            Text("My favorite activity is "),
-            SizedBox(
-              width: 120,
-              child: TextFormField(
-                /// add a controller and attach it to this field
-                // keyboardType: TextInputType.multiline,
-                //     maxLines: null,
-                controller: textController[0],
-                decoration: InputDecoration(hintText: "Activity"),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: screenSize.height * 0.03,
-        ),
-        Row(
-        children: [
-          Text("Some things I like about this activity are  "),
-          SizedBox(
-            width: 120,
-            child: TextFormField(
-              /// add a controller and attach it to this field
-              // keyboardType: TextInputType.multiline,
-              // maxLines: null,
-              controller: textController[1],
-              decoration:
-                  InputDecoration(hintText: "What you like about it"),
-            ),
-          ),
-        ],
-        ),
-       SizedBox( width: 120,
-       child: Row(
-          children: [
+      body: Container(
+        color: Colors.white,
+        padding: EdgeInsets.all(15),
+        height: screenSize.height,
+        width: screenSize.width,
+        child: Container(
+          color: Colors.white,
+          height: screenSize.height * 0.95,
+        child: ListView(
           
-          Text("I recommend this activity because  "),
-          
-            
-              TextFormField(
-                /// add a controller and attach it to this field
-                // keyboardType: TextInputType.multiline,
-                // maxLines: null,
-                controller: textController[2],
-              ),
-              
-          ]),
+          children: <Widget>[
+          /// Image on top
+
+           Image.asset(
+              "asset/bootcamp/activity.png",
+             width: screenSize.width,
+             height: screenSize.height*0.3,
+           ),
+        Text("My favorite activity is "),
+          SizedBox( width:120,
+            child: Row(
+              children: [
+                
+                SizedBox(
+                  width: 120,
+                  child: TextFormField(
+                    /// add a controller and attach it to this field
+                    // keyboardType: TextInputType.multiline,
+                    //     maxLines: null,
+                    controller: textController[0],
+                    decoration: InputDecoration(hintText: "Activity",),
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(
             height: screenSize.height * 0.03,
           ),
-        
-        Row(children: [
-          Text("Although I really like  "),
-          SizedBox(
-            width: 120,
-            child: TextFormField(
-              /// add a controller and attach it to this field
-              // keyboardType: TextInputType.multiline,
-              //     maxLines: null,
-              controller: textController[0],
-              decoration: InputDecoration(hintText: "Activity"),
+          Text("Some things I like about this activity are  "),
+          SizedBox( width: 120,
+            child: Row(
+            children: [
+              
+              SizedBox(
+                width: 120,
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  // keyboardType: TextInputType.multiline,
+                  // maxLines: null,
+                  controller: textController[1],
+                  decoration:
+                      InputDecoration(hintText: "What you like about it"),
+                ),
+              ),
+            ],
             ),
           ),
-          Text(", there are some"),
-        ]),
-
-        Row(
-          children: [
-            Text(" things that I don't like, including "),
-            SizedBox(
-              width: 120,
-              child: Row(
-                children: [
-                  TextFormField(
-                    controller: textController[3],
-                    decoration: InputDecoration(
-                        hintText: "Things you don't like"),
-                  ),
-                ],
-              ),
+         SizedBox( width: 120,
+         child: Row(
+            children: [
+            
+            Text("I recommend this activity because  "),
+            
+              
+                TextFormField(
+                  /// add a controller and attach it to this field
+                  // keyboardType: TextInputType.multiline,
+                  // maxLines: null,
+                  controller: textController[2],
+                ),
+                
+            ]),
             ),
-          ],
-        ),
-        Row(children: [
-          Text(" things that I don't like, including "),
+            SizedBox(
+              height: screenSize.height * 0.03,
+              width:120
+            ),
+          
           SizedBox(
             width: 120,
             child: Row(children: [
-              TextFormField(
-                controller: textController[3],
-                decoration:
-                    InputDecoration(hintText: "Things you don't like"),
+              Text("Although I really like  "),
+              SizedBox(
+                width: 120,
+                child: TextFormField(
+                  /// add a controller and attach it to this field
+                  // keyboardType: TextInputType.multiline,
+                  //     maxLines: null,
+                  controller: textController[0],
+                  decoration: InputDecoration(hintText: "Activity"),
+                ),
               ),
+              Text(", there are some"),
             ]),
-          )
-        ]),
+          ),
 
-        ElevatedButton(
-            child: Text("Save"),
-            onPressed: () async {
-              await save(
-                  database, user, "Talk about your favorite activity", context);
-            }),
-      ]),
-      );
+          Row(
+            children: [
+              Text(" things that I don't like, including "),
+              SizedBox(
+                width: 120,
+                child: Row(
+                  children: [
+                    TextFormField(
+                      controller: textController[3],
+                      decoration: InputDecoration(
+                          hintText: "Things you don't like"),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Row(children: [
+            Text(" things that I don't like, including "),
+            SizedBox(
+              width: 120,
+              child: Row(children: [
+                TextFormField(
+                  controller: textController[3],
+                  decoration:
+                      InputDecoration(hintText: "Things you don't like"),
+                ),
+              ]),
+            )
+          ]),
+
+          RaisedButton(
+              child: Text("Save"),
+              onPressed: () async {
+                await save(
+                    database, user, "Talk about your favorite activity", context);
+              }),
+        ]),
+      ),
+      ),);
   }
 }
