@@ -57,7 +57,7 @@ class _TalkaboutyourfavoriteactivityState
       String activityID, BuildContext context) async {
     String userResponse = """
     My favorite activity is ${textController[0].text}\n
-    Some things that i]I like about this activity\n
+    Some things that I like about this activity are\n
     ${textController[1].text}\n
     2. What's your favorite relaxing activity?\n
     ${textController[2].text}\n
@@ -110,7 +110,6 @@ class _TalkaboutyourfavoriteactivityState
         width: screenSize.width,
         child: Container(
           color: Colors.white,
-          height: screenSize.height * 0.95,
           child: ListView(children: <Widget>[
             /// Image on top
 
@@ -148,7 +147,26 @@ class _TalkaboutyourfavoriteactivityState
               child: Row(
                 children: [
                   SizedBox(
-                    width: 120,
+                    width: 200,
+                    child: TextFormField(
+                      /// add a controller and attach it to this field
+                      // keyboardType: TextInputType.multiline,
+                      // maxLines: null,
+                      controller: textController[1],
+                      decoration:
+                          InputDecoration(hintText: "What you like about it"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Text("And another thing I like is "),
+            SizedBox(
+              width: 200,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 200,
                     child: TextFormField(
                       /// add a controller and attach it to this field
                       // keyboardType: TextInputType.multiline,
@@ -162,25 +180,27 @@ class _TalkaboutyourfavoriteactivityState
               ),
             ),
             SizedBox(
-              width: 120,
+              width: 200,
               child: Row(children: [
                 Text("I recommend this activity because  "),
-                TextFormField(
-                  /// add a controller and attach it to this field
-                  // keyboardType: TextInputType.multiline,
-                  // maxLines: null,
-                  controller: textController[2],
+                SizedBox( width: 200,
+                  child: TextFormField(
+                    /// add a controller and attach it to this field
+                    // keyboardType: TextInputType.multiline,
+                    // maxLines: null,
+                    controller: textController[2],
+                  ),
                 ),
               ]),
             ),
             SizedBox(height: screenSize.height * 0.03, width: 120),
 
             SizedBox(
-              width: 120,
+              width: 200,
               child: Row(children: [
                 Text("Although I really like  "),
                 SizedBox(
-                  width: 120,
+                  width: 200,
                   child: TextFormField(
                     /// add a controller and attach it to this field
                     // keyboardType: TextInputType.multiline,
@@ -200,10 +220,12 @@ class _TalkaboutyourfavoriteactivityState
                   width: 120,
                   child: Row(
                     children: [
-                      TextFormField(
-                        controller: textController[3],
-                        decoration:
-                            InputDecoration(hintText: "Things you don't like"),
+                      SizedBox( width: 200,
+                        child: TextFormField(
+                          controller: textController[3],
+                          decoration:
+                              InputDecoration(hintText: "Things you don't like"),
+                        ),
                       ),
                     ],
                   ),
@@ -211,14 +233,16 @@ class _TalkaboutyourfavoriteactivityState
               ],
             ),
             Row(children: [
-              Text(" things that I don't like, including "),
+              Text(" and "),
               SizedBox(
-                width: 120,
+                width: 200,
                 child: Row(children: [
-                  TextFormField(
-                    controller: textController[3],
-                    decoration:
-                        InputDecoration(hintText: "Things you don't like"),
+                  SizedBox( width: 120,
+                    child: TextFormField(
+                      controller: textController[3],
+                      decoration:
+                          InputDecoration(hintText: "Thing you don't like"),
+                    ),
                   ),
                 ]),
               )
