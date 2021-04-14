@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/activity_pages/art_museum_home.dart';
+import 'package:makeshift_homeschool_app/activity_pages/tic_tac_toe.dart';
 
 class Activities extends StatelessWidget {
   @override
@@ -15,6 +16,13 @@ class Activities extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => Home()));
+              }),
+
+              RaisedButton(
+              child: Text("Tic Tac Toe"),
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => TicTacToe()));
               }),
         ],
       ),
