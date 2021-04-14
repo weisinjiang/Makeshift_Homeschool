@@ -7,9 +7,9 @@ class TicTacToe extends StatefulWidget {
 
 class _TicTacToeState extends State<TicTacToe> {
   //TODO: link up images
-  AssetImage cross = AssetImage("asset/images/cross.png");
-  AssetImage circle = AssetImage("asset/images/circle.png");
-  AssetImage edit = AssetImage("asset/images/edit.png");
+  AssetImage cross = AssetImage("asset/a/cross.png");
+  AssetImage circle = AssetImage("asset/a/circle.png");
+  AssetImage edit = AssetImage("asset/a/edit.png");
 
   bool isCross = true;
   String message;
