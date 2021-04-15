@@ -35,48 +35,23 @@ class _TalkaboutyourfavoriteactivityState
     /// controller for "How did it end?" index4
     TextEditingController(),
 
-    /// controller for "Why?" index5
-    TextEditingController(),
+  
 
-    /// controller for "Why?" index6
-    TextEditingController(),
-
-    /// controller for "What happened next?" index7
-    TextEditingController(),
-
-    /// controller for "How did it end?" index8
-    TextEditingController(),
-
-    /// controller for "Why?" index9
-    TextEditingController(),
-
-    /// controller for "Why?" index10
   ];
 
   Future<void> save(BootCampProvider database, Map<String, dynamic> userData,
       String activityID, BuildContext context) async {
     String userResponse = """
     My favorite activity is ${textController[0].text}\n
-    Some things that I like about this activity are\n
-    ${textController[1].text}\n
-    2. What's your favorite relaxing activity?\n
-    ${textController[2].text}\n
-    3. What would be your ideal vacation?\n
-    ${textController[3].text}\n
-    4. If you could go back in time and tell your younger self something, what would you tell them?\n
-    ${textController[4].text}\n
-    5. What's something about yourself you especially enjoy?\n
-    ${textController[5].text}\n
-    6. How has your childhood shaped you and your personality?\n
-    ${textController[6].text}\n
-    7. What do your friends and family like best about you?\n
-    ${textController[7].text}\n
-    8. What's something you regret, or a lesson learned?\n
-    ${textController[8].text}\n
-    9. What is a belief or point of view that you hold that is not shared by most people?\n
-    ${textController[9].text}\n
-    10. What is something you do to relax or recharge after a long day?\n
-    ${textController[10].text}\n
+    Some things that I like about this activity are
+    ${textController[1].text} and ${textController[2].text}
+    I recommend this activity because
+    ${textController[3].text}.\n
+    Although I really like ${textController[0].text}, There are some things that I don't like, including
+    ${textController[4].text} and ${textController[5].text}
+   
+    
+    
     """;
     if (database.isBootcampComplete(this.textController)) {
       await database.saveToUserProfile(userData, activityID, userResponse);
@@ -154,7 +129,7 @@ class _TalkaboutyourfavoriteactivityState
                       // maxLines: null,
                       controller: textController[1],
                       decoration:
-                          InputDecoration(hintText: "What you like about it"),
+                          InputDecoration(hintText: "What you like about it,1"),
                     ),
                   ),
                 ],
@@ -171,9 +146,9 @@ class _TalkaboutyourfavoriteactivityState
                       /// add a controller and attach it to this field
                       // keyboardType: TextInputType.multiline,
                       // maxLines: null,
-                      controller: textController[1],
+                      controller: textController[2],
                       decoration:
-                          InputDecoration(hintText: "What you like about it"),
+                          InputDecoration(hintText: "What you like about it,2"),
                     ),
                   ),
                 ],
@@ -183,12 +158,12 @@ class _TalkaboutyourfavoriteactivityState
               width: 200,
               child: Row(children: [
                 Text("I recommend this activity because  "),
-                SizedBox( width: 200,
+                SizedBox( width: 120,
                   child: TextFormField(
                     /// add a controller and attach it to this field
                     // keyboardType: TextInputType.multiline,
                     // maxLines: null,
-                    controller: textController[2],
+                    controller: textController[3],
                   ),
                 ),
               ]),
@@ -209,7 +184,7 @@ class _TalkaboutyourfavoriteactivityState
                     decoration: InputDecoration(hintText: "Activity"),
                   ),
                 ),
-                Text(", there are some"),
+                Text(", there are\n some"),
               ]),
             ),
 
@@ -220,11 +195,11 @@ class _TalkaboutyourfavoriteactivityState
                   width: 120,
                   child: Row(
                     children: [
-                      SizedBox( width: 200,
+                      Container( width: 120,
                         child: TextFormField(
-                          controller: textController[3],
+                          controller: textController[4],
                           decoration:
-                              InputDecoration(hintText: "Things you don't like"),
+                              InputDecoration(hintText: "Thing you don't like,1"),
                         ),
                       ),
                     ],
@@ -239,9 +214,9 @@ class _TalkaboutyourfavoriteactivityState
                 child: Row(children: [
                   SizedBox( width: 120,
                     child: TextFormField(
-                      controller: textController[3],
+                      controller: textController[5],
                       decoration:
-                          InputDecoration(hintText: "Thing you don't like"),
+                          InputDecoration(hintText: "Thing you don't like,2"),
                     ),
                   ),
                 ]),
