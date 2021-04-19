@@ -1,6 +1,7 @@
 import 'package:makeshift_homeschool_app/activity_pages/PaintingsQuiz.dart';
 import 'package:makeshift_homeschool_app/activity_pages/Statues.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/screens/activities.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -84,6 +85,15 @@ class _HomeState extends State<Home> {
         ]),
       ),
       appBar: AppBar(
+        actions: [
+          FlatButton(
+            color: Colors.transparent,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Activities()));
+              },
+              child: Text("Back"))
+        ],
         title: Text("Paintings!"),
       ),
       body: ListView(
