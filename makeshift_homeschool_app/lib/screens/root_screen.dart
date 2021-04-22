@@ -5,6 +5,8 @@ import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/lesson_approval.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/new_video_screen.dart';
+import 'package:makeshift_homeschool_app/screens/search_screen.dart';
+import 'package:makeshift_homeschool_app/screens/students_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_video_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
@@ -132,6 +134,20 @@ class _RootScreenState extends State<RootScreen> {
                   onTap: () {
                     Navigator.push(
                         context, SlideLeftRoute(screen: BootCampScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.people,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    "Students",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context, SlideLeftRoute(screen: StudentsPage()));
                   },
                 ),
                 ListTile(
