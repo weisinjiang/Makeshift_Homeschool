@@ -61,6 +61,9 @@ class MyApp extends StatelessWidget {
         create: (_) => PostFeedProvider(null, []),
       ),
 
+      //^ Add ChangeNotfierProxyProvider for Auth, Studentprovider using the 
+      //the same format as above
+
 
       ChangeNotifierProxyProvider<AuthProvider, VideoFeedProvider> (  
         update: (context, auth, prevVideoPosts) => VideoFeedProvider(  

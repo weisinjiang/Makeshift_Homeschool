@@ -12,17 +12,9 @@ class Student {
   List<VideoPost> _videos;
 
   Student({this.uid, this.profilepicture, this.username}) {
-    // to finish
-    Container(
-      child: Column(
-        children: [
-          CircleAvatar(
-            child: Image.network(profilepicture),
-          ),
-          Text(username)
-        ],
-      ),
-    );
+    //^ to finish
+    this._posts = null;
+    this._videos = null;
   }
 
   set setUid(String uid) => this.uid = uid;
@@ -31,4 +23,15 @@ class Student {
       this.profilepicture = profilepicture;
   set setPosts(List posts) => this._posts = posts;
   set setVideos(List videos) => this._videos = videos;
+
+  // Container(
+  //   child: Column(
+  //     children: [
+  //       CircleAvatar(
+  //         child: Image.network(profilepicture),
+  //       ),
+  //       Text(username)
+  //     ],
+  //   ),
+  // );
 }
