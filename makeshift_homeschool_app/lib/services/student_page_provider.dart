@@ -13,14 +13,8 @@ class StudentsPageProvider {
     QuerySnapshot fetchedData;
     try {
       await _database.collection("users").get();
-
       // For each user, make a student object
-
-    } catch (e) {
-      print(e);
-    }
-
-    List<DocumentSnapshot> allUsers = fetchedData.docs;
+      List<DocumentSnapshot> allUsers = fetchedData.docs;
 
     allUsers.forEach((doc) {
       String uid = doc["uid"];
@@ -31,5 +25,9 @@ class StudentsPageProvider {
 
       studentsList.add(studentObject); // Add this to the list
     });
+
+    } catch (e) {
+      print(e);
+    }
   }
 }
