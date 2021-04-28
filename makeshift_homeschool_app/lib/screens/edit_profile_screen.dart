@@ -102,12 +102,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       // ),
 
       body: Consumer<AuthProvider>(builder: (context, auth, _) {
-        if (auth.getUser != null) {
-          var currentUserData = auth.getUser;
+        if (auth.getUserInfo != null) {
+          var userInfo = auth.getUserInfo;
           // Stores current data, but updates if there is a change
           Map<String, String> toUpdateData = {
-            "username": currentUserData["username"],
-            "bio": currentUserData["bio"]
+            "studentFirstName": userInfo["studentFirstName"],
+            "bio": userInfo["bio"]
           };
           return Container(
             height: screenSize.height,
@@ -124,7 +124,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               radius: 50,
                               // if a new image is selected, show it, otherwise current
                               backgroundImage:
-                                  NetworkImage(currentUserData["photoURL"]),
+                                  NetworkImage(userInfo["photoURL"]),
                               backgroundColor: Colors.transparent))),
 
                   // Change Profile Picture Button
@@ -150,17 +150,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            initialValue: currentUserData["username"],
+                            initialValue: userInfo["studentFirstName"],
                             enabled: false,
                             maxLength: 300,
                             decoration: InputDecoration(
-                              labelText: "Username",
+                              labelText: "Your First name",
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.vertical()),
                             ),
                             onChanged: (_) => updateProfileInfo = true,
                             onSaved: (newUsername) =>
-                                toUpdateData["username"] = newUsername,
+                                toUpdateData["studentFirstName"] = newUsername,
                           ),
                         ),
 
@@ -168,10 +168,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            initialValue: currentUserData["bio"],
+                            initialValue: userInfo["bio"],
                             maxLength: 250,
                             decoration: InputDecoration(
-                              labelText: "Bio",
+                              labelText: "Tell us what you like!",
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.vertical()),
                             ),

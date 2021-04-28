@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/models/user_auth_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -16,8 +17,9 @@ class AuthProvider with ChangeNotifier {
   String _userId;
   bool _emailVerified;
   bool _authenticated;
-  Map<String, String> _userInformation;
+  Map<String, dynamic> _userInformation;
   String _token;
+  UserAuth userData;
 
 
   AuthProvider(){
@@ -32,34 +34,36 @@ class AuthProvider with ChangeNotifier {
   bool get isAuthenticated => this._authenticated;
   bool get isEmailVerified => this._emailVerified;
   String get getUserID => this._userId;
-  Map<String, String> get getUser => this._userInformation;
-  String get getUserLevel => this._userInformation["level"];
-  String get getUserName => this._userInformation["username"];
-  String get getEmail => this._userInformation["email"];
-  int get getLessonCreatedAsInt =>
-      int.parse(this._userInformation["lesson_created"]);
+  Map<String, dynamic> get getUserInfo => this._userInformation;
+  String get getStudentLevel => this._userInformation["level"];
+  String get getStudentFirstName => this._userInformation["studentFirstName"];
+  String get getStudentEmail => this._userInformation["studentEmail"];
+  String get getPhotoURL => this._userInformation["photoURL"];
+  String get getStudentAge => this._userInformation["studentAge"];
+  int get getLessonCreated=> this._userInformation["lessonCreated"];
+  int get getLessonCompleted => this._userInformation["lessonCompleted"];
   String get getToken => this._token.toString();
 
   // Get current Firebase User. Used to see if user data is still valid
   // Not async because it is used after user has logged in and exit the app
   // Future<FirebaseUser> get getUser => _firebaseAuth.currentUser();
 
-  Future<bool> signIn(String email, String password) async {
+  Future<bool> signIn(UserAuth userInfo) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+          email: userInfo.getStudentEmail, password: userInfo.getPassword);
       result.user.getIdToken();
       this._userId = result.user.uid;
       this._token = await result.user.getIdToken();
-      this._authenticated = true;
       this._emailVerified = result.user.emailVerified;
-      await fetchUserInfoFromDatabase()
-          .then((value) => this._userInformation = value);
+      await fetchAndSetUserInfoFromDatabase();
+      this._authenticated = true;
+
       notifyListeners();
 
       // save a copy of the users information on their disk
       final prefs = await SharedPreferences.getInstance();
-      prefs.setString("uid", json.encode(this._userId));
+      prefs.setString("uid", this._userId);
       return true;
     } catch (error) {
       print(error); //! todo
@@ -115,49 +119,75 @@ class AuthProvider with ChangeNotifier {
     return "No case match";
   }
 
-  Future<bool> signUp(
-      String email, String password, String userName, String referral) async {
-    try {
-      var blankPhotoURL =
-          "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/profile%2FblankProfile.png?alt=media&token=a547754d-551e-4e18-a5ce-680d41bd1226";
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      this._userId = result.user.uid;
-      this._authenticated = true;
+  Future<bool> signUp(UserAuth userAuth) async {
 
-      _database.collection("users").doc(result.user.uid).set({
+    try {
+      final blankPhotoURL = "https://firebasestorage.googleapis.com/v0/b/makeshift-homeschool-281816.appspot.com/o/profile%2FblankProfile.png?alt=media&token=a547754d-551e-4e18-a5ce-680d41bd1226";
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: userAuth.getStudentEmail, password: userAuth.getPassword);
+
+      this._userId = result.user.uid;
+      print(_userId);
+
+      _userInformation = {
         // add new database for the user
-        "username": userName,
+        "studentFirstName": userAuth.getStudentFirstName,
+        "studentAge": userAuth.getStudentAge,
         "photoURL": blankPhotoURL,
         "uid": _userId,
-        "email": result.user.email,
+        "studentEmail": result.user.email,
         "level": "Student",
-        "bio": "Add a bio",
-        "lesson_created": 0,
-        "lesson_completed": 0
-      });
-      var todaysDate = DateTime.now(); // today's date
-      var todaysMonth = DateTime.now().month;
-      var monthYear =
-          getMonthNameFromInt(todaysMonth) + " " + todaysDate.year.toString();
+        "bio": "Add a bio...",
+        "accountCreatedOn": DateTime.now().toString(),
+        "lessonCreated": 0,
+        "lessonCompleted": 0,
+        "parentInfo": {
+          "firstName": userAuth.getParentFirstName,
+          "lastName": userAuth.getParentLastName,
+          "email": userAuth.getParentEmail,
+          "phoneNumber": userAuth.getParentPhoneNumber
+        }};
 
+      // Create user
+      await _database.collection("users").doc(_userId).set({
+        // add new database for the user
+        "studentFirstName": userAuth.getStudentFirstName,
+        "studentAge": userAuth.getStudentAge,
+        "photoURL": blankPhotoURL,
+        "uid": _userId,
+        "studentEmail": result.user.email,
+        "level": "Student",
+        "bio": "Add a bio...",
+        "accountCreatedOn": DateTime.now().toString(),
+        "lessonCreated": 0,
+        "lessonCompleted": 0,
+        "parentInfo": {
+          "firstName": userAuth.getParentFirstName,
+          "lastName": userAuth.getParentLastName,
+          "email": userAuth.getParentEmail,
+          "phoneNumber": userAuth.getParentPhoneNumber
+        }});
+      print("Data Set"); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       // Add referral to the database
-      _database
-          .collection("referral") // referral database
-          .doc(monthYear) // Today's month + year collection
-          .set({
-        _userId: {
-          "first name": userName,
-          "referral": referral,
-          "day": todaysDate.day
-        }
-      }, SetOptions(merge: true));
-      await fetchUserInfoFromDatabase()
-          .then((value) => _userInformation = value);
-      // save a copy of the users information on their disk
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString("userInformation", json.encode(this._userId));
+      // await _database
+      //     .collection("referral") // referral database
+      //     .doc("${DateTime.now().month}/${DateTime.now().year}") // Today's month + year collection
+      //     .set({
+      //   _userId: {
+      //     "Student Name": userAuth.getStudentFirstName,
+      //     "Student's Parent": "${userAuth.getParentFirstName} ${userAuth.getParentLastName}",
+      //     "Referral": userAuth.getReferral,
+      //     "Date": DateTime.now().toString()
+      //   }
+      // }, SetOptions(merge: true));
+      // print("Referal Data Set"); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+      // //! save a copy of the users information on their disk
+      // final prefs = await SharedPreferences.getInstance();
+      // prefs.setString("userId", _userId);
       result.user.sendEmailVerification();
+      this._authenticated = true;
       notifyListeners();
       return true;
     } catch (error) {
@@ -171,12 +201,11 @@ class AuthProvider with ChangeNotifier {
     if (!prefs.containsKey("userInformation")) {
       return false;
     }
-    final extractUserData =
-        json.decode(prefs.getString("userData")) as Map<String, String>;
-    this._userId = extractUserData["uid"];
-    await fetchUserInfoFromDatabase()
-        .then((value) => this._userInformation = value);
-    this._authenticated = true;
+    this._userId = prefs.getString("userId");
+    bool success = await fetchAndSetUserInfoFromDatabase();
+    if (success) {
+      this._authenticated = true;
+    }
     notifyListeners();
     return true;
   }
@@ -190,8 +219,6 @@ class AuthProvider with ChangeNotifier {
     await _auth.signOut();
 
     notifyListeners();
-
-    // return Future.delayed(Duration.zero);
   }
 
   Future<void> sendEmailVerification() async {
@@ -228,25 +255,13 @@ class AuthProvider with ChangeNotifier {
         SetOptions(merge: true)
       );
     });
-
-    // //Upatde download URL
-    // await storageRef.getDownloadURL().then((newURL) {
-    //   this._userInformation["photoURL"] = newURL;
-
-    //   /// update url in session
-    //   _database.collection("users").document(_userId).setData(
-    //       {"photoURL": newURL.toString()},
-    //       merge: true // Update the photoURL field
-    //       );
-    // });
-
     notifyListeners();
   }
 
   /// Called from Edit Profile Screen
   Future<void> updateProfileInformation(
       Map<String, String> newInformation) async {
-    this._userInformation["username"] = newInformation["username"];
+    this._userInformation["studentFirstName"] = newInformation["studentFirstName"];
     this._userInformation["bio"] = newInformation["bio"];
     await _database.collection("users").doc(_userId).set(
         {"username": newInformation["username"], "bio": newInformation["bio"]},
@@ -254,25 +269,57 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Map<String, String>> fetchUserInfoFromDatabase() async {
-    Map<String, String> userData = {};
-    await _database
-        .collection("users")
-        .doc(_userId)
-        .get()
-        .then((firestoreData) {
-      userData["email"] = firestoreData["email"];
-      userData["bio"] = firestoreData["bio"];
-      userData["photoURL"] = firestoreData["photoURL"];
-      userData["uid"] = firestoreData["uid"];
-      userData["username"] = firestoreData["username"];
-      userData["lesson_completed"] =
-          firestoreData["lesson_completed"].toString();
-      userData["lesson_created"] = firestoreData["lesson_created"].toString();
-      userData["level"] = firestoreData["level"];
-    });
+  // UserInfo is currently in JSON form. This method sets the user data 
+  // with the given firestore data
+  void setUserData(DocumentSnapshot firestoreData) {
 
-    return userData;
+    final List<String> fields = [
+      "studentFirstName",
+      "studentAge",
+      "photoURL",
+      "uid",
+      "studentEmail",
+      "level",
+      "bio",
+      "accountCreatedOn",
+      "lessonCreated",
+      "lessonCompleted",
+      "parentInfo"
+    ];
+
+    Map<String, dynamic> fetchedData = {};
+
+    for (String field in fields) {
+      if (field == "parentInfo") {
+        // Parent info is another list of it's own
+        fetchedData[field] = {
+          "firstName": firestoreData[field]["firstName"],
+          "lastName": firestoreData[field]["lastName"],
+          "phoneNumber": firestoreData[field]["phoneNumber"]
+        };
+      }
+      else {
+        fetchedData[field] = firestoreData[field]; 
+      }
+    }
+    this._userInformation = fetchedData;
+    
+  }
+
+  // Gets the user data from the database and set them
+  Future<bool> fetchAndSetUserInfoFromDatabase() async {
+    try {
+      await _database
+          .collection("users")
+          .doc(_userId)
+          .get()
+          .then((firestoreData) => setUserData(firestoreData));
+      return true;
+    }
+    catch (e) {
+      print("Error in FetchAndSetUserInfo: $e");
+      return false;
+    }
   }
 
   Future<Map<String, String>> fetchUserInfoFromDatabaseAutoLogin(uid) async {

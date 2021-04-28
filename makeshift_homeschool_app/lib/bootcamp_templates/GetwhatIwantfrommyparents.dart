@@ -14,7 +14,6 @@ class GetWhatIWantFromMyParents extends StatefulWidget {
   _GetWhatIWantFromMyParentsState createState() =>
       _GetWhatIWantFromMyParentsState();
 }
-
 class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
   List<TextEditingController> textController = [
     TextEditingController(),
@@ -77,7 +76,7 @@ class _GetWhatIWantFromMyParentsState extends State<GetWhatIWantFromMyParents> {
   @override
   Widget build(BuildContext context) {
     var database = Provider.of<BootCampProvider>(context);
-    var user = Provider.of<AuthProvider>(context).getUser;
+    var user = Provider.of<AuthProvider>(context).getUserInfo;
     final screenSize = MediaQuery.of(context).size; // size of the screen
 
     return Scaffold(

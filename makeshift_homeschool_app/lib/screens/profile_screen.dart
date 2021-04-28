@@ -35,8 +35,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     /// the user data that AuthProvider has. When an update is changed, Auth
     /// Provider will notify the widget to rebuild
     return Consumer<AuthProvider>(builder: (context, auth, _) {
-      if (auth.getUser != null) {
+      if (auth.getUserInfo != null) {
         /// if auth provider has user data
+        
+        Map<String, dynamic> userInfo = auth.getUserInfo;
+
         return Scaffold(
             appBar: UserProfileAppBar(
               screenSize: screenSize,
@@ -73,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: CircleAvatar(
                                   radius: 50,
                                   backgroundImage:
-                                      NetworkImage(auth.getUser["photoURL"]),
+                                      NetworkImage(userInfo["photoURL"]),
                                   backgroundColor: Colors.greenAccent,
                                   // child: Text("${userData["username"][0]}"),
                                 ),
@@ -81,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Flexible(
                                   child: ListTile(
                                 title: Text(
-                                  auth.getUser["lesson_created"],
+                                  userInfo["lessonCreated"].toString(),
                                   style: kBoldTextStyle,
                                 ),
                                 subtitle: Text("Lessons\nCreated"),
@@ -90,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Flexible(
                                   child: ListTile(
                                 title: Text(
-                                  auth.getUser["lesson_completed"],
+                                  userInfo["lessonCompleted"].toString(),
                                   style: kBoldTextStyle,
                                 ),
                                 subtitle: Text("Lessons\nCompleted"),
@@ -102,14 +105,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: Text(
-                          "Score: ${((int.parse(auth.getUser["lesson_created"]) + int.parse(auth.getUser["lesson_completed"])) * 10).toString()}",
+                          "Score: ${((userInfo["lessonCreated"] + userInfo["lessonCompleted"]) * 10).toString()}",
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "${auth.getUser["username"]}",
+                          "${userInfo["studentFirstName"]}",
                           style: kTitleTextStyle,
                           textAlign: TextAlign.start,
                         ),
@@ -128,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: LinearProgressIndicator(
                                   minHeight: 30.0,
                                   value: getLevelAsPercentage(
-                                      auth.getUser["level"]),
+                                      userInfo["level"]),
                                   backgroundColor: Colors.grey[300],
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                       kGreenPrimary),
@@ -137,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  auth.getUser["level"],
+                                  userInfo["level"],
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               )
@@ -151,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: screenHeight * 0.10,
                         width: kIsWeb ? webWidth : screenWidth * 0.95,
                         child: Text(
-                          "${auth.getUser["bio"]}",
+                          "${userInfo["bio"]}",
                           textAlign: TextAlign.start,
                           style: kParagraphTextStyle,
                         ),

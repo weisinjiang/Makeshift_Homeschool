@@ -23,7 +23,7 @@ class PostThumbnail extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     /// get the user information
-    final user = Provider.of<AuthProvider>(context, listen: false).getUser;
+    final userInfo = Provider.of<AuthProvider>(context, listen: false).getUserInfo;
 
     /// get the post data from provider, switch types depending on isVideo
     var postData = isVideo 
@@ -117,7 +117,7 @@ class PostThumbnail extends StatelessWidget {
                         child: BookmarkButton(
                             postData: postData,
                             screenSize: screenSize,
-                            user: user,
+                            userInfo: userInfo,
                             isVideo: isVideo,
                             ),
                       ),

@@ -87,12 +87,7 @@ class MyApp extends StatelessWidget {
               primaryColor: kGreenSecondary,
               textTheme:
                   GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
-          home: auth.isAuthenticated ? RootScreen()
-                  : FutureBuilder( 
-                    future: auth.tryAutoLogin(),
-                    builder: (context, authResultSnapshot) =>
-                    authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : LoginScreen(),
-                  ),
+          home: auth.isAuthenticated ? RootScreen() : LoginScreen(),
           //home: InterestPickerScreen(),
         
                   

@@ -25,15 +25,15 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  Map<String, String> userData;
+  Map<String, dynamic> userInfo;
   bool isEmailVerified;
   Size screenSize;
 
   /// Before the root screen builds, gather user data and check if their email is verified
   @override
   void initState() {
-    userData = Provider.of<AuthProvider>(context, listen: false).getUser;
-    isEmailVerified =Provider.of<AuthProvider>(context, listen: false).isEmailVerified;
+    userInfo = Provider.of<AuthProvider>(context, listen: false).getUserInfo;
+    isEmailVerified = Provider.of<AuthProvider>(context, listen: false).isEmailVerified;
     super.initState();
   }
 
@@ -44,12 +44,12 @@ class _RootScreenState extends State<RootScreen> {
     /// upon signout, userData will be set to null. This conditional is so
     /// that when users signout, an error screen wont show
 
-    if (userData != null) {
+    if (userInfo != null) {
       return Scaffold(
           appBar: AppBar(
             elevation: 0.0,
             backgroundColor: kPaleBlue,
-            title: Text("Hi, ${userData["username"]}!"),
+            title: Text("Hi, ${userInfo["studentFirstName"]}!"),
             actions: <Widget>[
               IconButton(
                 icon: Icon(Icons.person),
@@ -273,7 +273,7 @@ class _RootScreenState extends State<RootScreen> {
           ])),
 
 
-      if (userData["level"] == "Professor")
+      if (userInfo["level"] == "Professor")
         Container(
           height: screenSize.height * 0.15,
           width: screenSize.width,
@@ -295,7 +295,7 @@ class _RootScreenState extends State<RootScreen> {
           ),
         ),
       // show this to teachers so they can review posts or Principle
-      if (userData["level"] == "Professor" || userData["level"] == "Teacher")
+      if (userInfo["level"] == "Professor" || userInfo["level"] == "Teacher")
         Container(
           height: screenSize.height * 0.15,
           width: screenSize.width,
@@ -489,7 +489,7 @@ class _RootScreenState extends State<RootScreen> {
               ),
             ),
           ])),
-      if (userData["level"] == "Professor")
+      if (userInfo["level"] == "Professor")
         Container(
           height: screenSize.height * 0.15,
           width: screenSize.width / 2,
@@ -511,7 +511,7 @@ class _RootScreenState extends State<RootScreen> {
           ),
         ),
       // show this to teachers so they can review posts or Principle
-      if (userData["level"] == "Professor" || userData["level"] == "Teacher")
+      if (userInfo["level"] == "Professor" || userInfo["level"] == "Teacher")
         Container(
           height: screenSize.height * 0.15,
           width: screenSize.width / 2,

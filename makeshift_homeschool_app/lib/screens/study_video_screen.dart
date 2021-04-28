@@ -45,9 +45,9 @@ class _StudyVideoScreenState extends State<StudyVideoScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final feedProvider = Provider.of<VideoFeedProvider>(context);
-    final user = Provider.of<AuthProvider>(context).getUser;
+    final userInfo = Provider.of<AuthProvider>(context).getUserInfo;
 
-    if (user != null) {
+    if (userInfo != null) {
 
       return Scaffold(  
         appBar: AppBar(  

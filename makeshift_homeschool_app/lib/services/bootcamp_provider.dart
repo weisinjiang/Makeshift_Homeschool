@@ -67,9 +67,9 @@ class BootCampProvider with ChangeNotifier {
 
     // send an email to user's email
     await sendBootcampCompleteEmail(
-        email: user["email"],
+        email: user["parentInfo"]["email"],
         activityId: activityID,
-        username: user["username"],
+        username: user["studentFirstname"],
         userResponse: userResponse);
   }
 
