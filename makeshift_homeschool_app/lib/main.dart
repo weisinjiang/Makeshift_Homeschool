@@ -88,8 +88,6 @@ class MyApp extends StatelessWidget {
               textTheme:
                   GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
           home: auth.isAuthenticated ? RootScreen() : LoginScreen(),
-          //home: InterestPickerScreen(),
-        
                   
           routes: {
             '/login': (context) => LoginScreen(),

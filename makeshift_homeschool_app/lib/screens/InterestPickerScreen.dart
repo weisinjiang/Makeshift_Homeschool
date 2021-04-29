@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/Interest_Provider.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/widgets/InterestChip.dart';
 import 'package:provider/provider.dart';
 
@@ -20,11 +21,15 @@ import 'package:provider/provider.dart';
 
 class InterestPickerScreen extends StatelessWidget {
 
+  final Interest interestType;
+
+  const InterestPickerScreen({Key key, this.interestType}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     
   return Provider<InterestProvider>(
-    create: (context) => InterestProvider(),
+    create: (context) => InterestProvider(interestType),
     child: Consumer<InterestProvider>(  
       builder: (context, interestProvider, _) => Scaffold(
 

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:makeshift_homeschool_app/promo/firstsignup.dart';
+import 'package:makeshift_homeschool_app/screens/InterestPickerScreen.dart';
 import 'package:makeshift_homeschool_app/screens/reset_password.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
@@ -253,8 +254,11 @@ class _LoginScreenState extends State<LoginScreen> {
 /// @ context - the current widget tree's location
 /// @ screenSize 
 /// @ auth - auth object to call signin or signout
-  Column buildMobileForm(UserAuth _userInput, BuildContext context,
-      Size screenSize, AuthProvider auth) {
+  Column buildMobileForm(UserAuth _userInput, BuildContext context, Size screenSize, AuthProvider auth) {
+
+    // Only letters and max of 15 char for name fields
+    List<TextInputFormatter> nameFormatter = [LengthLimitingTextInputFormatter(15), FilteringTextInputFormatter.allow(RegExp(r"[a-zA-Z]"))];
+
     return Column(
       children: [
         Form(
@@ -267,7 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    inputFormatters: [LengthLimitingTextInputFormatter(15)],
+                    inputFormatters: nameFormatter,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person),
                       hintText: "Your First name",
@@ -283,7 +287,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    inputFormatters: [LengthLimitingTextInputFormatter(2)],
+                    inputFormatters: [LengthLimitingTextInputFormatter(2), FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person),
@@ -300,7 +304,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    inputFormatters: [LengthLimitingTextInputFormatter(15)],
+                    inputFormatters: nameFormatter,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person),
                       hintText: "Parent First name",
@@ -316,7 +320,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    inputFormatters: [LengthLimitingTextInputFormatter(15)],
+                    inputFormatters: nameFormatter,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person),
                       hintText: "Parent Last Name",
@@ -348,7 +352,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                    inputFormatters: [LengthLimitingTextInputFormatter(10), FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.person),
@@ -431,51 +435,54 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
-                // Referral
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        hintText: "How did you find us?",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.vertical()),
-                      ),
-                      items: _referalList
-                          .map((listItem) => DropdownMenuItem<String>(
-                                child: Text(listItem),
-                                value: listItem,
-                              ))
-                          .toList(),
-                      hint: Text(_referalSelected), // shows selected ref
-                      onChanged: (changedDropdownItem) {
-                        // ref changed, save the value
-                        setState(() {
-                          _referalSelected = changedDropdownItem;
-                          if (changedDropdownItem != "Other") {
-                            // Set the ref if it is not "Other"
-                            _userInput.setReferral = changedDropdownItem;
-                          }
-                        });
-                      }),
-                ),
+                // Pick Interested DemoDay Topics
+                InterestPickerScreen(),
 
-                // If referral is Other, have the user give us where they found us and save it
-                if (_referalSelected == "Other")
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "Please tell us where",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.vertical()),
-                      ),
-                      validator: (userRefInput) =>
-                          _userInput.validateReferral(userRefInput),
-                      onSaved: (userRefInput) =>
-                          _userInput.setReferral = userRefInput,
-                    ),
-                  ),
+                // Referral
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: DropdownButtonFormField<String>(
+                //       decoration: InputDecoration(
+                //         prefixIcon: Icon(Icons.search),
+                //         hintText: "How did you find us?",
+                //         border: OutlineInputBorder(
+                //             borderRadius: BorderRadius.vertical()),
+                //       ),
+                //       items: _referalList
+                //           .map((listItem) => DropdownMenuItem<String>(
+                //                 child: Text(listItem),
+                //                 value: listItem,
+                //               ))
+                //           .toList(),
+                //       hint: Text(_referalSelected), // shows selected ref
+                //       onChanged: (changedDropdownItem) {
+                //         // ref changed, save the value
+                //         setState(() {
+                //           _referalSelected = changedDropdownItem;
+                //           if (changedDropdownItem != "Other") {
+                //             // Set the ref if it is not "Other"
+                //             _userInput.setReferral = changedDropdownItem;
+                //           }
+                //         });
+                //       }),
+                // ),
+
+              //   // If referral is Other, have the user give us where they found us and save it
+              //   if (_referalSelected == "Other")
+              //     Padding(
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: TextFormField(
+              //         decoration: InputDecoration(
+              //           hintText: "Please tell us where",
+              //           border: OutlineInputBorder(
+              //               borderRadius: BorderRadius.vertical()),
+              //         ),
+              //         validator: (userRefInput) =>
+              //             _userInput.validateReferral(userRefInput),
+              //         onSaved: (userRefInput) =>
+              //             _userInput.setReferral = userRefInput,
+              //       ),
+              //     ),
               ],
               Align(
                 alignment: Alignment.centerRight,

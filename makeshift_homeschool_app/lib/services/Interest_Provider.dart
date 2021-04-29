@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/shared/RandomColorGen.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 
 /*
   Handles list of interests and it is used as a manager for interests.
@@ -15,17 +17,17 @@ class InterestProvider {
   List<String> selectedList;
   Map<String, Color> chipColorMapping;
   RandomColorGen randomColorGen;
+  Interest interestType;
 
-  InterestProvider() {
+  final FirebaseFirestore _database = FirebaseFirestore.instance;
 
+
+  InterestProvider(Interest type) {
+
+    this.interestType = type;
     // Change to getting from Firestore
-    this.interestList = ["Statistics", "Piano", "History", 
-                    "Economics", "Computer Science",
-                    "Chemistry", "Geometry", "Biology",
-                    "Algebra", "Engineering", "Art", "Gaming",
-                    "Minecraft", "Drawing"
-    ];
-    
+    this.interestList = [];
+
     // user selected, should get user's list from Firestore. Otherwise blank
     this.selectedList = [];
     this.randomColorGen = new RandomColorGen();
@@ -46,6 +48,23 @@ class InterestProvider {
   void updateSelectedList(List<String> updateList) {
     selectedList = updateList;
    
+  }
+
+  // Based on what type of interest the user
+  Future<void> initializeInterestList() async {
+
+    if (interestType == Interest.DEMODAYTOPICS) {
+      try {
+        // Add demo day topics to the 
+        DocumentSnapshot demoTopics = await _database.collection("DemoDay").doc("Topics").get();
+        this.interestList = demoTopics["topics"];
+        
+      } catch (e) {
+        print("Error in Initialize Interest List in interest_provider.dart");
+        print("Error: $e");
+      }
+    }
+
   }
 
   // Use for testing to see if the list updated
