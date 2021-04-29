@@ -18,13 +18,15 @@ class InterestProvider with ChangeNotifier{
   Map<String, Color> chipColorMapping;
   RandomColorGen randomColorGen;
   Interest interestType;
+  String uid;
 
   final FirebaseFirestore _database = FirebaseFirestore.instance;
 
 
-  InterestProvider(Interest type) {
+  InterestProvider(Interest type, String userId) {
 
     this.interestType = type;
+    this.uid = userId;
     // Change to getting from Firestore
     this.interestList = [];
 
@@ -32,13 +34,7 @@ class InterestProvider with ChangeNotifier{
     this.selectedList = [];
     this.randomColorGen = new RandomColorGen();
     this.chipColorMapping = new Map();
-    
-
-    this.interestList.forEach((chip) {
-      Color randomColor = this.randomColorGen.generateRandomColor();
-      this.chipColorMapping[chip] = randomColor;
-
-    });
+    initializeInterestList();
 
   }
 
@@ -50,9 +46,25 @@ class InterestProvider with ChangeNotifier{
    
   }
 
+  bool selectedAtLeastOne() {
+    if (selectedList.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
+  // Saves the user selected interest into their profile
+  Future<void> save() async {
+    
+    await _database.collection("users").doc(uid).set({
+      "DemoDayInterest": selectedList
+    }, SetOptions(merge: true));
+
+  }
+
   // Based on what type of interest the user
   Future<void> initializeInterestList() async {
-
+    print("Initialize Interest List Ran");
     if (interestType == Interest.DEMODAYTOPICS) {
       try {
         // Add demo day topics to the 
@@ -66,6 +78,12 @@ class InterestProvider with ChangeNotifier{
         print("Error: $e");
       }
     }
+
+    this.interestList.forEach((chip) {
+      Color randomColor = this.randomColorGen.generateRandomColor();
+      this.chipColorMapping[chip] = randomColor;
+
+    });
 
   }
 
