@@ -19,22 +19,29 @@ import 'package:provider/provider.dart';
 // }
 
 
-class InterestPickerScreen extends StatelessWidget {
+class InterestPickerScreen extends StatefulWidget {
 
   final Interest interestType;
 
   const InterestPickerScreen({Key key, this.interestType}) : super(key: key);
 
   @override
+  _InterestPickerScreenState createState() => _InterestPickerScreenState();
+}
+
+class _InterestPickerScreenState extends State<InterestPickerScreen> {
+  @override
   Widget build(BuildContext context) {
     
-  return Provider<InterestProvider>(
-    create: (context) => InterestProvider(interestType),
+  return ChangeNotifierProvider<InterestProvider>(
+    create: (context) => InterestProvider(widget.interestType),
     child: Consumer<InterestProvider>(  
       builder: (context, interestProvider, _) => Scaffold(
 
         appBar: AppBar(  
-          title: Text("Select Your Interests"),
+          title: widget.interestType == Interest.DEMODAYTOPICS
+          ? Text("Selected Interested Topics")
+          : Text("Select Your Interests"),
         ),
 
 
@@ -54,5 +61,4 @@ class InterestPickerScreen extends StatelessWidget {
 
    
   }
-  
 }

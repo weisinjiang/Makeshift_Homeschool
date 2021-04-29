@@ -38,6 +38,8 @@ class _InterestChipState extends State<InterestChip> {
    * code telling it what to do when we toggle the chips.
    */
   List<Widget> _buildInterestChips() {
+    widget.interestProvider.initializeInterestList();
+    
     List<Widget> chips = [];
     List<String> interestList = widget.interestProvider.getInterests;
     Map<String, Color> chipColorMap = widget.interestProvider.getChipColorMap;

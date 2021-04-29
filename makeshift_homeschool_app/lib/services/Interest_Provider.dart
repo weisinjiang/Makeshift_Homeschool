@@ -11,7 +11,7 @@ import 'package:makeshift_homeschool_app/shared/enums.dart';
 
 */
 
-class InterestProvider {
+class InterestProvider with ChangeNotifier{
 
   List<String> interestList;
   List<String> selectedList;
@@ -57,8 +57,10 @@ class InterestProvider {
       try {
         // Add demo day topics to the 
         DocumentSnapshot demoTopics = await _database.collection("DemoDay").doc("Topics").get();
-        this.interestList = demoTopics["topics"];
         
+        List<dynamic> dynamicList = (demoTopics["topics"] as List).toList();
+        this.interestList = List<String>.from(dynamicList);
+        notifyListeners();
       } catch (e) {
         print("Error in Initialize Interest List in interest_provider.dart");
         print("Error: $e");

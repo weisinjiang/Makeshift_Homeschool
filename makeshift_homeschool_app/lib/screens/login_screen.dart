@@ -5,6 +5,7 @@ import 'package:makeshift_homeschool_app/promo/firstsignup.dart';
 import 'package:makeshift_homeschool_app/screens/InterestPickerScreen.dart';
 import 'package:makeshift_homeschool_app/screens/reset_password.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
 import 'package:provider/provider.dart';
@@ -114,6 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
         var result = await auth.signUp(_userInput);
         if (result == true) {
           Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => InterestPickerScreen(interestType: Interest.DEMODAYTOPICS,)));
           // Navigator.push(
           //     context,
           //     MaterialPageRoute(
@@ -417,8 +419,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.vertical()),
                     ),
-                    validator: (userConfirmPasswordInput) =>
-                        confirmPassword(userConfirmPasswordInput),
+                    validator: (userConfirmPasswordInput) => confirmPassword(userConfirmPasswordInput),
                   ),
                 ),
 
@@ -436,7 +437,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
 
                 // Pick Interested DemoDay Topics
-                InterestPickerScreen(),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: InterestPickerScreen(),
+                // ),
 
                 // Referral
                 // Padding(

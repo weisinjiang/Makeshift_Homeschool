@@ -7,6 +7,7 @@ import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/services/video_feed_provider.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
@@ -88,6 +89,7 @@ class MyApp extends StatelessWidget {
               textTheme:
                   GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
           home: auth.isAuthenticated ? RootScreen() : LoginScreen(),
+          //home: InterestPickerScreen(interestType: Interest.DEMODAYTOPICS,),
                   
           routes: {
             '/login': (context) => LoginScreen(),
