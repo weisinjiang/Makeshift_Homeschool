@@ -60,6 +60,13 @@ class MyApp extends StatelessWidget {
 
           //^ Add ChangeNotfierProxyProvider for Auth, Studentprovider using the
           //^ the same format as above
+          ChangeNotifierProxyProvider<AuthProvider, StudentsPageProvider>(
+            // reteieves user posts in Study
+            update: (context, auth, studentList) => StudentsPageProvider(
+                auth.getUserID,
+                studentList),
+            create: (_) => StudentsPageProvider(),
+          ),
 
           ChangeNotifierProxyProvider<AuthProvider, VideoFeedProvider>(
             update: (context, auth, prevVideoPosts) => VideoFeedProvider(

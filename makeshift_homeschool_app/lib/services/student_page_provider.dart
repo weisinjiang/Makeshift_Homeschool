@@ -6,7 +6,10 @@ class StudentsPageProvider {
   final FirebaseFirestore _database =
       FirebaseFirestore.instance; // connect to firestore
 
-  List<Student> studentsList = []; // hold all students info
+  List<Student> studentsList = [];
+
+  StudentsPageProvider(String getUserID,
+      StudentsPageProvider studentList); // hold all students info
 
   // Get all of the students data
   Future<void> fetchUsers() async {
@@ -16,16 +19,15 @@ class StudentsPageProvider {
       // For each user, make a student object
       List<DocumentSnapshot> allUsers = fetchedData.docs;
 
-    allUsers.forEach((doc) {
-      String uid = doc["uid"];
-      String username = doc["username"];
-      String profilepicture = doc["imageURL"];
-      Student studentObject =
-          Student(uid: uid, username: username, profilepicture: profilepicture);
+      allUsers.forEach((doc) {
+        String uid = doc["uid"];
+        String username = doc["username"];
+        String profilepicture = doc["imageURL"];
+        Student studentObject = Student(
+            uid: uid, username: username, profilepicture: profilepicture);
 
-      studentsList.add(studentObject); // Add this to the list
-    });
-
+        studentsList.add(studentObject); // Add this to the list
+      });
     } catch (e) {
       print(e);
     }
