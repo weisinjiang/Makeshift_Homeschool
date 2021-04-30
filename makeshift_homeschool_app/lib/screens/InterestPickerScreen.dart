@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/services/Interest_Provider.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';

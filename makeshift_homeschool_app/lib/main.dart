@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:makeshift_homeschool_app/screens/DemoDayScreen.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
@@ -14,8 +15,6 @@ import 'screens/login_screen.dart';
 import 'shared/constants.dart';
 import 'package:firebase_core/firebase_core.dart'; // Initialize FirebaseApp
 
-// Testing
-import 'screens/InterestPickerScreen.dart';
 
 /// Main file where Flutter runs the app
 /// Goes through initialization of Firebase first then it runs the app.
@@ -97,7 +96,9 @@ class MyApp extends StatelessWidget {
             '/about': (context) => AboutScreen(),
             '/study': (context) => StudyScreen(),
             '/profile': (context) => ProfileScreen(),
+            '/demoDay': (context) => DemoDayScreen()
           },
+         
       
       )));
   }
