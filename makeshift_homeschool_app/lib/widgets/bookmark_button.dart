@@ -9,13 +9,13 @@ class BookmarkButton extends StatelessWidget {
     Key key,
     this.postData,
     @required this.screenSize,
-    @required this.user,
+    @required this.userInfo,
     @required this.isVideo,
   }) : super(key: key);
 
   final postData;
   final Size screenSize;
-  final Map<String, String> user;
+  final Map<String, dynamic> userInfo;
   final bool isVideo;
 
   @override
@@ -39,7 +39,7 @@ class BookmarkButton extends StatelessWidget {
                   : screenSize.height * 0.03,
               ),
         onPressed: () async {
-          await post.toggleBookmarkButton(user["uid"]);
+          await post.toggleBookmarkButton(userInfo["uid"]);
         },
       ),
     )
@@ -61,7 +61,7 @@ class BookmarkButton extends StatelessWidget {
                   : screenSize.height * 0.03,
               ),
         onPressed: () async {
-          await post.toggleBookmarkButton(user["uid"]);
+          await post.toggleBookmarkButton(userInfo["uid"]);
         },
       ),
     );

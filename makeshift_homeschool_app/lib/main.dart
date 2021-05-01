@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:makeshift_homeschool_app/screens/DemoDayScreen.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
@@ -7,14 +8,13 @@ import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/bootcamp_provider.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/services/video_feed_provider.dart';
+import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
 import 'shared/constants.dart';
 import 'package:firebase_core/firebase_core.dart'; // Initialize FirebaseApp
 
-// Testing
-import 'screens/InterestPickerScreen.dart';
 
 /// Main file where Flutter runs the app
 /// Goes through initialization of Firebase first then it runs the app.
@@ -87,14 +87,8 @@ class MyApp extends StatelessWidget {
               primaryColor: kGreenSecondary,
               textTheme:
                   GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
-          // home: auth.isAuthenticated ? RootScreen()
-          //         : FutureBuilder( 
-          //           future: auth.tryAutoLogin(),
-          //           builder: (context, authResultSnapshot) =>
-          //           authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : LoginScreen(),
-          //         ),
-          home: InterestPickerScreen(),
-        
+          home: auth.isAuthenticated ? RootScreen() : LoginScreen(),
+          //home: InterestPickerScreen(interestType: Interest.DEMODAYTOPICS,),
                   
           routes: {
             '/login': (context) => LoginScreen(),
@@ -102,7 +96,9 @@ class MyApp extends StatelessWidget {
             '/about': (context) => AboutScreen(),
             '/study': (context) => StudyScreen(),
             '/profile': (context) => ProfileScreen(),
+            '/demoday': (context) => DemoDayScreen()
           },
+         
       
       )));
   }

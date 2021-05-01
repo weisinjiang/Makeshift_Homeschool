@@ -68,7 +68,7 @@ class _AlternativeMovieEndingsState extends State<AlternativeMovieEndings> {
   @override
   Widget build(BuildContext context) {
     var database = Provider.of<BootCampProvider>(context);
-    var user = Provider.of<AuthProvider>(context).getUser;
+    var userInfo = Provider.of<AuthProvider>(context).getUserInfo;
     final screenSize = MediaQuery.of(context).size; // size of the screen
 
     return Scaffold(
@@ -210,7 +210,7 @@ class _AlternativeMovieEndingsState extends State<AlternativeMovieEndings> {
                   child: Text("Save"),
                   onPressed: () async {
                     await save(
-                        database, user, "Alternative Movie Endings", context);
+                        database, userInfo, "Alternative Movie Endings", context);
                   })
             ],
           ),

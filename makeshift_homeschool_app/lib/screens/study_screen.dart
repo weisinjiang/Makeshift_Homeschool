@@ -48,8 +48,8 @@ class _StudyScreenState extends State<StudyScreen> {
     // used to call the filter method to retrieve posts
     final feedProvider = Provider.of<PostFeedProvider>(context);
 
-    final user = Provider.of<AuthProvider>(context).getUser;
-    if (user != null) {
+    final userInfo = Provider.of<AuthProvider>(context).getUserInfo;
+    if (userInfo != null) {
       return Scaffold(
           appBar: AppBar(
             title: Text("Let's Read! 📖"),

@@ -17,7 +17,7 @@ class NewVideoPostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final userInfo = Provider.of<AuthProvider>(context);
+    final userInfo = Provider.of<AuthProvider>(context).getUserInfo;
 
     return Provider<NewVideoPostProvider>(
       create: (context) => NewVideoPostProvider(postData: postData),
@@ -42,11 +42,11 @@ class NewVideoPostScreen extends StatelessWidget {
                   //^ Not editing and can post
                   if (canPost && !isEditing) {
                     newVideoPostProvider.post(
-                        uid: userInfo.getUserID,
-                        name: userInfo.getUserName,
-                        userLevel: userInfo.getUserLevel,
-                        email: userInfo.getEmail,
-                        lessonCreated: userInfo.getLessonCreatedAsInt);
+                        uid: userInfo["uid"],
+                        name: userInfo["studentFirstName"],
+                        userLevel: userInfo["level"], 
+                        email: userInfo["studentEmail"],
+                        lessonCreated: userInfo["lessonCreated"]);
 
                     Navigator.of(context).pop();
                   }
