@@ -189,56 +189,63 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       //Initial container that fills the entire screen
       body: Container(
-        color: Colors.white,
         width: screenSize.width,
         height: screenSize.height,
-        alignment: Alignment.center,
-        // Smaller container that goes inside the inital container that fills the entire screen
-        child: Container(
-          color: Colors.white,
-          height: screenSize.height * 0.95,
-          width: screenSize.width,
-          // Scrollable to prevent pixle overflow
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: <Widget>[
+        color: Colors.white,
+        child: Center(
+          child: Container(
+            color: Colors.white,
+            width: screenSize.width > 900 ? 900 : screenSize.width,
+            height: screenSize.height,
+            alignment: Alignment.center,
+            // Smaller container that goes inside the inital container that fills the entire screen
+            child: Container(
+              color: Colors.white,
+              height: screenSize.height * 0.95,
+              width: screenSize.width,
+              // Scrollable to prevent pixle overflow
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: <Widget>[
 
-                  // About Button on the top right
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 35, 20, 0),
-                      child: RaisedButton(
-                        color: kGreenPrimary,
-                        onPressed: () =>
-                            Navigator.of(context).pushNamed('/about'),
-                        child: const Text("About"),
+                      // About Button on the top right
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 35, 20, 0),
+                          child: RaisedButton(
+                            color: kGreenPrimary,
+                            onPressed: () =>
+                                Navigator.of(context).pushNamed('/about'),
+                            child: const Text("About"),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
 
-                  // Logo
-                  Padding(
-                    padding: const EdgeInsets.all(40.0),
-                    child: Image.asset('asset/images/logo.png'),
-                  ),
+                      // Logo
+                      Padding(
+                        padding: const EdgeInsets.all(40.0),
+                        child: Image.asset('asset/images/logo.png'),
+                      ),
 
-                  // Builder will return differnt widgets depending on if it is 
-                  // mobile or web
-                  Builder(
-                    builder: (context) {
-                      // if (kIsWeb) {
-                      //   return buildWebForm(
-                      //       screenSize, _userInput, context, auth);
-                      // } else {
-                        return buildMobileForm( _userInput,
-                            context, screenSize, auth);
-                      //}
-                    },
+                      // Builder will return differnt widgets depending on if it is 
+                      // mobile or web
+                      Builder(
+                        builder: (context) {
+                          // if (kIsWeb) {
+                          //   return buildWebForm(
+                          //       screenSize, _userInput, context, auth);
+                          // } else {
+                            return buildMobileForm( _userInput,
+                                context, screenSize, auth);
+                          //}
+                        },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),

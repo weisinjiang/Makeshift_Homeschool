@@ -85,7 +85,7 @@ class PostThumbnail extends StatelessWidget {
             ? screenSize.height * 0.20
             :screenSize.height * 0.20,
           width: kIsWeb
-            ? screenSize.width * 0.20
+            ? screenSize.width * 0.10
             :screenSize.width * 0.40,
 
           /// Box decoration for the shape of the container and the image that

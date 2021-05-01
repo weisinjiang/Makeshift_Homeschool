@@ -96,7 +96,7 @@ class MyApp extends StatelessWidget {
             '/about': (context) => AboutScreen(),
             '/study': (context) => StudyScreen(),
             '/profile': (context) => ProfileScreen(),
-            '/demoDay': (context) => DemoDayScreen()
+            '/demoday': (context) => DemoDayScreen()
           },
          
       
