@@ -22,7 +22,7 @@ class DrawPicture extends StatelessWidget {
                   " \nNow we are going to make the mountains, take a green colored pencil and draw a triangle shape like is shows in the picture.\n "),
               Image.asset("asset/a/drawing/picture2.jpg"),
               Text(
-                  " \nNext, draw another triagle and then dram a hump. After that draw the outline of the cloud.\n "),
+                  " \nNext, draw another triagle and then draw a hump as a hill. After that draw the outline of the cloud.\n "),
               Image.asset("asset/a/drawing/picture3.jpg"),
               Image.asset("asset/a/drawing/picture4.jpg"),
               Text(" \nThen draw the sun you can use yellow our orange.\n "),
@@ -33,37 +33,40 @@ class DrawPicture extends StatelessWidget {
               Text(
                   " \nAnd then color the river in with the same shade of blue.\n "),
               Image.asset("asset/a/drawing/picture7.jpg"),
-              Text(" \nfor the tree draw two brown lines that extend outward at the ends.\n "),
+              Text(
+                  " \nfor the tree draw two brown lines that extend outward at the ends.\n "),
               Image.asset("asset/a/drawing/picture8.jpg"),
               Text(
                   " \nAnd make three branches coming out of the trunk of the tree.\n "),
               Image.asset("asset/a/drawing/picture9.jpg"),
-              Text(" \nColor in a cloud shape for the leaves right above the tree branches.\n "),
+              Text(
+                  " \nColor in a cloud shape for the leaves right above the tree branches.\n "),
               Image.asset("asset/a/drawing/picture10.jpg"),
               Text(
-                  " \nAnd lastly, turn it and fold the other flap up the other direction.\n "),
+                  " \nNext color in the branches and trunck of the tree with a shade of brown.\n "),
               Image.asset("asset/a/drawing/picture11.jpg"),
-              Text(" \nNow you are done with your paper hat!\n "),
-              Image.asset("asset/a/drawing/picture12.jpg"),
               Text(
-                  " \nAnd lastly, turn it and fold the other flap up the other direction.\n "),
+                  " \nNow color the tops of the mountians yellow or light green.\n "),
+              Image.asset("asset/a/drawing/picture12.jpg"),
+              Text(" \nColor in the rest of the moutain with green.\n "),
               Image.asset("asset/a/drawing/picture13.jpg"),
-              Text(" \nNow you are done with your paper hat!\n "),
+              Text(
+                  " \nmake shure not to color over the sun and clouds while you draw the sky with light blue\n "),
               Image.asset("asset/a/drawing/picture14.png"),
               Text(
-                  " \nAnd lastly, turn it and fold the other flap up the other direction.\n "),
+                  " \nNext draw the outline of the rocks in gray next to the sides of the river.\n "),
               Image.asset("asset/a/drawing/picture15.png"),
-              Text(" \nNow you are done with your paper hat!\n "),
+              Text(" \nNow color in the rocks in the same shade of gray.\n "),
               Image.asset("asset/a/drawing/picture16.png"),
               Text(
-                  " \nAnd lastly, turn it and fold the other flap up the other direction.\n "),
+                  " \nNow draw two wavy lines in brown or a blond yellow around the rocks.\n "),
               Image.asset("asset/a/drawing/picture17.png"),
-              Text(" \nNow you are done with your paper hat!\n "),
+              Text(" \nNext color it in.\n "),
               Image.asset("asset/a/drawing/picture18.png"),
               Text(
-                  " \nAnd lastly, turn it and fold the other flap up the other direction.\n "),
+                  " \nFinally color in the rest of the ground in green.\n "),
               Image.asset("asset/a/drawing/picture19.png"),
-              Text(" \nNow you are done with your paper hat!\n "),
+              Text(" \nNow you are done with your picture!\n "),
             ],
           ),
         ));
