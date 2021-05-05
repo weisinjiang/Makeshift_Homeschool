@@ -13,6 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../services/auth.dart';
 import '../shared/constants.dart';
 import '../models/user_auth_model.dart';
+
 /// Builds the Login Screen
 /// Enum Authmode determines which Firebase method to use: login or signup
 /// It will also determine how the screen will look.
@@ -98,11 +99,11 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     // Validation success
     _formKey.currentState.save();
-   
+
     try {
       // Attempt to log user in
       if (_authMode == AuthMode.Login) {
-        var isSignedIn = await auth.signIn(_userInput); 
+        var isSignedIn = await auth.signIn(_userInput);
 
         // If successful, Main.dart will swap to RootScreen
         //var isSignedIn = await auth.signIn("roxas600@gmail.com", "Checkmate1@");
@@ -115,7 +116,12 @@ class _LoginScreenState extends State<LoginScreen> {
         var result = await auth.signUp(_userInput);
         if (result == true) {
           Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => InterestPickerScreen(interestType: Interest.DEMODAYTOPICS,)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => InterestPickerScreen(
+                        interestType: Interest.DEMODAYTOPICS,
+                      )));
           // Navigator.push(
           //     context,
           //     MaterialPageRoute(
@@ -191,16 +197,16 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         width: screenSize.width,
         height: screenSize.height,
-        color: Colors.white,
+        color: Colors.black87,
         child: Center(
           child: Container(
-            color: Colors.white,
+            color: Colors.black87,
             width: screenSize.width > 900 ? 900 : screenSize.width,
             height: screenSize.height,
             alignment: Alignment.center,
             // Smaller container that goes inside the inital container that fills the entire screen
             child: Container(
-              color: Colors.white,
+              color: Colors.black87,
               height: screenSize.height * 0.95,
               width: screenSize.width,
               // Scrollable to prevent pixle overflow
@@ -209,7 +215,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: <Widget>[
-
                       // About Button on the top right
                       Align(
                         alignment: Alignment.topRight,
@@ -226,11 +231,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       // Logo
                       Padding(
-                        padding: const EdgeInsets.all(40.0),
-                        child: Image.asset('asset/images/logo.png'),
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 40.0),
+                        child: Image.asset('asset/images/Wequilschool.png'),
                       ),
 
-                      // Builder will return differnt widgets depending on if it is 
+                      // Builder will return differnt widgets depending on if it is
                       // mobile or web
                       Builder(
                         builder: (context) {
@@ -238,8 +243,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           //   return buildWebForm(
                           //       screenSize, _userInput, context, auth);
                           // } else {
-                            return buildMobileForm( _userInput,
-                                context, screenSize, auth);
+                          return buildMobileForm(
+                              _userInput, context, screenSize, auth);
                           //}
                         },
                       ),
@@ -254,19 +259,22 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-/// The mobile widget of the loginscreen
-/// Builds the textfields, buttons and widgetst that switches between
-/// Authmodes.
-/// 
-/// @param passed into this method
-/// @ _userInput - this is an object containing information the user inputted
-/// @ context - the current widget tree's location
-/// @ screenSize 
-/// @ auth - auth object to call signin or signout
-  Column buildMobileForm(UserAuth _userInput, BuildContext context, Size screenSize, AuthProvider auth) {
-
+  /// The mobile widget of the loginscreen
+  /// Builds the textfields, buttons and widgetst that switches between
+  /// Authmodes.
+  ///
+  /// @param passed into this method
+  /// @ _userInput - this is an object containing information the user inputted
+  /// @ context - the current widget tree's location
+  /// @ screenSize
+  /// @ auth - auth object to call signin or signout
+  Column buildMobileForm(UserAuth _userInput, BuildContext context,
+      Size screenSize, AuthProvider auth) {
     // Only letters and max of 15 char for name fields
-    List<TextInputFormatter> nameFormatter = [LengthLimitingTextInputFormatter(15), FilteringTextInputFormatter.allow(RegExp(r"[a-zA-Z]"))];
+    List<TextInputFormatter> nameFormatter = [
+      LengthLimitingTextInputFormatter(15),
+      FilteringTextInputFormatter.allow(RegExp(r"[a-zA-Z]"))
+    ];
 
     return Column(
       children: [
@@ -274,21 +282,28 @@ class _LoginScreenState extends State<LoginScreen> {
           key: _formKey, // key to track the forms input
           child: Column(
             children: <Widget>[
-              
               // Student first name
-              if (_authMode == AuthMode.Signup) ... [
+              if (_authMode == AuthMode.Signup) ...[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    style: TextStyle(color: Colors.white),
                     inputFormatters: nameFormatter,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      hintText: "Your First name",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.vertical()),
-                    ),
-                    onSaved: (userNameInput) => _userInput.setStudentFirstName = userNameInput,
-                    validator: (userInput) => _userInput.validateName(userInput),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                        hintText: "Your First Name",
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white))),
+                    onSaved: (userNameInput) =>
+                        _userInput.setStudentFirstName = userNameInput,
+                    validator: (userInput) =>
+                        _userInput.validateName(userInput),
                   ),
                 ),
 
@@ -296,14 +311,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    inputFormatters: [LengthLimitingTextInputFormatter(2), FilteringTextInputFormatter.digitsOnly],
+                    style: TextStyle(color: Colors.white),
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(2),
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      hintText: "Your Age",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.vertical()),
-                    ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                        hintText: "Your Age",
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white))),
                     onSaved: (age) => _userInput.setStudentAge = age,
                     validator: (age) => _userInput.validateAge(age),
                   ),
@@ -313,15 +337,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    style: TextStyle(color: Colors.white),
                     inputFormatters: nameFormatter,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      hintText: "Parent First name",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.vertical()),
-                    ),
-                    onSaved: (userNameInput) => _userInput.setParentFirstName = userNameInput,
-                    validator: (userNameInput) => _userInput.validateName(userNameInput),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                        hintText: "Parent First Name",
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white))),
+                    onSaved: (userNameInput) =>
+                        _userInput.setParentFirstName = userNameInput,
+                    validator: (userNameInput) =>
+                        _userInput.validateName(userNameInput),
                   ),
                 ),
 
@@ -329,47 +361,73 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    style: TextStyle(color: Colors.white),
                     inputFormatters: nameFormatter,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      hintText: "Parent Last Name",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.vertical()),
-                    ),
-                    onSaved: (userNameInput) => _userInput.setParentLastName = userNameInput,
-                    validator: (userNameInput) => _userInput.validateName(userNameInput),
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                        hintText: "Parent Last Name",
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white))),
+                    onSaved: (userNameInput) =>
+                        _userInput.setParentLastName = userNameInput,
+                    validator: (userNameInput) =>
+                        _userInput.validateName(userNameInput),
                   ),
                 ),
 
-              // Parent Email Field
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    hintText: "Parent Email",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.vertical()),
-                  ),
-                  validator: (userEmailInput) => _userInput.validateEmail(userEmailInput, false),
-                  onSaved: (userEmailInput) => _userInput.setParentEmail = userEmailInput,
-                ),
-              ),
-
-              // Parent Phone Number
-              Padding(
+                // Parent Email Field
+                Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    inputFormatters: [LengthLimitingTextInputFormatter(10), FilteringTextInputFormatter.digitsOnly],
+                    style: TextStyle(color: Colors.white),
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.email,
+                          color: Colors.white,
+                        ),
+                        hintText: "Parent Email",
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white))),
+                    validator: (userEmailInput) =>
+                        _userInput.validateEmail(userEmailInput, false),
+                    onSaved: (userEmailInput) =>
+                        _userInput.setParentEmail = userEmailInput,
+                  ),
+                ),
+
+                // Parent Phone Number
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    style: TextStyle(color: Colors.white),
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(10),
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person),
-                      hintText: "Parent Phone Number",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.vertical()),
-                    ),
-                    onSaved: (number) => _userInput.setParentPhoneNumber = number,
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                        hintText: "Parent Phone Number",
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white))),
+                    onSaved: (number) =>
+                        _userInput.setParentPhoneNumber = number,
                   ),
                 ),
               ],
@@ -378,15 +436,23 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: Colors.white),
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.email),
-                    hintText: "Your Email",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.vertical()),
-                  ),
-                  validator: (userEmailInput) => _userInput.validateEmail(userEmailInput, true),
-                  onSaved: (userEmailInput) => _userInput.setStudentEmail = userEmailInput,
+                        prefixIcon: Icon(
+                          Icons.email,
+                          color: Colors.white,
+                        ),
+                        hintText: "Your Email",
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white))),
+                  validator: (userEmailInput) =>
+                      _userInput.validateEmail(userEmailInput, true),
+                  onSaved: (userEmailInput) =>
+                      _userInput.setStudentEmail = userEmailInput,
                 ),
               ),
 
@@ -394,14 +460,20 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
                 child: TextFormField(
+                  style: TextStyle(color: Colors.white),
                   obscureText: true,
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    hintText: "Password*",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.vertical()),
-                  ),
+                        prefixIcon: Icon(
+                          Icons.lock,
+                          color: Colors.white,
+                        ),
+                        hintText: "Password*",
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white))),
                   validator: (userPasswordInput) {
                     if (_authMode == AuthMode.Signup) {
                       return _userInput.validatePassword(userPasswordInput);
@@ -419,14 +491,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    style: TextStyle(color: Colors.white),
                     obscureText: true,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock_outline),
-                      hintText: "Confirm Password*",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.vertical()),
-                    ),
-                    validator: (userConfirmPasswordInput) => confirmPassword(userConfirmPasswordInput),
+                        prefixIcon: Icon(
+                          Icons.lock_outlined,
+                          color: Colors.white,
+                        ),
+                        hintText: "Confirm Password*",
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white))),
+                    validator: (userConfirmPasswordInput) =>
+                        confirmPassword(userConfirmPasswordInput),
                   ),
                 ),
 
@@ -478,22 +557,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 //       }),
                 // ),
 
-              //   // If referral is Other, have the user give us where they found us and save it
-              //   if (_referalSelected == "Other")
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: TextFormField(
-              //         decoration: InputDecoration(
-              //           hintText: "Please tell us where",
-              //           border: OutlineInputBorder(
-              //               borderRadius: BorderRadius.vertical()),
-              //         ),
-              //         validator: (userRefInput) =>
-              //             _userInput.validateReferral(userRefInput),
-              //         onSaved: (userRefInput) =>
-              //             _userInput.setReferral = userRefInput,
-              //       ),
-              //     ),
+                //   // If referral is Other, have the user give us where they found us and save it
+                //   if (_referalSelected == "Other")
+                //     Padding(
+                //       padding: const EdgeInsets.all(8.0),
+                //       child: TextFormField(
+                //         decoration: InputDecoration(
+                //           hintText: "Please tell us where",
+                //           border: OutlineInputBorder(
+                //               borderRadius: BorderRadius.vertical()),
+                //         ),
+                //         validator: (userRefInput) =>
+                //             _userInput.validateReferral(userRefInput),
+                //         onSaved: (userRefInput) =>
+                //             _userInput.setReferral = userRefInput,
+                //       ),
+                //     ),
               ],
               Align(
                 alignment: Alignment.centerRight,
@@ -501,7 +580,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     onPressed: () {
-                      Navigator.of(context).push(ScaleRoute(screen: ResetPasswordScreen()));
+                      Navigator.of(context)
+                          .push(ScaleRoute(screen: ResetPasswordScreen()));
                     },
                     child: const Text(
                       "Reset Password",
@@ -535,7 +615,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _authMode == AuthMode.Login
                         ? "Don't have an account?"
                         : "Have an account?",
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                    style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
                   ),
                   FlatButton(
                     splashColor:
@@ -597,15 +677,15 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-/// The WEB widget of the loginscreen
-/// Builds the textfields, buttons and widgetst that switches between
-/// Authmodes.
-/// 
-/// @param passed into this method
-/// @ _userInput - this is an object containing information the user inputted
-/// @ context - the current widget tree's location
-/// @ screenSize 
-/// @ auth - auth object to call signin or signout
+  /// The WEB widget of the loginscreen
+  /// Builds the textfields, buttons and widgetst that switches between
+  /// Authmodes.
+  ///
+  /// @param passed into this method
+  /// @ _userInput - this is an object containing information the user inputted
+  /// @ context - the current widget tree's location
+  /// @ screenSize
+  /// @ auth - auth object to call signin or signout
   // Column buildWebForm(Size screenSize, UserAuth _userInput,
   //     BuildContext context, AuthProvider auth) {
   //   return Column(
