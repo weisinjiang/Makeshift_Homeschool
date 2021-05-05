@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/screens/search_videos_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/video_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
@@ -50,6 +51,16 @@ class _StudyVideoScreenState extends State<StudyVideoScreen> {
     if (userInfo != null) {
 
       return Scaffold(  
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.white,
+          child: IconButton(
+            icon: Icon(Icons.search, color: Colors.black,),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SearchVideosScreen()));
+            },
+          ),
+        ),
         appBar: AppBar(  
           title: Text("Video Lessons"),
           backgroundColor: kPaleBlue,
