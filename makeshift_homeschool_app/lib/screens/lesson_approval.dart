@@ -55,7 +55,7 @@ class _LessonApprovalScreenState extends State<LessonApprovalScreen> {
     if (userInfo != null) {
       return Scaffold(
           appBar: AppBar(
-            title: Text("Review Lessons"),
+            title: Text("Review Tutor Lessons"),
             backgroundColor: kPaleBlue,
           ),
           body: _isLoading

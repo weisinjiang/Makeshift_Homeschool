@@ -5,15 +5,14 @@ import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 
 class PostFeedProvider with ChangeNotifier {
-  final FirebaseFirestore _database =
-      FirebaseFirestore.instance; // connect to firestore
+  final FirebaseFirestore _database = FirebaseFirestore.instance; // connect to firestore
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   List<Post> _posts = []; //post list to be shown on the feed
   List<Post> _userPosts = [];
   List<Post> _approvalNeeded = [];
   final String uid;
-
+  
   PostFeedProvider(this.uid, this._posts);
 
   // Get the posts, not a ref to _post but a deep copy of it
@@ -80,7 +79,8 @@ class PostFeedProvider with ChangeNotifier {
     try {
       QuerySnapshot fetchedData;
       if (reviewer == Reviewer.principle) {
-        fetchedData = await _database.collection("approval required").get();
+        fetchedData =
+            await _database.collection("approval required").get();
       } else if (reviewer == Reviewer.teacher) {
         fetchedData = await _database.collection("review").get();
       }
@@ -195,7 +195,7 @@ class PostFeedProvider with ChangeNotifier {
           String videoID = doc["videoID"];
           debugPrint("Video Link Found");
           post.setVideoID = videoID;
-        } catch (error) {
+        } catch(error) {
           //post.setVideoUrl = "null";
           debugPrint("No video");
         }
