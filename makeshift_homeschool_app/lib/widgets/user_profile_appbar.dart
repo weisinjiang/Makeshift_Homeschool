@@ -26,7 +26,7 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
-    Map<String, String> userData = authProvider.getUser;
+    Map<String, dynamic> userInfo = authProvider.getUserInfo;
 
     return AppBar(
       elevation: 0.0,
@@ -62,7 +62,7 @@ class UserProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => EditProfileScreen(
-                                            currentData: userData)));
+                                            currentData: userInfo)));
                                 
                               },
                             ),

@@ -28,16 +28,16 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  Map<String, String> userData;
+  Map<String, dynamic> userInfo;
   bool isEmailVerified;
   Size screenSize;
 
   /// Before the root screen builds, gather user data and check if their email is verified
   @override
   void initState() {
-    userData = Provider.of<AuthProvider>(context, listen: false).getUser;
-    isEmailVerified =
-        Provider.of<AuthProvider>(context, listen: false).isEmailVerified;
+
+    userInfo = Provider.of<AuthProvider>(context, listen: false).getUserInfo;
+    isEmailVerified = Provider.of<AuthProvider>(context, listen: false).isEmailVerified;
     super.initState();
   }
 
@@ -48,20 +48,71 @@ class _RootScreenState extends State<RootScreen> {
     /// upon signout, userData will be set to null. This conditional is so
     /// that when users signout, an error screen wont show
 
-    if (userData != null) {
+    if (userInfo != null) {
       return Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.black,
-          title: Text("Hi, ${userData["username"]}!"),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.person),
-              onPressed: () => Navigator.push(
-                  context, SlideLeftRoute(screen: ProfileScreen())),
-            )
-          ],
-        ),
+          appBar: AppBar(
+            elevation: 0.0,
+            backgroundColor: kPaleBlue,
+            title: Text("Hi, ${userInfo["studentFirstName"]}!"),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.person),
+                onPressed: () => Navigator.push(
+                    context, SlideLeftRoute(screen: ProfileScreen())),
+              )
+            ],
+          ),
+
+          // endDrawer: AppDrawer(
+          //   userData: userData,
+          // ),
+          body: Container(
+            color: kPaleBlue,
+            height: screenSize.height,
+            width: screenSize.width,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  /// What do you want to do today? Greet image
+                  Container(
+                    height: screenSize.height * 0.20,
+                    width: screenSize.width,
+                    child: Center(
+                        child: Image.asset(
+                      'asset/images/greetJoseph1.png',
+                      fit: BoxFit.contain,
+                    )),
+                  ),
+                  
+                  // Before build, user's email was checked to be not verified
+                  if (!isEmailVerified)
+                    Text(
+                      "Please secure your account by verifying your email",
+                      style: kBoldTextStyle,
+                    ),
+
+                  // Render the buttons depending on if it is web or mobile because
+                  // Mobile app button design currently do not work on WebApp
+                  Builder(
+                    builder: (context) {
+                      if (kIsWeb) {
+                        return buildWebButtons(screenSize, context);
+                      } else {
+                        return buildMobileButtons(screenSize, context);
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ));
+    
+    } else {
+      return LoadingScreen();
+    }
+  }
 
         // endDrawer: AppDrawer(
         //   userData: userData,
@@ -292,48 +343,35 @@ class _RootScreenState extends State<RootScreen> {
                           )));
                     },
                   ),
-                if (userData["level"] == "Professor" ||
-                    userData["level"] == "Teacher")
-                  ListTile(
-                    leading: Icon(Icons.edit_attributes_outlined,
-                        color: Colors.white),
-                    title: Text("Review Lessons",
-                        style: TextStyle(color: Colors.white)),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          SlideLeftRoute(
-                              screen: LessonApprovalScreen(
-                            reviewer: Reviewer.teacher,
-                          )));
-                    },
-                  )
-              ],
+                  name: "Teach",
+                  imageLocation: "asset/images/teach.png",
+                )),
+          ])),
+
+
+      if (userInfo["level"] == "Professor")
+        Container(
+          height: screenSize.height * 0.15,
+          width: screenSize.width,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GhostButton(
+              borderRadius: 20.0,
+              buttonBorderColor: kRedOrange,
+              buttonFillColor: kRedOrange,
+              buttonName: "Approve Lessons",
+              buttonTextColor: Colors.black,
+              function: () => Navigator.push(
+                  context,
+                  SlideLeftRoute(
+                      screen: LessonApprovalScreen(
+                    reviewer: Reviewer.principle,
+                  ))),
             ),
           ),
         ),
-      );
-    } else {
-      return LoadingScreen();
-    }
-  }
-
-  Column buildMobileButtons(Size screenSize, BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          "WEquil School",
-          style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.start,
-        ),
-      ],
-    );
-  }
-
-  Column buildWebButtons(Size screenSize, BuildContext context) {
-    return Column(
-      children: [
+      // show this to teachers so they can review posts or Principle
+      if (userInfo["level"] == "Professor" || userInfo["level"] == "Teacher")
         Container(
           height: screenSize.height * 0.15,
           width: screenSize.width / 2,
@@ -501,48 +539,50 @@ class _RootScreenState extends State<RootScreen> {
                   ),
                 ),
               ),
-            ])),
-        if (userData["level"] == "Professor")
-          Container(
-            height: screenSize.height * 0.15,
-            width: screenSize.width / 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GhostButton(
-                borderRadius: 20.0,
-                buttonBorderColor: kRedOrange,
-                buttonFillColor: kRedOrange,
-                buttonName: "Approve Lessons",
-                buttonTextColor: Colors.black,
-                function: () => Navigator.push(
-                    context,
-                    SlideLeftRoute(
-                        screen: LessonApprovalScreen(
-                      reviewer: Reviewer.principle,
-                    ))),
-              ),
+
+            ),
+          ])),
+      if (userInfo["level"] == "Professor")
+        Container(
+          height: screenSize.height * 0.15,
+          width: screenSize.width / 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GhostButton(
+              borderRadius: 20.0,
+              buttonBorderColor: kRedOrange,
+              buttonFillColor: kRedOrange,
+              buttonName: "Approve Lessons",
+              buttonTextColor: Colors.black,
+              function: () => Navigator.push(
+                  context,
+                  SlideLeftRoute(
+                      screen: LessonApprovalScreen(
+                    reviewer: Reviewer.principle,
+                  ))),
             ),
           ),
-        // show this to teachers so they can review posts or Principle
-        if (userData["level"] == "Professor" || userData["level"] == "Teacher")
-          Container(
-            height: screenSize.height * 0.15,
-            width: screenSize.width / 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GhostButton(
-                borderRadius: 20.0,
-                buttonBorderColor: kRedOrange,
-                buttonFillColor: kRedOrange,
-                buttonName: "Review Tutor Lessons",
-                buttonTextColor: Colors.black,
-                function: () => Navigator.push(
-                    context,
-                    SlideLeftRoute(
-                        screen: LessonApprovalScreen(
-                      reviewer: Reviewer.teacher,
-                    ))),
-              ),
+        ),
+      // show this to teachers so they can review posts or Principle
+      if (userInfo["level"] == "Professor" || userInfo["level"] == "Teacher")
+        Container(
+          height: screenSize.height * 0.15,
+          width: screenSize.width / 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GhostButton(
+              borderRadius: 20.0,
+              buttonBorderColor: kRedOrange,
+              buttonFillColor: kRedOrange,
+              buttonName: "Review Tutor Lessons",
+              buttonTextColor: Colors.black,
+              function: () => Navigator.push(
+                  context,
+                  SlideLeftRoute(
+                      screen: LessonApprovalScreen(
+                    reviewer: Reviewer.teacher,
+                  ))),
+
             ),
           ),
       ],

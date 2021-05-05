@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-//import 'dart:typed_data';
+//import 'dart:typed_data' if (dart.libary.js) "";
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:makeshift_homeschool_app/services/new_post_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
 import 'package:provider/provider.dart';
-//import 'package:image_picker_for_web/image_picker_for_web.dart';
+//import 'package:image_picker_for_web/image_picker_for_web.dart' if (dart.libary.js) 'package:image_picker/image_picker.dart';
 
 /// Builds the Image Widget that lets users pick images from their mobile phones
 /// or their Desktop depending on if it's being used on Desktop Browser, iOS, Android

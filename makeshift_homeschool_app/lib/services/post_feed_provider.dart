@@ -90,7 +90,6 @@ class PostFeedProvider with ChangeNotifier {
 
       // serialize all documents and make them into Post objects
       allDocuments.forEach((doc) {
-        print(doc);
         Post post = Post();
         post.setLikes = doc["likes"];
         post.setViews = doc["views"];
