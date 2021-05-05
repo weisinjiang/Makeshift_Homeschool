@@ -8,6 +8,7 @@ import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 import 'package:makeshift_homeschool_app/shared/enums.dart';
 import 'package:makeshift_homeschool_app/shared/scale_transition.dart';
 import 'package:makeshift_homeschool_app/shared/warning_messages.dart';
+import 'package:makeshift_homeschool_app/widgets/new_video_widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/auth.dart';
@@ -223,7 +224,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-
                       // Logo
                       Padding(
                         padding: const EdgeInsets.all(40.0),
@@ -535,7 +535,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _authMode == AuthMode.Login
                         ? "Don't have an account?"
                         : "Have an account?",
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                    style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
                   ),
                   FlatButton(
                     splashColor:
@@ -606,6 +606,7 @@ class _LoginScreenState extends State<LoginScreen> {
 /// @ context - the current widget tree's location
 /// @ screenSize 
 /// @ auth - auth object to call signin or signout
+
   // Column buildWebForm(Size screenSize, UserAuth _userInput,
   //     BuildContext context, AuthProvider auth) {
   //   return Column(
