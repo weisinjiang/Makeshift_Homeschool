@@ -42,12 +42,13 @@ class _RootScreenState extends State<RootScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    /// upon signout, userData will be set to null. This conditional is so
+    /// upon signout, userInfo will be set to null. This conditional is so
     /// that when users signout, an error screen wont show
 
     if (userInfo != null) {
       return Scaffold(
           appBar: AppBar(
+            iconTheme: IconThemeData(color: Colors.white),
             elevation: 0.0,
             backgroundColor: Colors.black,
             title: Text("Hi, ${userInfo["studentFirstName"]}!", style: TextStyle(color: Colors.white)),
@@ -61,7 +62,7 @@ class _RootScreenState extends State<RootScreen> {
           ),
 
           // endDrawer: AppDrawer(
-          //   userData: userData,
+          //   userInfo: userInfo,
           // ),
           body: Container(
             color: Colors.black,
@@ -78,7 +79,7 @@ class _RootScreenState extends State<RootScreen> {
                     width: screenSize.width,
                     child: Center(
                         child: Image.asset(
-                      'asset/images/Wequilschool.png',
+                      'asset/images/Wequilschool2.png',
                       fit: BoxFit.contain,
                     )),
                   ),
@@ -114,10 +115,10 @@ class _RootScreenState extends State<RootScreen> {
                  decoration: BoxDecoration(color: Colors.black),
                  currentAccountPicture: CircleAvatar(
                    radius: 60,
-                   backgroundImage: NetworkImage(userData["photoURL"]),
+                   backgroundImage: NetworkImage(userInfo["photoURL"]),
                  ),
-                 accountName: Text("${userData["username"]}"),
-                 accountEmail: Text("${userData["level"]}"),
+                 accountName: Text("${userInfo["studentFirstName"]}", style: TextStyle(color: Colors.white),),
+                 accountEmail: Text("${userInfo["level"]}", style: TextStyle(color: Colors.white),)
                ),
                ListTile(
                  leading: Icon(
@@ -143,8 +144,6 @@ class _RootScreenState extends State<RootScreen> {
                    style: TextStyle(color: Colors.white),
                  ),
                  onTap: () {
-                   Navigator.push(
-                       context, SlideLeftRoute(screen: StudentsPage()));
                  },
                ),
                ListTile(
@@ -275,7 +274,7 @@ class _RootScreenState extends State<RootScreen> {
                            );
                          });
                    }),
-               if (userData["level"] == "Professor")
+               if (userInfo["level"] == "Professor")
                  ListTile(
                    leading: Icon(Icons.check_box, color: Colors.white),
                    title: Text("Approve Lessons",
@@ -289,8 +288,8 @@ class _RootScreenState extends State<RootScreen> {
                          )));
                    },
                  ),
-               if (userData["level"] == "Professor" ||
-                   userData["level"] == "Teacher")
+               if (userInfo["level"] == "Professor" ||
+                   userInfo["level"] == "Teacher")
                  ListTile(
                    leading: Icon(Icons.edit_attributes_outlined,
                        color: Colors.white),

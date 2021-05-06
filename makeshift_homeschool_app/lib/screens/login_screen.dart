@@ -231,8 +231,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       // Logo
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 40.0),
-                        child: Image.asset('asset/images/Wequilschool.png'),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 0.0, vertical: 40.0),
+                        child: Image.asset('asset/images/Wequilschool2.png'),
                       ),
 
                       // Builder will return differnt widgets depending on if it is
@@ -439,16 +440,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(color: Colors.white),
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.email,
-                          color: Colors.white,
-                        ),
-                        hintText: "Your Email",
-                        hintStyle: TextStyle(color: Colors.white),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white))),
+                      prefixIcon: Icon(
+                        Icons.email,
+                        color: Colors.white,
+                      ),
+                      hintText: "Your Email",
+                      hintStyle: TextStyle(color: Colors.white),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue)),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white))),
                   validator: (userEmailInput) =>
                       _userInput.validateEmail(userEmailInput, true),
                   onSaved: (userEmailInput) =>
@@ -464,16 +465,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                   controller: _passwordController,
                   decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Colors.white,
-                        ),
-                        hintText: "Password*",
-                        hintStyle: TextStyle(color: Colors.white),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blue)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white))),
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: Colors.white,
+                      ),
+                      hintText: "Password*",
+                      hintStyle: TextStyle(color: Colors.white),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue)),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white))),
                   validator: (userPasswordInput) {
                     if (_authMode == AuthMode.Signup) {
                       return _userInput.validatePassword(userPasswordInput);
@@ -615,7 +616,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     _authMode == AuthMode.Login
                         ? "Don't have an account?"
                         : "Have an account?",
-                    style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic, color: Colors.white),
                   ),
                   FlatButton(
                     splashColor:
