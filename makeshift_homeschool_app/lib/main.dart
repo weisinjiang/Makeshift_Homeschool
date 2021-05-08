@@ -28,40 +28,44 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     // First initialize Firebase before entering the app
     return FutureBuilder(
+
       future: Firebase.initializeApp(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return MaterialApp(
-              home:
-                  LoadingScreen()); //! FUTURE: add error message to the loading screen
-        } else if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(home: LoadingScreen()); //! FUTURE: add error message to the loading screen
+        }
+        
+        else if (snapshot.connectionState == ConnectionState.done) {
           return startApp();
         }
         return MaterialApp(home: LoadingScreen());
       },
+      
     );
   }
 
   // Entry to the app
   MultiProvider startApp() {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider<AuthProvider>(
-            // auth service
-            create: (context) => AuthProvider(),
-          ),
+    providers: [
+      ChangeNotifierProvider<AuthProvider>(
+        // auth service
+        create: (context) => AuthProvider(),
+      ),
 
-          ChangeNotifierProxyProvider<AuthProvider, PostFeedProvider>(
-            // reteieves user posts in Study
-            update: (context, auth, previousPosts) => PostFeedProvider(
-                auth.getUserID,
-                previousPosts == null ? [] : previousPosts.getPosts),
-            create: (_) => PostFeedProvider(null, []),
-          ),
 
-          // //^ Add ChangeNotfierProxyProvider for Auth, Studentprovider using the
+      ChangeNotifierProxyProvider<AuthProvider, PostFeedProvider>(
+        // reteieves user posts in Study
+        update: (context, auth, previousPosts) => PostFeedProvider(
+            auth.getUserID,
+            previousPosts == null ? [] : previousPosts.getPosts),
+        create: (_) => PostFeedProvider(null, []),
+      ),
+
+      // //^ Add ChangeNotfierProxyProvider for Auth, Studentprovider using the
           // //^ the same format as above
           // ChangeNotifierProxyProvider<AuthProvider, StudentsPageProvider>(
           //   // reteieves user posts in Study
@@ -71,47 +75,6 @@ class MyApp extends StatelessWidget {
           //   create: (_) => StudentsPageProvider(),
           // ),
 
-          ChangeNotifierProxyProvider<AuthProvider, VideoFeedProvider>(
-            update: (context, auth, prevVideoPosts) => VideoFeedProvider(
-                uid: auth.getUserID,
-                allVideoPosts:
-                    prevVideoPosts == null ? [] : prevVideoPosts.getVideoPosts),
-            create: (_) => VideoFeedProvider(uid: null, allVideoPosts: []),
-          ),
-
-          ChangeNotifierProxyProvider<AuthProvider, BootCampProvider>(
-              create: (_) => BootCampProvider(null, []),
-              update: (context, auth, previousLessons) => BootCampProvider(
-                  auth.getUserID,
-                  previousLessons == null
-                      ? []
-                      : previousLessons.getUserLessons))
-        ],
-        child: Consumer<AuthProvider>(
-            builder: (context, auth, _) => MaterialApp(
-                  theme: ThemeData(
-                      scaffoldBackgroundColor: Colors.black87,
-                      // primaryColor: kGreenSecondary,
-                      textTheme: GoogleFonts.robotoTextTheme(
-                          Theme.of(context).textTheme)),
-                  home: auth.isAuthenticated
-                      ? RootScreen()
-                      : FutureBuilder(
-                          future: auth.tryAutoLogin(),
-                          builder: (context, authResultSnapshot) =>
-                              authResultSnapshot.connectionState ==
-                                      ConnectionState.waiting
-                                  ? LoadingScreen()
-                                  : LoginScreen(),
-                        ),
-                  routes: {
-                    '/login': (context) => LoginScreen(),
-                    '/root': (context) => RootScreen(),
-                    '/about': (context) => AboutScreen(),
-                    '/study': (context) => StudyScreen(),
-                    '/profile': (context) => ProfileScreen(),
-                  },
-                )));
 
       ChangeNotifierProxyProvider<AuthProvider, VideoFeedProvider> (  
         update: (context, auth, prevVideoPosts) => VideoFeedProvider(  
