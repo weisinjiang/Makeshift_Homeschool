@@ -74,15 +74,7 @@ class _RootScreenState extends State<RootScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   /// What do you want to do today? Greet image
-                  Container(
-                    height: screenSize.height * 0.20,
-                    width: screenSize.width,
-                    child: Center(
-                        child: Image.asset(
-                      'asset/images/greetJoseph1.png',
-                      fit: BoxFit.contain,
-                    )),
-                  ),
+                  
 
                   // Before build, user's email was checked to be not verified
                   if (!isEmailVerified)

@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _authMode = AuthMode.Signup;
       });
       showAlertDialog(
-          "By clicking continue you are confirming that you are a parent signing up your child for Makeshift Homeschool and you will not use your child's real name during sign up",
+          "By clicking continue you are confirming that you are a parent signing up your child for WEquil School and you will not use your child's real name during sign up",
           "LEGAL",
           context);
     } else {
