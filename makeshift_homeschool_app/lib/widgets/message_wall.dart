@@ -13,7 +13,10 @@ class MessageWall extends StatelessWidget {
       itemCount: messages.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(messages[index].data()["value"], style: TextStyle(color: Colors.white),),
+          title: Text(
+            messages[index].data()["value"],
+            style: TextStyle(color: Colors.white),
+          ),
         );
       },
     );
