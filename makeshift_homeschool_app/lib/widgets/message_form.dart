@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 
 class MessageForm extends StatefulWidget {
-  MessageForm({Key key}) : super(key: key);
+  final ValueChanged<String> onSubmit;
+  MessageForm({Key key, this.onSubmit}) : super(key: key);
 
   @override
   _MessageFormState createState() => _MessageFormState();
 }
 
 class _MessageFormState extends State<MessageForm> {
+  
   final _controller = TextEditingController();
   String _message;
 
+  
+
   void _onPressed() {
-    print(_message);
+    widget.onSubmit(_message);
     _controller.clear();
     _message = "";
     setState(() {});
