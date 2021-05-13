@@ -87,13 +87,13 @@ class MyApp extends StatelessWidget {
               primaryColor: kGreenSecondary,
               textTheme:
                   GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
-          // home: auth.isAuthenticated ? RootScreen()
-          //         : FutureBuilder( 
-          //           future: auth.tryAutoLogin(),
-          //           builder: (context, authResultSnapshot) =>
-          //           authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : LoginScreen(),
-          //         ),
-          home: InterestPickerScreen(),
+           home: auth.isAuthenticated ? RootScreen()
+                   : FutureBuilder( 
+                    future: auth.tryAutoLogin(),
+                    builder: (context, authResultSnapshot) =>
+                    authResultSnapshot.connectionState == ConnectionState.waiting ? LoadingScreen() : LoginScreen(),
+                  ),
+          //home: InterestPickerScreen(),
         
                   
           routes: {

@@ -118,6 +118,12 @@ class _DifferentWaysToMoveState extends State<DifferentWaysToMove> {
               Text(
                   "I think that my new way of movement is better than walking because"),
 
+// ! 
+// ?
+//  * 
+//  ^
+//  &
+// todo 
               SizedBox(
                 child: TextFormField(
                   /// add a controller and attach it to this field

@@ -72,15 +72,9 @@ class _RootScreenState extends State<RootScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   /// What do you want to do today? Greet image
-                  Container(
-                    height: screenSize.height * 0.20,
-                    width: screenSize.width,
-                    child: Center(
-                        child: Image.asset(
-                      'asset/images/greetJoseph1.png',
-                      fit: BoxFit.contain,
-                    )),
-                  ),
+                  
+                    
+                  
                   
                   // Before build, user's email was checked to be not verified
                   if (!isEmailVerified)
@@ -281,8 +275,8 @@ class _RootScreenState extends State<RootScreen> {
             padding: const EdgeInsets.all(8.0),
             child: GhostButton(
               borderRadius: 20.0,
-              buttonBorderColor: kRedOrange,
-              buttonFillColor: kRedOrange,
+              buttonBorderColor:kGreenPrimary,
+              buttonFillColor:kGreenPrimary,
               buttonName: "Approve Lessons",
               buttonTextColor: Colors.black,
               function: () => Navigator.push(
@@ -303,8 +297,8 @@ class _RootScreenState extends State<RootScreen> {
             padding: const EdgeInsets.all(8.0),
             child: GhostButton(
               borderRadius: 20.0,
-              buttonBorderColor: kRedOrange,
-              buttonFillColor: kRedOrange,
+              buttonBorderColor: kGreenPrimary,
+              buttonFillColor: kGreenPrimary,
               buttonName: "Review Tutor Lessons",
               buttonTextColor: Colors.black,
               function: () => Navigator.push(
@@ -328,8 +322,8 @@ class _RootScreenState extends State<RootScreen> {
           padding: const EdgeInsets.all(8.0),
           child: GhostButton(
             borderRadius: 20.0,
-            buttonBorderColor: kRedOrange,
-            buttonFillColor: kRedOrange,
+            buttonBorderColor:kGreenPrimary,
+            buttonFillColor:kGreenPrimary,
             buttonName: "Boot Camp",
             buttonTextColor: Colors.black,
             function: () => Navigator.push(
@@ -349,8 +343,8 @@ class _RootScreenState extends State<RootScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: GhostButton(
                   borderRadius: 20.0,
-                  buttonBorderColor: kRedOrange,
-                  buttonFillColor: kRedOrange,
+                  buttonBorderColor:kGreenPrimary,
+                  buttonFillColor:kGreenPrimary,
                   buttonName: "Learn",
                   buttonTextColor: Colors.black,
                   function: () => showModalBottomSheet(  
@@ -422,8 +416,8 @@ class _RootScreenState extends State<RootScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: GhostButton(
                   borderRadius: 20.0,
-                  buttonBorderColor: kRedOrange,
-                  buttonFillColor: kRedOrange,
+                  buttonBorderColor:kGreenPrimary,
+                  buttonFillColor:kGreenPrimary,
                   buttonName: "Teach",
                   buttonTextColor: Colors.black,
                   function: () => showModalBottomSheet(  
@@ -497,8 +491,8 @@ class _RootScreenState extends State<RootScreen> {
             padding: const EdgeInsets.all(8.0),
             child: GhostButton(
               borderRadius: 20.0,
-              buttonBorderColor: kRedOrange,
-              buttonFillColor: kRedOrange,
+              buttonBorderColor:kGreenPrimary,
+              buttonFillColor:kGreenPrimary,
               buttonName: "Approve Lessons",
               buttonTextColor: Colors.black,
               function: () => Navigator.push(
@@ -519,8 +513,8 @@ class _RootScreenState extends State<RootScreen> {
             padding: const EdgeInsets.all(8.0),
             child: GhostButton(
               borderRadius: 20.0,
-              buttonBorderColor: kRedOrange,
-              buttonFillColor: kRedOrange,
+              buttonBorderColor:kGreenPrimary,
+              buttonFillColor:kGreenPrimary,
               buttonName: "Review Tutor Lessons",
               buttonTextColor: Colors.black,
               function: () => Navigator.push(
