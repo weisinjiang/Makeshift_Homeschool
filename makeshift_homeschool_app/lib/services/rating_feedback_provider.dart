@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:makeshift_homeschool_app/models/post_model.dart';
 import 'package:makeshift_homeschool_app/screens/promotion.dart';
+import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/constants.dart';
@@ -66,7 +67,6 @@ class Rating_FeedbackProvider with ChangeNotifier {
             unratedColor: Colors.grey[300],
             glow: true,
             glowColor: Colors.green,
-
             itemBuilder: (context, _) {
               return Icon(
                 Icons.star,
@@ -120,7 +120,11 @@ class Rating_FeedbackProvider with ChangeNotifier {
               // no promotion, just pop the feedback screen
               else {
                 Navigator.of(context).pop(); // pop feed back
-                Navigator.of(context).pop(); // pop the lesson
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StudyScreen(),
+                    )); // pop the lesson
               }
             },
           ),

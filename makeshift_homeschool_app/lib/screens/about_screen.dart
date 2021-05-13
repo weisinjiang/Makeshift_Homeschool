@@ -38,7 +38,7 @@ class AboutScreen extends StatelessWidget {
             SizedBox(height: 10.0,),
 
             Text(
-              "The Makeshift Homeschool app will allow kids to teach, and learn with"
+              "The WEquil School app will allow kids to teach, and learn with"
                "each other. To grow as a team, to get stronger as a team, and to"
                "inspire as a team.",
                style: TextStyle(

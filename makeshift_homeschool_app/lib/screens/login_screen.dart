@@ -40,7 +40,6 @@ class _LoginScreenState extends State<LoginScreen> {
     "Twitter",
     "Wequil Website",
     "Seth Peleg",
-    "William Den Herder",
     "Other"
   };
   // User selected referral will be saved

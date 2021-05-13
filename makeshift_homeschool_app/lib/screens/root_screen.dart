@@ -74,7 +74,6 @@ class _RootScreenState extends State<RootScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   /// What do you want to do today? Greet image
-                  
 
                   // Before build, user's email was checked to be not verified
                   if (!isEmailVerified)
@@ -256,7 +255,6 @@ class _RootScreenState extends State<RootScreen> {
                                           )));
                                     }),
                               ),
-                              
                             ],
                           ),
                         );
@@ -309,15 +307,19 @@ class _RootScreenState extends State<RootScreen> {
             ),
           ),
         ),
-        RaisedButton(
-                                  child: Text("Activities!"),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                Activities()));
-                                  })
+      Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ActivityButton(
+            color: kGreenPrimary,
+            borderColor: Colors.green[300],
+            height: screenSize.height * 0.20,
+            width: screenSize.width,
+            canUseButton: true,
+            function: () =>
+                Navigator.push(context, SlideLeftRoute(screen: Activities())),
+            name: "Activities!",
+            imageLocation: "asset/images/BordGame1.png",
+          ))
     ]);
   }
 
@@ -534,12 +536,19 @@ class _RootScreenState extends State<RootScreen> {
             ),
           ),
         ),
-      RaisedButton(
-          child: Text("Activities!"),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Activities()));
-          })
+      Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ActivityButton(
+            color: kGreenPrimary,
+            borderColor: Colors.green[300],
+            height: screenSize.height * 0.20,
+            width: screenSize.width,
+            canUseButton: true,
+            function: () =>
+                Navigator.push(context, SlideLeftRoute(screen: Activities())),
+            name: "Activities!",
+            imageLocation: "asset/images/BordGame1.png",
+          )),
     ]);
   }
 }
