@@ -23,6 +23,7 @@ class MassagingPage extends StatelessWidget {
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection("chat_messages")
+                  .orderBy("timestamp")
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
