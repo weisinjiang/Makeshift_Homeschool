@@ -1,10 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/widgets/message_form.dart';
 
 import 'package:makeshift_homeschool_app/widgets/message_wall.dart';
+import 'package:provider/provider.dart';
 
-class MassagingPage extends StatelessWidget {
+class MassagingPage extends StatefulWidget {
+  final store = FirebaseFirestore.instance.collection("chat_messages");
+
+  @override
+  _MassagingPageState createState() => _MassagingPageState();
+}
+
+class _MassagingPageState extends State<MassagingPage> {
+  void _addMessages(String value) async {
+    final Map<String, dynamic> userInfo =
+        Provider.of<AuthProvider>(context, listen: false).getUserInfo;
+
+    await widget.store.add({
+      "author_username": userInfo["studentFirstName"],
+      "author_image": userInfo["photoURL"],
+      "author_uid": userInfo["uid"],
+      "timestamp": Timestamp.now().millisecondsSinceEpoch,
+      "value": value
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,10 +43,7 @@ class MassagingPage extends StatelessWidget {
         children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection("chat_messages")
-                  .orderBy("timestamp")
-                  .snapshots(),
+              stream: widget.store.orderBy("timestamp").snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return MessageWall(
@@ -37,11 +56,7 @@ class MassagingPage extends StatelessWidget {
               },
             ),
           ),
-          MessageForm(
-            onSubmit: (value) {
-              print("==>" + value);
-            },
-          )
+          MessageForm(onSubmit: _addMessages)
         ],
       ),
     );
