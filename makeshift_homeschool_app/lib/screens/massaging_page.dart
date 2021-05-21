@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/screens/profile_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
+import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/widgets/message_form.dart';
 
 import 'package:makeshift_homeschool_app/widgets/message_wall.dart';
@@ -29,6 +31,8 @@ class _MassagingPageState extends State<MassagingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> userInfo =
+        Provider.of<AuthProvider>(context, listen: false).getUserInfo;
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -37,6 +41,26 @@ class _MassagingPageState extends State<MassagingPage> {
             style: TextStyle(
               color: Colors.white,
             )),
+        actions: [
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context, SlideLeftRoute(screen: ProfileScreen()));
+                },
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    userInfo["photoURL"],
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              )
+            ],
+          ),
+        ],
       ),
       backgroundColor: Colors.black87,
       body: Column(

@@ -332,6 +332,12 @@ class _RootScreenState extends State<RootScreen> {
 
   Column buildWebButtons(Size screenSize, BuildContext context) {
     return Column(children: [
+      FlatButton(
+        child: Text("Message"),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MassagingPage(),));
+        },
+      ),
       Container(
         height: screenSize.height * 0.15,
         width: screenSize.width / 2,
