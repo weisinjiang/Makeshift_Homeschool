@@ -27,7 +27,8 @@ class IconLeadButton extends StatelessWidget {
       this.function,
       this.borderWidth,
       this.borderRadius,
-      this.borderfillColor, this.textStrokeWidth})
+      this.borderfillColor,
+      this.textStrokeWidth})
       : super(key: key);
 
   @override
@@ -38,11 +39,11 @@ class IconLeadButton extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border.all(color: borderColor, width: borderWidth),
             borderRadius: BorderRadius.circular(borderRadius),
-            // gradient: LinearGradient(  
+            // gradient: LinearGradient(
             //   colors: [kPaleBlue, kRedOrange],
             //   begin: Alignment.centerLeft,
             //   end: Alignment.centerRight,
-              
+
             // ),
             color: borderfillColor),
         child: InkWell(

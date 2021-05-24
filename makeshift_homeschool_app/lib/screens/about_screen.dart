@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-///Screen that tells the user about Makeshift Homeschool
+///Screen that tells the user about WEquil school
 class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -38,6 +38,7 @@ class AboutScreen extends StatelessWidget {
             SizedBox(height: 10.0,),
 
             Text(
+
               "The WEquil School app is an app that allows kids to learn from kids, making them able to teach other kids! We believe that there are five principles of learning:                                                             \n1. Teach to problems not tools \n2. No grades, iterate and improve \n3. Share and learn with others \n4. Build on strengths, interests and passions \n5. Teaching is a great way to learn. \nThe WEquil School app believes that kids learn better from kids. We also think that people learn by teaching! Students earn confidence by creating value for other students. This gives them the drive to discover more and share with the world.",
                style: TextStyle(
                  height: 1.5,
