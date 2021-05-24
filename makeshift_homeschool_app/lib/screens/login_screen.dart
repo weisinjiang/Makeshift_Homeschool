@@ -14,12 +14,14 @@ import 'package:url_launcher/url_launcher.dart';
 import '../services/auth.dart';
 import '../shared/constants.dart';
 import '../models/user_auth_model.dart';
+
 /// Builds the Login Screen
 /// Enum Authmode determines which Firebase method to use: login or signup
 /// It will also determine how the screen will look.
 
 //Page will change if user is logging in or signing up
 enum AuthMode { Signup, Login }
+bool showpassword = true;
 
 // Creates the LoginScreen State and re
 class LoginScreen extends StatefulWidget {
@@ -103,6 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       // Attempt to log user in
       if (_authMode == AuthMode.Login) {
+
         var isSignedIn = await auth.signIn(_userInput); 
 
         // If successful, Main.dart will swap to RootScreen
@@ -254,6 +257,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+
 /// The mobile widget of the loginscreen
 /// Builds the textfields, buttons and widgetst that switches between
 /// Authmodes.
@@ -394,10 +398,26 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
                 child: TextFormField(
-                  obscureText: true,
+                  obscureText: showpassword,
                   controller: _passwordController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.remove_red_eye_outlined),
+                      onPressed: () {  setState(() {
+                        showpassword = !showpassword;
+                      });
+                        // if (showpassword = false) {
+                        //   setState(() {
+                        //     showpassword = true;
+                        //   });
+                        // } else { 
+                        //   setState(() {
+                        //     showpassword = false;
+                        //   });
+                        // }
+                      },
+                    ),
                     hintText: "Password*",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.vertical()),
@@ -596,7 +616,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ],
     );
   }
-
+  
 /// The WEB widget of the loginscreen
 /// Builds the textfields, buttons and widgetst that switches between
 /// Authmodes.
