@@ -5,6 +5,8 @@ import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/lesson_approval.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/new_video_screen.dart';
+import 'package:makeshift_homeschool_app/screens/search_screen.dart';
+import 'package:makeshift_homeschool_app/screens/students_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_screen.dart';
 import 'package:makeshift_homeschool_app/screens/study_video_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
@@ -15,6 +17,7 @@ import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/shared/slide_transition.dart';
 import 'package:makeshift_homeschool_app/widgets/activity_button.dart';
 import 'package:makeshift_homeschool_app/widgets/ghostButton.dart';
+import 'package:makeshift_homeschool_app/widgets/new_video_widgets.dart';
 import 'package:provider/provider.dart';
 
 /// Builds the main screen where the user can pick what activities they want to
@@ -25,15 +28,16 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  Map<String, String> userData;
+  Map<String, dynamic> userInfo;
   bool isEmailVerified;
   Size screenSize;
 
   /// Before the root screen builds, gather user data and check if their email is verified
   @override
   void initState() {
-    userData = Provider.of<AuthProvider>(context, listen: false).getUser;
-    isEmailVerified =Provider.of<AuthProvider>(context, listen: false).isEmailVerified;
+
+    userInfo = Provider.of<AuthProvider>(context, listen: false).getUserInfo;
+    isEmailVerified = Provider.of<AuthProvider>(context, listen: false).isEmailVerified;
     super.initState();
   }
 
@@ -44,12 +48,12 @@ class _RootScreenState extends State<RootScreen> {
     /// upon signout, userData will be set to null. This conditional is so
     /// that when users signout, an error screen wont show
 
-    if (userData != null) {
+    if (userInfo != null) {
       return Scaffold(
           appBar: AppBar(
             elevation: 0.0,
             backgroundColor: kPaleBlue,
-            title: Text("Hi, ${userData["username"]}!"),
+            title: Text("Hi, ${userInfo["studentFirstName"]}!"),
             actions: <Widget>[
               IconButton(
                 icon: Icon(Icons.person),
@@ -267,7 +271,7 @@ class _RootScreenState extends State<RootScreen> {
           ])),
 
 
-      if (userData["level"] == "Professor")
+      if (userInfo["level"] == "Professor")
         Container(
           height: screenSize.height * 0.15,
           width: screenSize.width,
@@ -289,7 +293,7 @@ class _RootScreenState extends State<RootScreen> {
           ),
         ),
       // show this to teachers so they can review posts or Principle
-      if (userData["level"] == "Professor" || userData["level"] == "Teacher")
+      if (userInfo["level"] == "Professor" || userInfo["level"] == "Teacher")
         Container(
           height: screenSize.height * 0.15,
           width: screenSize.width,
@@ -483,7 +487,7 @@ class _RootScreenState extends State<RootScreen> {
               ),
             ),
           ])),
-      if (userData["level"] == "Professor")
+      if (userInfo["level"] == "Professor")
         Container(
           height: screenSize.height * 0.15,
           width: screenSize.width / 2,
@@ -505,7 +509,7 @@ class _RootScreenState extends State<RootScreen> {
           ),
         ),
       // show this to teachers so they can review posts or Principle
-      if (userData["level"] == "Professor" || userData["level"] == "Teacher")
+      if (userInfo["level"] == "Professor" || userInfo["level"] == "Teacher")
         Container(
           height: screenSize.height * 0.15,
           width: screenSize.width / 2,
@@ -529,3 +533,5 @@ class _RootScreenState extends State<RootScreen> {
     ]);
   }
 }
+
+ 

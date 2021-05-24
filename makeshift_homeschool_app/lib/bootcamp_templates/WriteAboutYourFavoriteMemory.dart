@@ -56,7 +56,7 @@ class _WriteAboutYourFavoriteMemoryState extends State<WriteAboutYourFavoriteMem
      
 
       var database = Provider.of<BootCampProvider>(context);
-      var user = Provider.of<AuthProvider>(context).getUser;
+      var user = Provider.of<AuthProvider>(context).getUserInfo;
       final screenSize = MediaQuery.of(context).size; // size of the screen
   
       return Scaffold(

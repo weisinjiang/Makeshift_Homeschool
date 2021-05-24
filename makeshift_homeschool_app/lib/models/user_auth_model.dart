@@ -1,39 +1,24 @@
+import 'package:flutter/material.dart';
+
 /// Stores information for when users signup or login
 
 class UserAuth {
-  Map<String, String> _userInput;
+  String studentFirstName;
+  String parentFirstName;
+  String parentLastName;
+  String studentEmail;
+  String parentEmail;
+  String parentPhoneNumber;
+  int studentAge;
+  String password;
+  String referral;
+  // String photoURL;
+  // String bio;
+  // String accountCreatedOn;
+  // String level;
+  // String uid;
+  List<String> interestedTopics;
 
-  UserAuth() {
-    this._userInput = {
-      "username": null,
-      "email": null,
-      "password": null,
-      "referral": null
-    };
-  }
-
-  /// Getters to get the info in the map
-  String get getUsername => this._userInput["username"];
-  String get getEmail => this._userInput["email"];
-  String get getPassword => this._userInput["password"];
-  String get getReferral => this._userInput["referral"];
-
-  ///Setters to set information
-  set setUsername(username) => this._userInput["username"] = username;
-  set setEmail(String email) => this._userInput["email"] = email;
-  set setPassword(String password) => this._userInput["password"] = password;
-  set setReferal(String ref) => this._userInput["referral"] = ref;
-
-  String validateReferral(String ref) {
-    if (ref == "") {
-      return "Please tell us how you found us";
-    }
-    return null;
-  }
-
-  /// **************************************************************************
-  /// Password Validation
-  ///***************************************************************************
 
   /* 
     Regular Expression that makes sure the password is:
@@ -46,6 +31,70 @@ class UserAuth {
       RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$");
 
   final regExHasUppercase = RegExp(r"([A-Z])");
+
+  /// RegEx for valid email
+  final regExValidEmail = RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+
+
+  // All values will be null by default, so nothing needs to be done in the constructor
+  UserAuth() {
+    this.password = null;
+  }
+
+
+
+  /// Getters to get the info in the map
+  String get getStudentFirstName => this.studentFirstName;
+  String get getParentFirstName => this.parentFirstName;
+  String get getParentLastName => this.parentLastName;
+  String get getStudentEmail => this.studentEmail;
+  String get getParentEmail => this.parentEmail;
+  String get getParentPhoneNumber => this.parentPhoneNumber;
+  int get getStudentAge => this.studentAge;
+  String get getPassword => this.password;
+  String get getReferral => this.referral;
+
+
+
+
+  ///Setters to set information
+  set setStudentFirstName(String firstName) => this.studentFirstName = firstName;
+  set setStudentAge(String age) => this.studentAge = int.parse(age);
+  set setParentFirstName(String parentName) => this.parentFirstName = parentName;
+  set setParentLastName(String lastName) => this.parentLastName = lastName;
+  set setParentPhoneNumber(String number) => this.parentPhoneNumber = number;
+  set setStudentEmail(String email) => this.studentEmail = email;
+  set setParentEmail(String email) => this.parentEmail = email;
+  set setPassword(String password) => this.password = password;
+  set setReferral(String ref) => this.referral = ref;
+
+
+  /// Valudates age for user to be at least 13
+  String validateAge(String age) {
+
+    if (int.parse(age) < 13) {
+      return "You cannot use this app because you are under 13.";
+    }
+    return null;
+
+  }
+
+  /// Make sure name is not empty
+  String validateName(String name) {
+    if (name.isEmpty) {
+      return "1 or more name field is empty";
+    }
+    return null;
+  }
+
+  /// Validates that user entered a referral
+  String validateReferral(String ref) {
+    if (ref == "") {
+      return "Please tell us how you found us";
+    }
+    return null;
+  }
+
 
   /* 
     Validates the password the user enters
@@ -64,25 +113,19 @@ class UserAuth {
     }
   }
 
-  /// **************************************************************************
-  /// Email Validation                                                         *
-  ///***************************************************************************
-
-  /* 
-    Regular Expression that makes sure email is in the valid format
-  */
-  final regExValidEmail = RegExp(
-      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
-
   /* 
     Validates the password the user enters
     @param  : password the user inputs into the Form TextField
     @return :  true or false
   */
-  String validateEmail(String userInput) {
-    if (regExValidEmail.hasMatch(userInput)) {
-      return null;
+  String validateEmail(String userInput, bool isStudent) {
+    if (!regExValidEmail.hasMatch(userInput)) {
+      return isStudent ? "Student Email Invalid": "Parent Email Invalid";
     }
-    return "Invalid Email";
+    return null;
   }
+
+  
+
+  
 }

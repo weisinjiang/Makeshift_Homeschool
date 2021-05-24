@@ -23,7 +23,7 @@ import 'package:provider/provider.dart';
 */
 
 class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const PopupMenuAppBar({
+  PopupMenuAppBar({
     Key key,
     @required final this.postData,
     @required final this.screenSize,
@@ -41,6 +41,11 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(appBar.preferredSize.height);
+
+  ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+    primary: Colors.white,
+    onPrimary: Colors.red
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +71,15 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                             Container(
                               height: screenSize.height * 0.06,
                               width: screenSize.width * 0.85,
-                              child: RaisedButton(
-                                color: Colors.transparent,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.transparent,
+                                  onPrimary: Colors.red
+                                ),
                                 child: Text(
                                   "Delete",
                                   style: TextStyle(
-                                      color: Colors.red,
+                                  
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () async {
@@ -125,12 +133,12 @@ class PopupMenuAppBar extends StatelessWidget implements PreferredSizeWidget {
                             Container(
                               height: screenSize.height * 0.06,
                               width: screenSize.width * 0.85,
-                              child: RaisedButton(
-                                color: Colors.transparent,
+                              child: ElevatedButton(
+                                style: buttonStyle,
                                 child: Text(
                                   "Report",
                                   style: TextStyle(
-                                      color: Colors.red,
+                                      //color: Colors.red,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () async {},

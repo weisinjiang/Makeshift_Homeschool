@@ -54,3 +54,11 @@ enum TutorTutorialSlides {
 
 
 }
+
+/*
+  Different types of Interest that users can choose from.
+*/
+enum Interest {
+  DEMODAYTOPICS,
+  SUBJECTS
+}

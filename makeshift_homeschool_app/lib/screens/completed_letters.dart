@@ -45,11 +45,11 @@ class _CompletedLettersState extends State<CompletedLetters> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size; // screen
-    final userData = Provider.of<AuthProvider>(context).getUser;
+    final userInfo = Provider.of<AuthProvider>(context).getUserInfo;
     List<BootCampLesson> userCompletedLessons =
         Provider.of<BootCampProvider>(context).getUserLessons;
 
-    if (userData != null) {
+    if (userInfo != null) {
       return Scaffold(
           appBar: AppBar(
             title: Text("Your Lessons"),

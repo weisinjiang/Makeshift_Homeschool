@@ -32,12 +32,12 @@ class _InterestChipState extends State<InterestChip> {
   // for each ticker so they have almost unquie colors
   static RandomColorGen randomColor = new RandomColorGen();
 
-
   /**
    * For each interest string in the list, create a ChoiceChip with 
    * code telling it what to do when we toggle the chips.
    */
   List<Widget> _buildInterestChips() {
+    
     List<Widget> chips = [];
     List<String> interestList = widget.interestProvider.getInterests;
     Map<String, Color> chipColorMap = widget.interestProvider.getChipColorMap;

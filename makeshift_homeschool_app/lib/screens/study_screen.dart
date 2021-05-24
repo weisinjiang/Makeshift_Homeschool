@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:makeshift_homeschool_app/screens/search_screen.dart';
 import 'package:makeshift_homeschool_app/services/auth.dart';
 import 'package:makeshift_homeschool_app/services/post_feed_provider.dart';
 import 'package:makeshift_homeschool_app/shared/colorPalete.dart';
@@ -32,6 +33,7 @@ class _StudyScreenState extends State<StudyScreen> {
       setState(() {
         _isLoading = true;
       });
+      // fetch all posts 
       var postFeedProvider = Provider.of<PostFeedProvider>(context);
       postFeedProvider.fetchPostsFromDatabase(query: "all").then((_) {
         setState(() {
@@ -48,12 +50,22 @@ class _StudyScreenState extends State<StudyScreen> {
     // used to call the filter method to retrieve posts
     final feedProvider = Provider.of<PostFeedProvider>(context);
 
-    final user = Provider.of<AuthProvider>(context).getUser;
-    if (user != null) {
+    final userInfo = Provider.of<AuthProvider>(context).getUserInfo;
+    if (userInfo != null) {
       return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.white,
+          child: IconButton(
+            icon: Icon(Icons.search, color: Colors.black,),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SearchScreen()));
+            },
+          ),
+        ),
           appBar: AppBar(
             title: Text("Let's Read! 📖"),
-            backgroundColor: kPaleBlue,
+            backgroundColor: Colors.black,
             elevation: 0.0,
           ),
           body: _isLoading
@@ -63,7 +75,7 @@ class _StudyScreenState extends State<StudyScreen> {
                     // entire screen color
                     height: screenSize.height,
                     width: screenSize.width,
-                    color: kPaleBlue,
+                    color: Colors.black,
                     // decoration: linearGradientSecondaryGreenAnalogous,
                     child: RefreshIndicator(
                       onRefresh: () async {
