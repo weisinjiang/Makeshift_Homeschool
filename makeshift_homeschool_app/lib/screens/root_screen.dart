@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/screens/bootcamp_screen.dart';
 import 'package:makeshift_homeschool_app/screens/export_screens.dart';
 import 'package:makeshift_homeschool_app/screens/lesson_approval.dart';
+import 'package:makeshift_homeschool_app/screens/massaging_page.dart';
 import 'package:makeshift_homeschool_app/screens/new_post_screen.dart';
 import 'package:makeshift_homeschool_app/screens/new_video_screen.dart';
 import 'package:makeshift_homeschool_app/screens/search_screen.dart';
@@ -110,6 +111,12 @@ class _RootScreenState extends State<RootScreen> {
 
   Column buildMobileButtons(Size screenSize, BuildContext context) {
     return Column(children: [
+      FlatButton(
+        child: Text("Message"),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MassagingPage(),));
+        },
+      ),
       Padding(
           padding: const EdgeInsets.all(8.0),
           child: ActivityButton(
@@ -319,6 +326,12 @@ class _RootScreenState extends State<RootScreen> {
 
   Column buildWebButtons(Size screenSize, BuildContext context) {
     return Column(children: [
+      FlatButton(
+        child: Text("Message"),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => MassagingPage(),));
+        },
+      ),
       Container(
         height: screenSize.height * 0.15,
         width: screenSize.width / 2,

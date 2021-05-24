@@ -99,6 +99,7 @@ class MyApp extends StatelessWidget {
               textTheme:
                   GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
           home: auth.isAuthenticated ? RootScreen() : LoginScreen(),
+          debugShowCheckedModeBanner: false,
           //home: InterestPickerScreen(interestType: Interest.DEMODAYTOPICS,),
                   
           routes: {
