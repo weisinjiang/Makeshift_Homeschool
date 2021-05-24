@@ -22,7 +22,7 @@ class AboutScreen extends StatelessWidget {
             
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-              child: Image.asset('asset/images/logo.png'),
+              child: Text("WEquil School", style: TextStyle(fontSize: 40),),
             ),
             SizedBox(height: 20.0,),
 
@@ -38,9 +38,8 @@ class AboutScreen extends StatelessWidget {
             SizedBox(height: 10.0,),
 
             Text(
-              "The WEquil School app will allow kids to teach, and learn with"
-               "each other. To grow as a team, to get stronger as a team, and to"
-               "inspire as a team.",
+
+              "The WEquil School app is an app that allows kids to learn from kids, making them able to teach other kids! We believe that there are five principles of learning:                                                             \n1. Teach to problems not tools \n2. No grades, iterate and improve \n3. Share and learn with others \n4. Build on strengths, interests and passions \n5. Teaching is a great way to learn. \nThe WEquil School app believes that kids learn better from kids. We also think that people learn by teaching! Students earn confidence by creating value for other students. This gives them the drive to discover more and share with the world.",
                style: TextStyle(
                  height: 1.5,
                ),

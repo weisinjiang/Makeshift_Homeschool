@@ -55,7 +55,7 @@ class _DifferentWaysToMoveState extends State<DifferentWaysToMove> {
   @override
   Widget build(BuildContext context) {
     var database = Provider.of<BootCampProvider>(context);
-    var user = Provider.of<AuthProvider>(context).getUser;
+    var user = Provider.of<AuthProvider>(context).getUserInfo;
     final screenSize = MediaQuery.of(context).size; // size of the screen
 
     return Scaffold(
@@ -118,6 +118,12 @@ class _DifferentWaysToMoveState extends State<DifferentWaysToMove> {
               Text(
                   "I think that my new way of movement is better than walking because"),
 
+// ! 
+// ?
+//  * 
+//  ^
+//  &
+// todo 
               SizedBox(
                 child: TextFormField(
                   /// add a controller and attach it to this field

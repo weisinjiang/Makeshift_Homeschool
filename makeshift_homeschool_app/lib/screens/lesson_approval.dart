@@ -48,14 +48,14 @@ class _LessonApprovalScreenState extends State<LessonApprovalScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<AuthProvider>(context).getUser;
+    final userInfo = Provider.of<AuthProvider>(context).getUserInfo;
     final postList = Provider.of<PostFeedProvider>(context).getApprovalNeeded;
     final screenSize = MediaQuery.of(context).size;
 
-    if (user != null) {
+    if (userInfo != null) {
       return Scaffold(
           appBar: AppBar(
-            title: Text("Review Tutor Lessons"),
+            title: Text("Review Lessons"),
             backgroundColor: kPaleBlue,
           ),
           body: _isLoading
@@ -90,3 +90,6 @@ class _LessonApprovalScreenState extends State<LessonApprovalScreen> {
     return LoadingScreen();
   }
 }
+
+
+  
