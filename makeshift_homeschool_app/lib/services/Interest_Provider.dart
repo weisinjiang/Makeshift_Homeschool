@@ -57,7 +57,7 @@ class InterestProvider with ChangeNotifier{
   Future<void> save() async {
     
     await _database.collection("users").doc(uid).set({
-      "DemoDayInterest": selectedList
+      "classroomInterest": selectedList
     }, SetOptions(merge: true));
 
   }
@@ -65,12 +65,12 @@ class InterestProvider with ChangeNotifier{
   // Based on what type of interest the user
   Future<void> initializeInterestList() async {
     print("Initialize Interest List Ran");
-    if (interestType == Interest.DEMODAYTOPICS) {
+    if (interestType == Interest.CLASSROOMS) {
       try {
         // Add demo day topics to the 
-        DocumentSnapshot demoTopics = await _database.collection("DemoDay").doc("Topics").get();
+        DocumentSnapshot classroomList = await _database.collection("Classrooms").doc("classroom list").get();
         
-        List<dynamic> dynamicList = (demoTopics["topics"] as List).toList();
+        List<dynamic> dynamicList = (classroomList["list"] as List).toList();
         this.interestList = List<String>.from(dynamicList);
         notifyListeners();
       } catch (e) {

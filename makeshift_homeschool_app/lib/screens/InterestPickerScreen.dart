@@ -52,8 +52,8 @@ class _InterestPickerScreenState extends State<InterestPickerScreen> {
 
           appBar: AppBar(  
             leading: new Container(), // removes the back button, so user's need to press save
-            title: widget.interestType == Interest.DEMODAYTOPICS
-            ? Text("Selected Interested Topics")
+            title: widget.interestType == Interest.CLASSROOMS
+            ? Text("Selected Interested Classrooms")
             : Text("Select Your Interests"),
           ),
 

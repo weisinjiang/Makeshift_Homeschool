@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
         var result = await auth.signUp(_userInput);
         if (result == true) {
           Navigator.pushReplacement(context, ScaleRoute(screen: RootScreen()));
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => InterestPickerScreen(interestType: Interest.DEMODAYTOPICS,)));
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => InterestPickerScreen(interestType: Interest.CLASSROOMS,)));
           // Navigator.push(
           //     context,
           //     MaterialPageRoute(
