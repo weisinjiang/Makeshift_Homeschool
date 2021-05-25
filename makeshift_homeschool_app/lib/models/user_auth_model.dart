@@ -72,7 +72,10 @@ class UserAuth {
   /// Valudates age for user to be at least 13
   String validateAge(String age) {
 
-    if (int.parse(age) < 13) {
+    if (age.isEmpty || age == null) {
+      return "Enter your age";
+    }
+    else if (int.parse(age) < 13) {
       return "You cannot use this app because you are under 13.";
     }
     return null;
@@ -81,8 +84,8 @@ class UserAuth {
 
   /// Make sure name is not empty
   String validateName(String name) {
-    if (name.isEmpty) {
-      return "1 or more name field is empty";
+    if (name.trim().isEmpty || name == null) {
+      return "Empty name";
     }
     return null;
   }
@@ -91,6 +94,13 @@ class UserAuth {
   String validateReferral(String ref) {
     if (ref == "") {
       return "Please tell us how you found us";
+    }
+    return null;
+  }
+
+  String validatePhoneNumber(String number) {
+    if (number == null || number.length < 10 || number.isEmpty) {
+      return "Enter a valid phone number";
     }
     return null;
   }

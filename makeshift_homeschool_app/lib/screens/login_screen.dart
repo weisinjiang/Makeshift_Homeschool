@@ -373,6 +373,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.vertical()),
                     ),
                     onSaved: (number) => _userInput.setParentPhoneNumber = number,
+                    validator: (number) => _userInput.validatePhoneNumber(number),
                   ),
                 ),
               ],
