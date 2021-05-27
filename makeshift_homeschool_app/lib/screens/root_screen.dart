@@ -106,12 +106,17 @@ class _RootScreenState extends State<RootScreen> {
 
   Column buildMobileButtons(Size screenSize, BuildContext context) {
     return Column(children: [
-      FlatButton(
-        child: Text("Message"),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => MassagingPage(),));
-        },
-      ),
+      ActivityButton(
+            color: kGreenPrimary,
+            borderColor: Colors.green[300],
+            height: screenSize.height * 0.20,
+            width: screenSize.width,
+            canUseButton: true,
+            function: () => Navigator.push(
+                context, SlideLeftRoute(screen: MassagingPage())),
+            name: "Message",
+            imageLocation: "asset/images/masagethingy.png",
+          ),
       Padding(
           padding: const EdgeInsets.all(8.0),
           child: ActivityButton(

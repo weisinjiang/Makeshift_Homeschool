@@ -118,10 +118,10 @@ class _SearchVideosScreenState extends State<SearchVideosScreen> {
                Expanded(
                  child: TextFormField(
                      controller: searchTextEditingController,
-                     style: simpleTextStyle(),
+                     style: TextStyle(color: Colors.black),
                      decoration: InputDecoration(
                          hintText: "Search video name...",
-                         hintStyle: TextStyle(color: Colors.white54),
+                         hintStyle: TextStyle(color: Colors.black54),
                          border: InputBorder.none)),
                ),
                GestureDetector(

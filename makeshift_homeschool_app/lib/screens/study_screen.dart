@@ -64,10 +64,10 @@ class _StudyScreenState extends State<StudyScreen> {
           ),
         ),
           appBar: AppBar(
-            title: Text("Let's Read! 📖"),
+            title: Text("Let's Read! 📖", style: TextStyle(color: Colors.white) ), 
             backgroundColor: Colors.black,
             elevation: 0.0,
-          ),
+          iconTheme: IconThemeData(color: Colors.white) ,),
           body: _isLoading
               ? LoadingScreen()
               : Container(

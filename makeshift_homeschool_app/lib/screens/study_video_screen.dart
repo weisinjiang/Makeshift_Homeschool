@@ -7,7 +7,7 @@ import 'package:makeshift_homeschool_app/shared/exportShared.dart';
 import 'package:makeshift_homeschool_app/widgets/study_category_listtile.dart';
 import 'package:provider/provider.dart';
 
-/// This screen displays video content for MSHM
+/// This screen displays video content for WEquil School
 
 class StudyVideoScreen extends StatefulWidget {
   @override

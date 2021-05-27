@@ -120,10 +120,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 Expanded(
                   child: TextFormField(
                       controller: searchTextEditingController,
-                      style: simpleTextStyle(),
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                           hintText: "Search lesson name...",
-                          hintStyle: TextStyle(color: Colors.white54),
+                          hintStyle: TextStyle(color: Colors.black54),
                           border: InputBorder.none)),
                 ),
                 GestureDetector(

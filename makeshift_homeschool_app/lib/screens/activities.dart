@@ -2,22 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:makeshift_homeschool_app/activity_pages/art_museum_home.dart';
 import 'package:makeshift_homeschool_app/activity_pages/drawing.dart';
 import 'package:makeshift_homeschool_app/activity_pages/tic_tac_toe.dart';
+// ignore: unused_import
 import 'package:makeshift_homeschool_app/screens/root_screen.dart';
 
 class Activities extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          FlatButton(
-            color: Colors.transparent,
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => RootScreen()));
-            },
-            child: Text("Home", style: TextStyle(color: Colors.blue),))
-        ],
+      appBar: AppBar( iconTheme: IconThemeData(color: Colors.white),
+        
         backgroundColor: Colors.black,
         title: Text("Activities!", style: TextStyle(color: Colors.white),),
       ),
