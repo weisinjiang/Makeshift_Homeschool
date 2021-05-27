@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// Stores information for when users signup or login
 
 class UserAuth {

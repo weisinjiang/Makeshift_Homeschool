@@ -168,6 +168,17 @@ class Post with ChangeNotifier {
     }
   }
 
+  Future<void> upVote(String uid) async {
+    DocumentReference documentReference = FirebaseFirestore.instance.collection("lessons").doc(getPostId);
+
+    try {
+      // increment the number of up-votes by 1
+      await documentReference.update({"likes" : FieldValue.increment(1)});
+    } catch(error) {
+      print("Error in post_model.dart upVote method");
+    }
+  }
+
   /// Toggle the like button, marking it a favorite
   Future<void> toggleBookmarkButton(String uid) async {
     final oldValue = this.isLiked; // if something went wrong, revert it back
@@ -187,11 +198,11 @@ class Post with ChangeNotifier {
         // update the bookmark icon's fill color
         notifyListeners();
 
-        // Increment the likes count on the post
-        await FirebaseFirestore.instance
-            .collection("lessons")
-            .doc(getPostId)
-            .update({"likes": FieldValue.increment(1)});
+        // // Increment the likes count on the post
+        // await FirebaseFirestore.instance
+        //     .collection("lessons")
+        //     .doc(getPostId)
+        //     .update({"likes": FieldValue.increment(1)});
       } else {
         // if unlike, remove the post from user favorites
         await FirebaseFirestore.instance

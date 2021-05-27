@@ -15,6 +15,7 @@ class Rating_FeedbackProvider with ChangeNotifier {
   double _allTimeRating;
   int _numUsersRated;
   Post postData;
+  bool upVoted;
   // TextEditingController _userFeedbackController;
 
   Rating_FeedbackProvider({Post postData}) {
@@ -23,6 +24,7 @@ class Rating_FeedbackProvider with ChangeNotifier {
     this.postData = postData;
     this._allTimeRating = 0.0;
     this._numUsersRated = 0;
+    this.upVoted = false;
     // this._userFeedbackController = TextEditingController();
     // this._userFeedbackController.text = "None";
   }
@@ -31,6 +33,7 @@ class Rating_FeedbackProvider with ChangeNotifier {
   set setUserRating(double rate) => this._userRating = rate;
   set setAllTimeRating(double rate) => this._allTimeRating = rate;
   set setNumberOfUsersRated(int numPeople) => this._numUsersRated = numPeople;
+  void toggleUpVote() => this.upVoted = !this.upVoted;
 
   // Getters
   double get getUserRating => this._userRating;
@@ -40,8 +43,102 @@ class Rating_FeedbackProvider with ChangeNotifier {
   String get getPostId => this.postData.getPostId;
   // String get getFeedback => this._userFeedbackController.text;
   bool get isPromoted => this.isPromoted;
+  bool get isUpVoted => this.upVoted;
 
-  Widget buildRatingBar(BuildContext context, Size screenSize,
+  Widget buildUpVoteUI(BuildContext context, Size screenSize,
+      AuthProvider auth, PostFeedProvider feed) {
+
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "How did you like this lesson?",
+          style: kBoldTextStyle,
+        ),
+        Text(
+          "Press the thumbs up button if you enjoyed it!",
+          style: kBoldTextStyle,
+        ),
+        const SizedBox(
+          height: 40,
+        ),
+        
+        Container(
+          padding: const EdgeInsets.all(50),
+          alignment: Alignment.center,
+          child: IconButton(  
+            icon: Icon(  
+              Icons.thumb_up
+            ),
+            iconSize: 50,
+            color: upVoted ? Colors.blue : Colors.grey,
+            onPressed: () {
+              toggleUpVote();
+              notifyListeners();
+            },
+
+          ),
+        ),
+
+        const SizedBox(
+          height: 50,
+        ),
+
+        const SizedBox(
+          height: 80,
+        ),
+
+        // Submit button
+        Container(
+          height: screenSize.height * 0.08,
+          width: screenSize.width * 0.80,
+          decoration: BoxDecoration(
+              color: kGreenPrimary,
+              border: Border.all(color: Colors.black, width: 2.0)),
+          child: RaisedButton(
+            color: kGreenPrimary,
+            child: Text(
+              "All Done ",
+              style: kBoldTextStyle,
+            ),
+            onPressed: () async {
+              // update the ratings for the post
+              if (upVoted) { 
+                postData.upVote(auth.getUserID);
+              }
+              feed.markAsComplete(getPostId);
+              // access user's collection and increment the value
+              bool rankedUp = await auth.incrementUserCompletedLessons(getPostId);
+
+              if (rankedUp) {
+                Navigator.of(context).pop(); // pop the feedback screen
+                // then push the promotion screen
+                Navigator.push(
+                    context,
+                    SlideLeftRoute(
+                        screen: PromotionScreen(
+                      promotionType: PromotionType.student_to_tutor,
+                    )));
+              }
+              // no promotion, just pop the feedback screen
+              else {
+                Navigator.of(context).pop(); // pop feed back
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StudyScreen(),
+                    )); // pop the lesson
+              }
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget buildRatingBarr(BuildContext context, Size screenSize,
       AuthProvider auth, PostFeedProvider feed) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -360,21 +360,20 @@ class AuthProvider with ChangeNotifier {
           .set({});
 
       // update the map data with the new lesson completed
-      int lessonCompleted =
-          int.parse(this._userInformation["lesson_completed"]) + 1;
-      this._userInformation["lesson_completed"] = lessonCompleted.toString();
+      int lessonCompleted = this._userInformation["lessonCompleted"] + 1;
+      this._userInformation["lessonCompleted"] = lessonCompleted;
 
       if (lessonCompleted == 5) {
         // increase lesson completed by 1 and update level
         await userDocument.update(
-            {"lesson_completed": FieldValue.increment(1), "level": "Tutor"});
+            {"lessonCompleted": FieldValue.increment(1), "level": "Tutor"});
         this._userInformation["level"] = "Tutor";
       } else {
         // increase lesson completed by 1
         await userDocument
-            .update({"lesson_completed": FieldValue.increment(1)});
+            .update({"lessonCompleted": FieldValue.increment(1)});
       }
-      this._userInformation["lesson_completed"] = lessonCompleted.toString();
+      //this._userInformation["lesson_completed"] = lessonCompleted.toString();
       notifyListeners();
       return lessonCompleted == 5;
     } catch (error) {

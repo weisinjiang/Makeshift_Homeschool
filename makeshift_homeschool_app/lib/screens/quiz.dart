@@ -153,7 +153,7 @@ class QuizScreen extends StatelessWidget {
                                     padding:
                                         const EdgeInsets.only(bottom: 10.0),
                                     child: Container(
-                                      child: ratingFeedback.buildRatingBar(
+                                      child: ratingFeedback.buildUpVoteUI(
                                         context,
                                         screenSize,
                                         auth,
